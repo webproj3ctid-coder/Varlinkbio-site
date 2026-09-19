@@ -1,1 +1,1741 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>VarlinkB — Link in Bio Generator</title>
+<meta name="theme-color" content="#f0ebe0"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><circle cx='50' cy='50' r='22' fill='%23ffd700' stroke='%23fff' stroke-width='4'/></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* =========================================================
+   VARLINKB v6 — NEO-BRUTALISM (site + bio)
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f0ebe0;
+  --cream-2:#e8e2d5;
+  --ink:#0a0a0a;
+  --ink-soft:#2a2a2a;
+  --red:#ff2a2a;
+  --yellow:#ffd700;
+  --green:#22c55e;
+  --blue:#2563eb;
+  --pink:#ff69b4;
+  --purple:#a78bfa;
+  --white:#fff;
+  --shadow:5px 5px 0 var(--ink);
+  --shadow-sm:3px 3px 0 var(--ink);
+  --border:2.5px solid var(--ink);
+  --radius:10px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+html,body{height:100%;font-family:var(--font);color:var(--ink);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{
+  background-color:var(--cream);
+  background-image:radial-gradient(circle,#0a0a0a 1.2px,transparent 1.2px);
+  background-size:16px 16px;
+  background-position:0 0;
+  min-height:100vh;
+}
+#app{min-height:100vh}
+body.public-mode{overflow:hidden;height:100vh;height:100dvh}
+body.public-mode #app{min-height:0;height:100vh;height:100dvh;overflow:hidden}
+.hidden{display:none!important}
+a{color:var(--ink);text-decoration:none}
+button{font-family:inherit;font-size:15px;cursor:pointer;border:none;outline:none;transition:transform .1s, box-shadow .1s}
+input,textarea,select{font-family:inherit;font-size:15px;color:var(--ink);
+  background:var(--white);border:var(--border);border-radius:var(--radius);
+  padding:12px 14px;outline:none;transition:all .1s;width:100%;font-weight:600}
+input:focus,textarea:focus,select:focus{box-shadow:var(--shadow-sm)}
+input::placeholder,textarea::placeholder{color:#888;font-weight:500}
+textarea{resize:vertical;min-height:80px}
 
+/* SVG icon */
+.ic{width:16px;height:16px;display:inline-block;vertical-align:middle;
+  stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
+  flex-shrink:0}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 18px;border-radius:var(--radius);font-weight:800;font-size:13.5px;
+  white-space:nowrap;background:var(--white);color:var(--ink);
+  border:var(--border);box-shadow:var(--shadow-sm);text-transform:uppercase;
+  letter-spacing:.3px;transition:transform .1s, box-shadow .1s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn-primary{background:var(--ink);color:var(--white)}
+.btn-primary:hover{background:var(--ink-soft)}
+.btn-yellow{background:var(--yellow)}
+.btn-red{background:var(--red);color:var(--white)}
+.btn-green{background:var(--green);color:var(--white)}
+.btn-blue{background:var(--blue);color:var(--white)}
+.btn-ghost{background:var(--cream)}
+.btn-sm{padding:8px 12px;font-size:12px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+.card{background:var(--white);border:var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:18px}
+
+/* Toast */
+#toast-container{position:fixed;top:16px;right:16px;z-index:9999;display:flex;
+  flex-direction:column;gap:8px;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast{background:var(--white);border:var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);padding:10px 14px;font-weight:700;font-size:13px;
+  pointer-events:auto;animation:toastIn .18s ease}
+.toast.success{background:var(--green);color:var(--white)}
+.toast.error{background:var(--red);color:var(--white)}
+.toast.info{background:var(--yellow)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Loading */
+#loading-overlay{position:fixed;inset:0;background:rgba(240,235,224,.85);z-index:10000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-weight:800}
+.loader{width:40px;height:40px;border:4px solid var(--ink);border-top-color:transparent;
+  border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Layout */
+.container{max-width:960px;margin:0 auto;padding:0 18px}
+.topbar{position:sticky;top:0;z-index:100;background:var(--cream);
+  border-bottom:var(--border);padding:12px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;
+  text-transform:uppercase;letter-spacing:.5px}
+.topbar .brand .logo{width:32px;height:32px;background:var(--ink);color:var(--yellow);
+  border:var(--border);border-radius:8px;box-shadow:3px 3px 0 var(--red);
+  display:grid;place-items:center;font-size:14px;font-weight:900}
+.topbar .actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--cream-2)}
+::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
+
+/* LANDING */
+.landing{min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:40px 18px;text-align:center}
+.landing .hero-logo{width:88px;height:88px;border-radius:50%;background:var(--white);
+  border:4px solid var(--ink);box-shadow:6px 6px 0 var(--red);
+  display:grid;place-items:center;font-size:38px;margin-bottom:24px;font-weight:900;
+  transform:rotate(-3deg);color:var(--ink)}
+.landing h1{font-size:clamp(38px,8vw,64px);font-weight:900;letter-spacing:-1.5px;
+  margin-bottom:10px;text-transform:uppercase;line-height:1;
+  text-shadow:4px 4px 0 var(--yellow)}
+.landing p.sub{color:var(--ink);font-size:15px;max-width:420px;margin-bottom:28px;
+  font-weight:600;background:var(--white);border:var(--border);padding:8px 14px;
+  border-radius:var(--radius);box-shadow:var(--shadow-sm);transform:rotate(-1deg)}
+.landing .name-form{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px}
+.landing .name-form input{text-align:center;font-size:16px;padding:14px;font-weight:700;
+  box-shadow:var(--shadow-sm)}
+.landing .name-form .btn{padding:14px;font-size:15px}
+.landing .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
+  background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
+
+/* DASHBOARD */
+.dash{padding-bottom:60px}
+.dash-hero{padding:32px 18px 24px;text-align:center}
+.dash-hero h2{font-size:28px;font-weight:900;letter-spacing:-.5px;text-transform:uppercase;
+  display:inline-block;background:var(--yellow);border:var(--border);
+  padding:6px 16px;box-shadow:var(--shadow);transform:rotate(-1deg)}
+.dash-hero p{color:var(--ink);margin-top:14px;font-weight:600}
+.dash-actions{margin:24px auto;max-width:420px;display:flex;flex-direction:column;gap:12px}
+.dash-actions .btn{padding:16px;font-size:14px}
+.dash-info{padding:16px 0}
+.section-title{font-size:13px;font-weight:900;margin-bottom:14px;text-transform:uppercase;
+  letter-spacing:1px;display:inline-block;background:var(--ink);color:var(--white);
+  padding:4px 12px;border-radius:6px}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.feature-card{background:var(--white);border:var(--border);border-radius:var(--radius);
+  padding:14px;box-shadow:var(--shadow-sm)}
+.feature-card .fi{width:34px;height:34px;background:var(--yellow);border:var(--border);
+  border-radius:8px;display:grid;place-items:center;margin-bottom:10px;
+  box-shadow:2px 2px 0 var(--ink)}
+.feature-card .fi .ic{width:18px;height:18px}
+.feature-card h4{font-size:13.5px;margin-bottom:4px;text-transform:uppercase;
+  font-weight:900;letter-spacing:.3px}
+.feature-card p{color:var(--ink-soft);font-size:12px;line-height:1.5;font-weight:500}
+.dash-recent{padding:16px 0}
+.recent-list{display:flex;flex-direction:column;gap:10px}
+.recent-item{background:var(--white);border:var(--border);border-radius:var(--radius);
+  padding:12px 14px;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;box-shadow:var(--shadow-sm);transition:transform .1s, box-shadow .1s}
+.recent-item:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
+.recent-item .ri-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.recent-item .ri-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;
+  background:var(--yellow);flex-shrink:0;display:grid;place-items:center;
+  font-weight:900;color:var(--ink);font-size:14px;overflow:hidden;
+  border:2.5px solid var(--ink)}
+.recent-item .ri-info{min-width:0;flex:1}
+.recent-item .ri-info b{display:block;font-size:13.5px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;font-weight:800;text-transform:uppercase;
+  letter-spacing:.2px}
+.recent-item .ri-info span{color:var(--ink-soft);font-size:11.5px;font-weight:600}
+.recent-item .ri-actions{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap}
+.icon-btn{width:32px;height:32px;border-radius:8px;background:var(--white);
+  border:2px solid var(--ink);display:grid;place-items:center;
+  color:var(--ink);box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s}
+.icon-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.icon-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.icon-btn.danger{background:var(--red);color:var(--white)}
+.icon-btn .ic{width:14px;height:14px}
+
+.empty-state{text-align:center;padding:40px 18px;color:var(--ink);
+  background:var(--white);border:var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow)}
+.empty-state .ei{width:60px;height:60px;background:var(--yellow);border:var(--border);
+  border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;
+  box-shadow:var(--shadow-sm)}
+.empty-state .ei .ic{width:28px;height:28px}
+.empty-state p{margin-bottom:16px;font-weight:700}
+
+/* EDITOR */
+.editor-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;
+  max-width:1180px;margin:0 auto;padding:18px;padding-bottom:60px}
+@media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
+.editor-panel{display:flex;flex-direction:column;gap:14px}
+.editor-section{background:var(--white);border:var(--border);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow-sm)}
+.editor-section h3{font-size:12px;font-weight:900;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--white);background:var(--ink);padding:4px 10px;border-radius:6px;
+  align-self:flex-start}
+.editor-section h3 .num{width:18px;height:18px;border-radius:4px;background:var(--yellow);
+  color:var(--ink);display:grid;place-items:center;font-size:11px;font-weight:900;flex-shrink:0}
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:12.5px;color:var(--ink);margin-bottom:5px;
+  font-weight:800;text-transform:uppercase;letter-spacing:.3px}
+.field .hint{font-size:11px;color:var(--ink-soft);margin-top:4px;font-weight:500}
+
+/* Upload */
+.upload-box{border:2.5px dashed var(--ink);border-radius:var(--radius);
+  padding:18px;text-align:center;cursor:pointer;transition:all .1s;
+  background:var(--cream);position:relative;overflow:hidden}
+.upload-box:hover{background:var(--yellow);border-style:solid}
+.upload-box .ui{width:36px;height:36px;background:var(--ink);color:var(--yellow);
+  border-radius:8px;display:grid;place-items:center;margin:0 auto 8px}
+.upload-box .ui .ic{width:18px;height:18px}
+.upload-box p{color:var(--ink);font-size:12.5px;font-weight:800;text-transform:uppercase}
+.upload-box small{color:var(--ink-soft);font-size:11px;display:block;margin-top:3px;font-weight:600}
+.upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-preview{width:100%;height:120px;object-fit:cover;border-radius:var(--radius);
+  margin-top:10px;border:var(--border);display:none}
+.upload-preview.show{display:block}
+.profile-upload{display:flex;flex-direction:column;align-items:center;gap:10px}
+.profile-upload .pbox{width:96px;height:96px;border-radius:50%;position:relative;
+  border:3px solid var(--ink);overflow:hidden;cursor:pointer;background:var(--yellow);
+  box-shadow:var(--shadow-sm);transform:rotate(-3deg)}
+.profile-upload .pbox img,.profile-upload .pbox video{width:100%;height:100%;object-fit:cover}
+.profile-upload .pbox .overlay{position:absolute;inset:0;background:rgba(10,10,10,.6);
+  color:var(--white);display:grid;place-items:center;opacity:0;
+  transition:opacity .15s}
+.profile-upload .pbox:hover .overlay{opacity:1}
+.profile-upload .pbox input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* Links editor */
+.links-list{display:flex;flex-direction:column;gap:8px}
+.link-row{display:flex;gap:6px;align-items:center;background:var(--cream);
+  border:2.5px solid var(--ink);border-radius:var(--radius);padding:8px;
+  box-shadow:2px 2px 0 var(--ink)}
+.link-row.dragging{opacity:.4}
+.link-row.drag-over{background:var(--yellow)}
+.link-row .drag{color:var(--ink);cursor:grab;padding:0 3px;user-select:none;display:grid;place-items:center}
+.link-row .drag:active{cursor:grabbing}
+.link-row .link-fields{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.link-row .link-fields input{border:none;background:var(--white);padding:6px 8px;font-size:13px;
+  box-shadow:none!important;border:1.5px solid var(--ink)}
+.link-row .link-thumb{width:34px;height:34px;border-radius:8px;object-fit:cover;
+  background:var(--yellow);flex-shrink:0;display:grid;place-items:center;
+  overflow:hidden;border:2px solid var(--ink)}
+.link-row .del{background:var(--red);color:var(--white);width:28px;height:28px;
+  border-radius:7px;display:grid;place-items:center;flex-shrink:0;
+  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.link-row .del:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.link-color-pick{width:28px;height:28px;border-radius:6px;cursor:pointer;
+  border:2px solid var(--ink);padding:0;flex-shrink:0;box-shadow:2px 2px 0 var(--ink);
+  background:transparent}
+
+/* Modal */
+.modal-back{position:fixed;inset:0;background:rgba(10,10,10,.7);z-index:500;
+  display:grid;place-items:center;padding:18px;animation:fadeIn .15s ease}
+.modal{background:var(--white);border:3px solid var(--ink);border-radius:14px;
+  padding:20px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;
+  box-shadow:8px 8px 0 var(--ink);position:relative}
+.modal h3{font-size:16px;margin-bottom:14px;text-transform:uppercase;font-weight:900;
+  letter-spacing:.3px}
+.modal .link-types{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.link-type{background:var(--cream);border:2.5px solid var(--ink);border-radius:var(--radius);
+  padding:12px;text-align:center;cursor:pointer;transition:all .1s;
+  box-shadow:2px 2px 0 var(--ink)}
+.link-type:hover{background:var(--yellow);transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink)}
+.link-type:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.link-type .lti{width:32px;height:32px;background:var(--ink);color:var(--yellow);
+  border-radius:6px;display:grid;place-items:center;margin:0 auto 6px}
+.link-type .lti .ic{width:16px;height:16px}
+.link-type b{font-size:12px;display:block;text-transform:uppercase;font-weight:900}
+.link-type small{color:var(--ink-soft);font-size:10.5px;font-weight:600}
+.modal .close-x{position:absolute;top:12px;right:14px;font-size:22px;
+  color:var(--ink);cursor:pointer;background:none;border:none;line-height:1;
+  font-weight:900}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Preview pane */
+.editor-preview{position:sticky;top:70px;align-self:start}
+.preview-phone{width:100%;max-width:300px;margin:0 auto;aspect-ratio:9/19;
+  border-radius:28px;border:4px solid var(--ink);overflow:hidden;
+  background:var(--cream);position:relative;box-shadow:6px 6px 0 var(--ink)}
+.preview-phone iframe{width:100%;height:100%;border:none;display:block}
+.editor-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+
+/* QR */
+.qr-box{text-align:center;padding:14px;background:var(--white);border:var(--border);
+  border-radius:var(--radius);display:inline-block;margin:10px auto;
+  box-shadow:var(--shadow-sm)}
+.qr-box canvas{display:block}
+.qr-url{font-family:monospace;font-size:11.5px;color:var(--ink);word-break:break-all;
+  text-align:center;margin-top:10px;font-weight:600;
+  background:var(--cream);padding:8px;border-radius:6px;border:1.5px solid var(--ink)}
+
+/* Analytics */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px}
+.stat-card{background:var(--white);border:var(--border);
+  border-radius:var(--radius);padding:14px;text-align:center;
+  box-shadow:var(--shadow-sm)}
+.stat-card:nth-child(1){background:var(--yellow)}
+.stat-card:nth-child(2){background:var(--red);color:var(--white)}
+.stat-card:nth-child(3){background:var(--blue);color:var(--white)}
+.stat-card:nth-child(4){background:var(--green);color:var(--white)}
+.stat-card .sv{font-size:24px;font-weight:900}
+.stat-card .sl{font-size:11px;font-weight:800;margin-top:3px;
+  text-transform:uppercase;letter-spacing:.5px}
+.link-stat{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px;background:var(--cream);border:2px solid var(--ink);
+  border-radius:var(--radius);margin-bottom:6px;box-shadow:2px 2px 0 var(--ink)}
+.link-stat .ls-l{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.link-stat .ls-info{min-width:0;flex:1}
+.link-stat .ls-info b{display:block;font-size:12.5px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;font-weight:800}
+.link-stat .ls-info span{color:var(--ink-soft);font-size:11px;font-weight:600}
+.link-stat .ls-count{font-weight:900;font-size:14px;flex-shrink:0;
+  background:var(--ink);color:var(--white);padding:2px 8px;border-radius:6px}
+
+/* =========================================================
+   BIO — NEO THEME (juga untuk publik)
+   ========================================================= */
+.bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
+  background-color:var(--cream);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px;
+  color:var(--ink);padding:34px 18px 60px;
+  display:flex;flex-direction:column;align-items:center;font-weight:700;z-index:2}
+.bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
+
+/* Dekorasi sudut (kotak merah/biru rotated) */
+.bio-deco{position:fixed;pointer-events:none;z-index:1}
+.bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
+  border:3px solid var(--ink);transform:rotate(-12deg);
+  box-shadow:5px 5px 0 var(--ink)}
+.bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);
+  border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);
+  box-shadow:4px 4px 0 var(--ink)}
+.bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);
+  border:3px solid var(--ink);transform:rotate(15deg);
+  box-shadow:4px 4px 0 var(--ink)}
+
+/* Avatar */
+.bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
+  overflow:hidden;background:var(--white);margin:0 auto;
+  box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-avatar img,.bio-avatar video{width:100%;height:100%;object-fit:cover}
+.bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+
+/* Header stack */
+.bio-header{display:flex;flex-direction:column;align-items:center;
+  margin-bottom:24px;position:relative;gap:0}
+.bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
+  color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;
+  letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);
+  margin-top:12px;box-shadow:3px 3px 0 var(--ink);z-index:3}
+.bio-name{display:inline-block;padding:7px 18px;background:var(--yellow);
+  color:var(--ink);font-size:21px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(2deg);
+  margin-top:-4px;box-shadow:5px 5px 0 var(--ink);text-align:center;max-width:100%;
+  word-break:break-word;z-index:2}
+.bio-bio{display:inline-block;padding:6px 14px;background:var(--red);color:var(--white);
+  font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+  border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;
+  box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;
+  word-break:break-word;z-index:1}
+
+/* Banner */
+.bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;
+  overflow:hidden;box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;
+  background:var(--white)}
+.bio-banner img,.bio-banner video{width:100%;display:block;max-height:200px;object-fit:cover}
+
+/* Gallery */
+.bio-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.bio-gallery .gi{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;
+  cursor:pointer;border:3px solid var(--ink);
+  transition:transform .15s, box-shadow .15s;background:var(--white);
+  box-shadow:4px 4px 0 var(--ink)}
+.bio-gallery .gi:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.bio-gallery .gi:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.bio-gallery .gi img,.bio-gallery .gi video{width:100%;height:100%;object-fit:cover}
+
+/* Links */
+.bio-links{display:flex;flex-direction:column;gap:14px}
+.bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
+  color:var(--ink);font-weight:900;font-size:14.5px;text-transform:uppercase;
+  letter-spacing:.5px;text-decoration:none;position:relative;
+  transition:transform .12s ease, box-shadow .12s ease;
+  box-shadow:6px 6px 0 var(--ink);cursor:pointer;background:var(--white);
+  min-height:56px}
+.bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.bio-link .licon{width:20px;height:20px;display:grid;place-items:center;flex-shrink:0}
+.bio-link .licon .ic{width:18px;height:18px}
+.bio-link .ltext{flex:1;text-align:center}
+
+/* Featured */
+.bio-link.bio-featured{flex-direction:column;align-items:stretch;
+  padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);
+  min-height:0}
+.bio-link.bio-featured .feat-img{width:100%;height:120px;object-fit:cover;
+  border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
+.bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
+.bio-link.bio-featured .feat-body b{display:block;font-size:14.5px;font-weight:900;
+  text-transform:uppercase}
+.bio-link.bio-featured .feat-body small{font-size:11.5px;opacity:.7;display:block;
+  margin-top:2px;font-weight:600;text-transform:lowercase}
+
+/* Embed */
+.bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);background:var(--white)}
+.bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
+
+/* Footer */
+.bio-footer{margin-top:28px;text-align:center;font-size:11px;
+  color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;
+  background:var(--white);border:2px solid var(--ink);padding:6px 12px;
+  border-radius:20px;box-shadow:2px 2px 0 var(--ink);display:inline-block}
+.bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(10,10,10,.94);z-index:9999;
+  display:flex;align-items:center;justify-content:center;padding:18px}
+.lightbox img,.lightbox video{max-width:100%;max-height:90vh;border-radius:10px;
+  border:3px solid var(--white);box-shadow:6px 6px 0 var(--red)}
+.lightbox .close{position:absolute;top:18px;right:22px;font-size:34px;color:var(--white);
+  cursor:pointer;background:none;border:none;line-height:1;font-weight:900}
+
+/* Lock */
+.lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
+  display:grid;place-items:center;padding:18px}
+.lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
+  padding:28px;max-width:340px;width:100%;text-align:center;
+  box-shadow:8px 8px 0 var(--red)}
+.lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);
+  border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
+.lock-card .li .ic{width:26px;height:26px}
+.lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;
+  font-weight:900;letter-spacing:.5px}
+.lock-card p{color:var(--ink-soft);font-size:13px;margin-bottom:16px;font-weight:600}
+.lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
+  background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
+  margin-top:10px;font-size:13.5px;text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s}
+.lock-card button:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--red)}
+
+@media(max-width:640px){
+  .editor-layout{padding:14px 12px 50px}
+  .preview-phone{max-width:260px}
+  .bio-name{font-size:18px}
+  .bio-bio{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div id="toast-container"></div>
+<div id="loading-overlay" class="hidden">
+  <div class="loader"></div>
+  <p id="loading-text">Memuat...</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+/* =========================================================
+   SVG ICON LIBRARY (ganti emoji  hindari glyph broken)
+   ========================================================= */
+const ICONS = {
+  link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  plus:'<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+  trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  edit:'<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+  eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  copy:'<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  qr:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="21" y2="17.5"/>',
+  folder:'<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+  stats:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+  back:'<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+  camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  video:'<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>',
+  youtube:'<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>',
+  music:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  instagram:'<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>',
+  whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+  tiktok:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>',
+  lock:'<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  unlock:'<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+  sparkle:'<path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>',
+  check:'<polyline points="20 6 9 17 4 12"/>',
+  x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  grip:'<circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/>',
+  grid:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',
+  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  message:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  play:'<polygon points="5 3 19 12 5 21 5 3"/>'
+};
+function ico(name, cls=""){
+  const d = ICONS[name] || ICONS.link;
+  return `<svg class="ic ${cls}" viewBox="0 0 24 24">${d}</svg>`;
+}
+
+/* =========================================================
+   FIREBASE CONFIG
+   ========================================================= */
+const FIREBASE_CONFIG = {
+  apiKey: "ISI_API_KEY",
+  authDomain: "ISI.firebaseapp.com",
+  projectId: "ISI_PROJECT_ID",
+  storageBucket: "ISI.appspot.com",
+  messagingSenderId: "ISI_SENDER_ID",
+  appId: "ISI_APP_ID"
+};
+const DEMO_MODE = !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === "ISI_API_KEY";
+const FB = { app:null, db:null, storage:null, ready:false };
+(function initFirebase(){
+  if (DEMO_MODE){ console.log("%c[VarlinkB] DEMO MODE","color:#f59e0b;font-weight:bold"); return; }
+  try{
+    FB.app = firebase.initializeApp(FIREBASE_CONFIG);
+    FB.db = firebase.firestore();
+    FB.storage = firebase.storage();
+    FB.ready = true;
+    console.log("%c[VarlinkB] Firebase siap","color:#22c55e;font-weight:bold");
+  }catch(e){ console.error(e); FB.ready=false; }
+})();
+
+/* =========================================================
+   STATE & CONST
+   ========================================================= */
+const STATE = { user:null, currentEdit:null, draft:null, cache:[] };
+const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
+const NEO_HEX = {
+  red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e",
+  blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff"
+};
+
+/* =========================================================
+   UTILS
+   ========================================================= */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const uid = (n=10)=>Math.random().toString(36).slice(2,2+n);
+const esc = (s="")=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const detectMediaType = f => f.type.startsWith("video")?"video":"image";
+const fileToDataURL = f => new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f);});
+
+function toast(msg,type="info"){
+  const el=document.createElement("div");
+  el.className=`toast ${type}`; el.textContent=msg;
+  $("#toast-container").appendChild(el);
+  setTimeout(()=>{ el.style.opacity="0"; el.style.transform="translateY(-8px)";
+    setTimeout(()=>el.remove(),220); },2800);
+}
+function showLoading(t="Memuat..."){ $("#loading-text").textContent=t; $("#loading-overlay").classList.remove("hidden"); }
+function hideLoading(){ $("#loading-overlay").classList.add("hidden"); }
+function openModal(html){
+  const b=document.createElement("div"); b.className="modal-back";
+  b.innerHTML=`<div class="modal">${html}</div>`;
+  b.addEventListener("click",e=>{if(e.target===b)b.remove();});
+  document.body.appendChild(b); return b;
+}
+
+async function copyLink(id){
+  const url = `${location.origin}${location.pathname}#/u/${id}`;
+  try{ await navigator.clipboard.writeText(url); toast("Link disalin!","success"); }
+  catch(e){
+    const ta=document.createElement("textarea");
+    ta.value=url; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); toast("Link disalin!","success"); }
+    catch(err){ toast("Gagal copy: "+url,"error"); }
+    ta.remove();
+  }
+  return url;
+}
+
+function showShareModal(id, name){
+  const url = `${location.origin}${location.pathname}#/u/${id}`;
+  const m = openModal(`
+    <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+    <h3>Bio Link Tersimpan!</h3>
+    <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan link ini:</p>
+    <input id="share-url" value="${url}" readonly onclick="this.select()"
+      style="text-align:center;font-family:monospace;font-size:12px;padding:12px"/>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn btn-primary btn-block" id="share-copy">${ico('copy')} Copy Link</button>
+      <button class="btn btn-block" id="share-open">${ico('eye')} Buka</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <button class="btn btn-block btn-sm" id="share-qr">${ico('qr')} QR</button>
+      <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WhatsApp</button>
+    </div>
+  `);
+  $("#share-copy",m).addEventListener("click",()=>copyLink(id));
+  $("#share-open",m).addEventListener("click",()=>window.open(`${location.pathname}#/u/${id}`,"_blank"));
+  $("#share-wa",m).addEventListener("click",()=>{
+    const text = encodeURIComponent(`Cek link-in-bio aku: ${url}`);
+    window.open(`https://wa.me/?text=${text}`,"_blank");
+  });
+  $("#share-qr",m).addEventListener("click",()=>{ m.remove(); PageDashboard.qr(id); });
+}
+
+async function generateQR(text, canvasEl){
+  try{
+    await QRCode.toCanvas(canvasEl, text, { width:220, margin:1,
+      color:{ dark:"#0a0a0a", light:"#ffffff" }});
+    return true;
+  }catch(e){ console.error(e); return false; }
+}
+
+function contrastText(hex){
+  if(!hex) return "#0a0a0a";
+  const h = hex.replace("#","");
+  if(h.length!==6) return "#0a0a0a";
+  const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
+  const lum = (0.299*r + 0.587*g + 0.114*b)/255;
+  return lum > 0.6 ? "#0a0a0a" : "#ffffff";
+}
+
+/* =========================================================
+   STORE
+   ========================================================= */
+const Store = {
+  key(){ return `varlinkb_bios_${STATE.user?.uid||"guest"}`; },
+  userKey(){ return `varlinkb_user`; },
+  async saveUser(u){
+    STATE.user=u;
+    if (FB.ready){ try{await FB.db.collection("users").doc(u.uid).set(u,{merge:true});}catch(e){console.warn(e);} }
+    localStorage.setItem(this.userKey(),JSON.stringify(u));
+  },
+  async loadUser(){
+    const raw=localStorage.getItem(this.userKey()); if(!raw) return null;
+    try{ const u=JSON.parse(raw);
+      if(FB.ready){ const d=await FB.db.collection("users").doc(u.uid).get(); if(d.exists) return d.data(); }
+      return u;
+    }catch{ return null; }
+  },
+  async list(){
+    if(FB.ready){
+      const s=await FB.db.collection("bios").where("ownerUid","==",STATE.user.uid).orderBy("updatedAt","desc").get();
+      const a=[]; s.forEach(d=>a.push({id:d.id,...d.data()}));
+      STATE.cache=a; return a;
+    }
+    const raw=localStorage.getItem(this.key());
+    const a=raw?JSON.parse(raw):[];
+    a.sort((x,y)=>(y.updatedAt||0)-(x.updatedAt||0));
+    STATE.cache=a; return a;
+  },
+  async get(id){
+    if(FB.ready){
+      const d=await FB.db.collection("bios").doc(id).get();
+      if(!d.exists) return null;
+      return {id:d.id,...d.data()};
+    }
+    const raw=localStorage.getItem(this.key());
+    if(raw){ const a=JSON.parse(raw); const f=a.find(x=>x.id===id); if(f) return f; }
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k && k.startsWith("varlinkb_bios_")){
+        try{ const arr=JSON.parse(localStorage.getItem(k));
+          const f=arr.find(x=>x.id===id); if(f) return f;
+        }catch(e){}
+      }
+    }
+    return null;
+  },
+  async save(bio){
+    bio.ownerUid=STATE.user.uid;
+    bio.ownerName=STATE.user.name;
+    bio.updatedAt=Date.now();
+    if(!bio.id) bio.id=uid(12);
+    if(!bio.createdAt) bio.createdAt=bio.updatedAt;
+    if(bio.stats===undefined) bio.stats={views:0,clicks:{}};
+    if(FB.ready){
+      const {id,...data}=bio;
+      await FB.db.collection("bios").doc(id).set(data,{merge:true});
+    }else{
+      const a=await this.list();
+      const i=a.findIndex(x=>x.id===bio.id);
+      if(i>=0) a[i]=bio; else a.unshift(bio);
+      localStorage.setItem(this.key(),JSON.stringify(a));
+    }
+    return bio;
+  },
+  async remove(id){
+    if(FB.ready){ await FB.db.collection("bios").doc(id).delete(); }
+    else{
+      let a=await this.list(); a=a.filter(x=>x.id!==id);
+      localStorage.setItem(this.key(),JSON.stringify(a));
+    }
+  },
+  async upload(file,prefix="media"){
+    if(!file) return null;
+    if(FB.ready){
+      const path=`varlinkb/${STATE.user.uid}/${prefix}_${Date.now()}_${file.name}`;
+      const ref=FB.storage.ref(path); await ref.put(file);
+      return await ref.getDownloadURL();
+    }
+    return await fileToDataURL(file);
+  },
+  async trackView(id){
+    if(FB.ready){
+      try{ await FB.db.collection("bios").doc(id).update({ "stats.views": firebase.firestore.FieldValue.increment(1) }); }
+      catch(e){ console.warn(e); }
+    }else{
+      const a=await this.list(); const i=a.findIndex(x=>x.id===id);
+      if(i>=0){ a[i].stats=a[i].stats||{views:0,clicks:{}};
+        a[i].stats.views=(a[i].stats.views||0)+1;
+        localStorage.setItem(this.key(),JSON.stringify(a)); }
+    }
+  },
+  async trackClick(id, linkIdx){
+    if(FB.ready){
+      try{ await FB.db.collection("bios").doc(id).update({ [`stats.clicks.${linkIdx}`]: firebase.firestore.FieldValue.increment(1) }); }
+      catch(e){ console.warn(e); }
+    }else{
+      const raw=localStorage.getItem(this.key()); let a=raw?JSON.parse(raw):[];
+      const i=a.findIndex(x=>x.id===id);
+      if(i>=0){ a[i].stats=a[i].stats||{views:0,clicks:{}};
+        a[i].stats.clicks=a[i].stats.clicks||{};
+        a[i].stats.clicks[linkIdx]=(a[i].stats.clicks[linkIdx]||0)+1;
+        localStorage.setItem(this.key(),JSON.stringify(a)); }
+    }
+  }
+};
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+const Router = {
+  routes:{},
+  on(p,h){ this.routes[p]=h; },
+  navigate(p){ if(location.hash.slice(1)===p) this.resolve(); else location.hash=p; },
+  resolve(){
+    document.body.classList.remove("public-mode");
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    document.body.style.height = '';
+    const raw=location.hash.slice(1)||"/";
+    const path=raw.split("?")[0];
+    if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
+    (this.routes[path]||this.routes["/404"]||(()=>{}))();
+  },
+  start(){ window.addEventListener("hashchange",()=>this.resolve()); this.resolve(); }
+};
+
+/* =========================================================
+   LINK TYPES
+   ========================================================= */
+const LinkTypes = {
+  detect(url){
+    if(!url) return "classic";
+    const u=url.toLowerCase();
+    if(u.includes("youtube.com")||u.includes("youtu.be")) return "youtube";
+    if(u.includes("spotify.com")) return "spotify";
+    if(u.includes("tiktok.com")) return "tiktok";
+    if(u.includes("vimeo.com")) return "vimeo";
+    if(u.includes("instagram.com")) return "instagram";
+    if(u.includes("twitter.com")||u.includes("x.com")) return "twitter";
+    if(u.includes("wa.me")||u.includes("whatsapp.com")) return "whatsapp";
+    return "classic";
+  },
+  embed(url){
+    if(!url) return null;
+    const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if(yt) return `https://www.youtube.com/embed/${yt[1]}`;
+    const sp = url.match(/spotify\.com\/(track|album|playlist|episode)\/([A-Za-z0-9]+)/);
+    if(sp) return `https://open.spotify.com/embed/${sp[1]}/${sp[2]}`;
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if(vm) return `https://player.vimeo.com/video/${vm[1]}`;
+    const tt = url.match(/tiktok\.com\/.*\/video\/(\d+)/);
+    if(tt) return `https://www.tiktok.com/embed/v2/${tt[1]}`;
+    return null;
+  },
+  icon(url){
+    const t=this.detect(url);
+    return {youtube:"youtube",spotify:"music",tiktok:"video",vimeo:"video",
+      instagram:"instagram",twitter:"message",whatsapp:"whatsapp",classic:"link"}[t]||"link";
+  }
+};
+
+/* =========================================================
+   PAGE: LANDING
+   ========================================================= */
+const PageLanding = {
+  render(){
+    $("#app").innerHTML=`
+      <div class="landing">
+        <div class="hero-logo">${ico('link')}</div>
+        <h1>VarlinkB</h1>
+        <p class="sub">Bikin link in bio simpel & keren. Gratis, cepat, tinggal input nama.</p>
+        <div class="name-form">
+          <input id="input-name" type="text" placeholder="Masukkan nama kamu..." maxlength="40" autocomplete="off"/>
+          <button class="btn btn-primary btn-block" id="btn-masuk">Masuk ${ico('play')}</button>
+        </div>
+        <div class="footer-tag">Dibuat oleh Varoo</div>
+      </div>`;
+    const input=$("#input-name"), btn=$("#btn-masuk");
+    input.focus();
+    const submit=async()=>{
+      const name=input.value.trim();
+      if(!name){ toast("Nama tidak boleh kosong","error"); return; }
+      if(name.length<2){ toast("Nama minimal 2 karakter","error"); return; }
+      showLoading("Menyiapkan...");
+      await new Promise(r=>setTimeout(r,400));
+      let user=await Store.loadUser();
+      if(!user||user.name!==name){ user={uid:user?.uid||uid(12),name}; await Store.saveUser(user); }
+      else STATE.user=user;
+      hideLoading();
+      toast(`Selamat datang, ${name}!`,"success");
+      Router.navigate("/dashboard");
+    };
+    btn.addEventListener("click",submit);
+    input.addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
+  }
+};
+
+/* =========================================================
+   PAGE: DASHBOARD
+   ========================================================= */
+const PageDashboard = {
+  async render(){
+    if(!STATE.user){ STATE.user=await Store.loadUser(); if(!STATE.user) return Router.navigate("/"); }
+
+    $("#app").innerHTML=`
+      <div class="topbar">
+        <div class="brand"><div class="logo">${ico('link')}</div><span>VarlinkB</span></div>
+        <div class="actions">
+          <button class="btn btn-sm" id="btn-manage">${ico('folder')} Kelola</button>
+          <button class="btn btn-sm" id="btn-stats">${ico('stats')} Stats</button>
+          <button class="btn btn-sm" id="btn-logout">${ico('logout')} Keluar</button>
+        </div>
+      </div>
+      <div class="dash">
+        <div class="container">
+          <div class="dash-hero">
+            <h2>Halo, ${esc(STATE.user.name)}</h2>
+            <p>Bikin link in bio kamu sekarang</p>
+            <div class="dash-actions">
+              <button class="btn btn-primary btn-block" id="btn-bikin">${ico('sparkle')} Bikin Link-in-Bio Baru</button>
+              <button class="btn btn-block" id="btn-manage2">${ico('folder')} Link-in-Bio Saya</button>
+            </div>
+          </div>
+
+          <div class="dash-info">
+            <div class="section-title">Fitur</div>
+            <div class="features-grid">
+              <div class="feature-card"><div class="fi">${ico('grid')}</div><h4>6 Tema</h4><p>Neo, 3D, Galaxie, Rainbow, WA, Granite.</p></div>
+              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Gallery</h4><p>Foto & video untuk profil, banner, galeri.</p></div>
+              <div class="feature-card"><div class="fi">${ico('video')}</div><h4>Embed</h4><p>YouTube, Spotify, TikTok, Vimeo.</p></div>
+              <div class="feature-card"><div class="fi">${ico('qr')}</div><h4>QR Code</h4><p>Download QR link-in-bio kamu.</p></div>
+              <div class="feature-card"><div class="fi">${ico('stats')}</div><h4>Analytics</h4><p>Lihat views & klik per tombol.</p></div>
+              <div class="feature-card"><div class="fi">${ico('lock')}</div><h4>Link Lock</h4><p>Kunci dengan password.</p></div>
+            </div>
+          </div>
+
+          <div class="dash-recent">
+            <div class="section-title">Terbaru</div>
+            <div id="recent-list" class="recent-list"></div>
+          </div>
+        </div>
+      </div>`;
+
+    $("#btn-logout").addEventListener("click",()=>{
+      localStorage.removeItem(Store.userKey()); STATE.user=null;
+      toast("Kamu telah keluar","info"); Router.navigate("/");
+    });
+    $("#btn-manage").addEventListener("click",()=>Router.navigate("/manage"));
+    $("#btn-manage2").addEventListener("click",()=>Router.navigate("/manage"));
+    $("#btn-stats").addEventListener("click",()=>Router.navigate("/stats"));
+    $("#btn-bikin").addEventListener("click",()=>{
+      STATE.currentEdit=null; STATE.draft=PageEditor.newDraft(); Router.navigate("/editor");
+    });
+
+    this.loadRecent();
+  },
+  async loadRecent(){
+    const wrap=$("#recent-list");
+    try{
+      const list=await Store.list();
+      if(!list.length){
+        wrap.innerHTML=`<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Belum ada link-in-bio.</p><button class="btn btn-primary" onclick="STATE.draft=PageEditor.newDraft();STATE.currentEdit=null;Router.navigate('/editor')">${ico('plus')} Bikin Sekarang</button></div>`;
+        return;
+      }
+      wrap.innerHTML=list.slice(0,5).map(b=>`
+        <div class="recent-item">
+          <div class="ri-left">
+            ${b.profile?`<img class="ri-avatar" src="${esc(b.profile)}">`:`<div class="ri-avatar">${esc((b.name||"?")[0].toUpperCase())}</div>`}
+            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo"} · ${b.stats?.views||0} views</span></div>
+          </div>
+          <div class="ri-actions">
+            <button class="icon-btn" onclick="copyLink('${b.id}')" title="Copy">${ico('copy')}</button>
+            <button class="icon-btn" onclick="PageDashboard.qr('${b.id}')" title="QR">${ico('qr')}</button>
+            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')" title="Preview">${ico('eye')}</button>
+            <button class="icon-btn" onclick="PageDashboard.edit('${b.id}')" title="Edit">${ico('edit')}</button>
+            <button class="icon-btn danger" onclick="PageDashboard.remove('${b.id}')" title="Hapus">${ico('trash')}</button>
+          </div>
+        </div>`).join("");
+    }catch(e){ console.error(e); wrap.innerHTML=`<div class="empty-state"><p>Gagal memuat.</p></div>`; }
+  },
+  async edit(id){ STATE.currentEdit=id; STATE.draft=await Store.get(id); if(!STATE.draft){toast("Tidak ditemukan","error");return;} Router.navigate("/editor"); },
+  async remove(id){ if(!confirm("Yakin mau hapus?")) return; showLoading("Menghapus..."); await Store.remove(id); hideLoading(); toast("Terhapus","success"); this.loadRecent(); },
+  async qr(id){
+    const url=`${location.origin}${location.pathname}#/u/${id}`;
+    const m=openModal(`<button class="close-x" onclick="this.closest('.modal-back').remove()">×</button><h3>${ico('qr')} QR Code</h3><p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka</p><div style="text-align:center"><div class="qr-box"><canvas id="qr-canvas"></canvas></div><div class="qr-url">${esc(url)}</div></div><button class="btn btn-primary btn-block" id="qr-dl" style="margin-top:14px">${ico('save')} Download PNG</button>`);
+    await generateQR(url, $("#qr-canvas",m));
+    $("#qr-dl",m).addEventListener("click",()=>{
+      const c=$("#qr-canvas",m);
+      const a=document.createElement("a");
+      a.download=`varlinkb-qr-${id}.png`;
+      a.href=c.toDataURL("image/png");
+      a.click();
+    });
+  }
+};
+
+/* =========================================================
+   PAGE: MANAGE
+   ========================================================= */
+const PageManage = {
+  async render(){
+    if(!STATE.user){ STATE.user=await Store.loadUser(); }
+    if(!STATE.user) return Router.navigate("/");
+
+    $("#app").innerHTML=`
+      <div class="topbar">
+        <div class="brand"><div class="logo">${ico('folder')}</div><span>Kelola</span></div>
+        <div class="actions">
+          <button class="btn btn-sm" id="btn-dash">${ico('back')} Dashboard</button>
+          <button class="btn btn-primary btn-sm" id="btn-new">${ico('plus')} Baru</button>
+        </div>
+      </div>
+      <div class="container" style="padding-top:20px;padding-bottom:60px">
+        <div id="list" class="recent-list"></div>
+      </div>`;
+    $("#btn-dash").addEventListener("click",()=>Router.navigate("/dashboard"));
+    $("#btn-new").addEventListener("click",()=>{ STATE.currentEdit=null; STATE.draft=PageEditor.newDraft(); Router.navigate("/editor"); });
+    await this.load();
+  },
+  async load(){
+    const wrap=$("#list");
+    try{
+      const list=await Store.list();
+      if(!list.length){
+        wrap.innerHTML=`<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Belum ada.</p></div>`;
+        return;
+      }
+      wrap.innerHTML=list.map(b=>`
+        <div class="recent-item">
+          <div class="ri-left">
+            ${b.profile?`<img class="ri-avatar" src="${esc(b.profile)}">`:`<div class="ri-avatar">${esc((b.name||"?")[0].toUpperCase())}</div>`}
+            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo"} · ${b.stats?.views||0} views${b.lock?" · terkunci":""}</span></div>
+          </div>
+          <div class="ri-actions">
+            <button class="icon-btn" onclick="copyLink('${b.id}')">${ico('copy')}</button>
+            <button class="icon-btn" onclick="PageDashboard.qr('${b.id}')">${ico('qr')}</button>
+            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="PageManage.edit('${b.id}')">${ico('edit')}</button>
+            <button class="icon-btn danger" onclick="PageManage.remove('${b.id}')">${ico('trash')}</button>
+          </div>
+        </div>`).join("");
+    }catch(e){ console.error(e); wrap.innerHTML=`<div class="empty-state"><p>Gagal memuat.</p></div>`; }
+  },
+  async edit(id){ STATE.currentEdit=id; STATE.draft=await Store.get(id); if(!STATE.draft){toast("Tidak ditemukan","error");return;} Router.navigate("/editor"); },
+  async remove(id){ if(!confirm("Hapus link-in-bio ini?")) return; showLoading("Menghapus..."); await Store.remove(id); hideLoading(); toast("Terhapus","success"); this.load(); }
+};
+
+/* =========================================================
+   PAGE: STATS
+   ========================================================= */
+const PageStats = {
+  async render(){
+    if(!STATE.user){ STATE.user=await Store.loadUser(); }
+    if(!STATE.user) return Router.navigate("/");
+
+    const list=await Store.list();
+    const totalViews=list.reduce((s,b)=>s+(b.stats?.views||0),0);
+    const totalClicks=list.reduce((s,b)=>{
+      const c=b.stats?.clicks||{};
+      return s+Object.values(c).reduce((x,y)=>x+y,0);
+    },0);
+
+    $("#app").innerHTML=`
+      <div class="topbar">
+        <div class="brand"><div class="logo">${ico('stats')}</div><span>Statistik</span></div>
+        <div class="actions"><button class="btn btn-sm" id="btn-dash">${ico('back')} Dashboard</button></div>
+      </div>
+      <div class="container" style="padding-top:20px;padding-bottom:60px">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="sv">${list.length}</div><div class="sl">Total Bio</div></div>
+          <div class="stat-card"><div class="sv">${totalViews}</div><div class="sl">Views</div></div>
+          <div class="stat-card"><div class="sv">${totalClicks}</div><div class="sl">Klik</div></div>
+          <div class="stat-card"><div class="sv">${totalViews?((totalClicks/totalViews)*100).toFixed(1):0}%</div><div class="sl">CTR</div></div>
+        </div>
+        <div id="stats-list"></div>
+      </div>`;
+    $("#btn-dash").addEventListener("click",()=>Router.navigate("/dashboard"));
+
+    const wrap=$("#stats-list");
+    if(!list.length){ wrap.innerHTML=`<div class="empty-state"><p>Belum ada data.</p></div>`; return; }
+    wrap.innerHTML=list.map(b=>{
+      const clicks=b.stats?.clicks||{};
+      const totalClick=Object.values(clicks).reduce((a,c)=>a+c,0);
+      const topLinks=(b.links||[]).map((l,i)=>`
+        <div class="link-stat">
+          <div class="ls-l">${ico(LinkTypes.icon(l.url), "ic")}<div class="ls-info"><b>${esc(l.label||"Link")}</b><span>${esc(l.url)}</span></div></div>
+          <div class="ls-count">${clicks[i]||0}</div>
+        </div>`).join("");
+      return `
+        <div class="card" style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+            <div><b style="font-size:14px;text-transform:uppercase">${esc(b.name||"Tanpa nama")}</b><div style="font-size:11.5px;margin-top:2px;font-weight:600">${b.stats?.views||0} views · ${totalClick} klik</div></div>
+            <button class="btn btn-sm" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')">${ico('eye')} Lihat</button>
+          </div>
+          ${topLinks||`<p style="font-size:12.5px;font-weight:600">Belum ada link.</p>`}
+        </div>`;
+    }).join("");
+  }
+};
+
+/* =========================================================
+   PAGE: EDITOR (background upload DIHAPUS)
+   ========================================================= */
+const PageEditor = {
+  newDraft(){
+    return {
+      id:null, name:STATE.user?.name||"", bio:"",
+      profile:"", profileType:"image",
+      banner:"", bannerType:"image",
+      gallery:[],
+      links:[{label:"Instagram",url:"https://instagram.com/",type:"classic",featured:false,thumb:"",color:""}],
+      theme:"neo",
+      granite:{c1:"#7c5cff",c2:"#22d3ee",c3:"#ec4899"},
+      lock:"",
+      stats:{views:0,clicks:{}}
+    };
+  },
+
+  async render(){
+    if(!STATE.user) return Router.navigate("/");
+    if(!STATE.draft) STATE.draft=this.newDraft();
+    const d=STATE.draft;
+
+    $("#app").innerHTML=`
+      <div class="topbar">
+        <div class="brand"><div class="logo">${ico('edit')}</div><span>${d.id?"Edit":"Bikin"} Bio</span></div>
+        <div class="actions">
+          <button class="btn btn-sm" id="btn-back">${ico('back')} Dashboard</button>
+          ${d.id?`<button class="btn btn-sm" id="btn-copy-top">${ico('copy')} Copy</button><button class="btn btn-sm" id="btn-qr">${ico('qr')} QR</button>`:""}
+          <button class="btn btn-primary btn-sm" id="btn-save">${ico('save')} Simpan</button>
+        </div>
+      </div>
+      <div class="editor-layout">
+        <div class="editor-panel">
+          <div class="editor-section">
+            <h3><span class="num">1</span> Foto Profil</h3>
+            <div class="profile-upload">
+              <div class="pbox" id="pbox">
+                ${d.profile?(d.profileType==="video"?`<video src="${esc(d.profile)}" autoplay muted loop playsinline></video>`:`<img id="p-img" src="${esc(d.profile)}">`):`<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--ink)">${ico('camera')}</div>`}
+                <div class="overlay">${ico('camera')}</div>
+                <input type="file" id="p-input" accept="image/*,video/*"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <h3><span class="num">2</span> Nama & Bio</h3>
+            <div class="field"><label>Nama</label><input id="f-name" type="text" maxlength="40" value="${esc(d.name)}" placeholder="Nama kamu"/></div>
+            <div class="field"><label>Bio / Subtitle</label><textarea id="f-bio" maxlength="160" placeholder="Tulis bio singkat...">${esc(d.bio)}</textarea></div>
+          </div>
+
+          <div class="editor-section">
+            <h3><span class="num">3</span> Banner</h3>
+            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><input type="file" id="bn-input" accept="image/*,video/*"/></div>
+            <img id="bn-prev" class="upload-preview ${d.banner?"show":""}" src="${esc(d.banner||"")}"/>
+            <button class="btn btn-sm btn-danger btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus</button>
+          </div>
+
+          <div class="editor-section">
+            <h3><span class="num">4</span> Gallery</h3>
+            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Tambah ke galeri</p><input type="file" id="g-input" accept="image/*,video/*" multiple/></div>
+            <div id="g-list" class="bio-gallery" style="margin-top:12px"></div>
+          </div>
+
+          <div class="editor-section">
+            <h3><span class="num">5</span> Tombol Link <small style="font-weight:400;font-size:10px;text-transform:none;opacity:.8">(drag untuk urut)</small></h3>
+            <div id="links-list" class="links-list"></div>
+            <button class="btn btn-sm btn-block" id="add-link" style="margin-top:10px">${ico('plus')} Tambah Link</button>
+          </div>
+
+          <div class="editor-section">
+            <h3><span class="num">6</span> Tema</h3>
+            <div class="theme-grid" id="theme-grid"></div>
+            <div class="granite-mixer" id="granite-mixer" style="${d.theme==="granite"?"":"display:none"}">
+              <h4>Granite Color Mixer</h4>
+              <div class="color-row"><label>Warna 1</label><input type="color" id="g-c1" value="${d.granite.c1}"/><span class="hex" id="hex1">${d.granite.c1}</span></div>
+              <div class="color-row"><label>Warna 2</label><input type="color" id="g-c2" value="${d.granite.c2}"/><span class="hex" id="hex2">${d.granite.c2}</span></div>
+              <div class="color-row"><label>Warna 3</label><input type="color" id="g-c3" value="${d.granite.c3}"/><span class="hex" id="hex3">${d.granite.c3}</span></div>
+              <div class="granite-preview" id="granite-prev"></div>
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <h3><span class="num">7</span> ${ico('lock')} Link Lock</h3>
+            <div class="field">
+              <label>Password (kosong = tidak dikunci)</label>
+              <input id="f-lock" type="text" value="${esc(d.lock||"")}" placeholder="Password..."/>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-preview">
+          <div class="preview-phone"><iframe id="prev-frame" sandbox="allow-scripts"></iframe></div>
+          <div class="editor-actions">
+            <button class="btn btn-primary btn-block" id="btn-save2">${ico('save')} Simpan</button>
+            <button class="btn btn-block" id="btn-view">${ico('eye')} Preview</button>
+          </div>
+        </div>
+      </div>`;
+
+    this.bind();
+    this.renderThemeGrid();
+    this.renderLinks();
+    this.renderGallery();
+    this.renderGranitePreview();
+    this.updatePreview();
+  },
+
+  bind(){
+    $("#btn-back").addEventListener("click",()=>Router.navigate("/dashboard"));
+    $("#btn-save").addEventListener("click",()=>this.save());
+    $("#btn-save2").addEventListener("click",()=>this.save());
+    const qrBtn=$("#btn-qr"); if(qrBtn) qrBtn.addEventListener("click",()=>PageDashboard.qr(STATE.draft.id));
+    const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft.id));
+
+    const pInput=$("#p-input");
+    if(pInput) pInput.addEventListener("change",async e=>{
+      const f=e.target.files[0]; if(!f) return;
+      showLoading("Upload foto...");
+      const url=await Store.upload(f,"profile");
+      STATE.draft.profile=url; STATE.draft.profileType=detectMediaType(f);
+      const box=$("#pbox");
+      box.innerHTML=`${STATE.draft.profileType==="video"?`<video src="${esc(url)}" autoplay muted loop playsinline></video>`:`<img src="${esc(url)}"/>`}<div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*,video/*"/>`;
+      this.bind();
+      hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
+    });
+
+    $("#f-name").addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
+    $("#f-bio").addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
+    $("#f-lock").addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
+
+    $("#bn-input").addEventListener("change",async e=>{
+      const f=e.target.files[0]; if(!f) return;
+      showLoading("Upload banner...");
+      const url=await Store.upload(f,"banner");
+      STATE.draft.banner=url; STATE.draft.bannerType=detectMediaType(f);
+      const p=$("#bn-prev"); p.src=url; p.classList.add("show");
+      $("#bn-clear").style.display="";
+      hideLoading(); toast("Banner diupdate","success"); this.updatePreview();
+    });
+    $("#bn-clear").addEventListener("click",()=>{ STATE.draft.banner=""; $("#bn-prev").classList.remove("show"); $("#bn-clear").style.display="none"; this.updatePreview(); });
+
+    $("#g-input").addEventListener("change",async e=>{
+      const files=[...e.target.files]; if(!files.length) return;
+      showLoading(`Upload ${files.length} file...`);
+      for(const f of files){ const url=await Store.upload(f,"gallery"); STATE.draft.gallery.push({url,type:detectMediaType(f)}); }
+      hideLoading(); toast("Gallery diupdate","success"); this.renderGallery(); this.updatePreview();
+    });
+
+    $("#add-link").addEventListener("click",()=>this.openLinkTypePicker());
+
+    ["c1","c2","c3"].forEach(k=>{
+      const el=$(`#g-${k}`); if(!el) return;
+      el.addEventListener("input",e=>{
+        STATE.draft.granite[k]=e.target.value;
+        $(`#hex${k[1]}`).textContent=e.target.value;
+        this.renderGranitePreview(); this.updatePreview();
+      });
+    });
+
+    $("#btn-view").addEventListener("click",()=>{
+      if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
+      window.open(`${location.pathname}#/u/${STATE.draft.id}`,"_blank");
+    });
+  },
+
+  openLinkTypePicker(){
+    const m=openModal(`
+      <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+      <h3>Pilih Jenis Link</h3>
+      <div class="link-types">
+        <div class="link-type" data-t="classic"><div class="lti">${ico('link')}</div><b>Classic</b><small>Link biasa</small></div>
+        <div class="link-type" data-t="featured"><div class="lti">${ico('sparkle')}</div><b>Featured</b><small>Dengan gambar</small></div>
+        <div class="link-type" data-t="youtube"><div class="lti">${ico('youtube')}</div><b>YouTube</b><small>Embed</small></div>
+        <div class="link-type" data-t="spotify"><div class="lti">${ico('music')}</div><b>Spotify</b><small>Embed</small></div>
+        <div class="link-type" data-t="vimeo"><div class="lti">${ico('video')}</div><b>Vimeo</b><small>Embed</small></div>
+        <div class="link-type" data-t="tiktok"><div class="lti">${ico('tiktok')}</div><b>TikTok</b><small>Embed</small></div>
+      </div>`);
+    m.querySelectorAll(".link-type").forEach(el=>{
+      el.addEventListener("click",()=>{
+        const t=el.dataset.t;
+        STATE.draft.links.push({label:"Link Baru",url:"https://",type:t,featured:t==="featured",thumb:"",color:""});
+        this.renderLinks(); this.updatePreview();
+        m.remove();
+      });
+    });
+  },
+
+  renderLinks(){
+    const wrap=$("#links-list");
+    const links=STATE.draft.links;
+    if(!links.length){ wrap.innerHTML=`<div style="font-size:12.5px;text-align:center;padding:6px;font-weight:600">Belum ada link.</div>`; return; }
+    wrap.innerHTML=links.map((l,i)=>{
+      const autoColor = NEO_COLORS[i % NEO_COLORS.length];
+      const curColor = l.color || NEO_HEX[autoColor];
+      return `
+      <div class="link-row" draggable="true" data-i="${i}">
+        <span class="drag">${ico('grip')}</span>
+        <div class="link-thumb">${l.featured&&l.thumb?`<img src="${esc(l.thumb)}" style="width:100%;height:100%;object-fit:cover">`:ico(LinkTypes.icon(l.url))}</div>
+        <div class="link-fields">
+          <input type="text" placeholder="Label" value="${esc(l.label)}" data-field="label" data-i="${i}"/>
+          <input type="text" placeholder="https://..." value="${esc(l.url)}" data-field="url" data-i="${i}"/>
+          ${l.featured?`<button class="btn btn-sm" style="align-self:flex-start" data-thumb="${i}">${ico('image')} ${l.thumb?"Ganti":"Upload"}</button>`:""}
+        </div>
+        <input type="color" class="link-color-pick" data-color="${i}" value="${curColor}" title="Warna tombol"/>
+        <button class="del" data-del="${i}">${ico('x')}</button>
+      </div>`;
+    }).join("");
+
+    wrap.querySelectorAll("input[data-field]").forEach(inp=>{
+      inp.addEventListener("input",e=>{
+        const i=+e.target.dataset.i, f=e.target.dataset.field;
+        STATE.draft.links[i][f]=e.target.value;
+        if(f==="url") STATE.draft.links[i].type=LinkTypes.detect(e.target.value);
+        this.updatePreview();
+      });
+    });
+    wrap.querySelectorAll(".del").forEach(b=>{
+      b.addEventListener("click",e=>{
+        const i=+e.currentTarget.dataset.del;
+        STATE.draft.links.splice(i,1);
+        this.renderLinks(); this.updatePreview();
+      });
+    });
+    wrap.querySelectorAll("[data-thumb]").forEach(b=>{
+      b.addEventListener("click",e=>{
+        const i=+e.currentTarget.dataset.thumb;
+        const inp=document.createElement("input"); inp.type="file"; inp.accept="image/*";
+        inp.onchange=async()=>{
+          const f=inp.files[0]; if(!f) return;
+          showLoading("Upload thumbnail...");
+          const url=await Store.upload(f,"thumb");
+          STATE.draft.links[i].thumb=url;
+          hideLoading();
+          this.renderLinks(); this.updatePreview();
+        };
+        inp.click();
+      });
+    });
+    wrap.querySelectorAll("[data-color]").forEach(b=>{
+      b.addEventListener("input",e=>{
+        const i=+e.currentTarget.dataset.color;
+        STATE.draft.links[i].color=e.target.value;
+        this.updatePreview();
+      });
+    });
+
+    let dragIdx=null;
+    wrap.querySelectorAll(".link-row").forEach(row=>{
+      row.addEventListener("dragstart",e=>{
+        dragIdx=+row.dataset.i; row.classList.add("dragging");
+        e.dataTransfer.effectAllowed="move";
+      });
+      row.addEventListener("dragend",()=>{ row.classList.remove("dragging"); wrap.querySelectorAll(".link-row").forEach(r=>r.classList.remove("drag-over")); });
+      row.addEventListener("dragover",e=>{ e.preventDefault(); row.classList.add("drag-over"); });
+      row.addEventListener("dragleave",()=>row.classList.remove("drag-over"));
+      row.addEventListener("drop",e=>{
+        e.preventDefault();
+        const dropIdx=+row.dataset.i;
+        if(dragIdx===null||dragIdx===dropIdx) return;
+        const arr=STATE.draft.links;
+        const [moved]=arr.splice(dragIdx,1);
+        arr.splice(dropIdx,0,moved);
+        dragIdx=null;
+        this.renderLinks(); this.updatePreview();
+      });
+    });
+  },
+
+  renderGallery(){
+    const wrap=$("#g-list");
+    const g=STATE.draft.gallery;
+    if(!g.length){ wrap.innerHTML=""; return; }
+    wrap.innerHTML=g.map((m,i)=>`
+      <div class="gi">
+        ${m.type==="video"?`<video src="${esc(m.url)}" muted></video>`:`<img src="${esc(m.url)}"/>`}
+        <button style="position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:6px;background:#ff2a2a;color:#fff;border:2px solid #0a0a0a;cursor:pointer;display:grid;place-items:center;box-shadow:2px 2px 0 #0a0a0a" data-gdel="${i}">${ico('x')}</button>
+      </div>`).join("");
+    wrap.querySelectorAll("[data-gdel]").forEach(b=>{
+      b.addEventListener("click",e=>{
+        const i=+e.currentTarget.dataset.gdel;
+        STATE.draft.gallery.splice(i,1);
+        this.renderGallery(); this.updatePreview();
+      });
+    });
+  },
+
+  renderThemeGrid(){
+    const themes=[
+      {id:"neo",label:"Neo",css:"repeating-linear-gradient(45deg,#0a0a0a 0 6px,#ffd700 6px 12px)"},
+      {id:"3d",label:"3D",css:"linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)"},
+      {id:"galaxie",label:"Galaxie",css:"radial-gradient(circle,#a78bfa,#05010f)"},
+      {id:"rainbow",label:"Rainbow",css:"linear-gradient(45deg,#ff0080,#7928ca,#00d4ff,#00ff88)"},
+      {id:"wa",label:"WA",css:"linear-gradient(135deg,#0b141a,#005c4b)"},
+      {id:"granite",label:"Granite",css:"linear-gradient(135deg,#666,#333)"}
+    ];
+    const cur=STATE.draft.theme;
+    $("#theme-grid").innerHTML=themes.map(t=>`
+      <div class="theme-item ${cur===t.id?"active":""}" data-t="${t.id}" style="background:${t.css}">
+        <div class="chk">${ico('check')}</div><div class="label">${t.label}</div>
+      </div>`).join("");
+    $$("#theme-grid .theme-item").forEach(el=>{
+      el.addEventListener("click",()=>{
+        STATE.draft.theme=el.dataset.t;
+        $$("#theme-grid .theme-item").forEach(x=>x.classList.remove("active"));
+        el.classList.add("active");
+        $("#granite-mixer").style.display=STATE.draft.theme==="granite"?"":"none";
+        this.updatePreview();
+      });
+    });
+  },
+
+  renderGranitePreview(){
+    const {c1,c2,c3}=STATE.draft.granite;
+    const el=$("#granite-prev");
+    if(el) el.style.background=`linear-gradient(135deg, ${c1}, ${c2}, ${c3})`;
+  },
+
+  updatePreview(){
+    const frame=$("#prev-frame"); if(!frame) return;
+    frame.srcdoc=PagePublic.buildHTML(STATE.draft,{preview:true});
+  },
+
+  async save(){
+    if(!STATE.draft.name?.trim()){ toast("Nama tidak boleh kosong","error"); return; }
+    showLoading("Menyimpan...");
+    try{
+      const saved=await Store.save({...STATE.draft});
+      STATE.draft=saved; STATE.currentEdit=saved.id;
+      hideLoading();
+      toast("Tersimpan!","success");
+
+      if(!$("#btn-qr")){
+        const acts=$(".topbar .actions");
+        const cp=document.createElement("button");
+        cp.className="btn btn-sm"; cp.id="btn-copy-top"; cp.innerHTML=`${ico('copy')} Copy`;
+        cp.addEventListener("click",()=>copyLink(saved.id));
+        const b=document.createElement("button");
+        b.className="btn btn-sm"; b.id="btn-qr"; b.innerHTML=`${ico('qr')} QR`;
+        b.addEventListener("click",()=>PageDashboard.qr(saved.id));
+        acts.insertBefore(cp,$("#btn-save"));
+        acts.insertBefore(b,$("#btn-save"));
+      }
+
+      showShareModal(saved.id, saved.name);
+    }catch(e){ console.error(e); hideLoading(); toast("Gagal: "+e.message,"error"); }
+  }
+};
+
+/* =========================================================
+   PAGE: PUBLIC VIEWER
+   ========================================================= */
+const PagePublic = {
+
+  buildNeo(d, opts){
+    const gallery=(d.gallery||[]).map((m,i)=>`
+      <div class="gi" onclick="LIGHTBOX(${i})">
+        ${m.type==="video"?`<video src="${esc(m.url)}" muted></video>`:`<img src="${esc(m.url)}" loading="lazy"/>`}
+      </div>`).join("");
+
+    const links=(d.links||[]).map((l,idx)=>{
+      const embed=LinkTypes.embed(l.url);
+      const autoColor = NEO_COLORS[idx % NEO_COLORS.length];
+      const inlineBg = l.color ? l.color : NEO_HEX[autoColor];
+      const fg = contrastText(inlineBg);
+      const inlineStyle = `style="background:${esc(inlineBg)};color:${fg}"`;
+
+      if(l.featured){
+        return `<a class="bio-link bio-featured" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}">
+          ${l.thumb?`<img class="feat-img" src="${esc(l.thumb)}" alt="">`:`<div class="feat-img"></div>`}
+          <div class="feat-body"><b>${esc(l.label||"Link")}</b><small>${esc((l.url||"").replace(/^https?:\/\//,"").split("/")[0])}</small></div>
+        </a>`;
+      }
+
+      if(embed){
+        return `<div class="bio-embed"><iframe src="${esc(embed)}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>`;
+      }
+
+      return `<a class="bio-link" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}" ${inlineStyle}>
+        <span class="licon">${ico(LinkTypes.icon(l.url))}</span>
+        <span class="ltext">${esc(l.label||"Link")}</span>
+      </a>`;
+    }).join("");
+
+    const profileBlock=d.profile
+      ? (d.profileType==="video"
+          ? `<video src="${esc(d.profile)}" autoplay muted loop playsinline></video>`
+          : `<img src="${esc(d.profile)}" alt=""/>`)
+      : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user','')}</div>`;
+
+    const bannerBlock = d.banner
+      ? `<div class="bio-banner">${
+          d.bannerType==="video"
+            ? `<video src="${esc(d.banner)}" autoplay muted loop playsinline></video>`
+            : `<img src="${esc(d.banner)}"/>`
+        }</div>`
+      : "";
+
+    const galleryBlock = gallery ? `<div class="bio-gallery">${gallery}</div>` : "";
+    const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
+    const galleryJSON = JSON.stringify(d.gallery||[]).replace(/</g,"\\u003c");
+    const bioId = d.id||"";
+    const isLocked = !!d.lock;
+    const preview = !!(opts && opts.preview);
+
+    return `<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>${esc(d.name||"VarlinkB")} — Link in Bio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>${PagePublic.css()}</style>
+</head><body class="bio-public">
+<div class="bio-deco d1"></div>
+<div class="bio-deco d2"></div>
+<div class="bio-deco d3"></div>
+
+<div class="bio-wrap">
+  <div class="bio-inner">
+    <div class="bio-header">
+      <div class="bio-avatar">${profileBlock}</div>
+      <div class="bio-title-top">Bio Link</div>
+      <div class="bio-name">${esc(d.name||"Tanpa Nama")}</div>
+      ${bioText}
+    </div>
+
+    ${bannerBlock}
+    ${galleryBlock}
+
+    <div class="bio-links">${links}</div>
+
+    <div style="text-align:center">
+      <div class="bio-footer">Powered by <a href="${location.origin}${location.pathname}" target="_top">VarlinkB</a> · by Varoo</div>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox-root"></div>
+${isLocked?`
+<div class="lock-overlay" id="lock-overlay">
+  <div class="lock-card">
+    <div class="li">${ico('lock')}</div>
+    <h3>Terkunci</h3>
+    <p>Masukkan password untuk membuka.</p>
+    <input type="password" id="lock-pass" placeholder="Password..." autocomplete="off"/>
+    <button id="lock-btn">Buka</button>
+  </div>
+</div>`:""}
+
+<script>
+const GAL = ${galleryJSON};
+const BIO_ID = "${bioId}";
+const IS_PREVIEW = ${preview?"true":"false"};
+const LOCK_PASS = ${JSON.stringify(d.lock||"")};
+
+function LIGHTBOX(i){
+  const m=GAL[i]; if(!m) return;
+  const root=document.getElementById('lightbox-root');
+  root.innerHTML=\`<div class="lightbox" onclick="this.remove()"><button class="close" onclick="this.parentElement.remove()">×</button>\${m.type==='video'?\`<video src="\${m.url}" controls autoplay></video>\`:\`<img src="\${m.url}"/>\`}</div>\`;
+}
+
+function trackView(){
+  if(IS_PREVIEW||!BIO_ID) return;
+  try{ window.parent.postMessage({type:"varlinkb:view",id:BIO_ID},"*"); }catch(e){}
+}
+function trackClick(idx){
+  if(IS_PREVIEW||!BIO_ID) return;
+  try{ window.parent.postMessage({type:"varlinkb:click",id:BIO_ID,idx:idx},"*"); }catch(e){}
+}
+document.querySelectorAll("[data-click]").forEach(el=>{
+  el.addEventListener("click",()=>trackClick(+el.dataset.click));
+});
+
+${isLocked?`
+(function(){
+  const overlay=document.getElementById("lock-overlay");
+  const inp=document.getElementById("lock-pass");
+  const btn=document.getElementById("lock-btn");
+  function unlock(){
+    if(inp.value===LOCK_PASS){
+      overlay.style.display="none";
+      sessionStorage.setItem("varlinkb_unlocked_"+BIO_ID,"1");
+    } else {
+      inp.style.borderColor="#ff2a2a";
+      inp.value="";
+      inp.placeholder="Salah, coba lagi...";
+      setTimeout(()=>{ inp.style.borderColor=""; inp.placeholder="Password..."; },1400);
+    }
+  }
+  if(sessionStorage.getItem("varlinkb_unlocked_"+BIO_ID)==="1"){ overlay.style.display="none"; }
+  btn.addEventListener("click",unlock);
+  inp.addEventListener("keydown",e=>{ if(e.key==="Enter") unlock(); });
+  inp.focus();
+})();`:""}
+
+trackView();
+<\/script>
+</body></html>`;
+  },
+
+  css(){
+    return `
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;
+  --red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;--pink:#ff69b4;--purple:#a78bfa;--white:#fff;
+}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  color:var(--ink);min-height:100vh;background:var(--cream);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img,video{max-width:100%;display:block}
+.ic{width:18px;height:18px;display:inline-block;vertical-align:middle;
+  stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.bio-public{background-color:var(--cream);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+
+.bio-deco{position:fixed;pointer-events:none;z-index:1}
+.bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
+  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink)}
+.bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);
+  border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);box-shadow:4px 4px 0 var(--ink)}
+.bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);
+  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink)}
+
+.bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
+  padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;
+  font-weight:700;z-index:2}
+.bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
+
+.bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
+  overflow:hidden;background:var(--white);margin:0 auto;
+  box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-avatar img,.bio-avatar video{width:100%;height:100%;object-fit:cover}
+.bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+
+.bio-header{display:flex;flex-direction:column;align-items:center;
+  margin-bottom:24px;position:relative}
+.bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
+  color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;
+  letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);
+  margin-top:12px;box-shadow:3px 3px 0 var(--ink);z-index:3}
+.bio-name{display:inline-block;padding:7px 18px;background:var(--yellow);
+  color:var(--ink);font-size:21px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(2deg);
+  margin-top:-4px;box-shadow:5px 5px 0 var(--ink);text-align:center;max-width:100%;
+  word-break:break-word;z-index:2}
+.bio-bio{display:inline-block;padding:6px 14px;background:var(--red);color:var(--white);
+  font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+  border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;
+  box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;
+  word-break:break-word;z-index:1}
+
+.bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
+.bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover}
+
+.bio-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.bio-gallery .gi{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;
+  cursor:pointer;border:3px solid var(--ink);background:var(--white);
+  box-shadow:4px 4px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-gallery .gi:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.bio-gallery .gi:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.bio-gallery .gi img,.bio-gallery .gi video{width:100%;height:100%;object-fit:cover}
+
+.bio-links{display:flex;flex-direction:column;gap:14px}
+.bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
+  font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;
+  position:relative;transition:transform .12s, box-shadow .12s;
+  box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;
+  background:var(--white);color:var(--ink)}
+.bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
+.bio-link .licon .ic{width:18px;height:18px}
+.bio-link .ltext{flex:1;text-align:center}
+
+.bio-link.bio-featured{flex-direction:column;align-items:stretch;
+  padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);
+  min-height:0}
+.bio-link.bio-featured .feat-img{width:100%;height:120px;object-fit:cover;
+  border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
+.bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
+.bio-link.bio-featured .feat-body b{display:block;font-size:14.5px;font-weight:900;text-transform:uppercase}
+.bio-link.bio-featured .feat-body small{font-size:11.5px;opacity:.7;display:block;margin-top:2px;font-weight:600}
+
+.bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);background:var(--white)}
+.bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
+
+.bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;
+  text-transform:uppercase;letter-spacing:1px;background:var(--white);
+  border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
+  box-shadow:2px 2px 0 var(--ink);display:inline-block}
+.bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
+
+.lightbox{position:fixed;inset:0;background:rgba(10,10,10,.94);z-index:9999;
+  display:flex;align-items:center;justify-content:center;padding:18px}
+.lightbox img,.lightbox video{max-width:100%;max-height:90vh;border-radius:10px;
+  border:3px solid var(--white);box-shadow:6px 6px 0 var(--red)}
+.lightbox .close{position:absolute;top:18px;right:22px;font-size:34px;color:var(--white);
+  cursor:pointer;background:none;border:none;line-height:1;font-weight:900}
+
+.lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
+  display:grid;place-items:center;padding:18px}
+.lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
+  padding:28px;max-width:340px;width:100%;text-align:center;
+  box-shadow:8px 8px 0 var(--red)}
+.lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);
+  border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
+.lock-card .li .ic{width:26px;height:26px}
+.lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;font-weight:900}
+.lock-card p{font-size:13px;margin-bottom:16px;font-weight:600}
+.lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
+  background:var(--white);color:var(--ink);font-size:14px;outline:none;
+  text-align:center;font-weight:700;font-family:inherit}
+.lock-card input:focus{box-shadow:3px 3px 0 var(--ink)}
+.lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
+  background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
+  margin-top:10px;font-size:13.5px;text-transform:uppercase;
+  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;font-family:inherit}
+.lock-card button:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--red)}
+`;
+  },
+
+  buildHTML(d, opts={}){
+    return this.buildNeo(d, opts);
+  },
+
+  async render(id){
+    showLoading("Memuat...");
+    let data=null;
+    try{ data=await Store.get(id); }catch(e){ console.error(e); }
+    hideLoading();
+
+    if(!data){
+      $("#app").innerHTML=`
+        <div style="min-height:100vh;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;padding:40px 18px;text-align:center">
+          <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);
+            border-radius:50%;display:grid;place-items:center;margin-bottom:16px;
+            box-shadow:5px 5px 0 var(--red)">
+            ${ico('x')}
+          </div>
+          <h2 style="margin-bottom:8px;font-size:20px;text-transform:uppercase">Tidak ditemukan</h2>
+          <p style="font-size:13.5px;max-width:320px;margin-bottom:18px;font-weight:600">
+            Mungkin sudah dihapus, atau link salah.
+          </p>
+          <a href="#/" class="btn btn-primary">${ico('back')} Kembali</a>
+        </div>`;
+      return;
+    }
+
+    document.title=`${data.name||"VarlinkB"} — Link in Bio`;
+
+    document.body.classList.add("public-mode");
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+    document.body.style.height = '100dvh';
+
+    $("#app").innerHTML=`
+      <iframe id="bio-full"
+        style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;
+          border:0;background:#f0ebe0;z-index:50;display:block"
+        title="Link-in-Bio"></iframe>`;
+    const frame=document.getElementById("bio-full");
+    frame.srcdoc=this.buildHTML(data, {preview:false});
+  }
+};
+
+/* =========================================================
+   ANALYTICS LISTENER
+   ========================================================= */
+window.addEventListener("message", async e=>{
+  const d=e.data;
+  if(!d||!d.type) return;
+  if(d.type==="varlinkb:view" && d.id){ await Store.trackView(d.id); }
+  if(d.type==="varlinkb:click" && d.id!=null){ await Store.trackClick(d.id, d.idx); }
+});
+
+/* =========================================================
+   ROUTER REGISTER
+   ========================================================= */
+Router.on("/",          ()=>PageLanding.render());
+Router.on("/dashboard", ()=>PageDashboard.render());
+Router.on("/editor",    ()=>PageEditor.render());
+Router.on("/manage",    ()=>PageManage.render());
+Router.on("/stats",     ()=>PageStats.render());
+Router.on("/u/:id",     (id)=>PagePublic.render(id));
+Router.on("/404",       ()=>Router.navigate("/"));
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+(async function boot(){
+  STATE.user = await Store.loadUser();
+  if(!location.hash) location.hash = STATE.user ? "#/dashboard" : "#/";
+  Router.start();
+})();
+</script>
+</body>
+  </html>

@@ -91,6 +91,7 @@ textarea{resize:vertical;min-height:80px}
 
 .container{max-width:960px;margin:0 auto;padding:0 18px}
 
+/* ===== TOPBAR (TANPA LOGOUT BUTTON) ===== */
 .lt-topbar{position:sticky;top:0;z-index:100;background:var(--white);
   border-bottom:3px solid var(--ink);padding:10px 14px;
   display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -122,21 +123,13 @@ textarea{resize:vertical;min-height:80px}
 .lt-menu-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--red)}
 .lt-menu-btn .ic{width:16px;height:16px;stroke-width:3}
 
-.lt-logout-btn{padding:8px 14px;border-radius:999px;background:var(--white);
-  color:var(--ink);border:2.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
-  font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
-  cursor:pointer;transition:transform .1s, box-shadow .1s}
-.lt-logout-btn:hover{background:var(--red);color:#fff;transform:translate(-1px,-1px);
-  box-shadow:3px 3px 0 var(--ink)}
-.lt-logout-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
-
 @media(max-width:640px){
   .lt-menu-btn .label{display:none}
   .lt-menu-btn{padding:8px;width:40px;height:40px;justify-content:center}
-  .lt-logout-btn{padding:6px 10px;font-size:10.5px}
   .lt-badge{padding:4px 8px;font-size:10px}
 }
 
+/* ===== DRAWER ===== */
 .lt-drawer{position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:200;
   opacity:0;pointer-events:none;transition:opacity .25s}
 .lt-drawer.open{opacity:1;pointer-events:auto}
@@ -170,6 +163,7 @@ textarea{resize:vertical;min-height:80px}
 ::-webkit-scrollbar-track{background:var(--cream-2)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
 
+/* ===== LANDING ===== */
 .landing{min-height:100vh;display:flex;flex-direction:column;position:relative}
 .landing-hero{flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;padding:60px 18px 40px;text-align:center;position:relative}
@@ -198,6 +192,7 @@ textarea{resize:vertical;min-height:80px}
 .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
+/* ===== UPDATE ===== */
 .update-section{padding:40px 18px 50px;background:var(--white);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .update-header{text-align:center;margin-bottom:24px}
@@ -234,6 +229,7 @@ textarea{resize:vertical;min-height:80px}
   font-weight:900;color:var(--ink);font-size:14px}
 .update-empty{text-align:center;padding:30px 18px;color:var(--ink-soft);font-weight:600}
 
+/* ===== PARTNER ===== */
 .partner-section{padding:40px 18px;background:var(--cream);
   border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
 .partner-header{text-align:center;margin-bottom:24px}
@@ -262,6 +258,7 @@ textarea{resize:vertical;min-height:80px}
 .partner-card.collab-cta .p-logo{background:var(--ink);color:var(--yellow);font-size:22px}
 .partner-empty{text-align:center;padding:20px;font-weight:600;color:var(--ink-soft)}
 
+/* ===== PRICING ===== */
 .pricing-section{padding:40px 18px 60px;background:var(--cream-2);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .pricing-header{text-align:center;margin-bottom:28px}
@@ -300,6 +297,124 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card .features li::before{content:'✓';position:absolute;left:0;
   font-weight:900;font-size:14px;color:var(--green)}
 
+/* ===== HELP ===== */
+.help-page{max-width:720px;margin:0 auto;padding:20px 18px 80px}
+.help-hero{text-align:center;padding:24px 0 20px}
+.help-hero .hero-icon{width:72px;height:72px;border-radius:50%;
+  background:var(--yellow);border:3px solid var(--ink);display:grid;
+  place-items:center;margin:0 auto 14px;box-shadow:5px 5px 0 var(--red);
+  color:var(--ink);transform:rotate(-3deg);animation:heroFloat 3s ease-in-out infinite}
+.help-hero .hero-icon .ic{width:36px;height:36px}
+.help-hero h1{font-size:clamp(24px,5vw,32px);font-weight:900;text-transform:uppercase;
+  letter-spacing:-.5px;line-height:1.1}
+.help-hero p{font-size:13.5px;font-weight:600;color:var(--ink-soft);margin-top:8px;
+  max-width:420px;margin-left:auto;margin-right:auto}
+.help-search-wrap{max-width:520px;margin:0 auto 20px;position:relative}
+.help-search-wrap input{padding-left:44px;font-size:14px;box-shadow:var(--shadow-sm)}
+.help-search-wrap .search-icon{position:absolute;left:14px;top:50%;
+  transform:translateY(-50%);color:var(--ink-soft);pointer-events:none;
+  font-size:14px;font-weight:900}
+.help-cats{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:20px;max-width:640px;margin-left:auto;margin-right:auto}
+.help-cat{padding:7px 14px;border:2px solid var(--ink);border-radius:999px;
+  background:var(--white);font-weight:900;font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;display:inline-flex;align-items:center;gap:6px}
+.help-cat:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.help-cat.active{background:var(--ink);color:var(--yellow)}
+.help-list{display:flex;flex-direction:column;gap:10px}
+.help-item{background:var(--white);border:2.5px solid var(--ink);border-radius:12px;
+  box-shadow:4px 4px 0 var(--ink);overflow:hidden;transition:box-shadow .15s}
+.help-item:hover{box-shadow:5px 5px 0 var(--ink)}
+.help-q{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;
+  user-select:none;font-weight:800;font-size:14px;line-height:1.4}
+.help-q .q-icon{width:26px;height:26px;border-radius:8px;flex-shrink:0;
+  background:var(--yellow);border:2px solid var(--ink);display:grid;
+  place-items:center;color:var(--ink);font-size:12px;font-weight:900}
+.help-q .q-cat{font-size:9.5px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;background:var(--cream);border:1.5px solid var(--ink);
+  padding:2px 8px;border-radius:999px;color:var(--ink);flex-shrink:0;margin-left:auto}
+.help-q .q-arrow{margin-left:6px;transition:transform .2s;flex-shrink:0;
+  font-size:12px;color:var(--ink-soft)}
+.help-item.open .help-q .q-arrow{transform:rotate(180deg)}
+.help-a{max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s ease;
+  padding:0 16px;background:var(--cream);font-size:13px;font-weight:600;
+  line-height:1.65;color:var(--ink);border-top:0 solid var(--ink)}
+.help-item.open .help-a{max-height:1500px;padding:14px 16px;
+  border-top:2px solid var(--ink)}
+.help-a ol,.help-a ul{margin:6px 0 6px 20px}
+.help-a li{margin-bottom:4px}
+.help-a code{background:var(--ink);color:var(--yellow);padding:1px 6px;
+  border-radius:4px;font-family:var(--mono);font-size:11.5px;font-weight:700}
+.help-a a{text-decoration:underline;font-weight:800}
+.help-a .tip{background:var(--yellow);border:1.5px solid var(--ink);
+  border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;font-weight:700}
+.help-cta{margin-top:24px;background:var(--ink);color:var(--white);
+  border-radius:14px;padding:24px 20px;text-align:center;
+  box-shadow:6px 6px 0 var(--yellow)}
+.help-cta h3{font-size:18px;text-transform:uppercase;font-weight:900;
+  letter-spacing:.5px;margin-bottom:8px;color:var(--yellow)}
+.help-cta p{font-size:13.5px;font-weight:600;line-height:1.6;margin-bottom:16px;opacity:.9}
+.help-cta .btn{background:var(--yellow);color:var(--ink);border:2.5px solid var(--ink);
+  box-shadow:3px 3px 0 var(--red)}
+.help-empty{text-align:center;padding:40px 18px;color:var(--ink-soft);
+  background:var(--white);border:2.5px dashed var(--ink-soft);border-radius:12px;
+  font-weight:600;font-size:13.5px}
+
+/* Floating help */
+.help-fab{position:fixed;bottom:20px;right:20px;z-index:150;
+  width:52px;height:52px;border-radius:50%;background:var(--yellow);
+  border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+  display:grid;place-items:center;cursor:pointer;
+  transition:transform .15s, box-shadow .15s;color:var(--ink)}
+.help-fab:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.help-fab:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.help-fab .ic{width:24px;height:24px}
+@media(max-width:640px){.help-fab{bottom:16px;right:16px;width:48px;height:48px}}
+
+/* ===== SETTINGS ===== */
+.settings-page{max-width:640px;margin:0 auto;padding:20px 18px 80px}
+.settings-hero{text-align:center;padding:20px 0 24px}
+.settings-hero .avatar-big{width:88px;height:88px;border-radius:50%;
+  background:var(--yellow);border:3px solid var(--ink);display:grid;
+  place-items:center;margin:0 auto 12px;font-size:32px;font-weight:900;
+  color:var(--ink);box-shadow:5px 5px 0 var(--red);overflow:hidden;
+  transform:rotate(-3deg)}
+.settings-hero .avatar-big img{width:100%;height:100%;object-fit:cover}
+.settings-hero h1{font-size:22px;text-transform:uppercase;font-weight:900;
+  letter-spacing:-.3px}
+.settings-hero p{font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-top:4px}
+.settings-section{background:var(--white);border:2.5px solid var(--ink);
+  border-radius:14px;padding:18px;box-shadow:4px 4px 0 var(--ink);margin-bottom:14px}
+.settings-section h3{font-size:13px;text-transform:uppercase;font-weight:900;
+  letter-spacing:.5px;margin-bottom:14px;display:inline-flex;align-items:center;gap:8px;
+  color:var(--white);background:var(--ink);padding:4px 10px;border-radius:6px}
+.settings-section .field{margin-bottom:12px}
+.settings-section .field:last-child{margin-bottom:0}
+.settings-section .field label{display:block;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;color:var(--ink)}
+.settings-section .field .info-row{display:flex;justify-content:space-between;
+  padding:8px 12px;background:var(--cream);border:1.5px solid var(--ink);
+  border-radius:8px;font-size:13px;font-weight:700;margin-bottom:8px}
+.settings-section .field .info-row .lbl{color:var(--ink-soft)}
+.settings-section .field .info-row .val{font-family:var(--mono);font-size:12px;
+  word-break:break-all;text-align:right;max-width:60%}
+.settings-section .err-box{background:var(--red);color:var(--white);
+  border:2px solid var(--ink);border-radius:8px;padding:8px 12px;
+  font-size:12px;font-weight:700;margin-bottom:10px}
+.settings-section .ok-box{background:var(--green);color:var(--white);
+  border:2px solid var(--ink);border-radius:8px;padding:8px 12px;
+  font-size:12px;font-weight:700;margin-bottom:10px}
+.settings-section .hint{font-size:11px;color:var(--ink-soft);margin-top:4px;
+  font-weight:500;line-height:1.5}
+.settings-section.danger{border-color:var(--red)}
+.settings-section.danger h3{background:var(--red)}
+.settings-actions{display:flex;gap:8px;flex-wrap:wrap}
+.settings-actions .btn{flex:1;min-width:140px}
+@media(max-width:480px){.settings-actions{flex-direction:column}
+  .settings-actions .btn{width:100%}}
+
+/* ===== AUTH ===== */
 .auth-page{min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:40px 18px}
 .auth-card{width:100%;max-width:400px;background:var(--white);
@@ -330,6 +445,7 @@ textarea{resize:vertical;min-height:80px}
   font-weight:700;color:var(--ink-soft)}
 .btn-google{background:var(--white)}
 
+/* ===== DASHBOARD ===== */
 .dash{padding-bottom:60px}
 .dash-hero{padding:32px 18px 24px;text-align:center}
 .dash-hero h2{font-size:clamp(22px,5vw,30px);font-weight:900;letter-spacing:-.5px;
@@ -405,6 +521,7 @@ textarea{resize:vertical;min-height:80px}
 .empty-state .ei .ic{width:28px;height:28px}
 .empty-state p{margin-bottom:16px;font-weight:700}
 
+/* ===== EDITOR ===== */
 .editor-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;
   max-width:1180px;margin:0 auto;padding:18px;padding-bottom:60px}
 @media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
@@ -426,9 +543,6 @@ textarea{resize:vertical;min-height:80px}
   border-radius:var(--radius);padding:10px;font-size:12px;font-weight:700;
   text-align:center;margin-top:8px}
 .locked-hint a{text-decoration:underline;font-weight:900;cursor:pointer}
-.dev-only-badge{display:inline-block;padding:2px 8px;background:var(--red);color:#fff;
-  font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
-  margin-left:6px;vertical-align:middle}
 .beta-only-badge{display:inline-block;padding:2px 8px;background:var(--purple);color:#fff;
   font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
   margin-left:6px;vertical-align:middle}
@@ -608,7 +722,7 @@ textarea{resize:vertical;min-height:80px}
 .link-stat .ls-count{font-weight:900;font-size:14px;flex-shrink:0;
   background:var(--ink);color:var(--white);padding:2px 8px;border-radius:6px}
 
-/* DEV PANEL */
+/* ===== DEV PANEL ===== */
 .dev-header{background:var(--ink);color:var(--yellow);padding:20px 18px;
   border-bottom:3px solid var(--yellow);position:relative;overflow:hidden}
 .dev-header::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;
@@ -619,6 +733,14 @@ textarea{resize:vertical;min-height:80px}
   letter-spacing:1px;display:flex;align-items:center;gap:10px;position:relative;z-index:1}
 .dev-header p{font-size:12.5px;color:#fff;font-weight:600;margin-top:4px;opacity:.8;
   position:relative;z-index:1}
+.dev-header .back-btn{position:absolute;top:14px;right:14px;z-index:2;
+  background:var(--yellow);color:var(--ink);border:2.5px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);padding:8px 14px;border-radius:999px;
+  font-weight:900;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;
+  cursor:pointer;transition:transform .1s, box-shadow .1s;
+  display:inline-flex;align-items:center;gap:5px}
+.dev-header .back-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.dev-header .back-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 .dev-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:10px;padding:18px}
 .dev-stat{background:var(--white);border:2.5px solid var(--ink);border-radius:var(--radius);
@@ -690,10 +812,6 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:none!important;border:1.5px solid var(--ink)}
 .mgr-card textarea{min-height:60px;font-size:12px;font-family:inherit;resize:vertical}
 .mgr-card .mgr-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.mgr-card .mgr-badge{padding:3px 8px;background:var(--purple);color:#fff;
-  font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
-  text-transform:uppercase;align-self:flex-start}
-.mgr-card .mgr-badge.on{background:var(--green)}
 .mgr-card .mgr-changes-list{display:flex;flex-direction:column;gap:5px;margin-top:6px}
 .mgr-card .mgr-changes-list .change-row{display:flex;gap:6px;align-items:center}
 .mgr-card .mgr-changes-list input{flex:1}
@@ -704,7 +822,40 @@ textarea{resize:vertical;min-height:80px}
   background:var(--white);border:2.5px dashed var(--ink-soft);border-radius:var(--radius);
   font-weight:600}
 
-/* BIO PUBLIK */
+/* DEV FAVICON PANEL */
+.favicon-panel{max-width:640px;margin:0 auto;padding:20px 18px 60px}
+.favicon-panel .fp-card{background:var(--white);border:2.5px solid var(--ink);
+  border-radius:14px;padding:20px;box-shadow:5px 5px 0 var(--ink);margin-bottom:16px}
+.favicon-panel h3{font-size:14px;text-transform:uppercase;font-weight:900;
+  letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.favicon-panel p.fp-desc{font-size:12.5px;font-weight:600;color:var(--ink-soft);
+  margin-bottom:16px;line-height:1.55}
+.favicon-preview-big{display:flex;align-items:center;justify-content:center;
+  gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.favicon-preview-big .fp-thumb{width:96px;height:96px;border-radius:16px;
+  background:var(--cream);border:2.5px solid var(--ink);overflow:hidden;
+  display:grid;place-items:center;box-shadow:4px 4px 0 var(--ink);
+  cursor:pointer;transition:transform .15s}
+.favicon-preview-big .fp-thumb:hover{transform:translate(-2px,-2px)}
+.favicon-preview-big .fp-thumb img{width:100%;height:100%;object-fit:cover}
+.favicon-preview-big .fp-thumb .ph{font-size:11.5px;font-weight:800;
+  color:var(--ink-soft);text-align:center;padding:8px}
+.favicon-preview-big .fp-arrow{font-size:22px;font-weight:900;color:var(--ink)}
+.favicon-preview-big .fp-tab-mock{width:220px;height:34px;background:var(--white);
+  border:2.5px solid var(--ink);border-radius:8px 8px 0 0;display:flex;
+  align-items:center;gap:8px;padding:0 12px;box-shadow:3px 3px 0 var(--ink)}
+.favicon-preview-big .fp-tab-mock .dot{width:8px;height:8px;border-radius:50%;
+  background:var(--red)}
+.favicon-preview-big .fp-tab-mock .icon{width:16px;height:16px;border-radius:4px;
+  overflow:hidden;flex-shrink:0;background:var(--cream);display:grid;place-items:center}
+.favicon-preview-big .fp-tab-mock .icon img{width:100%;height:100%;object-fit:cover}
+.favicon-preview-big .fp-tab-mock .title{font-size:11px;font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.favicon-panel .fp-note{background:var(--yellow);border:2px dashed var(--ink);
+  border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;
+  margin-top:12px;line-height:1.5}
+
+/* ===== BIO PUBLIK ===== */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
   color:var(--ink);padding:34px 18px 60px;
   display:flex;flex-direction:column;align-items:center;font-weight:700;z-index:2}
@@ -725,14 +876,12 @@ textarea{resize:vertical;min-height:80px}
   50%{transform:rotate(20deg) translate(-6px,8px)}}
 @keyframes deco3{0%,100%{transform:rotate(15deg) translate(0,0)}
   50%{transform:rotate(15deg) translate(4px,-6px)}}
-
 .bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
   overflow:hidden;background:var(--white);margin:0 auto;
   box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-avatar img{width:100%;height:100%;object-fit:cover}
 .bio-avatar video{width:100%;height:100%;object-fit:cover}
 .bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-
 .bio-header{display:flex;flex-direction:column;align-items:center;
   margin-bottom:14px;position:relative}
 .bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
@@ -756,7 +905,6 @@ textarea{resize:vertical;min-height:80px}
 .bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
 .bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
-
 .bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;
   flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
 .bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);
@@ -765,7 +913,7 @@ textarea{resize:vertical;min-height:80px}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 
-/* ====== BANNER PERSEGI PANJANG ====== */
+/* Banner persegi panjang */
 .bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;
   border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
@@ -946,6 +1094,9 @@ const ICONS = {
   news:'<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>',
   flask:'<path d="M9 3h6v6l4 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2l4-10V3z"/><line x1="8" y1="3" x2="16" y2="3"/><line x1="6.5" y1="12" x2="17.5" y2="12"/>',
   handshake:'<path d="M11 17l-2-2a1 1 0 0 1 0-1.4l3-3a1 1 0 0 1 1.4 0l2 2 2-2 4 4-4 4-4-4-2 2z"/><path d="M13 7l-3 3M3 12l6-6 3 3"/>',
+  mail:'<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  help:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
   google:'<path d="M21.35 11.1H12v2.8h5.35c-.23 1.24-.93 2.3-1.97 3v2.5h3.19c1.86-1.72 2.93-4.25 2.93-7.2 0-.69-.06-1.36-.15-2.1z" fill="#4285F4" stroke="none"/><path d="M12 21c2.66 0 4.9-.88 6.53-2.39l-3.19-2.5c-.88.6-2.02.95-3.34.95-2.57 0-4.75-1.73-5.53-4.07H3.18v2.56C4.8 18.92 8.16 21 12 21z" fill="#34A853" stroke="none"/><path d="M6.47 12.99A5.5 5.5 0 0 1 6.16 11c0-.69.12-1.36.32-1.99V6.45H3.18A9 9 0 0 0 2.16 11c0 1.46.35 2.85.97 4.08l3.34-2.09z" fill="#FBBC05" stroke="none"/><path d="M12 5.94c1.45 0 2.74.5 3.75 1.47l2.82-2.82C16.9 2.96 14.66 2 12 2 8.16 2 4.8 4.08 3.18 7.45l3.34 2.09C7.25 7.2 9.43 5.94 12 5.94z" fill="#EA4335" stroke="none"/>'
 };
 function ico(name, cls=""){
@@ -1034,7 +1185,7 @@ const PLANS = {
    ========================================================= */
 const STATE = {
   user:null, plan:null, planMeta:null, currentEdit:null, draft:null, cache:[],
-  partners:[], updates:[], dataLoaded:false
+  partners:[], updates:[], dataLoaded:false, appSettings:null
 };
 
 const $  = (s,r=document)=>r.querySelector(s);
@@ -1060,14 +1211,11 @@ function openModal(html){
   document.body.appendChild(b); return b;
 }
 
-/* SLUG UTILS */
+/* SLUG */
 function generateSlug(text){
-  return String(text || "")
-    .toLowerCase().trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
+  return String(text || "").toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-")
+    .replace(/-+/g, "-").replace(/^-|-$/g, "");
 }
 async function getUniqueSlug(baseSlug, currentBioId=null){
   let slug = baseSlug || `user-${Math.random().toString(36).slice(2,7)}`;
@@ -1108,6 +1256,61 @@ function compressImage(file, maxSize=900, quality=0.72){
     img.onerror = ()=>reject(new Error("Gagal baca gambar"));
     img.src = url;
   });
+}
+
+/* BROWSER DETECT */
+function isInAppBrowser(){
+  const ua = navigator.userAgent || "";
+  return /FBAN|FBAV|Instagram|Line|WhatsApp|Twitter|TikTok|Snapchat|Pinterest|LinkedIn|MicroMessenger|Viber|WeChat/i.test(ua);
+}
+function isMobile(){
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+function showInAppBrowserModal(){
+  const url = location.href;
+  const m = openModal(`
+    <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+    <h3>⚠️ Buka di Browser</h3>
+    <p style="font-size:13.5px;font-weight:600;margin-bottom:12px;line-height:1.6">
+      Kamu sedang membuka link ini di <b>browser dalam aplikasi</b> (WhatsApp / Instagram / TikTok / dll).
+      Google Login <b>tidak jalan</b> di sini.
+    </p>
+    <div style="background:var(--cream);border:2px solid var(--ink);border-radius:10px;
+      padding:12px;margin-bottom:14px;font-size:13px;font-weight:600;line-height:1.7">
+      <b>Cara buka di browser luar:</b>
+      <ol style="margin-left:18px;margin-top:6px">
+        <li>Tap titik tiga <b>⋮</b> (pojok kanan atas)</li>
+        <li>Pilih <b>"Buka di Chrome"</b> / <b>"Open in Safari"</b></li>
+        <li>Login Google lagi di sana</li>
+      </ol>
+    </div>
+    <input id="iap-url" value="${url}" readonly onclick="this.select()"
+      style="text-align:center;font-family:monospace;font-size:11px;padding:10px;margin-bottom:10px"/>
+    <button class="btn btn-primary btn-block" id="iap-copy">${ico('copy')} Copy Link</button>
+  `);
+  $("#iap-copy",m).addEventListener("click", async ()=>{
+    try{ await navigator.clipboard.writeText(url); toast("Link disalin! Paste di browser luar.","success"); }
+    catch(e){ const inp=$("#iap-url",m); inp.select(); document.execCommand("copy"); toast("Link disalin!","success"); }
+  });
+}
+
+/* FAVICON */
+async function applyAppFavicon(){
+  try{
+    const s = await Store.getSettings();
+    STATE.appSettings = s;
+    const fav = s.favicon || null;
+    let links = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
+    if(fav){
+      if(!links.length){
+        const link = document.createElement("link");
+        link.rel = "icon";
+        document.head.appendChild(link);
+        links = [link];
+      }
+      links.forEach(l => l.href = fav);
+    }
+  }catch(e){ console.warn("applyAppFavicon:", e); }
 }
 
 /* CLIPBOARD */
@@ -1187,8 +1390,15 @@ const Auth = {
           try{
             const doc = await FB.db.collection("users").doc(user.uid).get();
             if(doc.exists && doc.data().name) name = doc.data().name;
+            await FB.db.collection("users").doc(user.uid).set({
+              emailVerified: user.emailVerified
+            }, { merge:true });
           }catch(e){}
-          this.current = { uid:user.uid, email:user.email, name, photo:user.photoURL||"" };
+          this.current = {
+            uid:user.uid, email:user.email, name,
+            photo:user.photoURL||"",
+            emailVerified: user.emailVerified
+          };
         } else { this.current = null; }
         resolve(this.current);
       });
@@ -1198,24 +1408,99 @@ const Auth = {
     const cred = await FB.auth.createUserWithEmailAndPassword(email,password);
     try{ await cred.user.updateProfile({ displayName:name }); }catch(e){}
     await FB.db.collection("users").doc(cred.user.uid).set({
-      name, email, createdAt:Date.now(), plan:"free"
+      name, email, createdAt:Date.now(), plan:"free", emailVerified:false
     },{ merge:true });
+    try{ await cred.user.sendEmailVerification(); }catch(e){}
     return cred.user;
   },
   async login(email,password){ return (await FB.auth.signInWithEmailAndPassword(email,password)).user; },
   async loginGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider();
-    const cred = await FB.auth.signInWithPopup(provider);
-    const doc = await FB.db.collection("users").doc(cred.user.uid).get();
-    if(!doc.exists){
-      await FB.db.collection("users").doc(cred.user.uid).set({
-        name: cred.user.displayName || cred.user.email.split("@")[0],
-        email: cred.user.email, createdAt:Date.now(), plan:"free"
-      });
+    provider.setCustomParameters({ prompt: "select_account" });
+
+    if(isInAppBrowser()){
+      const err = new Error("in-app-browser");
+      err.code = "app/in-app-browser";
+      throw err;
     }
-    return cred.user;
+
+    const useRedirect = isMobile();
+
+    if(useRedirect){
+      await FB.auth.signInWithRedirect(provider);
+      return null;
+    }
+
+    try{
+      const cred = await FB.auth.signInWithPopup(provider);
+      await this._ensureUserDoc(cred.user);
+      return cred.user;
+    }catch(err){
+      const fallback = ["auth/popup-blocked","auth/popup-closed-by-user",
+        "auth/cancelled-popup-request","auth/operation-not-supported-in-this-environment"];
+      if(fallback.includes(err.code)){
+        await FB.auth.signInWithRedirect(provider);
+        return null;
+      }
+      throw err;
+    }
+  },
+  async _ensureUserDoc(user){
+    if(!user) return;
+    try{
+      const doc = await FB.db.collection("users").doc(user.uid).get();
+      if(!doc.exists){
+        await FB.db.collection("users").doc(user.uid).set({
+          name: user.displayName || (user.email||"").split("@")[0],
+          email: user.email || "", createdAt: Date.now(), plan:"free",
+          emailVerified: user.emailVerified || false
+        });
+      }
+    }catch(e){ console.warn("ensureUserDoc:", e); }
+  },
+  async handleRedirectResult(){
+    try{
+      const result = await FB.auth.getRedirectResult();
+      if(result && result.user){ await this._ensureUserDoc(result.user); return result.user; }
+    }catch(err){
+      console.warn("getRedirectResult:", err);
+      return { __error: err };
+    }
+    return null;
   },
   async logout(){ await FB.auth.signOut(); this.current = null; },
+
+  /* GANTI NAMA */
+  async updateName(newName){
+    const user = FB.auth.currentUser;
+    if(!user) throw new Error("Not logged in");
+    await user.updateProfile({ displayName: newName });
+    await FB.db.collection("users").doc(user.uid).set({ name: newName }, { merge:true });
+    if(this.current) this.current.name = newName;
+    return true;
+  },
+
+  /* GANTI PASSWORD */
+  async updatePassword(oldPass, newPass){
+    const user = FB.auth.currentUser;
+    if(!user) throw new Error("Not logged in");
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPass);
+    await user.reauthenticateWithCredential(credential);
+    await user.updatePassword(newPass);
+    return true;
+  },
+
+  /* GANTI EMAIL */
+  async updateEmail(password, newEmail){
+    const user = FB.auth.currentUser;
+    if(!user) throw new Error("Not logged in");
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+    await user.reauthenticateWithCredential(credential);
+    await user.verifyBeforeUpdateEmail(newEmail);
+    await FB.db.collection("users").doc(user.uid).set({ pendingEmail: newEmail }, { merge:true });
+    return true;
+  },
+
   errMsg(code){
     const map = {
       "auth/email-already-in-use":"Email sudah terdaftar",
@@ -1334,36 +1619,44 @@ const Store = {
     }); }catch(e){}
   },
 
+  /* SETTINGS */
+  async getSettings(){
+    try{
+      const doc = await FB.db.collection("settings").doc("app").get();
+      return doc.exists ? doc.data() : {};
+    }catch(e){ return {}; }
+  },
+  async saveSettings(data){
+    await FB.db.collection("settings").doc("app").set(data, { merge:true });
+    return data;
+  },
+
   /* PARTNERS */
   async listPartners(){
     try{
-      const s = await FB.db.collection("partners").orderBy("order","asc").get();
+      const s = await FB.db.collection("partners").get();
       const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
+      a.sort((x,y)=>(x.order||0)-(y.order||0));
       STATE.partners = a; return a;
-    }catch(e){
-      // fallback kalau collection kosong / belum ada index
-      try{
-        const s = await FB.db.collection("partners").get();
-        const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
-        a.sort((x,y)=>(x.order||0)-(y.order||0));
-        STATE.partners = a; return a;
-      }catch(err){ STATE.partners = []; return []; }
-    }
+    }catch(e){ STATE.partners = []; return []; }
   },
   async savePartner(p){
     if(!p.id) p.id = uid(10);
     if(p.order===undefined) p.order = Date.now();
     const {id, ...data} = p;
-    await FB.db.collection("partners").doc(id).set(data, { merge:true });
-    return p;
+    try{
+      await FB.db.collection("partners").doc(id).set(data, { merge:true });
+      return p;
+    }catch(e){ console.error("savePartner:", e); throw e; }
   },
   async removePartner(id){ await FB.db.collection("partners").doc(id).delete(); },
 
   /* UPDATES */
   async listUpdates(){
     try{
-      const s = await FB.db.collection("updates").orderBy("createdAt","desc").get();
+      const s = await FB.db.collection("updates").get();
       const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
+      a.sort((x,y)=>(y.createdAt||0)-(x.createdAt||0));
       STATE.updates = a; return a;
     }catch(e){ STATE.updates = []; return []; }
   },
@@ -1371,8 +1664,10 @@ const Store = {
     if(!u.id) u.id = uid(10);
     if(!u.createdAt) u.createdAt = Date.now();
     const {id, ...data} = u;
-    await FB.db.collection("updates").doc(id).set(data, { merge:true });
-    return u;
+    try{
+      await FB.db.collection("updates").doc(id).set(data, { merge:true });
+      return u;
+    }catch(e){ console.error("saveUpdate:", e); throw e; }
   },
   async removeUpdate(id){ await FB.db.collection("updates").doc(id).delete(); }
 };
@@ -1380,7 +1675,7 @@ const Store = {
 /* =========================================================
    ROUTER
    ========================================================= */
-const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev"];
+const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help"];
 const Router = {
   routes:{},
   on(p,h){ this.routes[p]=h; },
@@ -1395,6 +1690,15 @@ const Router = {
     const query = raw.split("?")[1] || "";
     if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
     if(PROTECTED.includes(path) && !Auth.current) return this.navigate("/login");
+
+    // Cek verifikasi email
+    if(PROTECTED.includes(path) && Auth.current && !isDev(Auth.current.email)){
+      const user = FB.auth.currentUser;
+      const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
+      if(user && !user.emailVerified && !isGoogle && path !== "/help" && path !== "/verify"){
+        return this.navigate("/verify");
+      }
+    }
     (this.routes[path]||this.routes["/404"]||(()=>{}))(query);
   },
   start(){ window.addEventListener("hashchange",()=>this.resolve()); this.resolve(); }
@@ -1436,7 +1740,7 @@ const LinkTypes = {
 };
 
 /* =========================================================
-   COMPONENT: UPDATE LOG (dinamis)
+   COMPONENT: UPDATE LOG
    ========================================================= */
 function renderUpdateSection(){
   const list = STATE.updates || [];
@@ -1458,7 +1762,7 @@ function renderUpdateSection(){
       </div>
       <div class="update-list">
         ${list.map((u,idx)=>`
-          <div class="update-item ${idx===0&&u.isNew!==false?"new":""}">
+          <div class="update-item ${idx===0?"new":""}">
             <div class="u-head">
               <span class="u-version">${esc(u.version||"v?.?")}</span>
               <span class="u-date">${esc(u.date||"—")}</span>
@@ -1472,9 +1776,7 @@ function renderUpdateSection(){
     </div>`;
 }
 
-/* =========================================================
-   COMPONENT: PARTNER (dinamis)
-   ========================================================= */
+/* COMPONENT: PARTNER */
 function renderPartnerSection(){
   const list = STATE.partners || [];
   return `
@@ -1485,19 +1787,19 @@ function renderPartnerSection(){
       </div>
       <div class="partner-grid">
         ${list.length ? list.map(p=>`
-          <div class="partner-card" ${p.url?`onclick="window.open('${esc(p.url)}','_blank')"`:''}>
+          <div class="partner-card" ${p.url?`data-url="${esc(p.url)}"`:''}>
             <div class="p-logo" style="${p.color?`background:${esc(p.color)};color:#fff`:''}">
               ${p.img?`<img src="${esc(p.img)}" alt=""/>`:esc(p.initial||(p.name||"?")[0].toUpperCase())}
             </div>
             <div class="p-name">${esc(p.name||"Partner")}</div>
             <div class="p-tag">${esc(p.tag||"Partner")}</div>
           </div>`).join("") : `
-          <div class="partner-card collab-cta" onclick="window.open('https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}','_blank')">
+          <div class="partner-card collab-cta" data-collab="1">
             <div class="p-logo">+</div>
             <div class="p-name">Slot Kosong</div>
             <div class="p-tag">Kolaborasi</div>
           </div>
-          <div class="partner-card collab-cta" onclick="window.open('https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}','_blank')">
+          <div class="partner-card collab-cta" data-collab="1">
             <div class="p-logo">+</div>
             <div class="p-name">Gabung</div>
             <div class="p-tag">Hubungi Admin</div>
@@ -1512,7 +1814,6 @@ function renderPartnerSection(){
 const PageLanding = {
   async render(){
     if(Auth.current) return Router.navigate("/dashboard");
-    // Load partners & updates dulu
     await Promise.all([ Store.listPartners(), Store.listUpdates() ]);
     $("#app").innerHTML = `
       <div class="landing">
@@ -1542,12 +1843,28 @@ const PageLanding = {
         </div>
 
         ${renderPartnerSection()}
+
+        <div class="help-fab" id="landing-help" title="Bantuan">
+          ${ico('help')}
+        </div>
       </div>`;
 
     $("#btn-daftar").addEventListener("click",()=>Router.navigate("/register"));
     $("#btn-login").addEventListener("click",()=>Router.navigate("/login"));
     $$(".pricing-card .btn").forEach(b=>{
       b.addEventListener("click",()=>Router.navigate("/register"));
+    });
+    $$(".partner-card[data-url]").forEach(el=>{
+      el.addEventListener("click",()=>window.open(el.dataset.url,"_blank"));
+    });
+    $$(".partner-card[data-collab]").forEach(el=>{
+      el.addEventListener("click",()=>{
+        window.open(`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}`,"_blank");
+      });
+    });
+    $("#landing-help")?.addEventListener("click",()=>{
+      if(Auth.current) Router.navigate("/help");
+      else { toast("Login dulu untuk akses halaman bantuan","info"); Router.navigate("/login"); }
     });
   },
   renderPricingCard(plan, extraClass){
@@ -1609,12 +1926,19 @@ const PageLogin = {
       }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
     });
     $("#l-google").addEventListener("click", async ()=>{
+      if(isInAppBrowser()){ showInAppBrowserModal(); return; }
       showLoading("Login Google...");
       try{
-        await Auth.loginGoogle(); await loadUserPlan();
+        const user = await Auth.loginGoogle();
+        if(!user) return;
+        await loadUserPlan();
         hideLoading(); toast("Login berhasil!","success");
         Router.navigate("/dashboard");
-      }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
+      }catch(err){
+        hideLoading();
+        if(err.code === "app/in-app-browser") showInAppBrowserModal();
+        else showErr(Auth.errMsg(err.code));
+      }
     });
   }
 };
@@ -1662,17 +1986,83 @@ const PageRegister = {
       try{
         await Auth.register(email, pass, name);
         await loadUserPlan();
-        hideLoading(); toast("Akun berhasil dibuat!","success");
-        Router.navigate("/dashboard");
+        hideLoading();
+        toast("Akun dibuat! Cek email untuk verifikasi.","success");
+        Router.navigate("/verify");
       }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
     });
     $("#r-google").addEventListener("click", async ()=>{
+      if(isInAppBrowser()){ showInAppBrowserModal(); return; }
       showLoading("Daftar Google...");
       try{
-        await Auth.loginGoogle(); await loadUserPlan();
+        const user = await Auth.loginGoogle();
+        if(!user) return;
+        await loadUserPlan();
         hideLoading(); toast("Berhasil!","success");
         Router.navigate("/dashboard");
-      }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
+      }catch(err){
+        hideLoading();
+        if(err.code === "app/in-app-browser") showInAppBrowserModal();
+        else showErr(Auth.errMsg(err.code));
+      }
+    });
+  }
+};
+
+/* =========================================================
+   PAGE: VERIFY EMAIL
+   ========================================================= */
+const PageVerify = {
+  async render(){
+    if(!Auth.current) return Router.navigate("/login");
+    const user = FB.auth.currentUser;
+    const email = Auth.current.email;
+    const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
+    if(user?.emailVerified || isGoogle) return Router.navigate("/dashboard");
+
+    $("#app").innerHTML = `
+      <div class="auth-page">
+        <div class="auth-card">
+          <div class="auth-icon">${ico('mail')}</div>
+          <h2>Cek Email Kamu</h2>
+          <p class="auth-sub">
+            Kami sudah kirim link verifikasi ke <b>${esc(email)}</b>.
+            Buka email & klik link verifikasi untuk lanjut.
+          </p>
+          <div id="err-slot"></div>
+          <button class="btn btn-primary btn-block" id="v-check">${ico('check')} Sudah Verifikasi</button>
+          <button class="btn btn-block" id="v-resend" style="margin-top:8px">${ico('back')} Kirim Ulang Email</button>
+          <button class="btn btn-block" id="v-logout" style="margin-top:8px;background:var(--cream)">${ico('logout')} Logout</button>
+        </div>
+      </div>`;
+
+    const showMsg = (msg, type="error") => {
+      const bg = type === "success" ? "var(--green)" : "var(--red)";
+      $("#err-slot").innerHTML = `<div class="err-box" style="background:${bg}">${esc(msg)}</div>`;
+    };
+
+    $("#v-check").addEventListener("click", async ()=>{
+      showLoading("Cek status...");
+      try{
+        await user.reload();
+        if(user.emailVerified){
+          hideLoading(); toast("Email terverifikasi! Lanjut.","success");
+          Router.navigate("/dashboard");
+        }else{
+          hideLoading(); showMsg("Email belum diverifikasi. Cek inbox (jangan lupa folder spam).");
+        }
+      }catch(e){ hideLoading(); showMsg("Gagal cek: "+e.message); }
+    });
+    $("#v-resend").addEventListener("click", async ()=>{
+      showLoading("Mengirim...");
+      try{
+        await user.sendEmailVerification();
+        hideLoading(); toast("Email terkirim ulang!","success");
+        showMsg("Email terkirim. Cek inbox kamu.","success");
+      }catch(e){ hideLoading(); showMsg("Gagal kirim: "+e.message); }
+    });
+    $("#v-logout").addEventListener("click", async ()=>{
+      await Auth.logout(); toast("Logout","info"); Router.navigate("/");
     });
   }
 };
@@ -1697,7 +2087,6 @@ function renderTopbar(){
       <div class="lt-actions">
         ${devMode?`<button class="lt-badge dev" id="btn-dev-top">${ico('zap','ic-sm')} DEV</button>`:''}
         ${badge && !devMode?`<button class="lt-badge ${badgeCls}" id="btn-plan-top">${ico(badgeIcon,'ic-sm')} ${badge}</button>`:''}
-        <button class="lt-logout-btn" id="btn-logout-top">Log Out</button>
         <button class="lt-menu-btn" id="btn-drawer-open">
           ${ico('menu','ic-lg')}<span class="label">Menu</span>
         </button>
@@ -1717,14 +2106,13 @@ function renderTopbar(){
         <div class="menu-item" data-nav="/dashboard">${ico('grid')} Dashboard</div>
         <div class="menu-item" data-nav="/manage">${ico('folder')} Kelola Bio</div>
         <div class="menu-item" data-nav="/stats">${ico('stats')} Statistik</div>
+        <div class="menu-item" data-nav="/settings">${ico('settings')} Settings Account</div>
+        <div class="menu-item" data-nav="/help">${ico('help')} Bantuan</div>
         ${devMode?`<div class="menu-item" data-nav="/dev" style="background:var(--red);color:#fff">
           ${ico('zap')} Dev Panel
         </div>`:''}
         <div class="menu-item" id="drawer-upgrade" style="background:var(--yellow)">
           ${ico('crown')} Upgrade Plan
-        </div>
-        <div class="menu-item" id="drawer-logout" style="background:var(--red);color:#fff">
-          ${ico('logout')} Log Out
         </div>
         <div class="menu-item" id="drawer-back-home" style="background:var(--cream)">
           ${ico('back')} Halaman Utama
@@ -1743,9 +2131,6 @@ function bindTopbar(){
   $$("[data-nav]").forEach(el=>{
     el.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate(el.dataset.nav); });
   });
-  const doLogout = async ()=>{ await Auth.logout(); toast("Berhasil logout","info"); Router.navigate("/"); };
-  const logoutBtn = $("#btn-logout-top"); if(logoutBtn) logoutBtn.addEventListener("click",doLogout);
-  const logoutBtn2 = $("#drawer-logout"); if(logoutBtn2) logoutBtn2.addEventListener("click",doLogout);
   const homeBtn=$("#drawer-back-home"); if(homeBtn) homeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate("/"); });
   const upgradeBtn=$("#drawer-upgrade"); if(upgradeBtn) upgradeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); showUpgradeModal(); });
   const planBtn=$("#btn-plan-top"); if(planBtn) planBtn.addEventListener("click",()=>showUpgradeModal());
@@ -1840,8 +2225,7 @@ const PageDashboard = {
               <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Banner</h4><p>Foto & video untuk banner.</p></div>
               <div class="feature-card"><div class="fi">${ico('video')}</div><h4>Embed</h4><p>YouTube, Spotify, TikTok, Vimeo.</p></div>
               <div class="feature-card"><div class="fi">${ico('handshake')}</div><h4>Logo Partner</h4><p>Logo kerjasama di bio kamu.</p></div>
-              <div class="feature-card ${canDo("layouts")?"":'locked-feat'}"><div class="fi">${ico('grid')}</div><h4>Layout Grid</h4><p>Grid 2 kolom untuk tombol.</p></div>
-              <div class="feature-card beta-tag ${canDo("animations")?"":'locked-feat'}"><div class="fi">${ico('flask')}</div><h4>Animasi Pro</h4><p>Bounce, shake, glow.</p></div>
+              <div class="feature-card ${canDo("animations")?"":'locked-feat'}"><div class="fi">${ico('flask')}</div><h4>Animasi Pro</h4><p>Bounce, shake, glow.</p></div>
             </div>
           </div>
 
@@ -1876,7 +2260,7 @@ const PageDashboard = {
         return;
       }
       wrap.innerHTML=list.slice(0,5).map(b=>{
-        const bioJson = JSON.stringify(b).replace(/"/g,'&quot;');
+        const bioJson = JSON.stringify(b).replace(/"/g,'&quot;').replace(/'/g,"&#39;");
         return `
         <div class="recent-item">
           <div class="ri-left">
@@ -1948,7 +2332,7 @@ const PageManage = {
         return;
       }
       wrap.innerHTML=list.map(b=>{
-        const bioJson = JSON.stringify(b).replace(/"/g,'&quot;');
+        const bioJson = JSON.stringify(b).replace(/"/g,'&quot;').replace(/'/g,"&#39;");
         return `
         <div class="recent-item">
           <div class="ri-left">
@@ -2037,6 +2421,377 @@ const PageStats = {
 };
 
 /* =========================================================
+   PAGE: SETTINGS ACCOUNT
+   ========================================================= */
+const PageSettings = {
+  async render(){
+    if(!Auth.current) return Router.navigate("/login");
+    const user = FB.auth.currentUser;
+    if(!user) return Router.navigate("/login");
+
+    const u = Auth.current;
+    const meta = STATE.planMeta || {};
+    const isGoogle = (user.providerData||[]).some(p => p.providerId === "google.com");
+    const created = meta.createdAt ? new Date(meta.createdAt).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"}) : "—";
+    const initial = (u.name||u.email||"?")[0].toUpperCase();
+
+    $("#app").innerHTML = `
+      ${renderTopbar()}
+      <div class="settings-page">
+        <div class="settings-hero">
+          <div class="avatar-big">${initial}</div>
+          <h1>${esc(u.name||"User")}</h1>
+          <p>${esc(u.email||"")}</p>
+        </div>
+
+        <div class="settings-section">
+          <h3>${ico('user')} Info Akun</h3>
+          <div class="info-row"><span class="lbl">Email</span><span class="val">${esc(u.email||"—")}</span></div>
+          <div class="info-row"><span class="lbl">Status Email</span><span class="val">
+            ${isGoogle ? "🔵 Google Account" : (user.emailVerified ? "✅ Terverifikasi" : "⚠️ Belum")}
+          </span></div>
+          <div class="info-row"><span class="lbl">Plan</span><span class="val">${STATE.plan?.name || "Free"}</span></div>
+          <div class="info-row"><span class="lbl">Login via</span><span class="val">${isGoogle ? "Google" : "Email & Password"}</span></div>
+          <div class="info-row"><span class="lbl">Member sejak</span><span class="val">${created}</span></div>
+        </div>
+
+        <div class="settings-section">
+          <h3>${ico('edit')} Ganti Nama</h3>
+          <div id="name-msg"></div>
+          <div class="field">
+            <label>Nama Baru</label>
+            <input type="text" id="set-name" maxlength="40" value="${esc(u.name)}" placeholder="Nama baru..."/>
+          </div>
+          <button class="btn btn-primary btn-block" id="btn-save-name" style="margin-top:8px">${ico('save')} Simpan Nama</button>
+        </div>
+
+        ${!isGoogle ? `
+        <div class="settings-section">
+          <h3>${ico('lock')} Ganti Password</h3>
+          <div id="pass-msg"></div>
+          <div class="field"><label>Password Lama</label><input type="password" id="set-oldpass" placeholder="••••••••"/></div>
+          <div class="field"><label>Password Baru</label><input type="password" id="set-newpass" placeholder="Min 6 karakter"/></div>
+          <div class="field"><label>Konfirmasi Password Baru</label><input type="password" id="set-newpass2" placeholder="Ulangi password baru"/></div>
+          <button class="btn btn-primary btn-block" id="btn-save-pass" style="margin-top:8px">${ico('lock')} Ganti Password</button>
+          <div class="hint">Setelah ganti, kamu tetap login di device ini.</div>
+        </div>
+
+        <div class="settings-section">
+          <h3>${ico('mail')} Ganti Email</h3>
+          <div id="email-msg"></div>
+          <div class="field"><label>Password (verifikasi)</label><input type="password" id="set-emailpass" placeholder="••••••••"/></div>
+          <div class="field"><label>Email Baru</label><input type="email" id="set-newemail" placeholder="emailbaru@mail.com"/></div>
+          <button class="btn btn-primary btn-block" id="btn-save-email" style="margin-top:8px">${ico('mail')} Ganti Email</button>
+          <div class="hint">Kamu akan menerima email verifikasi di <b>email baru</b>. Klik link untuk menyelesaikan.</div>
+        </div>
+        ` : `
+        <div class="settings-section">
+          <h3>${ico('lock')} Password</h3>
+          <p style="font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.6">
+            Kamu login dengan <b>Google</b>. Untuk ganti password, buka
+            <a href="https://myaccount.google.com/security" target="_blank" style="text-decoration:underline;font-weight:900">Akun Google kamu</a>.
+          </p>
+        </div>
+        `}
+
+        <div class="settings-section danger">
+          <h3>${ico('logout')} Keluar Akun</h3>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);line-height:1.5;margin-bottom:12px">
+            Kamu akan keluar dari device ini. Login ulang kapan saja pakai email & password atau Google.
+          </p>
+          <button class="btn btn-red btn-block" id="btn-logout-here">${ico('logout')} Logout dari Device Ini</button>
+        </div>
+      </div>`;
+
+    bindTopbar();
+
+    /* GANTI NAMA */
+    $("#btn-save-name").addEventListener("click", async ()=>{
+      const newName = $("#set-name").value.trim();
+      if(!newName || newName.length < 2){
+        $("#name-msg").innerHTML = `<div class="err-box">Nama minimal 2 karakter</div>`; return;
+      }
+      if(newName === u.name){
+        $("#name-msg").innerHTML = `<div class="err-box">Nama sama dengan yang sekarang</div>`; return;
+      }
+      showLoading("Menyimpan...");
+      try{
+        await Auth.updateName(newName);
+        await Auth.init();
+        hideLoading(); toast("Nama berhasil diubah!","success");
+        this.render();
+      }catch(e){ hideLoading(); $("#name-msg").innerHTML = `<div class="err-box">Gagal: ${esc(e.message)}</div>`; }
+    });
+
+    /* GANTI PASSWORD */
+    const btnPass = $("#btn-save-pass");
+    if(btnPass) btnPass.addEventListener("click", async ()=>{
+      const oldPass = $("#set-oldpass").value, newPass = $("#set-newpass").value, newPass2 = $("#set-newpass2").value;
+      if(!oldPass || !newPass || !newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Isi semua field</div>`; return; }
+      if(newPass.length < 6){ $("#pass-msg").innerHTML = `<div class="err-box">Password baru minimal 6 karakter</div>`; return; }
+      if(newPass !== newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Konfirmasi password tidak sama</div>`; return; }
+      if(newPass === oldPass){ $("#pass-msg").innerHTML = `<div class="err-box">Password baru sama dengan yang lama</div>`; return; }
+      showLoading("Verifikasi & ganti password...");
+      try{
+        await Auth.updatePassword(oldPass, newPass);
+        hideLoading();
+        $("#set-oldpass").value = ""; $("#set-newpass").value = ""; $("#set-newpass2").value = "";
+        $("#pass-msg").innerHTML = `<div class="ok-box">✅ Password berhasil diubah!</div>`;
+        toast("Password diubah","success");
+      }catch(e){
+        hideLoading();
+        let msg = e.message || e.code || "Gagal";
+        if(e.code === "auth/wrong-password" || e.code === "auth/invalid-credential") msg = "Password lama salah";
+        else if(e.code === "auth/weak-password") msg = "Password baru terlalu lemah";
+        else if(e.code === "auth/requires-recent-login") msg = "Sesi sudah lama. Logout lalu login ulang.";
+        $("#pass-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+      }
+    });
+
+    /* GANTI EMAIL */
+    const btnEmail = $("#btn-save-email");
+    if(btnEmail) btnEmail.addEventListener("click", async ()=>{
+      const pass = $("#set-emailpass").value, newEmail = $("#set-newemail").value.trim();
+      if(!pass || !newEmail){ $("#email-msg").innerHTML = `<div class="err-box">Isi semua field</div>`; return; }
+      if(!newEmail.includes("@") || !newEmail.includes(".")){ $("#email-msg").innerHTML = `<div class="err-box">Format email tidak valid</div>`; return; }
+      if(newEmail === u.email){ $("#email-msg").innerHTML = `<div class="err-box">Email sama dengan yang sekarang</div>`; return; }
+      if(!confirm(`Ganti email ke ${newEmail}?\n\nEmail lama tetap aktif sampai kamu verifikasi email baru.`)) return;
+      showLoading("Memproses...");
+      try{
+        await Auth.updateEmail(pass, newEmail);
+        hideLoading();
+        $("#set-emailpass").value = ""; $("#set-newemail").value = "";
+        $("#email-msg").innerHTML = `<div class="ok-box">✅ Cek email <b>${esc(newEmail)}</b> — klik link verifikasi untuk selesaikan.</div>`;
+        toast("Email verifikasi terkirim!","success");
+      }catch(e){
+        hideLoading();
+        let msg = e.message || e.code || "Gagal";
+        if(e.code === "auth/wrong-password" || e.code === "auth/invalid-credential") msg = "Password salah";
+        else if(e.code === "auth/email-already-in-use") msg = "Email sudah dipakai akun lain";
+        else if(e.code === "auth/invalid-email") msg = "Format email tidak valid";
+        else if(e.code === "auth/requires-recent-login") msg = "Sesi sudah lama. Logout lalu login ulang.";
+        $("#email-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+      }
+    });
+
+    /* LOGOUT */
+    $("#btn-logout-here").addEventListener("click", async ()=>{
+      if(!confirm("Logout dari device ini?")) return;
+      await Auth.logout();
+      toast("Logout berhasil","info");
+      Router.navigate("/");
+    });
+  }
+};
+
+/* =========================================================
+   PAGE: HELP
+   ========================================================= */
+const FAQ_DATA = [
+  { cat:"akun", q:"Bagaimana cara daftar akun?",
+    a:`<p>Klik tombol <b>Daftar Gratis</b> di landing page, lalu isi:</p>
+       <ul><li>Nama lengkap</li><li>Email aktif</li><li>Password (min 6 karakter)</li></ul>
+       <p>Atau langsung pakai <b>Login dengan Google</b> — lebih cepat.</p>` },
+  { cat:"akun", q:"Kenapa saya harus verifikasi email?",
+    a:`<p>Verifikasi email penting supaya:</p>
+       <ul><li>Akun kamu aman dari spam / akun palsu</li><li>Kamu bisa reset password kalau lupa</li><li>Bisa ganti email di halaman Settings</li></ul>
+       <p>Cek inbox, klik link verifikasi. Kalau gak ada, cek folder <b>Spam</b> atau <b>Promotions</b>.</p>` },
+  { cat:"akun", q:"Email verifikasi gak masuk, gimana?",
+    a:`<ol><li>Cek folder <b>Spam</b>, <b>Promotions</b>, atau <b>Updates</b></li>
+        <li>Tunggu 5-10 menit</li>
+        <li>Buka halaman <code>/verify</code> → klik <b>Kirim Ulang Email</b></li>
+        <li>Pastikan email tidak typo</li></ol>
+       <div class="tip">💡 Login pakai Google gak perlu verifikasi email.</div>` },
+  { cat:"akun", q:"Bagaimana cara ganti nama, password, atau email?",
+    a:`<p>Buka menu <b>Settings Account</b> dari drawer (icon ☰):</p>
+       <ul><li><b>Ganti Nama</b> — isi nama baru → klik Simpan</li>
+           <li><b>Ganti Password</b> — butuh password lama</li>
+           <li><b>Ganti Email</b> — butuh password, verifikasi ke email baru</li></ul>
+       <p>Kalau login via Google, ganti password/email lewat Akun Google.</p>` },
+  { cat:"akun", q:"Lupa password, bagaimana?",
+    a:`<p>Untuk sementara, fitur reset password belum tersedia di app. Solusi:</p>
+       <ol><li>Logout dari akun</li><li>Hubungi admin via WhatsApp untuk reset manual</li></ol>
+       <div class="tip">💡 Login pakai Google tidak punya password — tinggal login ulang.</div>` },
+
+  { cat:"bio", q:"Bagaimana cara bikin link-in-bio?",
+    a:`<ol><li>Login ke akun</li><li>Di Dashboard, klik <b>✨ Bikin Link-in-Bio Baru</b></li>
+        <li>Isi nama, bio, foto profil, banner</li><li>Tambah tombol link</li>
+        <li>Pilih tema</li><li>Klik <b>Simpan</b> 💾</li></ol>
+       <p>Link bio jadi: <code>varlinkbio-site.vercel.app/#/u/namamu</code></p>` },
+  { cat:"bio", q:"Gimana cara share link-in-bio saya?",
+    a:`<ul><li>Klik icon 📋 <b>Copy</b> di dashboard</li>
+        <li>Klik icon 📱 <b>QR</b> — download QR code</li>
+        <li>Klik icon 👁️ <b>Preview</b> — buka di tab baru</li>
+        <li>Setelah Simpan, muncul modal dengan Copy / WA</li></ul>` },
+  { cat:"bio", q:"Berapa jumlah bio link yang bisa saya buat?",
+    a:`<ul><li><b>Free</b>: 5 bio</li><li><b>Pro</b> (Rp 15.000/bln): 20 bio</li>
+        <li><b>Ultimate</b> (Rp 50.000/bln): unlimited</li></ul>` },
+  { cat:"bio", q:"Kenapa URL saya pakai nama seperti #/u/varo?",
+    a:`<p>URL bio kamu otomatis dari nama (disebut <b>slug</b>):</p>
+       <ul><li>Nama "Varo Codex" → <code>#/u/varo-codex</code></li>
+           <li>Kalau sudah dipakai → <code>varo-codex-2</code></li></ul>
+       <p>Kalau ganti nama, URL ikut berubah otomatis.</p>` },
+  { cat:"bio", q:"Bisa pakai video untuk banner?",
+    a:`<p><b>Bisa!</b> Tapi batasan:</p>
+       <ul><li>Ukuran maks <b>500 KB</b></li><li>Format: MP4, WEBM, MOV</li>
+           <li>Durasi 2-5 detik, loop</li></ul>
+       <div class="tip">💡 Kalau > 500 KB, kompres dulu pakai CapCut atau HandBrake.</div>` },
+  { cat:"bio", q:"Kenapa upload foto gagal / error 'terlalu besar'?",
+    a:`<p>Sistem otomatis compress, tapi ada limit:</p>
+       <ul><li>Foto profil/banner/thumbnail: max ~300 KB setelah compress</li>
+           <li>Foto HP modern (2-5 MB) biasanya OK karena di-compress</li>
+           <li>Kalau error, pakai foto lebih kecil</li></ul>` },
+  { cat:"bio", q:"Apa itu Link Lock?",
+    a:`<p><b>Link Lock</b> = fitur mengunci bio dengan password (khusus <b>Pro</b>+).</p>
+       <ol><li>Editor → section <b>Link Lock</b></li>
+           <li>Isi password</li><li>Simpan</li></ol>` },
+
+  { cat:"plan", q:"Apa saja plan yang tersedia?",
+    a:`<ul><li><b>Free</b> — Gratis, 5 bio, 5 tombol/bio, 1 tema</li>
+        <li><b>Pro</b> — Rp 15.000/bln, 20 bio, unlimited tombol, 6 tema, analytics, link lock, embed, logo partner</li>
+        <li><b>Ultimate</b> — Rp 50.000/bln, unlimited bio, semua fitur Pro + akses beta (animasi, pattern)</li></ul>` },
+  { cat:"plan", q:"Bagaimana cara upgrade?",
+    a:`<ol><li>Klik tombol <b>Upgrade</b></li><li>Klik <b>Donate di Tako</b></li>
+        <li>Bayar</li><li>Kirim bukti ke WhatsApp admin</li>
+        <li>Plan aktif dalam <b>1x24 jam</b></li></ol>
+       <div class="tip">💡 Admin: <b>+62 858-2305-8292</b></div>` },
+  { cat:"plan", q:"Apakah plan saya bisa kadaluarsa?",
+    a:`<p>Ya, plan Pro & Ultimate berlaku <b>30 hari</b>.</p>
+       <p>Setelah kadaluarsa:</p>
+       <ul><li>Turun otomatis ke Free</li><li>Bio tetap aman</li>
+           <li>Bio > 5 perlu upgrade lagi untuk edit</li></ul>` },
+
+  { cat:"partner", q:"Apa itu Logo Partner?",
+    a:`<p><b>Logo Partner</b> = logo perusahaan/brand yang kolaborasi. Muncul di bawah profil bio (khusus <b>Pro</b>+).</p>
+       <ol><li>Editor → section <b>Logo Partner</b></li>
+           <li>Klik <b>Tambah Logo</b></li>
+           <li>Upload gambar</li><li>Isi nama + URL</li></ol>` },
+  { cat:"partner", q:"Saya mau collab dengan Varlinkbio, bagaimana?",
+    a:`<p>Kirim proposal ke WhatsApp admin:</p>
+       <p style="text-align:center;margin:12px 0">
+         <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau collab dengan Varlinkbio')}" target="_blank" class="btn btn-green">💬 Chat Admin</a>
+       </p>` },
+
+  { cat:"dev", q:"Apa itu Dev Panel?",
+    a:`<p><b>Dev Panel</b> = panel khusus Developer (owner Varlinkbio). Fungsinya:</p>
+       <ul><li>Kelola user (ubah plan, hapus)</li><li>Lihat semua bio</li>
+           <li>Kelola Partner & Update Log</li><li>Ganti favicon situs</li></ul>` },
+  { cat:"dev", q:"Kenapa login Google gagal di WhatsApp / Instagram?",
+    a:`<p>Karena link dibuka di <b>in-app browser</b>. Google blokir login di situ.</p>
+       <p><b>Solusi:</b></p>
+       <ol><li>Tap titik tiga <b>⋮</b></li><li>Pilih <b>"Buka di Chrome"</b> / <b>"Open in Safari"</b></li>
+           <li>Login Google lagi</li></ol>
+       <div class="tip">💡 Atau pakai login Email & Password — jalan di semua browser.</div>` },
+  { cat:"dev", q:"Apakah Varlinkbio aman?",
+    a:`<p>Ya, kami pakai:</p>
+       <ul><li>🔥 Firebase Authentication (Google)</li><li>🔒 HTTPS</li>
+           <li>🛡️ Firestore Rules</li><li>📧 Email verification</li></ul>
+       <p>Kami <b>tidak</b> jual data kamu.</p>` },
+  { cat:"dev", q:"Apakah data saya bisa hilang?",
+    a:`<p>Data tersimpan di <b>Firebase (Google Cloud)</b>.</p>
+       <p>Sarankan:</p>
+       <ul><li>Jangan simpan file > 500 KB</li><li>Backup manual kalau penting</li></ul>` },
+
+  { cat:"lain", q:"Siapa yang membuat Varlinkbio?",
+    a:`<p>Dibuat oleh <b>Varoo</b> — developer Indonesia. ❤️</p>` },
+  { cat:"lain", q:"Bagaimana cara kontak / lapor bug?",
+    a:`<ul><li>💬 WhatsApp: <b>+62 858-2305-8292</b></li>
+        <li>📧 Email: mynameisvaroo@gmail.com</li></ul>
+       <p>Kalau lapor bug, sertakan: screenshot, URL, browser/device.</p>` },
+  { cat:"lain", q:"Bisakah saya pakai domain sendiri?",
+    a:`<p>Fitur custom domain sedang dikembangkan. Sementara semua bio pakai:</p>
+       <p style="text-align:center"><code>varlinkbio-site.vercel.app/#/u/namamu</code></p>` }
+];
+
+const FAQ_CATS = [
+  { id:"all", label:"Semua", icon:"📚" },
+  { id:"akun", label:"Akun", icon:"👤" },
+  { id:"bio", label:"Bio & Link", icon:"🔗" },
+  { id:"plan", label:"Plan", icon:"💎" },
+  { id:"partner", label:"Partner", icon:"🤝" },
+  { id:"dev", label:"Teknis", icon:"🔧" },
+  { id:"lain", label:"Lainnya", icon:"✨" }
+];
+
+const PageHelp = {
+  state: { cat:"all", search:"" },
+  render(){
+    if(!Auth.current) return Router.navigate("/login");
+    $("#app").innerHTML = `
+      ${renderTopbar()}
+      <div class="help-page">
+        <div class="help-hero">
+          <div class="hero-icon">${ico('help')}</div>
+          <h1>Bantuan & FAQ</h1>
+          <p>Pertanyaan umum seputar Varlinkbio. Gak nemu? Chat admin aja!</p>
+        </div>
+        <div class="help-search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="help-search" placeholder="Cari bantuan..." autocomplete="off"/>
+        </div>
+        <div class="help-cats" id="help-cats"></div>
+        <div class="help-list" id="help-list"></div>
+        <div class="help-cta">
+          <h3>Masih bingung?</h3>
+          <p>Kalau pertanyaan kamu gak ada di sini, langsung chat admin aja!</p>
+          <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo admin Varlinkbio, saya butuh bantuan.')}"
+             target="_blank" class="btn">${ico('whatsapp')} Chat Admin</a>
+        </div>
+      </div>`;
+
+    bindTopbar();
+    $("#help-cats").innerHTML = FAQ_CATS.map(c=>`
+      <div class="help-cat ${this.state.cat===c.id?"active":""}" data-cat="${c.id}">
+        ${c.icon} ${c.label}
+      </div>`).join("");
+    $$("#help-cats .help-cat").forEach(el=>{
+      el.addEventListener("click",()=>{
+        this.state.cat = el.dataset.cat;
+        $$("#help-cats .help-cat").forEach(x=>x.classList.toggle("active", x.dataset.cat === this.state.cat));
+        this.renderList();
+      });
+    });
+    $("#help-search").addEventListener("input", e=>{
+      this.state.search = e.target.value.toLowerCase().trim();
+      this.renderList();
+    });
+    this.renderList();
+  },
+  renderList(){
+    const el = $("#help-list");
+    let list = FAQ_DATA;
+    if(this.state.cat !== "all") list = list.filter(f => f.cat === this.state.cat);
+    if(this.state.search){
+      const q = this.state.search;
+      list = list.filter(f =>
+        f.q.toLowerCase().includes(q) ||
+        f.a.toLowerCase().replace(/<[^>]+>/g," ").includes(q)
+      );
+    }
+    if(!list.length){
+      el.innerHTML = `<div class="help-empty">🔍 Gak ada hasil untuk "${esc(this.state.search)}". Coba kata kunci lain atau chat admin.</div>`;
+      return;
+    }
+    const catLabel = (cid) => (FAQ_CATS.find(c=>c.id===cid) || {}).label || cid;
+    el.innerHTML = list.map((f,i)=>`
+      <div class="help-item" data-idx="${i}">
+        <div class="help-q">
+          <span class="q-icon">?</span>
+          <span style="flex:1">${esc(f.q)}</span>
+          <span class="q-cat">${esc(catLabel(f.cat))}</span>
+          <span class="q-arrow">▼</span>
+        </div>
+        <div class="help-a">${f.a}</div>
+      </div>`).join("");
+    $$("#help-list .help-item").forEach(item=>{
+      item.querySelector(".help-q").addEventListener("click", ()=>{
+        item.classList.toggle("open");
+      });
+    });
+  }
+};
+
+/* =========================================================
    PAGE: EDITOR
    ========================================================= */
 const PageEditor = {
@@ -2044,10 +2799,7 @@ const PageEditor = {
     return {
       id:null, slug:"", name:Auth.current?.name||"", bio:"",
       profile:"", banner:"", bannerType:"image",
-      favicon:"",
       logos:[],
-      layout:"list",
-      pattern:"dots",
       animation:"none",
       links:[{label:"Instagram",url:"https://instagram.com/",type:"classic",color:"",thumb:""}],
       theme:"neo-cream",
@@ -2061,7 +2813,6 @@ const PageEditor = {
     if(!STATE.plan) await loadUserPlan();
     if(!STATE.draft) STATE.draft=this.newDraft();
     const d = STATE.draft;
-    // validasi array
     if(!Array.isArray(d.logos)) d.logos = [];
     if(!Array.isArray(d.links)) d.links = [];
 
@@ -2129,21 +2880,9 @@ const PageEditor = {
             <div class="theme-grid" id="theme-grid"></div>
           </div>
 
-          ${canDo("layouts")?`
-          <div class="editor-section">
-            <h3><span class="num">${canDo("logos")?"7":"6"}</span> Layout <span class="beta-only-badge">BETA</span></h3>
-            <div class="opt-grid" id="layout-grid"></div>
-          </div>`:''}
-
-          ${canDo("patterns")?`
-          <div class="editor-section">
-            <h3><span class="num">${canDo("logos")?"8":"7"}</span> Pattern Background <span class="beta-only-badge">BETA</span></h3>
-            <div class="opt-grid" id="pattern-grid"></div>
-          </div>`:''}
-
           ${canDo("animations")?`
           <div class="editor-section">
-            <h3><span class="num">${canDo("logos")?"9":"8"}</span> Animasi Tombol <span class="beta-only-badge">BETA</span></h3>
+            <h3><span class="num">${canDo("logos")?"7":"6"}</span> Animasi Tombol <span class="beta-only-badge">BETA</span></h3>
             <div class="opt-grid" id="anim-grid"></div>
           </div>`:''}
 
@@ -2151,19 +2890,6 @@ const PageEditor = {
           <div class="editor-section">
             <h3><span class="num">★</span> ${ico('lock')} Link Lock</h3>
             <div class="field"><label>Password (kosong = tidak dikunci)</label><input id="f-lock" type="text" value="${esc(d.lock||"")}" placeholder="Password..."/></div>
-          </div>`:''}
-
-          ${isDev(Auth.current?.email)?`
-          <div class="editor-section">
-            <h3><span class="num">★</span> Favicon <span class="dev-only-badge">DEV</span></h3>
-            <div class="profile-upload">
-              <div class="pbox" id="fvbox" style="width:64px;height:64px;border-radius:12px;transform:none;background:var(--cream)">
-                ${d.favicon?`<img src="${esc(d.favicon)}">`:`<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:20px">${ico('image')}</div>`}
-                <div class="overlay">${ico('camera')}</div>
-                <input type="file" id="fv-input" accept="image/*"/>
-              </div>
-            </div>
-            ${d.favicon?`<button class="btn btn-sm btn-red btn-block" id="fv-clear" style="margin-top:8px">${ico('trash')} Hapus Favicon</button>`:''}
           </div>`:''}
         </div>
 
@@ -2178,68 +2904,50 @@ const PageEditor = {
 
     this.bindAll();
     this.renderThemeGrid();
-    this.renderLayoutGrid();
-    this.renderPatternGrid();
     this.renderAnimGrid();
     this.renderLinks();
     this.renderLogos();
     this.updatePreview();
   },
 
-  /* BIND ALL — dipanggil sekali saja, delegasi event */
   bindAll(){
     $("#btn-save").addEventListener("click",()=>this.save());
     $("#btn-save2").addEventListener("click",()=>this.save());
     const qrBtn=$("#btn-qr"); if(qrBtn) qrBtn.addEventListener("click",()=>PageDashboard.qr(STATE.draft.id));
     const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft));
 
-    /* Delegasi event — pakai document, jadi gak perlu re-bind */
-    document.addEventListener("change", this._delegatedChange = async (e)=>{
-      const id = e.target.id;
-      if(id === "p-input"){
-        const f=e.target.files[0]; if(!f) return;
-        showLoading("Upload foto...");
-        try{
-          const url=await Store.upload(f,"profile");
-          STATE.draft.profile=url;
-          const box=$("#pbox");
-          if(box) box.innerHTML=`<img src="${esc(url)}"/><div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*"/>`;
-          hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
-        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-      }
-      if(id === "bn-input"){
-        const f=e.target.files[0]; if(!f) return;
-        const isVid = f.type.startsWith("video/");
-        showLoading(isVid?"Upload video...":"Compress & upload...");
-        try{
-          const url=await Store.upload(f,"banner");
-          STATE.draft.banner=url;
-          STATE.draft.bannerType = isVid ? "video" : "image";
-          hideLoading(); toast("Banner diupdate","success");
-          this.render();
-        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-      }
-      if(id === "fv-input"){
-        const f=e.target.files[0]; if(!f) return;
-        showLoading("Upload favicon...");
-        try{
-          const url=await Store.upload(f,"favicon");
-          STATE.draft.favicon=url;
-          hideLoading(); toast("Favicon diupdate","success"); this.render();
-        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-      }
-    }, { once:false });
+    const pInput=$("#p-input");
+    if(pInput) pInput.addEventListener("change", async e=>{
+      const f=e.target.files[0]; if(!f) return;
+      showLoading("Upload foto...");
+      try{
+        const url=await Store.upload(f,"profile");
+        STATE.draft.profile=url;
+        $("#pbox").innerHTML=`<img src="${esc(url)}"/><div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*"/>`;
+        this.bindAll();
+        hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
+      }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+    });
 
-    /* input text */
-    const fn = $("#f-name"); if(fn) fn.addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
-    const fb = $("#f-bio"); if(fb) fb.addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
-    const fl = $("#f-lock"); if(fl) fl.addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
+    const fn=$("#f-name"); if(fn) fn.addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
+    const fb=$("#f-bio"); if(fb) fb.addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
+    const fl=$("#f-lock"); if(fl) fl.addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
 
+    const bnInput=$("#bn-input");
+    if(bnInput) bnInput.addEventListener("change", async e=>{
+      const f=e.target.files[0]; if(!f) return;
+      const isVid = f.type.startsWith("video/");
+      showLoading(isVid?"Upload video...":"Compress & upload...");
+      try{
+        const url=await Store.upload(f,"banner");
+        STATE.draft.banner=url;
+        STATE.draft.bannerType = isVid ? "video" : "image";
+        hideLoading(); toast("Banner diupdate","success");
+        this.render();
+      }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+    });
     const bnClear=$("#bn-clear"); if(bnClear) bnClear.addEventListener("click",()=>{
       STATE.draft.banner=""; STATE.draft.bannerType="image"; this.render();
-    });
-    const fvClear=$("#fv-clear"); if(fvClear) fvClear.addEventListener("click",()=>{
-      STATE.draft.favicon=""; toast("Favicon dihapus","info"); this.render();
     });
 
     const addLogo=$("#add-logo"); if(addLogo) addLogo.addEventListener("click",()=>{
@@ -2252,43 +2960,7 @@ const PageEditor = {
       if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
       window.open(`${location.pathname}#/u/${STATE.draft.slug||STATE.draft.id}`,"_blank");
     });
-
     bindTopbar();
-  },
-
-  renderLayoutGrid(){
-    const el=$("#layout-grid"); if(!el) return;
-    const opts=[{id:"list",label:"List",icon:"≡"},{id:"grid",label:"Grid",icon:"⊞"}];
-    el.innerHTML = opts.map(o=>`
-      <div class="opt-item ${STATE.draft.layout===o.id?"active":""}" data-layout="${o.id}">
-        <div class="opt-preview">${o.icon}</div>${o.label}
-      </div>`).join("");
-    $$("#layout-grid .opt-item").forEach(x=>{
-      x.addEventListener("click",()=>{
-        STATE.draft.layout=x.dataset.layout;
-        this.renderLayoutGrid(); this.updatePreview();
-      });
-    });
-  },
-
-  renderPatternGrid(){
-    const el=$("#pattern-grid"); if(!el) return;
-    const opts=[
-      { id:"dots", label:"Dots", icon:"⋰" },
-      { id:"grid", label:"Grid", icon:"▦" },
-      { id:"waves", label:"Waves", icon:"≈" },
-      { id:"none", label:"None", icon:"·" }
-    ];
-    el.innerHTML = opts.map(o=>`
-      <div class="opt-item ${STATE.draft.pattern===o.id?"active":""}" data-pattern="${o.id}">
-        <div class="opt-preview">${o.icon}</div>${o.label}
-      </div>`).join("");
-    $$("#pattern-grid .opt-item").forEach(x=>{
-      x.addEventListener("click",()=>{
-        STATE.draft.pattern=x.dataset.pattern;
-        this.renderPatternGrid(); this.updatePreview();
-      });
-    });
   },
 
   renderAnimGrid(){
@@ -2532,10 +3204,10 @@ const PageEditor = {
 };
 
 /* =========================================================
-   PAGE: DEV PANEL (dengan tab Partners & Updates)
+   PAGE: DEV PANEL
    ========================================================= */
 const PageDev = {
-  state: { users:[], bios:[], partners:[], updates:[], filter:"all", search:"", tab:"users" },
+  state: { users:[], bios:[], partners:[], updates:[], filter:"all", search:"", tab:"users", settings:{} },
 
   async render(){
     if(!Auth.current) return Router.navigate("/login");
@@ -2544,8 +3216,9 @@ const PageDev = {
       ${renderTopbar()}
       <div style="background:var(--cream);min-height:calc(100vh - 60px)">
         <div class="dev-header">
+          <button class="back-btn" id="dev-back-btn">${ico('back')} Back</button>
           <h1>${ico('zap')} Dev Panel</h1>
-          <p>Control semua user, bio, partner, & update</p>
+          <p>Control semua user, bio, partner, update, & favicon</p>
         </div>
         <div class="dev-stats" id="dev-stats"></div>
         <div class="dev-tabs">
@@ -2553,10 +3226,13 @@ const PageDev = {
           <div class="dev-tab" data-tab="bios">📁 Bios</div>
           <div class="dev-tab" data-tab="partners">🤝 Partners</div>
           <div class="dev-tab" data-tab="updates">📰 Updates</div>
+          <div class="dev-tab" data-tab="favicon">🎨 Favicon</div>
         </div>
         <div id="dev-content"></div>
       </div>`;
     bindTopbar();
+    const backBtn = $("#dev-back-btn");
+    if(backBtn) backBtn.addEventListener("click", ()=>Router.navigate("/dashboard"));
     $$(".dev-tab").forEach(t=>{
       t.addEventListener("click",()=>{
         $$(".dev-tab").forEach(x=>x.classList.remove("active"));
@@ -2579,6 +3255,7 @@ const PageDev = {
       this.state.users = users; this.state.bios = bios;
       this.state.partners = await Store.listPartners();
       this.state.updates = await Store.listUpdates();
+      this.state.settings = await Store.getSettings();
       this.renderStats();
       this.renderTab();
     }catch(e){
@@ -2603,6 +3280,7 @@ const PageDev = {
     const tab = this.state.tab;
     if(tab === "partners") return this.renderPartners();
     if(tab === "updates") return this.renderUpdates();
+    if(tab === "favicon") return this.renderFavicon();
     return this.renderList();
   },
 
@@ -2623,11 +3301,24 @@ const PageDev = {
         <button class="btn btn-sm" id="dev-refresh">${ico('back')} Refresh</button>
       </div>
       <div class="dev-list" id="dev-list"></div>`;
-    $("#dev-search")?.addEventListener("input", e=>{ this.state.search = e.target.value.toLowerCase(); this.renderTab(); });
-    $("#dev-filter")?.addEventListener("change", e=>{ this.state.filter = e.target.value; this.renderTab(); });
-    $("#dev-refresh")?.addEventListener("click", ()=>this.loadData());
+    const searchEl = $("#dev-search");
+    if(searchEl){
+      searchEl.addEventListener("input", e=>{
+        this.state.search = e.target.value.toLowerCase();
+        clearTimeout(this._searchTO);
+        this._searchTO = setTimeout(()=>this.renderListContent(), 250);
+      });
+    }
+    const filterEl = $("#dev-filter");
+    if(filterEl) filterEl.addEventListener("change", e=>{ this.state.filter = e.target.value; this.renderListContent(); });
+    const refreshEl = $("#dev-refresh");
+    if(refreshEl) refreshEl.addEventListener("click", ()=>this.loadData());
+    this.renderListContent();
+  },
 
-    const wrap = $("#dev-list");
+  renderListContent(){
+    const wrap = $("#dev-list"); if(!wrap) return;
+    const { tab, filter, search } = this.state;
     const matchSearch = (s)=> !search || (s||"").toLowerCase().includes(search);
 
     if(tab === "users"){
@@ -2642,11 +3333,14 @@ const PageDev = {
         const bios = this.state.bios.filter(b=>b.ownerUid===u.uid).length;
         const expiry = u.planExpiry ? new Date(u.planExpiry).toLocaleDateString("id-ID") : "—";
         const initial = (u.name||u.email||"?")[0].toUpperCase();
+        const verifyBadge = u.emailVerified
+          ? '<span style="color:var(--green);font-size:11px;margin-left:4px;font-weight:900">✓ verified</span>'
+          : '<span style="color:var(--red);font-size:11px;margin-left:4px;font-weight:900">⚠ unverified</span>';
         return `
           <div class="dev-item">
             <div class="di-avatar">${initial}</div>
             <div class="di-info">
-              <b>${esc(u.name||"Tanpa nama")} <span class="dev-plan-pill ${plan}">${plan}</span></b>
+              <b>${esc(u.name||"Tanpa nama")} <span class="dev-plan-pill ${plan}">${plan}</span>${verifyBadge}</b>
               <span>${esc(u.email||"")} · ${bios} bio${u.planExpiry?` · exp: ${expiry}`:""}</span>
             </div>
             <div class="di-actions">
@@ -2673,7 +3367,7 @@ const PageDev = {
     }
   },
 
-  /* ============ PARTNERS TAB ============ */
+  /* PARTNERS */
   renderPartners(){
     const el = $("#dev-content");
     const list = this.state.partners || [];
@@ -2689,10 +3383,16 @@ const PageDev = {
         <div class="dev-manager-list" id="partner-list"></div>
       </div>`;
     $("#mgr-add-partner").addEventListener("click", async ()=>{
-      await Store.savePartner({ name:"Partner Baru", tag:"Partner", url:"https://", initial:"P", order:Date.now() });
-      toast("Partner ditambahkan","success");
-      this.state.partners = await Store.listPartners();
-      this.renderPartners();
+      showLoading("Menambah partner...");
+      try{
+        await Store.savePartner({ name:"Partner Baru", tag:"Partner", url:"https://", initial:"P", order:Date.now() });
+        this.state.partners = await Store.listPartners();
+        hideLoading(); toast("Partner ditambahkan ✓","success");
+        this.renderPartners();
+      }catch(err){
+        hideLoading(); console.error("Add partner:", err);
+        toast("Gagal: "+(err.message||err.code||"permission-denied"),"error");
+      }
     });
     $("#mgr-refresh-partner").addEventListener("click", async ()=>{
       this.state.partners = await Store.listPartners();
@@ -2777,7 +3477,7 @@ const PageDev = {
     });
   },
 
-  /* ============ UPDATES TAB ============ */
+  /* UPDATES */
   renderUpdates(){
     const el = $("#dev-content");
     const list = this.state.updates || [];
@@ -2793,14 +3493,20 @@ const PageDev = {
         <div class="dev-manager-list" id="update-list"></div>
       </div>`;
     $("#mgr-add-update").addEventListener("click", async ()=>{
-      await Store.saveUpdate({
-        version:"v?.?", date:"Hari ini", title:"Update Baru",
-        changes:["Perubahan 1","Perubahan 2"], createdAt:Date.now()
-      });
-      toast("Update ditambahkan","success");
-      this.state.updates = await Store.listUpdates();
-      STATE.updates = this.state.updates;
-      this.renderUpdates();
+      showLoading("Menambah update...");
+      try{
+        await Store.saveUpdate({
+          version:"v?.?", date:"Hari ini", title:"Update Baru",
+          changes:["Perubahan 1","Perubahan 2"], createdAt:Date.now()
+        });
+        this.state.updates = await Store.listUpdates();
+        STATE.updates = this.state.updates;
+        hideLoading(); toast("Update ditambahkan ✓","success");
+        this.renderUpdates();
+      }catch(err){
+        hideLoading(); console.error("Add update:", err);
+        toast("Gagal: "+(err.message||err.code||"permission-denied"),"error");
+      }
     });
     $("#mgr-refresh-update").addEventListener("click", async ()=>{
       this.state.updates = await Store.listUpdates();
@@ -2826,9 +3532,7 @@ const PageDev = {
           </div>
         </div>
         <label style="font-size:11px;font-weight:800;text-transform:uppercase;
-          letter-spacing:.5px;color:var(--ink-soft);display:block;margin:8px 0 4px">
-          Perubahan:
-        </label>
+          letter-spacing:.5px;color:var(--ink-soft);display:block;margin:8px 0 4px">Perubahan:</label>
         <div class="mgr-changes-list" data-uchanges="${u.id}">
           ${(u.changes||[]).map((c,i)=>`
             <div class="change-row">
@@ -2836,9 +3540,7 @@ const PageDev = {
               <button class="chg-del" data-uchgdel="${u.id}-${i}">${ico('x')}</button>
             </div>`).join("")}
         </div>
-        <button class="btn btn-sm" data-uchgadd="${u.id}" style="margin-top:6px;font-size:11px">
-          ${ico('plus')} Tambah Baris
-        </button>
+        <button class="btn btn-sm" data-uchgadd="${u.id}" style="margin-top:6px;font-size:11px">${ico('plus')} Tambah Baris</button>
         <div class="mgr-actions">
           <button class="btn btn-sm btn-primary" data-usave="${u.id}">${ico('save')} Simpan</button>
           <button class="btn btn-sm btn-red" data-udel="${u.id}">${ico('trash')} Hapus</button>
@@ -2850,6 +3552,11 @@ const PageDev = {
         const [uid_, iStr] = b.dataset.uchgdel.split("-");
         const i = +iStr;
         const idx = this.state.updates.findIndex(x=>x.id===uid_);
+        const card = wrap.querySelector(`[data-uid="${uid_}"]`);
+        // Sync semua input changes ke state dulu
+        const curChanges = [];
+        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>curChanges.push(inp.value));
+        this.state.updates[idx].changes = curChanges;
         this.state.updates[idx].changes.splice(i,1);
         this.renderUpdateList();
       });
@@ -2858,7 +3565,11 @@ const PageDev = {
       b.addEventListener("click",()=>{
         const u = b.dataset.uchgadd;
         const idx = this.state.updates.findIndex(x=>x.id===u);
-        if(!this.state.updates[idx].changes) this.state.updates[idx].changes = [];
+        const card = wrap.querySelector(`[data-uid="${u}"]`);
+        // Sync dulu
+        const curChanges = [];
+        card.querySelectorAll(`[data-uchange^="${u}-"]`).forEach(inp=>curChanges.push(inp.value));
+        this.state.updates[idx].changes = curChanges;
         this.state.updates[idx].changes.push("Perubahan baru");
         this.renderUpdateList();
       });
@@ -2871,9 +3582,7 @@ const PageDev = {
         const date = card.querySelector(`[data-ud="${uid_}"]`).value;
         const title = card.querySelector(`[data-ut="${uid_}"]`).value;
         const changes = [];
-        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>{
-          changes.push(inp.value);
-        });
+        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>changes.push(inp.value));
         const idx = this.state.updates.findIndex(x=>x.id===uid_);
         const updated = { ...this.state.updates[idx], version, date, title, changes };
         showLoading("Menyimpan...");
@@ -2898,6 +3607,86 @@ const PageDev = {
           this.renderUpdates();
         }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
       });
+    });
+  },
+
+  /* FAVICON */
+  renderFavicon(){
+    const el = $("#dev-content");
+    const s = this.state.settings || {};
+    const fav = s.favicon || null;
+    el.innerHTML = `
+      <div class="favicon-panel">
+        <div class="fp-card">
+          <h3>${ico('image')} Favicon Situs Varlinkbio</h3>
+          <p class="fp-desc">
+            Ganti icon kecil yang muncul di <b>tab browser</b> — di semua halaman Varlinkbio.
+            Format: PNG / ICO / SVG ukuran kotak (rekomendasi 128×128 atau 256×256).
+          </p>
+          <div class="favicon-preview-big">
+            <div class="fp-thumb" id="fp-thumb">
+              ${fav
+                ? `<img src="${esc(fav)}" alt="favicon"/>`
+                : `<div class="ph">Belum ada<br>favicon</div>`}
+            </div>
+            <div class="fp-arrow">→</div>
+            <div class="fp-tab-mock">
+              <span class="dot"></span>
+              <span class="icon">${fav?`<img src="${esc(fav)}" alt=""/>`:`🎨`}</span>
+              <span class="title">Varlinkbio — Link in Bio</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            <button class="btn btn-primary" id="fp-upload">${ico('camera')} ${fav?'Ganti':'Upload'} Favicon</button>
+            ${fav?`<button class="btn btn-red" id="fp-clear">${ico('trash')} Hapus</button>`:''}
+          </div>
+          <div class="fp-note">
+            ⚡ <b>Preview langsung:</b> setelah upload, favicon di tab browser ini
+            langsung berubah (tanpa reload).
+          </div>
+        </div>
+      </div>`;
+
+    const uploadFn = ()=>{
+      const inp = document.createElement("input");
+      inp.type = "file"; inp.accept = "image/*";
+      inp.onchange = async ()=>{
+        const f = inp.files[0]; if(!f) return;
+        showLoading("Upload favicon...");
+        try{
+          const url = await Store.upload(f, "favicon");
+          await Store.saveSettings({ favicon: url });
+          let links = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
+          if(!links.length){
+            const link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+            links = [link];
+          }
+          links.forEach(l => l.href = url);
+          STATE.appSettings = { ...STATE.appSettings, favicon: url };
+          this.state.settings = { ...this.state.settings, favicon: url };
+          hideLoading();
+          toast("Favicon diupdate! Cek tab browser ✓","success");
+          this.renderFavicon();
+        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+      };
+      inp.click();
+    };
+    $("#fp-thumb")?.addEventListener("click", uploadFn);
+    $("#fp-upload")?.addEventListener("click", uploadFn);
+    $("#fp-clear")?.addEventListener("click", async ()=>{
+      if(!confirm("Hapus favicon? Akan kembali ke default.")) return;
+      showLoading("Menghapus...");
+      try{
+        await Store.saveSettings({ favicon: "" });
+        const defaultFav = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><circle cx='50' cy='50' r='22' fill='%23ffd700' stroke='%23fff' stroke-width='4'/></svg>";
+        let links = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
+        links.forEach(l => l.href = defaultFav);
+        this.state.settings = { ...this.state.settings, favicon: "" };
+        hideLoading(); toast("Favicon dihapus","info");
+        this.renderFavicon();
+      }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
     });
   },
 
@@ -3016,10 +3805,7 @@ const PagePublic = {
         </div>`
       : "";
 
-    const layoutCls = d.layout === "grid" ? "layout-grid" : "";
-    const patternCls = d.pattern && d.pattern !== "dots" ? `pattern-${d.pattern}` : "";
     const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
-
     const bioId = d.id||"";
     const slug = d.slug||bioId;
     const isLocked = !!d.lock;
@@ -3028,7 +3814,8 @@ const PagePublic = {
     const pageTitle = `VarlinkBio-${d.name||"User"}`;
     const pageDesc = d.bio || `Cek link-in-bio ${d.name||"User"} di Varlinkbio`;
     const pageImage = d.profile || d.banner || "";
-    const faviconTag = d.favicon ? `<link rel="icon" href="${esc(d.favicon)}"/>` : "";
+    const appFav = STATE.appSettings?.favicon || "";
+    const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
 
     return `<!DOCTYPE html>
 <html lang="id"><head>
@@ -3046,7 +3833,7 @@ ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
 <style>${PagePublic.css()}</style>
 </head><body class="bio-public">
 <div class="bio-deco d1"></div><div class="bio-deco d2"></div><div class="bio-deco d3"></div>
-<div class="bio-wrap ${themeClass} ${patternCls} ${animCls}">
+<div class="bio-wrap ${themeClass} ${animCls}">
   <div class="bio-inner">
     <div class="bio-header">
       <div class="bio-avatar">${profileBlock}</div>
@@ -3057,7 +3844,7 @@ ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
     </div>
     ${logosHtml}
     ${bannerBlock}
-    <div class="bio-links ${layoutCls}">${links}</div>
+    <div class="bio-links">${links}</div>
     <div style="text-align:center">
       <div class="bio-footer">Powered by <a href="${location.origin}${location.pathname}" target="_top">Varlinkbio</a> · by Varoo</div>
     </div>
@@ -3077,158 +3864,83 @@ ${isLocked?`
 const BIO_ID = "${bioId}";
 const IS_PREVIEW = ${preview?"true":"false"};
 const LOCK_PASS = ${JSON.stringify(d.lock||"")};
-
-function trackView(){
-  if(IS_PREVIEW||!BIO_ID) return;
-  try{ window.parent.postMessage({type:"varlinkb:view",id:BIO_ID},"*"); }catch(e){}
-}
-function trackClick(idx){
-  if(IS_PREVIEW||!BIO_ID) return;
-  try{ window.parent.postMessage({type:"varlinkb:click",id:BIO_ID,idx:idx},"*"); }catch(e){}
-}
-document.querySelectorAll("[data-click]").forEach(el=>{
-  el.addEventListener("click",()=>trackClick(+el.dataset.click));
-});
+function trackView(){ if(IS_PREVIEW||!BIO_ID) return; try{ window.parent.postMessage({type:"varlinkb:view",id:BIO_ID},"*"); }catch(e){} }
+function trackClick(idx){ if(IS_PREVIEW||!BIO_ID) return; try{ window.parent.postMessage({type:"varlinkb:click",id:BIO_ID,idx:idx},"*"); }catch(e){} }
+document.querySelectorAll("[data-click]").forEach(el=>{ el.addEventListener("click",()=>trackClick(+el.dataset.click)); });
 ${isLocked?`
 (function(){
   const overlay=document.getElementById("lock-overlay");
   const inp=document.getElementById("lock-pass");
   const btn=document.getElementById("lock-btn");
   function unlock(){
-    if(inp.value===LOCK_PASS){
-      overlay.style.display="none";
-      sessionStorage.setItem("varlinkb_unlocked_"+BIO_ID,"1");
-    } else {
-      inp.style.borderColor="#ff2a2a";
-      inp.value="";
-      inp.placeholder="Salah, coba lagi...";
-      setTimeout(()=>{ inp.style.borderColor=""; inp.placeholder="Password..."; },1400);
-    }
+    if(inp.value===LOCK_PASS){ overlay.style.display="none"; sessionStorage.setItem("varlinkb_unlocked_"+BIO_ID,"1"); }
+    else { inp.style.borderColor="#ff2a2a"; inp.value=""; inp.placeholder="Salah, coba lagi..."; setTimeout(()=>{ inp.style.borderColor=""; inp.placeholder="Password..."; },1400); }
   }
   if(sessionStorage.getItem("varlinkb_unlocked_"+BIO_ID)==="1"){ overlay.style.display="none"; }
-  btn.addEventListener("click",unlock);
-  inp.addEventListener("keydown",e=>{ if(e.key==="Enter") unlock(); });
-  inp.focus();
+  btn.addEventListener("click",unlock); inp.addEventListener("keydown",e=>{ if(e.key==="Enter") unlock(); }); inp.focus();
 })();`:""}
 trackView();
 <\/script>
 </body></html>`;
   },
 
-  css(){
-    // Ambil dari CSS utama, versi ringkas
-    return `
+  css(){ return `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;--red:#ff2a2a;--yellow:#ffd700;
-  --green:#22c55e;--blue:#2563eb;--pink:#ff69b4;--purple:#a78bfa;--white:#fff}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  color:var(--ink);min-height:100vh;background:var(--cream);overflow-x:hidden;font-weight:700}
+:root{--cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;--red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;--pink:#ff69b4;--purple:#a78bfa;--white:#fff}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);min-height:100vh;background:var(--cream);overflow-x:hidden;font-weight:700}
 a{text-decoration:none;color:inherit}
 img,video{max-width:100%;display:block}
-.ic{width:18px;height:18px;display:inline-block;vertical-align:middle;
-  stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-@keyframes dotsFlow{from{background-position:0 0,10px 10px}
-  to{background-position:400px -400px,410px -390px}}
+.ic{width:18px;height:18px;display:inline-block;vertical-align:middle;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes dotsFlow{from{background-position:0 0,10px 10px}to{background-position:400px -400px,410px -390px}}
 .bio-deco{position:fixed;pointer-events:none;z-index:1}
-.bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
-  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink);
-  animation:deco1 6s ease-in-out infinite}
-.bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);
-  border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);
-  box-shadow:4px 4px 0 var(--ink);animation:deco2 7s ease-in-out infinite}
-.bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);
-  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink);
-  animation:deco3 8s ease-in-out infinite}
+.bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink);animation:deco1 6s ease-in-out infinite}
+.bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);box-shadow:4px 4px 0 var(--ink);animation:deco2 7s ease-in-out infinite}
+.bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink);animation:deco3 8s ease-in-out infinite}
 @keyframes deco1{0%,100%{transform:rotate(-12deg) translate(0,0)}50%{transform:rotate(-12deg) translate(6px,-8px)}}
 @keyframes deco2{0%,100%{transform:rotate(20deg) translate(0,0)}50%{transform:rotate(20deg) translate(-6px,8px)}}
 @keyframes deco3{0%,100%{transform:rotate(15deg) translate(0,0)}50%{transform:rotate(15deg) translate(4px,-6px)}}
-.bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
-  padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;z-index:2}
+.bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;z-index:2}
 .bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
-.bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
-  overflow:hidden;background:var(--white);margin:0 auto;
-  box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);overflow:hidden;background:var(--white);margin:0 auto;box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-avatar img{width:100%;height:100%;object-fit:cover}
 .bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 .bio-header{display:flex;flex-direction:column;align-items:center;margin-bottom:14px;position:relative}
-.bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
-  color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;
-  letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);
-  margin-top:12px;box-shadow:3px 3px 0 var(--ink);z-index:3}
-.bio-name{display:inline-block;padding:7px 18px;background:var(--yellow);
-  color:var(--ink);font-size:21px;font-weight:900;text-transform:uppercase;
-  letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(2deg);
-  margin-top:-4px;box-shadow:5px 5px 0 var(--ink);text-align:center;max-width:100%;
-  word-break:break-word;z-index:2}
-.bio-bio{display:inline-block;padding:6px 14px;background:var(--red);color:var(--white);
-  font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
-  border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;
-  box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;
-  word-break:break-word;z-index:1}
-.bio-plan-badge{display:inline-block;padding:3px 12px;background:var(--ink);
-  color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;
-  letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;
-  margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
+.bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);margin-top:12px;box-shadow:3px 3px 0 var(--ink);z-index:3}
+.bio-name{display:inline-block;padding:7px 18px;background:var(--yellow);color:var(--ink);font-size:21px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(2deg);margin-top:-4px;box-shadow:5px 5px 0 var(--ink);text-align:center;max-width:100%;word-break:break-word;z-index:2}
+.bio-bio{display:inline-block;padding:6px 14px;background:var(--red);color:var(--white);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;word-break:break-word;z-index:1}
+.bio-plan-badge{display:inline-block;padding:3px 12px;background:var(--ink);color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
 .bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
 .bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
-.bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;
-  flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
-.bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);
-  background:var(--white);overflow:hidden;display:grid;place-items:center;
-  box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
+.bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);background:var(--white);overflow:hidden;display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-.bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;
-  border:3px solid var(--ink);border-radius:12px;overflow:hidden;
-  box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
+.bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
 .bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
 @media(max-width:480px){.bio-banner{max-width:100%}}
 .bio-links{display:flex;flex-direction:column;gap:14px}
-.bio-links.layout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.bio-links.layout-grid .bio-link{min-height:80px;padding:12px;font-size:12.5px;
-  flex-direction:column;text-align:center;gap:6px}
-.bio-links.layout-grid .bio-link .ltext{padding-right:0}
-.bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
-  font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;
-  position:relative;transition:transform .12s, box-shadow .12s;
-  box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;
-  background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
+.bio-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;border:3px solid var(--ink);border-radius:12px;font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;position:relative;transition:transform .12s, box-shadow .12s;box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
 @keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
 .bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
 .bio-link .ltext{flex:1;text-align:center}
-.bio-link.bio-featured{flex-direction:column;align-items:stretch;padding:0;
-  overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
-.bio-link.bio-featured .feat-img{width:100%;height:130px;object-fit:cover;
-  border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
+.bio-link.bio-featured{flex-direction:column;align-items:stretch;padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
+.bio-link.bio-featured .feat-img{width:100%;height:130px;object-fit:cover;border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
 .bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
 .bio-link.bio-featured .feat-body b{font-size:14.5px;font-weight:900;text-transform:uppercase}
-.bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
-  box-shadow:6px 6px 0 var(--ink);background:var(--white)}
+.bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white)}
 .bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
-.bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;
-  text-transform:uppercase;letter-spacing:1px;background:var(--white);
-  border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
-  box-shadow:2px 2px 0 var(--ink);display:inline-block}
+.bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--white);border:2px solid var(--ink);padding:6px 12px;border-radius:20px;box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
 .bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
 @keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}50%{transform:translate(-2px,-8px)}}
 .bio-wrap.anim-shake .bio-link:active{animation:linkShake .3s ease}
 @keyframes linkShake{0%,100%{transform:translate(4px,4px)}25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
 .bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
-.theme-neo-cream{background-color:#f0ebe0;
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
-    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
-  animation:dotsFlow 24s linear infinite}
-.theme-neo-dark{background-color:#0a0a0a;color:#fff;
-  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
-    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
-  animation:dotsFlow 24s linear infinite}
+.theme-neo-cream{background-color:#f0ebe0;background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
+.theme-neo-dark{background-color:#0a0a0a;color:#fff;background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
 .theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
@@ -3237,74 +3949,47 @@ img,video{max-width:100%;display:block}
 .theme-neo-dark .bio-banner,.theme-neo-dark .bio-embed{border-color:#fff}
 .theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
 .theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
-.theme-neo-blue{background-color:#2563eb;color:#fff;
-  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
-    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
-  animation:dotsFlow 24s linear infinite}
+.theme-neo-blue{background-color:#2563eb;color:#fff;background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
 .theme-neo-blue .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
 .theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
-.theme-neo-pink{background-color:#ff69b4;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
-    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
-  animation:dotsFlow 24s linear infinite}
+.theme-neo-pink{background-color:#ff69b4;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-pink .bio-bio{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
-.theme-neo-green{background-color:#22c55e;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
-    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
-  animation:dotsFlow 24s linear infinite}
+.theme-neo-green{background-color:#22c55e;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-green .bio-bio{background:var(--ink);color:#fff;border-color:var(--ink)}
-.theme-neo-purple{background-color:#a78bfa;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
-    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
-  animation:dotsFlow 24s linear infinite}
+.theme-neo-purple{background-color:#a78bfa;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
 .theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
-.lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
-  display:grid;place-items:center;padding:18px}
-.lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
-  padding:28px;max-width:340px;width:100%;text-align:center;
-  box-shadow:8px 8px 0 var(--red)}
-.lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);
-  border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
+.lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;display:grid;place-items:center;padding:18px}
+.lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;padding:28px;max-width:340px;width:100%;text-align:center;box-shadow:8px 8px 0 var(--red)}
+.lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
 .lock-card .li .ic{width:26px;height:26px}
 .lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;font-weight:900}
 .lock-card p{font-size:13px;margin-bottom:16px;font-weight:600}
-.lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
-  background:var(--white);color:var(--ink);font-size:14px;outline:none;
-  text-align:center;font-weight:700;font-family:inherit}
-.lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
-  background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
-  margin-top:10px;font-size:13.5px;text-transform:uppercase;
-  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;
-  font-family:inherit}
-`;
-  },
+.lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--white);color:var(--ink);font-size:14px;outline:none;text-align:center;font-weight:700;font-family:inherit}
+.lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;margin-top:10px;font-size:13.5px;text-transform:uppercase;box-shadow:3px 3px 0 var(--red);font-family:inherit}
+`; },
 
   async render(idOrSlug){
     showLoading("Memuat...");
+    if(!STATE.appSettings){
+      try{ STATE.appSettings = await Store.getSettings(); }catch(e){ STATE.appSettings = {}; }
+    }
     let data=null;
     try{ data=await Store.get(idOrSlug); }catch(e){ console.error(e); }
     hideLoading();
     if(!data){
       $("#app").innerHTML = `
-        <div style="min-height:100vh;display:flex;flex-direction:column;
-          align-items:center;justify-content:center;padding:40px 18px;text-align:center">
-          <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);
-            border-radius:50%;display:grid;place-items:center;margin-bottom:16px;
-            box-shadow:5px 5px 0 var(--red)">${ico('x')}</div>
+        <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 18px;text-align:center">
+          <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;margin-bottom:16px;box-shadow:5px 5px 0 var(--red)">${ico('x')}</div>
           <h2 style="margin-bottom:8px;font-size:20px;text-transform:uppercase">Tidak ditemukan</h2>
           <p style="font-size:13.5px;max-width:320px;margin-bottom:18px;font-weight:600">Mungkin sudah dihapus, atau link salah.</p>
           <a href="#/" class="btn btn-primary">${ico('back')} Kembali</a>
@@ -3317,11 +4002,7 @@ img,video{max-width:100%;display:block}
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100vh';
     document.body.style.height = '100dvh';
-    $("#app").innerHTML = `
-      <iframe id="bio-full"
-        style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;
-          border:0;background:#f0ebe0;z-index:50;display:block"
-        title="Link-in-Bio"></iframe>`;
+    $("#app").innerHTML = `<iframe id="bio-full" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;border:0;background:#f0ebe0;z-index:50;display:block" title="Link-in-Bio"></iframe>`;
     const frame=document.getElementById("bio-full");
     frame.srcdoc=this.buildHTML(data, {preview:false});
   }
@@ -3343,10 +4024,13 @@ window.addEventListener("message", async e=>{
 Router.on("/",          ()=>PageLanding.render());
 Router.on("/login",     ()=>PageLogin.render());
 Router.on("/register",  ()=>PageRegister.render());
+Router.on("/verify",    ()=>PageVerify.render());
 Router.on("/dashboard", (q)=>PageDashboard.render(q));
 Router.on("/editor",    ()=>PageEditor.render());
 Router.on("/manage",    ()=>PageManage.render());
 Router.on("/stats",     ()=>PageStats.render());
+Router.on("/settings",  ()=>PageSettings.render());
+Router.on("/help",      ()=>PageHelp.render());
 Router.on("/dev",       ()=>PageDev.render());
 Router.on("/u/:id",     (id)=>PagePublic.render(id));
 Router.on("/404",       ()=>Router.navigate("/"));
@@ -3356,6 +4040,15 @@ Router.on("/404",       ()=>Router.navigate("/"));
    ========================================================= */
 (async function boot(){
   showLoading("Memuat...");
+  await applyAppFavicon();
+  try{
+    const redirectUser = await Auth.handleRedirectResult();
+    if(redirectUser && redirectUser.__error){
+      const err = redirectUser.__error;
+      console.warn("Redirect error:", err.code, err.message);
+    }
+  }catch(e){ console.warn("boot redirect:", e); }
+
   await Auth.init();
   if(Auth.current) await loadUserPlan();
   hideLoading();

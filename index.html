@@ -91,7 +91,6 @@ textarea{resize:vertical;min-height:80px}
 
 .container{max-width:960px;margin:0 auto;padding:0 18px}
 
-/* TOPBAR */
 .lt-topbar{position:sticky;top:0;z-index:100;background:var(--white);
   border-bottom:3px solid var(--ink);padding:10px 14px;
   display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -138,7 +137,6 @@ textarea{resize:vertical;min-height:80px}
   .lt-badge{padding:4px 8px;font-size:10px}
 }
 
-/* DRAWER */
 .lt-drawer{position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:200;
   opacity:0;pointer-events:none;transition:opacity .25s}
 .lt-drawer.open{opacity:1;pointer-events:auto}
@@ -172,7 +170,6 @@ textarea{resize:vertical;min-height:80px}
 ::-webkit-scrollbar-track{background:var(--cream-2)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
 
-/* LANDING */
 .landing{min-height:100vh;display:flex;flex-direction:column;position:relative}
 .landing-hero{flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;padding:60px 18px 40px;text-align:center;position:relative}
@@ -201,7 +198,6 @@ textarea{resize:vertical;min-height:80px}
 .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
-/* UPDATE LOG */
 .update-section{padding:40px 18px 50px;background:var(--white);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .update-header{text-align:center;margin-bottom:24px}
@@ -236,8 +232,8 @@ textarea{resize:vertical;min-height:80px}
   position:relative;line-height:1.45;color:var(--ink-soft)}
 .update-item .u-changes li::before{content:'▸';position:absolute;left:0;
   font-weight:900;color:var(--ink);font-size:14px}
+.update-empty{text-align:center;padding:30px 18px;color:var(--ink-soft);font-weight:600}
 
-/* PARTNER */
 .partner-section{padding:40px 18px;background:var(--cream);
   border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
 .partner-header{text-align:center;margin-bottom:24px}
@@ -264,8 +260,8 @@ textarea{resize:vertical;min-height:80px}
   text-transform:uppercase;letter-spacing:.5px;opacity:.75}
 .partner-card.collab-cta{background:var(--yellow);border-style:dashed}
 .partner-card.collab-cta .p-logo{background:var(--ink);color:var(--yellow);font-size:22px}
+.partner-empty{text-align:center;padding:20px;font-weight:600;color:var(--ink-soft)}
 
-/* PRICING */
 .pricing-section{padding:40px 18px 60px;background:var(--cream-2);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .pricing-header{text-align:center;margin-bottom:28px}
@@ -304,7 +300,6 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card .features li::before{content:'✓';position:absolute;left:0;
   font-weight:900;font-size:14px;color:var(--green)}
 
-/* AUTH */
 .auth-page{min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:40px 18px}
 .auth-card{width:100%;max-width:400px;background:var(--white);
@@ -335,7 +330,6 @@ textarea{resize:vertical;min-height:80px}
   font-weight:700;color:var(--ink-soft)}
 .btn-google{background:var(--white)}
 
-/* DASHBOARD */
 .dash{padding-bottom:60px}
 .dash-hero{padding:32px 18px 24px;text-align:center}
 .dash-hero h2{font-size:clamp(22px,5vw,30px);font-weight:900;letter-spacing:-.5px;
@@ -411,7 +405,6 @@ textarea{resize:vertical;min-height:80px}
 .empty-state .ei .ic{width:28px;height:28px}
 .empty-state p{margin-bottom:16px;font-weight:700}
 
-/* EDITOR */
 .editor-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;
   max-width:1180px;margin:0 auto;padding:18px;padding-bottom:60px}
 @media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
@@ -439,6 +432,10 @@ textarea{resize:vertical;min-height:80px}
 .beta-only-badge{display:inline-block;padding:2px 8px;background:var(--purple);color:#fff;
   font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
   margin-left:6px;vertical-align:middle}
+.slug-preview{font-family:var(--mono);font-size:11.5px;font-weight:700;
+  background:var(--cream);border:1.5px solid var(--ink);border-radius:6px;
+  padding:6px 10px;margin-top:4px;word-break:break-all;color:var(--ink-soft)}
+.slug-preview b{color:var(--ink)}
 
 .upload-box{border:2.5px dashed var(--ink);border-radius:var(--radius);
   padding:18px;text-align:center;cursor:pointer;transition:all .15s;
@@ -556,8 +553,6 @@ textarea{resize:vertical;min-height:80px}
   transition:transform .1s, box-shadow .1s;position:relative}
 .opt-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .opt-item.active{background:var(--ink);color:var(--yellow)}
-.opt-item.locked{opacity:.5;cursor:not-allowed}
-.opt-item.locked::after{content:'🔒';position:absolute;top:4px;right:6px;font-size:11px}
 .opt-item .opt-preview{width:100%;height:32px;background:var(--white);
   border:1.5px solid var(--ink);border-radius:4px;margin-bottom:6px;
   display:grid;place-items:center;font-size:16px}
@@ -617,7 +612,8 @@ textarea{resize:vertical;min-height:80px}
 .dev-header{background:var(--ink);color:var(--yellow);padding:20px 18px;
   border-bottom:3px solid var(--yellow);position:relative;overflow:hidden}
 .dev-header::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;
-  border:3px solid var(--yellow);border-radius:50%;opacity:.15;animation:pulseRing 4s ease-in-out infinite}
+  border:3px solid var(--yellow);border-radius:50%;opacity:.15;
+  animation:pulseRing 4s ease-in-out infinite}
 @keyframes pulseRing{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 .dev-header h1{font-size:22px;text-transform:uppercase;font-weight:900;
   letter-spacing:1px;display:flex;align-items:center;gap:10px;position:relative;z-index:1}
@@ -672,6 +668,41 @@ textarea{resize:vertical;min-height:80px}
 .dev-plan-pill.pro{background:var(--blue);color:#fff}
 .dev-plan-pill.ultimate{background:var(--ink);color:var(--yellow)}
 .dev-plan-pill.developer{background:var(--red);color:#fff}
+
+/* DEV MANAGER */
+.dev-manager{padding:0 18px 60px}
+.dev-manager-head{display:flex;justify-content:space-between;align-items:center;
+  gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.dev-manager-head .mgr-title{font-size:13px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;background:var(--ink);color:var(--yellow);padding:5px 12px;
+  border-radius:6px}
+.dev-manager-list{display:flex;flex-direction:column;gap:10px}
+.mgr-card{background:var(--white);border:2.5px solid var(--ink);border-radius:var(--radius);
+  padding:12px 14px;box-shadow:3px 3px 0 var(--ink)}
+.mgr-card .mgr-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.mgr-card .mgr-thumb{width:44px;height:44px;border-radius:8px;flex-shrink:0;
+  background:var(--cream);border:2px solid var(--ink);overflow:hidden;
+  display:grid;place-items:center;font-weight:900;color:var(--ink);cursor:pointer;
+  position:relative}
+.mgr-card .mgr-thumb img{width:100%;height:100%;object-fit:cover}
+.mgr-card .mgr-fields{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+.mgr-card input,.mgr-card textarea{font-size:12.5px;padding:7px 10px;font-weight:600;
+  box-shadow:none!important;border:1.5px solid var(--ink)}
+.mgr-card textarea{min-height:60px;font-size:12px;font-family:inherit;resize:vertical}
+.mgr-card .mgr-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.mgr-card .mgr-badge{padding:3px 8px;background:var(--purple);color:#fff;
+  font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
+  text-transform:uppercase;align-self:flex-start}
+.mgr-card .mgr-badge.on{background:var(--green)}
+.mgr-card .mgr-changes-list{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.mgr-card .mgr-changes-list .change-row{display:flex;gap:6px;align-items:center}
+.mgr-card .mgr-changes-list input{flex:1}
+.mgr-card .mgr-changes-list .chg-del{width:26px;height:26px;border-radius:6px;
+  background:var(--red);color:#fff;border:2px solid var(--ink);display:grid;
+  place-items:center;flex-shrink:0;cursor:pointer;box-shadow:1px 1px 0 var(--ink)}
+.mgr-empty{text-align:center;padding:30px 18px;color:var(--ink-soft);
+  background:var(--white);border:2.5px dashed var(--ink-soft);border-radius:var(--radius);
+  font-weight:600}
 
 /* BIO PUBLIK */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
@@ -734,9 +765,13 @@ textarea{resize:vertical;min-height:80px}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 
-.bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
-  box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
-.bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover;display:block}
+/* ====== BANNER PERSEGI PANJANG ====== */
+.bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;
+  border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
+.bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:480px){.bio-banner{max-width:100%}}
+
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-links.layout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .bio-links.layout-grid .bio-link{min-height:80px;padding:12px;font-size:12.5px;
@@ -769,7 +804,6 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
 
-/* ANIMASI VARIAN */
 .bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
 @keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}
   50%{transform:translate(-2px,-8px)}}
@@ -778,18 +812,15 @@ textarea{resize:vertical;min-height:80px}
   25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
 .bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
 
-/* THEMES */
 .theme-neo-cream{background-color:#f0ebe0;
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;
-  background-position:0 0,10px 10px;
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-dark{background-color:#0a0a0a;color:#fff;
   background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
     radial-gradient(circle,#fff 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;
-  background-position:0 0,10px 10px;
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
@@ -802,8 +833,7 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-blue{background-color:#2563eb;color:#fff;
   background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
     radial-gradient(circle,#fff 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;
-  background-position:0 0,10px 10px;
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
@@ -814,8 +844,7 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-pink{background-color:#ff69b4;color:var(--ink);
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;
-  background-position:0 0,10px 10px;
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
@@ -823,8 +852,7 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-green{background-color:#22c55e;color:var(--ink);
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;
-  background-position:0 0,10px 10px;
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
@@ -832,8 +860,7 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-purple{background-color:#a78bfa;color:var(--ink);
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:20px 20px,20px 20px;
-  background-position:0 0,10px 10px;
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
 .theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
@@ -916,7 +943,6 @@ const ICONS = {
   crown:'<path d="M2 20h20M4 20l-2-9 6 4 4-7 4 7 6-4-2 9"/>',
   zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
   star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  megaphone:'<path d="M3 11l19-9-9 19-2-8-8-2z"/>',
   news:'<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>',
   flask:'<path d="M9 3h6v6l4 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2l4-10V3z"/><line x1="8" y1="3" x2="16" y2="3"/><line x1="6.5" y1="12" x2="17.5" y2="12"/>',
   handshake:'<path d="M11 17l-2-2a1 1 0 0 1 0-1.4l3-3a1 1 0 0 1 1.4 0l2 2 2-2 4 4-4 4-4-4-2 2z"/><path d="M13 7l-3 3M3 12l6-6 3 3"/>',
@@ -928,7 +954,7 @@ function ico(name, cls=""){
 }
 
 /* =========================================================
-   FIREBASE CONFIG
+   FIREBASE
    ========================================================= */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCzEZCtXJTLOLVK3xvcpcUQEgSmwcmPXuQ",
@@ -1004,70 +1030,12 @@ const PLANS = {
 };
 
 /* =========================================================
-   UPDATE LOG DATA
-   ========================================================= */
-const UPDATES = [
-  {
-    version:"v11.1", date:"Hari ini", isNew:true,
-    title:"Update Plan Limits",
-    changes:[
-      "Free: 5 bio link (sebelumnya 1)",
-      "Pro: 20 bio link (sebelumnya 5) — Rp 15.000/bln",
-      "Ultimate: unlimited bio link — Rp 50.000/bln",
-      "Ultimate dapat akses semua fitur beta"
-    ]
-  },
-  {
-    version:"v11.0", date:"Hari ini", isNew:false,
-    title:"Major Update — Fitur Beta & Partner",
-    changes:[
-      "Section Update Log (info fitur baru)",
-      "Partner/Collab section di landing",
-      "Logo partner di bio publik (Pro+)",
-      "Layout grid untuk tombol link (Ultimate Beta)",
-      "Pattern custom: grid & waves (Ultimate Beta)",
-      "Animasi tombol: bounce, shake, glow (Ultimate Beta)",
-      "Background dots animasi bergerak",
-      "Hamburger menu lebih jelas dengan label"
-    ]
-  },
-  {
-    version:"v10.5", date:"3 hari lalu", isNew:false,
-    title:"Dev Panel & Favicon",
-    changes:[
-      "Dev Panel untuk kontrol semua user",
-      "Favicon custom (khusus Dev)",
-      "Banner video support",
-      "Perbaikan bug login Google"
-    ]
-  },
-  {
-    version:"v10.0", date:"1 minggu lalu", isNew:false,
-    title:"Sistem Plan Baru",
-    changes:[
-      "Plan Free / Pro / Ultimate / Developer",
-      "Tako donate integration",
-      "Badge plan di bio publik",
-      "Firestore rules aman"
-    ]
-  }
-];
-
-/* =========================================================
-   PARTNER DATA
-   ========================================================= */
-const PARTNERS = [
-  { name:"VarCodex", tag:"Creator", color:"#ff2a2a", initial:"V" },
-  { name:"Nekome", tag:"Studio", color:"#22c55e", initial:"N" },
-  { name:"WebProj3ctID", tag:"Dev Team", color:"#2563eb", initial:"W" },
-  { name:"AzzamCodex", tag:"Dev", color:"#ffd700", initial:"A" },
-  { name:"+ Kolaborasi", tag:"Slot Kosong", color:"#0a0a0a", initial:"+" }
-];
-
-/* =========================================================
    STATE & UTILS
    ========================================================= */
-const STATE = { user:null, plan:null, planMeta:null, currentEdit:null, draft:null, cache:[] };
+const STATE = {
+  user:null, plan:null, planMeta:null, currentEdit:null, draft:null, cache:[],
+  partners:[], updates:[], dataLoaded:false
+};
 
 const $  = (s,r=document)=>r.querySelector(s);
 const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
@@ -1092,11 +1060,32 @@ function openModal(html){
   document.body.appendChild(b); return b;
 }
 
+/* SLUG UTILS */
+function generateSlug(text){
+  return String(text || "")
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+async function getUniqueSlug(baseSlug, currentBioId=null){
+  let slug = baseSlug || `user-${Math.random().toString(36).slice(2,7)}`;
+  let isUnique = false, counter = 1, finalSlug = slug;
+  while(!isUnique){
+    const q = await FB.db.collection("bios").where("slug","==",finalSlug).get();
+    let isTaken = false;
+    q.forEach(doc => { if(doc.id !== currentBioId) isTaken = true; });
+    if(!isTaken) isUnique = true;
+    else { counter++; finalSlug = `${slug}-${counter}`; }
+  }
+  return finalSlug;
+}
+
+/* IMAGE COMPRESS */
 function compressImage(file, maxSize=900, quality=0.72){
   return new Promise((resolve, reject)=>{
-    if(!file.type.startsWith("image/")){
-      reject(new Error("Hanya file gambar (jpg/png/webp)")); return;
-    }
+    if(!file.type.startsWith("image/")){ reject(new Error("Hanya file gambar")); return; }
     const img = new Image();
     const url = URL.createObjectURL(file);
     img.onload = ()=>{
@@ -1104,8 +1093,7 @@ function compressImage(file, maxSize=900, quality=0.72){
       let { width, height } = img;
       if(width > maxSize || height > maxSize){
         const ratio = Math.min(maxSize/width, maxSize/height);
-        width = Math.round(width*ratio);
-        height = Math.round(height*ratio);
+        width = Math.round(width*ratio); height = Math.round(height*ratio);
       }
       const canvas = document.createElement("canvas");
       canvas.width = width; canvas.height = height;
@@ -1122,8 +1110,11 @@ function compressImage(file, maxSize=900, quality=0.72){
   });
 }
 
-async function copyLink(id){
-  const url=`${location.origin}${location.pathname}#/u/${id}`;
+/* CLIPBOARD */
+async function copyLink(bioOrId){
+  const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
+  const identifier = bio.slug || bio.id;
+  const url = `${location.origin}${location.pathname}#/u/${identifier}`;
   try{ await navigator.clipboard.writeText(url); toast("Link disalin!","success"); }
   catch(e){
     const ta=document.createElement("textarea");
@@ -1134,8 +1125,10 @@ async function copyLink(id){
     ta.remove();
   }
 }
-function showShareModal(id){
-  const url=`${location.origin}${location.pathname}#/u/${id}`;
+function showShareModal(bioOrId){
+  const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
+  const identifier = bio.slug || bio.id;
+  const url = `${location.origin}${location.pathname}#/u/${identifier}`;
   const m=openModal(`
     <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
     <h3>Bio Link Tersimpan!</h3>
@@ -1150,13 +1143,13 @@ function showShareModal(id){
       <button class="btn btn-block btn-sm" id="share-qr">${ico('qr')} QR</button>
       <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WA</button>
     </div>`);
-  $("#share-copy",m).addEventListener("click",()=>copyLink(id));
-  $("#share-open",m).addEventListener("click",()=>window.open(`${location.pathname}#/u/${id}`,"_blank"));
+  $("#share-copy",m).addEventListener("click",()=>copyLink(bio));
+  $("#share-open",m).addEventListener("click",()=>window.open(`${location.pathname}#/u/${identifier}`,"_blank"));
   $("#share-wa",m).addEventListener("click",()=>{
     const text=encodeURIComponent(`Cek link-in-bio aku: ${url}`);
     window.open(`https://wa.me/?text=${text}`,"_blank");
   });
-  $("#share-qr",m).addEventListener("click",()=>{ m.remove(); PageDashboard.qr(id); });
+  $("#share-qr",m).addEventListener("click",()=>{ m.remove(); PageDashboard.qr(bio.id); });
 }
 async function generateQR(text, canvasEl){
   try{
@@ -1271,16 +1264,25 @@ const Store = {
     a.sort((x,y)=>(y.updatedAt||0)-(x.updatedAt||0));
     STATE.cache = a; return a;
   },
-  async get(id){
-    const d = await FB.db.collection("bios").doc(id).get();
-    if(!d.exists) return null;
-    return { id:d.id, ...d.data() };
+  async get(idOrSlug){
+    try{
+      let d = await FB.db.collection("bios").doc(idOrSlug).get();
+      if(d.exists) return { id:d.id, ...d.data() };
+    }catch(e){}
+    const q = await FB.db.collection("bios").where("slug","==",idOrSlug).limit(1).get();
+    if(!q.empty){
+      const doc = q.docs[0];
+      return { id:doc.id, ...doc.data() };
+    }
+    return null;
   },
   async count(){
     const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
     return s.size;
   },
   async save(bio){
+    const baseSlug = generateSlug(bio.name);
+    bio.slug = await getUniqueSlug(baseSlug, bio.id);
     bio.ownerUid = Auth.current.uid;
     bio.ownerName = Auth.current.name;
     bio.ownerPlan = STATE.plan?.id || "free";
@@ -1288,6 +1290,7 @@ const Store = {
     if(!bio.id) bio.id = uid(12);
     if(!bio.createdAt) bio.createdAt = bio.updatedAt;
     if(bio.stats===undefined) bio.stats = { views:0, clicks:{} };
+    if(!Array.isArray(bio.logos)) bio.logos = [];
     const {id, ...data} = bio;
     const sizeKB = Math.round(JSON.stringify(data).length / 1024);
     if(sizeKB > 950) throw new Error(`Data terlalu besar (${sizeKB}KB). Kurangi gambar.`);
@@ -1299,7 +1302,7 @@ const Store = {
     if(!file) return null;
     if(file.type.startsWith("video/")){
       const sizeKB = Math.round(file.size / 1024);
-      if(sizeKB > 500) throw new Error(`Video terlalu besar (${sizeKB}KB). Max 500KB — pakai video pendek.`);
+      if(sizeKB > 500) throw new Error(`Video terlalu besar (${sizeKB}KB). Max 500KB.`);
       return new Promise((res, rej)=>{
         const r = new FileReader();
         r.onload = ()=>res(r.result);
@@ -1329,7 +1332,49 @@ const Store = {
     try{ await FB.db.collection("bios").doc(id).update({
       [`stats.clicks.${idx}`]: firebase.firestore.FieldValue.increment(1)
     }); }catch(e){}
-  }
+  },
+
+  /* PARTNERS */
+  async listPartners(){
+    try{
+      const s = await FB.db.collection("partners").orderBy("order","asc").get();
+      const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
+      STATE.partners = a; return a;
+    }catch(e){
+      // fallback kalau collection kosong / belum ada index
+      try{
+        const s = await FB.db.collection("partners").get();
+        const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
+        a.sort((x,y)=>(x.order||0)-(y.order||0));
+        STATE.partners = a; return a;
+      }catch(err){ STATE.partners = []; return []; }
+    }
+  },
+  async savePartner(p){
+    if(!p.id) p.id = uid(10);
+    if(p.order===undefined) p.order = Date.now();
+    const {id, ...data} = p;
+    await FB.db.collection("partners").doc(id).set(data, { merge:true });
+    return p;
+  },
+  async removePartner(id){ await FB.db.collection("partners").doc(id).delete(); },
+
+  /* UPDATES */
+  async listUpdates(){
+    try{
+      const s = await FB.db.collection("updates").orderBy("createdAt","desc").get();
+      const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
+      STATE.updates = a; return a;
+    }catch(e){ STATE.updates = []; return []; }
+  },
+  async saveUpdate(u){
+    if(!u.id) u.id = uid(10);
+    if(!u.createdAt) u.createdAt = Date.now();
+    const {id, ...data} = u;
+    await FB.db.collection("updates").doc(id).set(data, { merge:true });
+    return u;
+  },
+  async removeUpdate(id){ await FB.db.collection("updates").doc(id).delete(); }
 };
 
 /* =========================================================
@@ -1391,9 +1436,20 @@ const LinkTypes = {
 };
 
 /* =========================================================
-   COMPONENT: UPDATE LOG SECTION
+   COMPONENT: UPDATE LOG (dinamis)
    ========================================================= */
 function renderUpdateSection(){
+  const list = STATE.updates || [];
+  if(!list.length){
+    return `
+      <div class="update-section">
+        <div class="update-header">
+          <h2>${ico('news','ic-lg')} Update Terbaru</h2>
+          <p>Apa yang baru di Varlinkbio?</p>
+        </div>
+        <div class="update-empty">Belum ada update yang dipublikasikan.</div>
+      </div>`;
+  }
   return `
     <div class="update-section">
       <div class="update-header">
@@ -1401,15 +1457,15 @@ function renderUpdateSection(){
         <p>Apa yang baru di Varlinkbio?</p>
       </div>
       <div class="update-list">
-        ${UPDATES.map(u=>`
-          <div class="update-item ${u.isNew?"new":""}">
+        ${list.map((u,idx)=>`
+          <div class="update-item ${idx===0&&u.isNew!==false?"new":""}">
             <div class="u-head">
-              <span class="u-version">${u.version}</span>
-              <span class="u-date">${u.date}</span>
+              <span class="u-version">${esc(u.version||"v?.?")}</span>
+              <span class="u-date">${esc(u.date||"—")}</span>
             </div>
-            <div class="u-title">${esc(u.title)}</div>
+            <div class="u-title">${esc(u.title||"")}</div>
             <ul class="u-changes">
-              ${u.changes.map(c=>`<li>${esc(c)}</li>`).join("")}
+              ${(u.changes||[]).map(c=>`<li>${esc(c)}</li>`).join("")}
             </ul>
           </div>`).join("")}
       </div>
@@ -1417,9 +1473,10 @@ function renderUpdateSection(){
 }
 
 /* =========================================================
-   COMPONENT: PARTNER SECTION
+   COMPONENT: PARTNER (dinamis)
    ========================================================= */
 function renderPartnerSection(){
+  const list = STATE.partners || [];
   return `
     <div class="partner-section">
       <div class="partner-header">
@@ -1427,18 +1484,24 @@ function renderPartnerSection(){
         <p>Berkolaborasi dengan perusahaan digital & kreator lain</p>
       </div>
       <div class="partner-grid">
-        ${PARTNERS.map(p=>{
-          const isCollab = p.name.startsWith("+");
-          return `
-            <div class="partner-card ${isCollab?"collab-cta":""}"
-                 ${isCollab?`onclick="window.open('https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}','_blank')"`:''}>
-              <div class="p-logo" style="${p.color&&!isCollab?`background:${p.color};color:#fff`:''}">
-                ${p.initial}
-              </div>
-              <div class="p-name">${esc(p.name)}</div>
-              <div class="p-tag">${esc(p.tag)}</div>
-            </div>`;
-        }).join("")}
+        ${list.length ? list.map(p=>`
+          <div class="partner-card" ${p.url?`onclick="window.open('${esc(p.url)}','_blank')"`:''}>
+            <div class="p-logo" style="${p.color?`background:${esc(p.color)};color:#fff`:''}">
+              ${p.img?`<img src="${esc(p.img)}" alt=""/>`:esc(p.initial||(p.name||"?")[0].toUpperCase())}
+            </div>
+            <div class="p-name">${esc(p.name||"Partner")}</div>
+            <div class="p-tag">${esc(p.tag||"Partner")}</div>
+          </div>`).join("") : `
+          <div class="partner-card collab-cta" onclick="window.open('https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}','_blank')">
+            <div class="p-logo">+</div>
+            <div class="p-name">Slot Kosong</div>
+            <div class="p-tag">Kolaborasi</div>
+          </div>
+          <div class="partner-card collab-cta" onclick="window.open('https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}','_blank')">
+            <div class="p-logo">+</div>
+            <div class="p-name">Gabung</div>
+            <div class="p-tag">Hubungi Admin</div>
+          </div>`}
       </div>
     </div>`;
 }
@@ -1447,8 +1510,10 @@ function renderPartnerSection(){
    PAGE: LANDING
    ========================================================= */
 const PageLanding = {
-  render(){
+  async render(){
     if(Auth.current) return Router.navigate("/dashboard");
+    // Load partners & updates dulu
+    await Promise.all([ Store.listPartners(), Store.listUpdates() ]);
     $("#app").innerHTML = `
       <div class="landing">
         <div class="landing-hero">
@@ -1733,11 +1798,16 @@ const PageDashboard = {
   async render(query){
     if(!Auth.current) return Router.navigate("/login");
     if(!STATE.plan) await loadUserPlan();
+    if(!STATE.dataLoaded){
+      await Promise.all([ Store.listUpdates(), Store.listPartners() ]);
+      STATE.dataLoaded = true;
+    }
     if(query && query.includes("paid=1")){
       setTimeout(()=>toast("Terima kasih! Admin akan konfirmasi donasimu 1x24 jam.","info"),600);
     }
     const plan = STATE.plan;
-    const bioCount = await Store.count();
+    let bioCount = 0;
+    try{ bioCount = await Store.count(); }catch(e){}
 
     $("#app").innerHTML = `
       ${renderTopbar()}
@@ -1805,32 +1875,37 @@ const PageDashboard = {
         wrap.innerHTML=`<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Belum ada link-in-bio.</p><button class="btn btn-primary" onclick="STATE.draft=PageEditor.newDraft();STATE.currentEdit=null;Router.navigate('/editor')">${ico('plus')} Bikin Sekarang</button></div>`;
         return;
       }
-      wrap.innerHTML=list.slice(0,5).map(b=>`
+      wrap.innerHTML=list.slice(0,5).map(b=>{
+        const bioJson = JSON.stringify(b).replace(/"/g,'&quot;');
+        return `
         <div class="recent-item">
           <div class="ri-left">
             ${b.profile?`<img class="ri-avatar" src="${esc(b.profile)}">`:`<div class="ri-avatar">${esc((b.name||"?")[0].toUpperCase())}</div>`}
-            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo-cream"} · ${b.stats?.views||0} views</span></div>
+            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>#${esc(b.slug||b.id)} · ${b.stats?.views||0} views</span></div>
           </div>
           <div class="ri-actions">
-            <button class="icon-btn" onclick="copyLink('${b.id}')">${ico('copy')}</button>
+            <button class="icon-btn" onclick='copyLink(${bioJson})'>${ico('copy')}</button>
             <button class="icon-btn" onclick="PageDashboard.qr('${b.id}')">${ico('qr')}</button>
-            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
             <button class="icon-btn" onclick="PageDashboard.edit('${b.id}')">${ico('edit')}</button>
             <button class="icon-btn danger" onclick="PageDashboard.remove('${b.id}')">${ico('trash')}</button>
           </div>
-        </div>`).join("");
+        </div>`;
+      }).join("");
     }catch(e){ console.error(e); wrap.innerHTML=`<div class="empty-state"><p>Gagal memuat.</p></div>`; }
   },
   async edit(id){ STATE.currentEdit=id; STATE.draft=await Store.get(id); if(!STATE.draft){toast("Tidak ditemukan","error");return;} Router.navigate("/editor"); },
   async remove(id){ if(!confirm("Yakin mau hapus?")) return; showLoading("Menghapus..."); await Store.remove(id); hideLoading(); toast("Terhapus","success"); this.loadRecent(); },
   async qr(id){
-    const url=`${location.origin}${location.pathname}#/u/${id}`;
+    const bio = await Store.get(id);
+    const identifier = bio?.slug || id;
+    const url=`${location.origin}${location.pathname}#/u/${identifier}`;
     const m=openModal(`<button class="close-x" onclick="this.closest('.modal-back').remove()">×</button><h3>${ico('qr')} QR Code</h3><p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka</p><div style="text-align:center"><div class="qr-box"><canvas id="qr-canvas"></canvas></div><div class="qr-url">${esc(url)}</div></div><button class="btn btn-primary btn-block" id="qr-dl" style="margin-top:14px">${ico('save')} Download PNG</button>`);
     await generateQR(url, $("#qr-canvas",m));
     $("#qr-dl",m).addEventListener("click",()=>{
       const c=$("#qr-canvas",m);
       const a=document.createElement("a");
-      a.download=`varlinkbio-qr-${id}.png`;
+      a.download=`varlinkbio-qr-${identifier}.png`;
       a.href=c.toDataURL("image/png");
       a.click();
     });
@@ -1872,20 +1947,23 @@ const PageManage = {
         wrap.innerHTML=`<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Belum ada.</p></div>`;
         return;
       }
-      wrap.innerHTML=list.map(b=>`
+      wrap.innerHTML=list.map(b=>{
+        const bioJson = JSON.stringify(b).replace(/"/g,'&quot;');
+        return `
         <div class="recent-item">
           <div class="ri-left">
             ${b.profile?`<img class="ri-avatar" src="${esc(b.profile)}">`:`<div class="ri-avatar">${esc((b.name||"?")[0].toUpperCase())}</div>`}
-            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo-cream"} · ${b.stats?.views||0} views${b.lock?" · terkunci":""}</span></div>
+            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>#${esc(b.slug||b.id)} · ${b.stats?.views||0} views${b.lock?" · 🔒":""}</span></div>
           </div>
           <div class="ri-actions">
-            <button class="icon-btn" onclick="copyLink('${b.id}')">${ico('copy')}</button>
+            <button class="icon-btn" onclick='copyLink(${bioJson})'>${ico('copy')}</button>
             <button class="icon-btn" onclick="PageDashboard.qr('${b.id}')">${ico('qr')}</button>
-            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
             <button class="icon-btn" onclick="PageManage.edit('${b.id}')">${ico('edit')}</button>
             <button class="icon-btn danger" onclick="PageManage.remove('${b.id}')">${ico('trash')}</button>
           </div>
-        </div>`).join("");
+        </div>`;
+      }).join("");
     }catch(e){ console.error(e); wrap.innerHTML=`<div class="empty-state"><p>Gagal memuat.</p></div>`; }
   },
   async edit(id){ STATE.currentEdit=id; STATE.draft=await Store.get(id); if(!STATE.draft){toast("Tidak ditemukan","error");return;} Router.navigate("/editor"); },
@@ -1949,8 +2027,8 @@ const PageStats = {
       return `
         <div class="card" style="margin-bottom:12px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
-            <div><b style="font-size:14px;text-transform:uppercase">${esc(b.name||"Tanpa nama")}</b><div style="font-size:11.5px;margin-top:2px;font-weight:600">${b.stats?.views||0} views · ${totalClick} klik</div></div>
-            <button class="btn btn-sm" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')">${ico('eye')} Lihat</button>
+            <div><b style="font-size:14px;text-transform:uppercase">${esc(b.name||"Tanpa nama")}</b><div style="font-size:11.5px;margin-top:2px;font-weight:600">#${esc(b.slug||b.id)} · ${b.stats?.views||0} views · ${totalClick} klik</div></div>
+            <button class="btn btn-sm" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')} Lihat</button>
           </div>
           ${topLinks||`<p style="font-size:12.5px;font-weight:600">Belum ada link.</p>`}
         </div>`;
@@ -1964,7 +2042,7 @@ const PageStats = {
 const PageEditor = {
   newDraft(){
     return {
-      id:null, name:Auth.current?.name||"", bio:"",
+      id:null, slug:"", name:Auth.current?.name||"", bio:"",
       profile:"", banner:"", bannerType:"image",
       favicon:"",
       logos:[],
@@ -1982,7 +2060,10 @@ const PageEditor = {
     if(!Auth.current) return Router.navigate("/login");
     if(!STATE.plan) await loadUserPlan();
     if(!STATE.draft) STATE.draft=this.newDraft();
-    const d=STATE.draft;
+    const d = STATE.draft;
+    // validasi array
+    if(!Array.isArray(d.logos)) d.logos = [];
+    if(!Array.isArray(d.links)) d.links = [];
 
     $("#app").innerHTML = `
       ${renderTopbar()}
@@ -2012,7 +2093,8 @@ const PageEditor = {
           <div class="editor-section">
             <h3><span class="num">2</span> Nama & Bio</h3>
             <div class="field"><label>Nama</label><input id="f-name" type="text" maxlength="40" value="${esc(d.name)}" placeholder="Nama kamu"/></div>
-            <div class="field"><label>Bio / Subtitle</label><textarea id="f-bio" maxlength="160" placeholder="Tulis bio singkat...">${esc(d.bio)}</textarea></div>
+            ${d.id?`<div class="slug-preview">URL: <b>${location.origin}/#/u/${esc(d.slug||"...")}</b></div>`:`<div class="slug-preview">URL akan otomatis dibuat dari nama kamu.</div>`}
+            <div class="field" style="margin-top:12px"><label>Bio / Subtitle</label><textarea id="f-bio" maxlength="160" placeholder="Tulis bio singkat...">${esc(d.bio)}</textarea></div>
           </div>
 
           <div class="editor-section">
@@ -2094,7 +2176,7 @@ const PageEditor = {
         </div>
       </div>`;
 
-    this.bind();
+    this.bindAll();
     this.renderThemeGrid();
     this.renderLayoutGrid();
     this.renderPatternGrid();
@@ -2104,72 +2186,71 @@ const PageEditor = {
     this.updatePreview();
   },
 
-  bind(){
+  /* BIND ALL — dipanggil sekali saja, delegasi event */
+  bindAll(){
     $("#btn-save").addEventListener("click",()=>this.save());
     $("#btn-save2").addEventListener("click",()=>this.save());
     const qrBtn=$("#btn-qr"); if(qrBtn) qrBtn.addEventListener("click",()=>PageDashboard.qr(STATE.draft.id));
-    const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft.id));
+    const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft));
 
-    const pInput=$("#p-input");
-    if(pInput) pInput.addEventListener("change", async e=>{
-      const f=e.target.files[0]; if(!f) return;
-      showLoading("Upload foto...");
-      try{
-        const url=await Store.upload(f,"profile");
-        STATE.draft.profile=url;
-        $("#pbox").innerHTML=`<img src="${esc(url)}"/><div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*"/>`;
-        this.bind();
-        hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
-      }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+    /* Delegasi event — pakai document, jadi gak perlu re-bind */
+    document.addEventListener("change", this._delegatedChange = async (e)=>{
+      const id = e.target.id;
+      if(id === "p-input"){
+        const f=e.target.files[0]; if(!f) return;
+        showLoading("Upload foto...");
+        try{
+          const url=await Store.upload(f,"profile");
+          STATE.draft.profile=url;
+          const box=$("#pbox");
+          if(box) box.innerHTML=`<img src="${esc(url)}"/><div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*"/>`;
+          hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
+        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+      }
+      if(id === "bn-input"){
+        const f=e.target.files[0]; if(!f) return;
+        const isVid = f.type.startsWith("video/");
+        showLoading(isVid?"Upload video...":"Compress & upload...");
+        try{
+          const url=await Store.upload(f,"banner");
+          STATE.draft.banner=url;
+          STATE.draft.bannerType = isVid ? "video" : "image";
+          hideLoading(); toast("Banner diupdate","success");
+          this.render();
+        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+      }
+      if(id === "fv-input"){
+        const f=e.target.files[0]; if(!f) return;
+        showLoading("Upload favicon...");
+        try{
+          const url=await Store.upload(f,"favicon");
+          STATE.draft.favicon=url;
+          hideLoading(); toast("Favicon diupdate","success"); this.render();
+        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+      }
+    }, { once:false });
+
+    /* input text */
+    const fn = $("#f-name"); if(fn) fn.addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
+    const fb = $("#f-bio"); if(fb) fb.addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
+    const fl = $("#f-lock"); if(fl) fl.addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
+
+    const bnClear=$("#bn-clear"); if(bnClear) bnClear.addEventListener("click",()=>{
+      STATE.draft.banner=""; STATE.draft.bannerType="image"; this.render();
+    });
+    const fvClear=$("#fv-clear"); if(fvClear) fvClear.addEventListener("click",()=>{
+      STATE.draft.favicon=""; toast("Favicon dihapus","info"); this.render();
     });
 
-    $("#f-name").addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
-    $("#f-bio").addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
-    const lf=$("#f-lock"); if(lf) lf.addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
-
-    $("#bn-input").addEventListener("change", async e=>{
-      const f=e.target.files[0]; if(!f) return;
-      const isVid = f.type.startsWith("video/");
-      showLoading(isVid?"Upload video...":"Compress & upload...");
-      try{
-        const url=await Store.upload(f,"banner");
-        STATE.draft.banner=url;
-        STATE.draft.bannerType = isVid ? "video" : "image";
-        hideLoading(); toast("Banner diupdate","success");
-        this.render();
-      }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-    });
-    const bnClear=$("#bn-clear");
-    if(bnClear) bnClear.addEventListener("click",()=>{
-      STATE.draft.banner=""; STATE.draft.bannerType="image";
-      this.render();
-    });
-
-    const addLogo=$("#add-logo");
-    if(addLogo) addLogo.addEventListener("click", ()=>{
+    const addLogo=$("#add-logo"); if(addLogo) addLogo.addEventListener("click",()=>{
       STATE.draft.logos.push({name:"Partner", url:"https://", img:""});
       this.renderLogos(); this.updatePreview();
     });
 
-    $("#add-link").addEventListener("click",()=>this.openLinkTypePicker());
-    $("#btn-view").addEventListener("click",()=>{
+    const addLink=$("#add-link"); if(addLink) addLink.addEventListener("click",()=>this.openLinkTypePicker());
+    const btnView=$("#btn-view"); if(btnView) btnView.addEventListener("click",()=>{
       if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
-      window.open(`${location.pathname}#/u/${STATE.draft.id}`,"_blank");
-    });
-
-    const fvInput=$("#fv-input");
-    if(fvInput) fvInput.addEventListener("change", async e=>{
-      const f=e.target.files[0]; if(!f) return;
-      showLoading("Upload favicon...");
-      try{
-        const url=await Store.upload(f,"favicon");
-        STATE.draft.favicon=url;
-        hideLoading(); toast("Favicon diupdate","success"); this.render();
-      }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-    });
-    const fvClear=$("#fv-clear");
-    if(fvClear) fvClear.addEventListener("click",()=>{
-      STATE.draft.favicon=""; toast("Favicon dihapus","info"); this.render();
+      window.open(`${location.pathname}#/u/${STATE.draft.slug||STATE.draft.id}`,"_blank");
     });
 
     bindTopbar();
@@ -2177,10 +2258,7 @@ const PageEditor = {
 
   renderLayoutGrid(){
     const el=$("#layout-grid"); if(!el) return;
-    const opts=[
-      { id:"list", label:"List", icon:"≡" },
-      { id:"grid", label:"Grid", icon:"⊞" }
-    ];
+    const opts=[{id:"list",label:"List",icon:"≡"},{id:"grid",label:"Grid",icon:"⊞"}];
     el.innerHTML = opts.map(o=>`
       <div class="opt-item ${STATE.draft.layout===o.id?"active":""}" data-layout="${o.id}">
         <div class="opt-preview">${o.icon}</div>${o.label}
@@ -2319,7 +2397,7 @@ const PageEditor = {
 
   renderLinks(){
     const wrap=$("#links-list");
-    const links=STATE.draft.links;
+    const links=STATE.draft.links || [];
     const canFeatured = canDo("featuredLink");
     const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
     const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
@@ -2448,16 +2526,16 @@ const PageEditor = {
       hideLoading();
       toast("Tersimpan!","success");
       this.render();
-      setTimeout(()=>showShareModal(saved.id), 300);
+      setTimeout(()=>showShareModal(saved), 300);
     }catch(e){ console.error(e); hideLoading(); toast("Gagal: "+e.message,"error"); }
   }
 };
 
 /* =========================================================
-   PAGE: DEV PANEL
+   PAGE: DEV PANEL (dengan tab Partners & Updates)
    ========================================================= */
 const PageDev = {
-  state: { users:[], bios:[], filter:"all", search:"", tab:"users" },
+  state: { users:[], bios:[], partners:[], updates:[], filter:"all", search:"", tab:"users" },
 
   async render(){
     if(!Auth.current) return Router.navigate("/login");
@@ -2467,25 +2545,16 @@ const PageDev = {
       <div style="background:var(--cream);min-height:calc(100vh - 60px)">
         <div class="dev-header">
           <h1>${ico('zap')} Dev Panel</h1>
-          <p>Control semua user & bio di Varlinkbio</p>
+          <p>Control semua user, bio, partner, & update</p>
         </div>
         <div class="dev-stats" id="dev-stats"></div>
         <div class="dev-tabs">
           <div class="dev-tab active" data-tab="users">👥 Users</div>
           <div class="dev-tab" data-tab="bios">📁 Bios</div>
+          <div class="dev-tab" data-tab="partners">🤝 Partners</div>
+          <div class="dev-tab" data-tab="updates">📰 Updates</div>
         </div>
-        <div class="dev-tools">
-          <input type="text" id="dev-search" placeholder="Cari email / nama..."/>
-          <select id="dev-filter">
-            <option value="all">Semua Plan</option>
-            <option value="free">Free</option>
-            <option value="pro">Pro</option>
-            <option value="ultimate">Ultimate</option>
-            <option value="developer">Developer</option>
-          </select>
-          <button class="btn btn-sm" id="dev-refresh">${ico('back')} Refresh</button>
-        </div>
-        <div class="dev-list" id="dev-list"></div>
+        <div id="dev-content"></div>
       </div>`;
     bindTopbar();
     $$(".dev-tab").forEach(t=>{
@@ -2493,12 +2562,9 @@ const PageDev = {
         $$(".dev-tab").forEach(x=>x.classList.remove("active"));
         t.classList.add("active");
         this.state.tab = t.dataset.tab;
-        this.renderList();
+        this.renderTab();
       });
     });
-    $("#dev-search").addEventListener("input", e=>{ this.state.search = e.target.value.toLowerCase(); this.renderList(); });
-    $("#dev-filter").addEventListener("change", e=>{ this.state.filter = e.target.value; this.renderList(); });
-    $("#dev-refresh").addEventListener("click", ()=>this.loadData());
     await this.loadData();
   },
 
@@ -2511,10 +2577,13 @@ const PageDev = {
       users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
       bios.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
       this.state.users = users; this.state.bios = bios;
-      this.renderStats(); this.renderList();
+      this.state.partners = await Store.listPartners();
+      this.state.updates = await Store.listUpdates();
+      this.renderStats();
+      this.renderTab();
     }catch(e){
       console.error(e);
-      $("#dev-list").innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
+      $("#dev-content").innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
     }
   },
 
@@ -2530,9 +2599,35 @@ const PageDev = {
       <div class="dev-stat"><div class="sv">${this.state.bios.length}</div><div class="sl">Total Bio</div></div>`;
   },
 
+  renderTab(){
+    const tab = this.state.tab;
+    if(tab === "partners") return this.renderPartners();
+    if(tab === "updates") return this.renderUpdates();
+    return this.renderList();
+  },
+
   renderList(){
-    const wrap = $("#dev-list");
+    const el = $("#dev-content");
     const { tab, filter, search } = this.state;
+    el.innerHTML = `
+      <div class="dev-tools">
+        <input type="text" id="dev-search" placeholder="Cari..." value="${esc(search)}"/>
+        ${tab==="users"?`
+        <select id="dev-filter">
+          <option value="all">Semua Plan</option>
+          <option value="free" ${filter==="free"?"selected":""}>Free</option>
+          <option value="pro" ${filter==="pro"?"selected":""}>Pro</option>
+          <option value="ultimate" ${filter==="ultimate"?"selected":""}>Ultimate</option>
+          <option value="developer" ${filter==="developer"?"selected":""}>Developer</option>
+        </select>`:''}
+        <button class="btn btn-sm" id="dev-refresh">${ico('back')} Refresh</button>
+      </div>
+      <div class="dev-list" id="dev-list"></div>`;
+    $("#dev-search")?.addEventListener("input", e=>{ this.state.search = e.target.value.toLowerCase(); this.renderTab(); });
+    $("#dev-filter")?.addEventListener("change", e=>{ this.state.filter = e.target.value; this.renderTab(); });
+    $("#dev-refresh")?.addEventListener("click", ()=>this.loadData());
+
+    const wrap = $("#dev-list");
     const matchSearch = (s)=> !search || (s||"").toLowerCase().includes(search);
 
     if(tab === "users"){
@@ -2541,10 +2636,7 @@ const PageDev = {
         if(filter !== "all" && plan !== filter) return false;
         return matchSearch(u.email) || matchSearch(u.name);
       });
-      if(!list.length){
-        wrap.innerHTML = `<div class="empty-state"><div class="ei">${ico('user')}</div><p>Tidak ada user.</p></div>`;
-        return;
-      }
+      if(!list.length){ wrap.innerHTML = `<div class="empty-state"><p>Tidak ada user.</p></div>`; return; }
       wrap.innerHTML = list.map(u=>{
         const plan = isDev(u.email) ? "developer" : (u.plan||"free");
         const bios = this.state.bios.filter(b=>b.ownerUid===u.uid).length;
@@ -2564,24 +2656,249 @@ const PageDev = {
           </div>`;
       }).join("");
     } else {
-      let list = this.state.bios.filter(b=> matchSearch(b.name) || matchSearch(b.ownerName) || matchSearch(b.ownerUid));
-      if(!list.length){
-        wrap.innerHTML = `<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Tidak ada bio.</p></div>`;
-        return;
-      }
+      let list = this.state.bios.filter(b=> matchSearch(b.name) || matchSearch(b.ownerName) || matchSearch(b.ownerUid) || matchSearch(b.slug));
+      if(!list.length){ wrap.innerHTML = `<div class="empty-state"><p>Tidak ada bio.</p></div>`; return; }
       wrap.innerHTML = list.map(b=>`
         <div class="dev-item">
           <div class="di-avatar">${b.profile?`<img src="${esc(b.profile)}">`:esc((b.name||"?")[0].toUpperCase())}</div>
           <div class="di-info">
             <b>${esc(b.name||"Tanpa nama")}</b>
-            <span>by ${esc(b.ownerName||"—")} · ${b.theme||"neo-cream"} · ${b.stats?.views||0} views</span>
+            <span>#${esc(b.slug||b.id)} · ${esc(b.ownerName||"—")} · ${b.stats?.views||0} views</span>
           </div>
           <div class="di-actions">
-            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
             <button class="icon-btn danger" onclick="PageDev.deleteBio('${b.id}')">${ico('trash')}</button>
           </div>
         </div>`).join("");
     }
+  },
+
+  /* ============ PARTNERS TAB ============ */
+  renderPartners(){
+    const el = $("#dev-content");
+    const list = this.state.partners || [];
+    el.innerHTML = `
+      <div class="dev-manager">
+        <div class="dev-manager-head">
+          <div class="mgr-title">Manager Partner (${list.length})</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-primary btn-sm" id="mgr-add-partner">${ico('plus')} Tambah Partner</button>
+            <button class="btn btn-sm" id="mgr-refresh-partner">${ico('back')} Refresh</button>
+          </div>
+        </div>
+        <div class="dev-manager-list" id="partner-list"></div>
+      </div>`;
+    $("#mgr-add-partner").addEventListener("click", async ()=>{
+      await Store.savePartner({ name:"Partner Baru", tag:"Partner", url:"https://", initial:"P", order:Date.now() });
+      toast("Partner ditambahkan","success");
+      this.state.partners = await Store.listPartners();
+      this.renderPartners();
+    });
+    $("#mgr-refresh-partner").addEventListener("click", async ()=>{
+      this.state.partners = await Store.listPartners();
+      this.renderPartners();
+    });
+    this.renderPartnerList();
+  },
+
+  renderPartnerList(){
+    const wrap = $("#partner-list");
+    const list = this.state.partners || [];
+    if(!list.length){
+      wrap.innerHTML = `<div class="mgr-empty">Belum ada partner. Klik "Tambah Partner" untuk mulai.</div>`;
+      return;
+    }
+    wrap.innerHTML = list.map(p=>`
+      <div class="mgr-card" data-pid="${p.id}">
+        <div class="mgr-row">
+          <div class="mgr-thumb" data-upload="${p.id}">
+            ${p.img?`<img src="${esc(p.img)}">`:esc(p.initial||(p.name||"?")[0].toUpperCase())}
+          </div>
+          <div class="mgr-fields">
+            <input type="text" data-pname="${p.id}" placeholder="Nama" value="${esc(p.name||"")}"/>
+            <input type="text" data-ptag="${p.id}" placeholder="Tag/Kategori" value="${esc(p.tag||"")}"/>
+            <input type="text" data-purl="${p.id}" placeholder="https://..." value="${esc(p.url||"")}"/>
+          </div>
+        </div>
+        <div class="mgr-actions">
+          <button class="btn btn-sm btn-primary" data-psave="${p.id}">${ico('save')} Simpan</button>
+          <button class="btn btn-sm btn-red" data-pdel="${p.id}">${ico('trash')} Hapus</button>
+        </div>
+      </div>`).join("");
+
+    wrap.querySelectorAll("[data-upload]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        const pid = b.dataset.upload;
+        const inp = document.createElement("input");
+        inp.type = "file"; inp.accept = "image/*";
+        inp.onchange = async ()=>{
+          const f = inp.files[0]; if(!f) return;
+          showLoading("Upload logo partner...");
+          try{
+            const url = await Store.upload(f, "partner");
+            const idx = this.state.partners.findIndex(x=>x.id===pid);
+            this.state.partners[idx].img = url;
+            await Store.savePartner(this.state.partners[idx]);
+            hideLoading(); toast("Logo partner diupdate","success");
+            this.renderPartners();
+          }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+        };
+        inp.click();
+      });
+    });
+    wrap.querySelectorAll("[data-psave]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        const pid = b.dataset.psave;
+        const name = wrap.querySelector(`[data-pname="${pid}"]`).value;
+        const tag = wrap.querySelector(`[data-ptag="${pid}"]`).value;
+        const url = wrap.querySelector(`[data-purl="${pid}"]`).value;
+        const idx = this.state.partners.findIndex(x=>x.id===pid);
+        const updated = { ...this.state.partners[idx], name, tag, url };
+        showLoading("Menyimpan...");
+        try{
+          await Store.savePartner(updated);
+          this.state.partners[idx] = updated;
+          hideLoading(); toast("Partner diupdate","success");
+        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
+      });
+    });
+    wrap.querySelectorAll("[data-pdel]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        const pid = b.dataset.pdel;
+        if(!confirm("Hapus partner ini?")) return;
+        showLoading("Menghapus...");
+        try{
+          await Store.removePartner(pid);
+          this.state.partners = await Store.listPartners();
+          hideLoading(); toast("Partner dihapus","success");
+          this.renderPartners();
+        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
+      });
+    });
+  },
+
+  /* ============ UPDATES TAB ============ */
+  renderUpdates(){
+    const el = $("#dev-content");
+    const list = this.state.updates || [];
+    el.innerHTML = `
+      <div class="dev-manager">
+        <div class="dev-manager-head">
+          <div class="mgr-title">Manager Update (${list.length})</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-primary btn-sm" id="mgr-add-update">${ico('plus')} Tambah Update</button>
+            <button class="btn btn-sm" id="mgr-refresh-update">${ico('back')} Refresh</button>
+          </div>
+        </div>
+        <div class="dev-manager-list" id="update-list"></div>
+      </div>`;
+    $("#mgr-add-update").addEventListener("click", async ()=>{
+      await Store.saveUpdate({
+        version:"v?.?", date:"Hari ini", title:"Update Baru",
+        changes:["Perubahan 1","Perubahan 2"], createdAt:Date.now()
+      });
+      toast("Update ditambahkan","success");
+      this.state.updates = await Store.listUpdates();
+      STATE.updates = this.state.updates;
+      this.renderUpdates();
+    });
+    $("#mgr-refresh-update").addEventListener("click", async ()=>{
+      this.state.updates = await Store.listUpdates();
+      this.renderUpdates();
+    });
+    this.renderUpdateList();
+  },
+
+  renderUpdateList(){
+    const wrap = $("#update-list");
+    const list = this.state.updates || [];
+    if(!list.length){
+      wrap.innerHTML = `<div class="mgr-empty">Belum ada update. Klik "Tambah Update" untuk mulai.</div>`;
+      return;
+    }
+    wrap.innerHTML = list.map(u=>`
+      <div class="mgr-card" data-uid="${u.id}">
+        <div class="mgr-row">
+          <div class="mgr-fields">
+            <input type="text" data-uv="${u.id}" placeholder="Versi (v1.2)" value="${esc(u.version||"")}"/>
+            <input type="text" data-ud="${u.id}" placeholder="Tanggal" value="${esc(u.date||"")}"/>
+            <input type="text" data-ut="${u.id}" placeholder="Judul" value="${esc(u.title||"")}"/>
+          </div>
+        </div>
+        <label style="font-size:11px;font-weight:800;text-transform:uppercase;
+          letter-spacing:.5px;color:var(--ink-soft);display:block;margin:8px 0 4px">
+          Perubahan:
+        </label>
+        <div class="mgr-changes-list" data-uchanges="${u.id}">
+          ${(u.changes||[]).map((c,i)=>`
+            <div class="change-row">
+              <input type="text" data-uchange="${u.id}-${i}" value="${esc(c)}"/>
+              <button class="chg-del" data-uchgdel="${u.id}-${i}">${ico('x')}</button>
+            </div>`).join("")}
+        </div>
+        <button class="btn btn-sm" data-uchgadd="${u.id}" style="margin-top:6px;font-size:11px">
+          ${ico('plus')} Tambah Baris
+        </button>
+        <div class="mgr-actions">
+          <button class="btn btn-sm btn-primary" data-usave="${u.id}">${ico('save')} Simpan</button>
+          <button class="btn btn-sm btn-red" data-udel="${u.id}">${ico('trash')} Hapus</button>
+        </div>
+      </div>`).join("");
+
+    wrap.querySelectorAll("[data-uchgdel]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        const [uid_, iStr] = b.dataset.uchgdel.split("-");
+        const i = +iStr;
+        const idx = this.state.updates.findIndex(x=>x.id===uid_);
+        this.state.updates[idx].changes.splice(i,1);
+        this.renderUpdateList();
+      });
+    });
+    wrap.querySelectorAll("[data-uchgadd]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        const u = b.dataset.uchgadd;
+        const idx = this.state.updates.findIndex(x=>x.id===u);
+        if(!this.state.updates[idx].changes) this.state.updates[idx].changes = [];
+        this.state.updates[idx].changes.push("Perubahan baru");
+        this.renderUpdateList();
+      });
+    });
+    wrap.querySelectorAll("[data-usave]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        const uid_ = b.dataset.usave;
+        const card = wrap.querySelector(`[data-uid="${uid_}"]`);
+        const version = card.querySelector(`[data-uv="${uid_}"]`).value;
+        const date = card.querySelector(`[data-ud="${uid_}"]`).value;
+        const title = card.querySelector(`[data-ut="${uid_}"]`).value;
+        const changes = [];
+        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>{
+          changes.push(inp.value);
+        });
+        const idx = this.state.updates.findIndex(x=>x.id===uid_);
+        const updated = { ...this.state.updates[idx], version, date, title, changes };
+        showLoading("Menyimpan...");
+        try{
+          await Store.saveUpdate(updated);
+          this.state.updates[idx] = updated;
+          STATE.updates = this.state.updates;
+          hideLoading(); toast("Update disimpan","success");
+        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
+      });
+    });
+    wrap.querySelectorAll("[data-udel]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        const uid_ = b.dataset.udel;
+        if(!confirm("Hapus update ini?")) return;
+        showLoading("Menghapus...");
+        try{
+          await Store.removeUpdate(uid_);
+          this.state.updates = await Store.listUpdates();
+          STATE.updates = this.state.updates;
+          hideLoading(); toast("Update dihapus","success");
+          this.renderUpdates();
+        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
+      });
+    });
   },
 
   openEdit(uid){
@@ -2690,9 +3007,9 @@ const PagePublic = {
     const badge = badgeMap[d.ownerPlan] || "";
     const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
 
-    const logosHtml = (d.logos||[]).filter(lg=>lg.img).length
+    const logosHtml = (Array.isArray(d.logos) && d.logos.filter(lg=>lg.img).length)
       ? `<div class="bio-logos">
-          ${(d.logos||[]).filter(lg=>lg.img).map(lg=>`
+          ${d.logos.filter(lg=>lg.img).map(lg=>`
             <a class="bio-logo-item" href="${esc(lg.url||"#")}" target="_blank" rel="noopener" title="${esc(lg.name||"")}">
               <img src="${esc(lg.img)}" alt="${esc(lg.name||"")}"/>
             </a>`).join("")}
@@ -2704,6 +3021,7 @@ const PagePublic = {
     const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
 
     const bioId = d.id||"";
+    const slug = d.slug||bioId;
     const isLocked = !!d.lock;
     const themeClass = `theme-${d.theme||"neo-cream"}`;
 
@@ -2722,7 +3040,7 @@ ${faviconTag}
 <meta property="og:type" content="profile"/>
 <meta property="og:title" content="${esc(pageTitle)}"/>
 <meta property="og:description" content="${esc(pageDesc)}"/>
-<meta property="og:url" content="${location.origin}${location.pathname}#/u/${bioId}"/>
+<meta property="og:url" content="${location.origin}${location.pathname}#/u/${slug}"/>
 ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>${PagePublic.css()}</style>
@@ -2798,6 +3116,7 @@ trackView();
   },
 
   css(){
+    // Ambil dari CSS utama, versi ringkas
     return `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;--red:#ff2a2a;--yellow:#ffd700;
@@ -2860,9 +3179,11 @@ img,video{max-width:100%;display:block}
   box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-.bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
-  box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
-.bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover;display:block}
+.bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;
+  border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
+.bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:480px){.bio-banner{max-width:100%}}
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-links.layout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .bio-links.layout-grid .bio-link{min-height:80px;padding:12px;font-size:12.5px;
@@ -2972,10 +3293,10 @@ img,video{max-width:100%;display:block}
 `;
   },
 
-  async render(id){
+  async render(idOrSlug){
     showLoading("Memuat...");
     let data=null;
-    try{ data=await Store.get(id); }catch(e){ console.error(e); }
+    try{ data=await Store.get(idOrSlug); }catch(e){ console.error(e); }
     hideLoading();
     if(!data){
       $("#app").innerHTML = `
@@ -3012,8 +3333,8 @@ img,video{max-width:100%;display:block}
 window.addEventListener("message", async e=>{
   const d=e.data;
   if(!d||!d.type) return;
-  if(d.type==="varlinkb:view" && d.id){ await Store.trackView(d.id); }
-  if(d.type==="varlinkb:click" && d.id!=null){ await Store.trackClick(d.id, d.idx); }
+  if(d.type==="varlinkb:view" && d.id){ await Store.trackView(d.id).catch(()=>{}); }
+  if(d.type==="varlinkb:click" && d.id!=null){ await Store.trackClick(d.id, d.idx).catch(()=>{}); }
 });
 
 /* =========================================================

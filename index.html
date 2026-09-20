@@ -8,43 +8,27 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><circle cx='50' cy='50' r='22' fill='%23ffd700' stroke='%23fff' stroke-width='4'/></svg>"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-/* =========================================================
-   VARLINKB v6 — NEO-BRUTALISM (site + bio)
-   ========================================================= */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --cream:#f0ebe0;
-  --cream-2:#e8e2d5;
-  --ink:#0a0a0a;
-  --ink-soft:#2a2a2a;
-  --red:#ff2a2a;
-  --yellow:#ffd700;
-  --green:#22c55e;
-  --blue:#2563eb;
-  --pink:#ff69b4;
-  --purple:#a78bfa;
-  --white:#fff;
-  --shadow:5px 5px 0 var(--ink);
-  --shadow-sm:3px 3px 0 var(--ink);
-  --border:2.5px solid var(--ink);
-  --radius:10px;
+  --cream:#f0ebe0;--cream-2:#e8e2d5;--ink:#0a0a0a;--ink-soft:#2a2a2a;
+  --red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;
+  --pink:#ff69b4;--purple:#a78bfa;--white:#fff;--orange:#ff8c00;
+  --shadow:5px 5px 0 var(--ink);--shadow-sm:3px 3px 0 var(--ink);
+  --border:2.5px solid var(--ink);--radius:10px;
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 }
 html,body{height:100%;font-family:var(--font);color:var(--ink);
   font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body{
-  background-color:var(--cream);
+body{background-color:var(--cream);
   background-image:radial-gradient(circle,#0a0a0a 1.2px,transparent 1.2px);
-  background-size:16px 16px;
-  background-position:0 0;
-  min-height:100vh;
-}
+  background-size:16px 16px;min-height:100vh}
 #app{min-height:100vh}
 body.public-mode{overflow:hidden;height:100vh;height:100dvh}
 body.public-mode #app{min-height:0;height:100vh;height:100dvh;overflow:hidden}
 .hidden{display:none!important}
 a{color:var(--ink);text-decoration:none}
-button{font-family:inherit;font-size:15px;cursor:pointer;border:none;outline:none;transition:transform .1s, box-shadow .1s}
+button{font-family:inherit;font-size:15px;cursor:pointer;border:none;outline:none;
+  transition:transform .1s, box-shadow .1s}
 input,textarea,select{font-family:inherit;font-size:15px;color:var(--ink);
   background:var(--white);border:var(--border);border-radius:var(--radius);
   padding:12px 14px;outline:none;transition:all .1s;width:100%;font-weight:600}
@@ -52,34 +36,33 @@ input:focus,textarea:focus,select:focus{box-shadow:var(--shadow-sm)}
 input::placeholder,textarea::placeholder{color:#888;font-weight:500}
 textarea{resize:vertical;min-height:80px}
 
-/* SVG icon */
 .ic{width:16px;height:16px;display:inline-block;vertical-align:middle;
-  stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
-  flex-shrink:0}
+  stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;
+  stroke-linejoin:round;flex-shrink:0}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
   padding:11px 18px;border-radius:var(--radius);font-weight:800;font-size:13.5px;
   white-space:nowrap;background:var(--white);color:var(--ink);
   border:var(--border);box-shadow:var(--shadow-sm);text-transform:uppercase;
-  letter-spacing:.3px;transition:transform .1s, box-shadow .1s}
+  letter-spacing:.3px}
 .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
 .btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 .btn-primary{background:var(--ink);color:var(--white)}
-.btn-primary:hover{background:var(--ink-soft)}
 .btn-yellow{background:var(--yellow)}
 .btn-red{background:var(--red);color:var(--white)}
 .btn-green{background:var(--green);color:var(--white)}
 .btn-blue{background:var(--blue);color:var(--white)}
-.btn-ghost{background:var(--cream)}
+.btn-pink{background:var(--pink)}
+.btn-orange{background:var(--orange);color:var(--white)}
 .btn-sm{padding:8px 12px;font-size:12px}
+.btn-lg{padding:15px 22px;font-size:14px}
 .btn-block{width:100%}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
 
 .card{background:var(--white);border:var(--border);border-radius:var(--radius);
   box-shadow:var(--shadow);padding:18px}
 
-/* Toast */
 #toast-container{position:fixed;top:16px;right:16px;z-index:9999;display:flex;
   flex-direction:column;gap:8px;pointer-events:none;max-width:calc(100vw - 32px)}
 .toast{background:var(--white);border:var(--border);border-radius:var(--radius);
@@ -90,56 +73,184 @@ textarea{resize:vertical;min-height:80px}
 .toast.info{background:var(--yellow)}
 @keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
-/* Loading */
 #loading-overlay{position:fixed;inset:0;background:rgba(240,235,224,.85);z-index:10000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-weight:800}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:1px}
 .loader{width:40px;height:40px;border:4px solid var(--ink);border-top-color:transparent;
   border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Layout */
 .container{max-width:960px;margin:0 auto;padding:0 18px}
-.topbar{position:sticky;top:0;z-index:100;background:var(--cream);
-  border-bottom:var(--border);padding:12px 18px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;
-  text-transform:uppercase;letter-spacing:.5px}
-.topbar .brand .logo{width:32px;height:32px;background:var(--ink);color:var(--yellow);
-  border:var(--border);border-radius:8px;box-shadow:3px 3px 0 var(--red);
-  display:grid;place-items:center;font-size:14px;font-weight:900}
-.topbar .actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+
+/* Topbar */
+.lt-topbar{position:sticky;top:0;z-index:100;background:var(--white);
+  border-bottom:3px solid var(--ink);padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lt-topbar .lt-brand{display:flex;align-items:center;gap:8px;font-weight:900;
+  font-size:16px;text-transform:uppercase;letter-spacing:.5px}
+.lt-topbar .lt-brand .lt-logo{width:32px;height:32px;background:var(--ink);
+  color:var(--yellow);border-radius:50%;display:grid;place-items:center;
+  font-size:15px;font-weight:900;border:2.5px solid var(--ink);
+  box-shadow:2px 2px 0 var(--red)}
+.lt-topbar .lt-actions{display:flex;gap:6px;align-items:center}
+.lt-btn{padding:9px 14px;border-radius:999px;font-weight:800;font-size:12.5px;
+  border:2.5px solid var(--ink);background:var(--white);color:var(--ink);
+  text-transform:uppercase;letter-spacing:.3px;box-shadow:2px 2px 0 var(--ink);
+  display:inline-flex;align-items:center;gap:6px}
+.lt-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.lt-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.lt-btn-logout{background:var(--ink);color:var(--white)}
+.lt-btn-hamburger{padding:8px;width:38px;height:38px;justify-content:center;border-radius:50%}
+.lt-btn-plan{background:var(--yellow)}
+@media(max-width:520px){
+  .lt-topbar .lt-actions .lt-btn span{display:none}
+  .lt-btn{padding:9px 10px}
+}
+
+.lt-drawer{position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:200;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+.lt-drawer.open{opacity:1;pointer-events:auto}
+.lt-drawer-panel{position:absolute;top:0;right:0;bottom:0;width:min(320px,80vw);
+  background:var(--cream);border-left:3px solid var(--ink);
+  padding:20px;transform:translateX(100%);transition:transform .25s;
+  display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.lt-drawer.open .lt-drawer-panel{transform:translateX(0)}
+.lt-drawer-panel h4{font-size:12px;text-transform:uppercase;letter-spacing:1px;
+  color:var(--ink-soft);margin-bottom:4px;font-weight:800}
+.lt-drawer-panel .user-box{background:var(--white);border:var(--border);
+  border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);
+  margin-bottom:6px}
+.lt-drawer-panel .user-box b{display:block;font-size:15px;text-transform:uppercase;
+  font-weight:900;letter-spacing:.3px}
+.lt-drawer-panel .user-box span{font-size:12px;color:var(--ink-soft);font-weight:600;
+  word-break:break-all}
+.plan-badge{display:inline-block;padding:3px 10px;font-size:10px;
+  font-weight:900;text-transform:uppercase;letter-spacing:1px;border:2px solid var(--ink);
+  border-radius:999px;margin-top:6px;background:var(--yellow)}
+.plan-badge.pro{background:var(--blue);color:var(--white)}
+.plan-badge.ultimate{background:var(--ink);color:var(--yellow)}
+.plan-badge.developer{background:var(--red);color:var(--white)}
+.lt-drawer-panel .menu-item{background:var(--white);border:var(--border);
+  border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;
+  gap:10px;font-weight:800;font-size:13.5px;text-transform:uppercase;
+  letter-spacing:.3px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.lt-drawer-panel .menu-item:hover{transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink)}
+.lt-drawer-panel .menu-item:active{transform:translate(2px,2px);
+  box-shadow:0 0 0 var(--ink)}
 
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--cream-2)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
 
-/* LANDING */
-.landing{min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;padding:40px 18px;text-align:center}
-.landing .hero-logo{width:88px;height:88px;border-radius:50%;background:var(--white);
+/* Landing */
+.landing{min-height:100vh;display:flex;flex-direction:column}
+.landing-hero{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:60px 18px 40px;text-align:center}
+.hero-logo{width:88px;height:88px;border-radius:50%;background:var(--white);
   border:4px solid var(--ink);box-shadow:6px 6px 0 var(--red);
-  display:grid;place-items:center;font-size:38px;margin-bottom:24px;font-weight:900;
-  transform:rotate(-3deg);color:var(--ink)}
-.landing h1{font-size:clamp(38px,8vw,64px);font-weight:900;letter-spacing:-1.5px;
+  display:grid;place-items:center;margin-bottom:24px;transform:rotate(-3deg)}
+.hero-logo .ic{width:44px;height:44px}
+.landing h1{font-size:clamp(38px,8vw,68px);font-weight:900;letter-spacing:-1.5px;
   margin-bottom:10px;text-transform:uppercase;line-height:1;
   text-shadow:4px 4px 0 var(--yellow)}
-.landing p.sub{color:var(--ink);font-size:15px;max-width:420px;margin-bottom:28px;
-  font-weight:600;background:var(--white);border:var(--border);padding:8px 14px;
+.landing p.sub{color:var(--ink);font-size:15px;max-width:460px;margin-bottom:28px;
+  font-weight:600;background:var(--white);border:var(--border);padding:10px 16px;
   border-radius:var(--radius);box-shadow:var(--shadow-sm);transform:rotate(-1deg)}
-.landing .name-form{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px}
-.landing .name-form input{text-align:center;font-size:16px;padding:14px;font-weight:700;
-  box-shadow:var(--shadow-sm)}
-.landing .name-form .btn{padding:14px;font-size:15px}
-.landing .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
+.cta-row{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px}
+.cta-row .btn{padding:15px;font-size:14px}
+.footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
-/* DASHBOARD */
+/* Pricing */
+.pricing-section{padding:40px 18px 60px;background:var(--cream-2);
+  border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.pricing-header{text-align:center;margin-bottom:28px}
+.pricing-header h2{font-size:clamp(28px,5vw,40px);font-weight:900;
+  text-transform:uppercase;letter-spacing:-.5px;line-height:1.05}
+.pricing-header h2 span{background:var(--yellow);border:3px solid var(--ink);
+  padding:2px 10px;box-shadow:4px 4px 0 var(--ink);display:inline-block;
+  transform:rotate(-1deg);margin-top:6px}
+.pricing-header p{margin-top:14px;font-size:14px;font-weight:600}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;max-width:960px;margin:0 auto}
+.pricing-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
+  padding:20px;position:relative;box-shadow:6px 6px 0 var(--ink);
+  display:flex;flex-direction:column;transition:transform .15s, box-shadow .15s}
+.pricing-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+.pricing-card.popular{background:var(--yellow);transform:rotate(-1deg)}
+.pricing-card.ultimate-card{background:var(--ink);color:var(--white)}
+.pricing-card.ultimate-card .price{color:var(--yellow)}
+.pricing-card.ultimate-card .features li::before{color:var(--yellow)}
+.pricing-card.ultimate-card .btn{background:var(--yellow);color:var(--ink);
+  border-color:var(--white);box-shadow:3px 3px 0 var(--white)}
+.pricing-card .pop-badge{position:absolute;top:-14px;right:-8px;background:var(--red);
+  color:var(--white);font-size:11px;font-weight:900;padding:4px 10px;
+  border:2.5px solid var(--ink);border-radius:999px;text-transform:uppercase;
+  letter-spacing:.5px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink)}
+.pricing-card .plan-name{font-size:22px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:4px}
+.pricing-card .plan-tagline{font-size:12.5px;font-weight:600;opacity:.75;
+  margin-bottom:16px;min-height:32px}
+.pricing-card .price{font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px}
+.pricing-card .price small{font-size:13px;font-weight:700;opacity:.7;letter-spacing:0}
+.pricing-card .features{list-style:none;margin:16px 0 20px;flex:1;padding:0}
+.pricing-card .features li{font-size:13px;font-weight:600;padding:5px 0 5px 22px;
+  position:relative;line-height:1.4}
+.pricing-card .features li::before{content:'✓';position:absolute;left:0;
+  font-weight:900;font-size:14px;color:var(--green)}
+
+/* Auth */
+.auth-page{min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:40px 18px}
+.auth-card{width:100%;max-width:400px;background:var(--white);
+  border:3px solid var(--ink);border-radius:14px;padding:24px;
+  box-shadow:8px 8px 0 var(--ink)}
+.auth-card .auth-icon{width:56px;height:56px;background:var(--yellow);
+  border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;
+  margin:0 auto 14px;box-shadow:3px 3px 0 var(--red);color:var(--ink)}
+.auth-card .auth-icon .ic{width:26px;height:26px}
+.auth-card h2{font-size:22px;font-weight:900;text-transform:uppercase;
+  text-align:center;letter-spacing:-.3px;margin-bottom:6px}
+.auth-card p.auth-sub{text-align:center;color:var(--ink-soft);font-size:13px;
+  margin-bottom:20px;font-weight:600}
+.auth-card .field{margin-bottom:12px}
+.auth-card .field label{display:block;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;color:var(--ink)}
+.auth-card .btn{padding:14px;font-size:14px;margin-top:6px}
+.auth-card .auth-footer{text-align:center;margin-top:16px;font-size:12.5px;
+  font-weight:700;color:var(--ink-soft)}
+.auth-card .auth-footer a{color:var(--ink);text-decoration:underline;font-weight:900}
+.auth-card .err-box{background:var(--red);color:var(--white);border:2.5px solid var(--ink);
+  border-radius:var(--radius);padding:10px 12px;font-size:12.5px;font-weight:700;
+  margin-bottom:12px;box-shadow:2px 2px 0 var(--ink)}
+.auth-card .back-link{display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:700;margin-bottom:14px;text-transform:uppercase;
+  letter-spacing:.5px}
+.auth-card .back-link:hover{text-decoration:underline}
+.auth-card .divider{text-align:center;margin:14px 0;font-size:12px;
+  font-weight:700;color:var(--ink-soft)}
+.btn-google{background:var(--white)}
+
+/* Dashboard */
 .dash{padding-bottom:60px}
 .dash-hero{padding:32px 18px 24px;text-align:center}
-.dash-hero h2{font-size:28px;font-weight:900;letter-spacing:-.5px;text-transform:uppercase;
-  display:inline-block;background:var(--yellow);border:var(--border);
-  padding:6px 16px;box-shadow:var(--shadow);transform:rotate(-1deg)}
-.dash-hero p{color:var(--ink);margin-top:14px;font-weight:600}
+.dash-hero h2{font-size:clamp(22px,5vw,30px);font-weight:900;letter-spacing:-.5px;
+  text-transform:uppercase;display:inline-block;background:var(--yellow);
+  border:var(--border);padding:6px 16px;box-shadow:var(--shadow);transform:rotate(-1deg)}
+.dash-hero p{color:var(--ink);margin-top:14px;font-weight:600;font-size:14px}
+.dash-plan-card{max-width:520px;margin:0 auto 20px;background:var(--white);
+  border:3px solid var(--ink);border-radius:14px;padding:16px;
+  box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;gap:14px;
+  flex-wrap:wrap}
+.dash-plan-card .picon{width:48px;height:48px;border-radius:12px;
+  display:grid;place-items:center;flex-shrink:0;border:2.5px solid var(--ink);
+  background:var(--yellow)}
+.dash-plan-card .picon .ic{width:22px;height:22px}
+.dash-plan-card .pinfo{flex:1;min-width:180px}
+.dash-plan-card .pinfo b{display:block;font-size:15px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px}
+.dash-plan-card .pinfo span{font-size:12px;font-weight:600;color:var(--ink-soft)}
 .dash-actions{margin:24px auto;max-width:420px;display:flex;flex-direction:column;gap:12px}
 .dash-actions .btn{padding:16px;font-size:14px}
 .dash-info{padding:16px 0}
@@ -152,7 +263,6 @@ textarea{resize:vertical;min-height:80px}
 .feature-card .fi{width:34px;height:34px;background:var(--yellow);border:var(--border);
   border-radius:8px;display:grid;place-items:center;margin-bottom:10px;
   box-shadow:2px 2px 0 var(--ink)}
-.feature-card .fi .ic{width:18px;height:18px}
 .feature-card h4{font-size:13.5px;margin-bottom:4px;text-transform:uppercase;
   font-weight:900;letter-spacing:.3px}
 .feature-card p{color:var(--ink-soft);font-size:12px;line-height:1.5;font-weight:500}
@@ -175,13 +285,11 @@ textarea{resize:vertical;min-height:80px}
 .recent-item .ri-actions{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap}
 .icon-btn{width:32px;height:32px;border-radius:8px;background:var(--white);
   border:2px solid var(--ink);display:grid;place-items:center;
-  color:var(--ink);box-shadow:2px 2px 0 var(--ink);
-  transition:transform .1s, box-shadow .1s}
+  color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
 .icon-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .icon-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 .icon-btn.danger{background:var(--red);color:var(--white)}
 .icon-btn .ic{width:14px;height:14px}
-
 .empty-state{text-align:center;padding:40px 18px;color:var(--ink);
   background:var(--white);border:var(--border);border-radius:var(--radius);
   box-shadow:var(--shadow)}
@@ -191,7 +299,7 @@ textarea{resize:vertical;min-height:80px}
 .empty-state .ei .ic{width:28px;height:28px}
 .empty-state p{margin-bottom:16px;font-weight:700}
 
-/* EDITOR */
+/* Editor */
 .editor-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;
   max-width:1180px;margin:0 auto;padding:18px;padding-bottom:60px}
 @media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
@@ -209,15 +317,17 @@ textarea{resize:vertical;min-height:80px}
 .field label{display:block;font-size:12.5px;color:var(--ink);margin-bottom:5px;
   font-weight:800;text-transform:uppercase;letter-spacing:.3px}
 .field .hint{font-size:11px;color:var(--ink-soft);margin-top:4px;font-weight:500}
+.locked-hint{background:var(--yellow);border:2px dashed var(--ink);
+  border-radius:var(--radius);padding:10px;font-size:12px;font-weight:700;
+  text-align:center;margin-top:8px}
+.locked-hint a{text-decoration:underline;font-weight:900;cursor:pointer}
 
-/* Upload */
 .upload-box{border:2.5px dashed var(--ink);border-radius:var(--radius);
   padding:18px;text-align:center;cursor:pointer;transition:all .1s;
   background:var(--cream);position:relative;overflow:hidden}
 .upload-box:hover{background:var(--yellow);border-style:solid}
 .upload-box .ui{width:36px;height:36px;background:var(--ink);color:var(--yellow);
   border-radius:8px;display:grid;place-items:center;margin:0 auto 8px}
-.upload-box .ui .ic{width:18px;height:18px}
 .upload-box p{color:var(--ink);font-size:12.5px;font-weight:800;text-transform:uppercase}
 .upload-box small{color:var(--ink-soft);font-size:11px;display:block;margin-top:3px;font-weight:600}
 .upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
@@ -230,35 +340,36 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:var(--shadow-sm);transform:rotate(-3deg)}
 .profile-upload .pbox img,.profile-upload .pbox video{width:100%;height:100%;object-fit:cover}
 .profile-upload .pbox .overlay{position:absolute;inset:0;background:rgba(10,10,10,.6);
-  color:var(--white);display:grid;place-items:center;opacity:0;
-  transition:opacity .15s}
+  color:var(--white);display:grid;place-items:center;opacity:0;transition:opacity .15s}
 .profile-upload .pbox:hover .overlay{opacity:1}
 .profile-upload .pbox input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
 
-/* Links editor */
 .links-list{display:flex;flex-direction:column;gap:8px}
-.link-row{display:flex;gap:6px;align-items:center;background:var(--cream);
+.link-row{display:flex;gap:6px;align-items:flex-start;background:var(--cream);
   border:2.5px solid var(--ink);border-radius:var(--radius);padding:8px;
   box-shadow:2px 2px 0 var(--ink)}
 .link-row.dragging{opacity:.4}
 .link-row.drag-over{background:var(--yellow)}
-.link-row .drag{color:var(--ink);cursor:grab;padding:0 3px;user-select:none;display:grid;place-items:center}
-.link-row .drag:active{cursor:grabbing}
+.link-row .drag{color:var(--ink);cursor:grab;padding:6px 3px;user-select:none;
+  display:grid;place-items:center}
 .link-row .link-fields{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
 .link-row .link-fields input{border:none;background:var(--white);padding:6px 8px;font-size:13px;
   box-shadow:none!important;border:1.5px solid var(--ink)}
-.link-row .link-thumb{width:34px;height:34px;border-radius:8px;object-fit:cover;
+.link-row .link-thumb{width:38px;height:38px;border-radius:8px;object-fit:cover;
   background:var(--yellow);flex-shrink:0;display:grid;place-items:center;
-  overflow:hidden;border:2px solid var(--ink)}
+  overflow:hidden;border:2px solid var(--ink);margin-top:4px}
+.link-row .link-thumb img{width:100%;height:100%;object-fit:cover}
+.link-row .thumb-btn{font-size:10px;padding:4px 8px;align-self:flex-start;
+  margin-top:2px;border:2px solid var(--ink);border-radius:6px;
+  background:var(--white);font-weight:800;box-shadow:1px 1px 0 var(--ink);
+  text-transform:uppercase;letter-spacing:.3px}
 .link-row .del{background:var(--red);color:var(--white);width:28px;height:28px;
   border-radius:7px;display:grid;place-items:center;flex-shrink:0;
-  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
-.link-row .del:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);margin-top:4px}
 .link-color-pick{width:28px;height:28px;border-radius:6px;cursor:pointer;
   border:2px solid var(--ink);padding:0;flex-shrink:0;box-shadow:2px 2px 0 var(--ink);
-  background:transparent}
+  background:transparent;margin-top:4px}
 
-/* Modal */
 .modal-back{position:fixed;inset:0;background:rgba(10,10,10,.7);z-index:500;
   display:grid;place-items:center;padding:18px;animation:fadeIn .15s ease}
 .modal{background:var(--white);border:3px solid var(--ink);border-radius:14px;
@@ -272,18 +383,34 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:2px 2px 0 var(--ink)}
 .link-type:hover{background:var(--yellow);transform:translate(-1px,-1px);
   box-shadow:3px 3px 0 var(--ink)}
-.link-type:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 .link-type .lti{width:32px;height:32px;background:var(--ink);color:var(--yellow);
   border-radius:6px;display:grid;place-items:center;margin:0 auto 6px}
-.link-type .lti .ic{width:16px;height:16px}
 .link-type b{font-size:12px;display:block;text-transform:uppercase;font-weight:900}
 .link-type small{color:var(--ink-soft);font-size:10.5px;font-weight:600}
 .modal .close-x{position:absolute;top:12px;right:14px;font-size:22px;
-  color:var(--ink);cursor:pointer;background:none;border:none;line-height:1;
-  font-weight:900}
+  color:var(--ink);cursor:pointer;background:none;border:none;line-height:1;font-weight:900}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* Preview pane */
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.theme-item{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;
+  aspect-ratio:1;border:2.5px solid var(--ink);transition:all .1s;
+  box-shadow:2px 2px 0 var(--ink)}
+.theme-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.theme-item.active{border-color:var(--ink);
+  box-shadow:0 0 0 3px var(--yellow), 3px 3px 0 var(--ink)}
+.theme-item.locked{opacity:.55;cursor:not-allowed}
+.theme-item.locked::after{content:'🔒';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);font-size:22px}
+.theme-item.locked:hover{transform:none}
+.theme-item .label{position:absolute;bottom:0;left:0;right:0;padding:4px;
+  background:rgba(10,10,10,.85);font-size:10.5px;font-weight:900;text-align:center;
+  color:#fff;text-transform:uppercase;letter-spacing:.3px}
+.theme-item .chk{position:absolute;top:5px;right:5px;width:20px;height:20px;
+  border-radius:50%;background:var(--yellow);border:2px solid var(--ink);
+  display:none;place-items:center;color:var(--ink)}
+.theme-item .chk .ic{width:12px;height:12px}
+.theme-item.active .chk{display:grid}
+
 .editor-preview{position:sticky;top:70px;align-self:start}
 .preview-phone{width:100%;max-width:300px;margin:0 auto;aspect-ratio:9/19;
   border-radius:28px;border:4px solid var(--ink);overflow:hidden;
@@ -291,20 +418,36 @@ textarea{resize:vertical;min-height:80px}
 .preview-phone iframe{width:100%;height:100%;border:none;display:block}
 .editor-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 
-/* QR */
 .qr-box{text-align:center;padding:14px;background:var(--white);border:var(--border);
   border-radius:var(--radius);display:inline-block;margin:10px auto;
   box-shadow:var(--shadow-sm)}
 .qr-box canvas{display:block}
-.qr-url{font-family:monospace;font-size:11.5px;color:var(--ink);word-break:break-all;
+.qr-url{font-family:monospace;font-size:11.5px;word-break:break-all;
   text-align:center;margin-top:10px;font-weight:600;
   background:var(--cream);padding:8px;border-radius:6px;border:1.5px solid var(--ink)}
 
+/* Upgrade modal */
+.upgrade-box{text-align:center}
+.upgrade-box .plan-title{font-size:22px;font-weight:900;text-transform:uppercase;
+  margin-bottom:6px}
+.upgrade-box .plan-price{font-size:26px;font-weight:900;color:var(--green);
+  margin-bottom:16px}
+.upgrade-box .steps{text-align:left;background:var(--cream);border:2px solid var(--ink);
+  border-radius:var(--radius);padding:14px;margin-bottom:14px;font-size:13px;
+  font-weight:600;line-height:1.6}
+.upgrade-box .steps ol{margin-left:18px}
+.upgrade-box .steps li{margin-bottom:6px}
+.upgrade-box .tako-link{display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:var(--white);padding:14px 22px;border-radius:var(--radius);
+  font-weight:900;text-transform:uppercase;letter-spacing:.5px;font-size:14px;
+  border:3px solid var(--ink);box-shadow:4px 4px 0 var(--yellow);margin-bottom:12px}
+.upgrade-box .tako-link:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--yellow)}
+
 /* Analytics */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px}
-.stat-card{background:var(--white);border:var(--border);
-  border-radius:var(--radius);padding:14px;text-align:center;
-  box-shadow:var(--shadow-sm)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;margin-bottom:18px}
+.stat-card{background:var(--white);border:var(--border);border-radius:var(--radius);
+  padding:14px;text-align:center;box-shadow:var(--shadow-sm)}
 .stat-card:nth-child(1){background:var(--yellow)}
 .stat-card:nth-child(2){background:var(--red);color:var(--white)}
 .stat-card:nth-child(3){background:var(--blue);color:var(--white)}
@@ -324,38 +467,29 @@ textarea{resize:vertical;min-height:80px}
   background:var(--ink);color:var(--white);padding:2px 8px;border-radius:6px}
 
 /* =========================================================
-   BIO — NEO THEME (juga untuk publik)
+   BIO THEMES — 6 VARIAN NEO
    ========================================================= */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
-  background-color:var(--cream);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:18px 18px;
   color:var(--ink);padding:34px 18px 60px;
   display:flex;flex-direction:column;align-items:center;font-weight:700;z-index:2}
 .bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
-
-/* Dekorasi sudut (kotak merah/biru rotated) */
 .bio-deco{position:fixed;pointer-events:none;z-index:1}
 .bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
-  border:3px solid var(--ink);transform:rotate(-12deg);
-  box-shadow:5px 5px 0 var(--ink)}
+  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink)}
 .bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);
   border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);
   box-shadow:4px 4px 0 var(--ink)}
 .bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);
-  border:3px solid var(--ink);transform:rotate(15deg);
-  box-shadow:4px 4px 0 var(--ink)}
+  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink)}
 
-/* Avatar */
 .bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
   overflow:hidden;background:var(--white);margin:0 auto;
   box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-avatar img,.bio-avatar video{width:100%;height:100%;object-fit:cover}
 .bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 
-/* Header stack */
 .bio-header{display:flex;flex-direction:column;align-items:center;
-  margin-bottom:24px;position:relative;gap:0}
+  margin-bottom:24px;position:relative}
 .bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
   color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;
   letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);
@@ -370,61 +504,111 @@ textarea{resize:vertical;min-height:80px}
   border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;
   box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;
   word-break:break-word;z-index:1}
+.bio-plan-badge{display:inline-block;padding:3px 12px;background:var(--ink);
+  color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;
+  letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;
+  margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
+.bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
+.bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
+.bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
 
-/* Banner */
-.bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;
-  overflow:hidden;box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;
-  background:var(--white)}
-.bio-banner img,.bio-banner video{width:100%;display:block;max-height:200px;object-fit:cover}
+.bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
+.bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover}
 
-/* Gallery */
-.bio-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.bio-gallery .gi{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;
-  cursor:pointer;border:3px solid var(--ink);
-  transition:transform .15s, box-shadow .15s;background:var(--white);
-  box-shadow:4px 4px 0 var(--ink)}
-.bio-gallery .gi:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
-.bio-gallery .gi:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-.bio-gallery .gi img,.bio-gallery .gi video{width:100%;height:100%;object-fit:cover}
-
-/* Links */
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
   padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
-  color:var(--ink);font-weight:900;font-size:14.5px;text-transform:uppercase;
-  letter-spacing:.5px;text-decoration:none;position:relative;
-  transition:transform .12s ease, box-shadow .12s ease;
-  box-shadow:6px 6px 0 var(--ink);cursor:pointer;background:var(--white);
-  min-height:56px}
+  font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;
+  position:relative;transition:transform .12s, box-shadow .12s;
+  box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;
+  background:var(--white);color:var(--ink)}
 .bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
-.bio-link .licon{width:20px;height:20px;display:grid;place-items:center;flex-shrink:0}
+.bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
 .bio-link .licon .ic{width:18px;height:18px}
 .bio-link .ltext{flex:1;text-align:center}
 
-/* Featured */
+/* Link with image */
 .bio-link.bio-featured{flex-direction:column;align-items:stretch;
   padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);
   min-height:0}
 .bio-link.bio-featured .feat-img{width:100%;height:120px;object-fit:cover;
   border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
-.bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
-.bio-link.bio-featured .feat-body b{display:block;font-size:14.5px;font-weight:900;
+.bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center;
+  display:flex;align-items:center;gap:10px;justify-content:center}
+.bio-link.bio-featured .feat-body b{font-size:14.5px;font-weight:900;
   text-transform:uppercase}
-.bio-link.bio-featured .feat-body small{font-size:11.5px;opacity:.7;display:block;
-  margin-top:2px;font-weight:600;text-transform:lowercase}
 
-/* Embed */
 .bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);background:var(--white)}
 .bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
 
-/* Footer */
-.bio-footer{margin-top:28px;text-align:center;font-size:11px;
-  color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;
-  background:var(--white);border:2px solid var(--ink);padding:6px 12px;
-  border-radius:20px;box-shadow:2px 2px 0 var(--ink);display:inline-block}
+.bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;
+  text-transform:uppercase;letter-spacing:1px;background:var(--white);
+  border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
+  box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
+
+/* 6 tema varian */
+.theme-neo-cream{
+  background-color:#f0ebe0;
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-dark{
+  background-color:#0a0a0a;color:#fff;
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
+.theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;
+  box-shadow:5px 5px 0 var(--yellow)}
+.theme-neo-dark .bio-bio{background:var(--blue);color:#fff;border-color:#fff}
+.theme-neo-dark .bio-link{background:var(--white);color:var(--ink);
+  border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-dark .bio-banner{border-color:#fff}
+.theme-neo-dark .bio-embed{border-color:#fff}
+.theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);
+  border-color:#fff;box-shadow:2px 2px 0 var(--red)}
+.theme-neo-blue{
+  background-color:#2563eb;color:#fff;
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
+.theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);
+  box-shadow:5px 5px 0 var(--ink)}
+.theme-neo-blue .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
+.theme-neo-blue .bio-link{background:var(--white);color:var(--ink);
+  border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.theme-neo-blue .bio-banner{border-color:var(--ink)}
+.theme-neo-blue .bio-embed{border-color:var(--ink)}
+.theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);
+  border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
+.theme-neo-pink{
+  background-color:#ff69b4;color:var(--ink);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
+.theme-neo-pink .bio-bio{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
+.theme-neo-pink .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink)}
+.theme-neo-green{
+  background-color:#22c55e;color:var(--ink);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
+.theme-neo-green .bio-bio{background:var(--ink);color:#fff;border-color:var(--ink)}
+.theme-neo-green .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink)}
+.theme-neo-purple{
+  background-color:#a78bfa;color:var(--ink);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
+.theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
+.theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
+.theme-neo-purple .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink)}
 
 /* Lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(10,10,10,.94);z-index:9999;
@@ -443,14 +627,15 @@ textarea{resize:vertical;min-height:80px}
 .lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);
   border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
 .lock-card .li .ic{width:26px;height:26px}
-.lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;
-  font-weight:900;letter-spacing:.5px}
-.lock-card p{color:var(--ink-soft);font-size:13px;margin-bottom:16px;font-weight:600}
+.lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;font-weight:900}
+.lock-card p{font-size:13px;margin-bottom:16px;font-weight:600}
+.lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
+  background:var(--white);color:var(--ink);font-size:14px;outline:none;
+  text-align:center;font-weight:700;font-family:inherit}
 .lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
   background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
-  margin-top:10px;font-size:13.5px;text-transform:uppercase;letter-spacing:.5px;
-  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s}
-.lock-card button:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--red)}
+  margin-top:10px;font-size:13.5px;text-transform:uppercase;
+  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;font-family:inherit}
 
 @media(max-width:640px){
   .editor-layout{padding:14px 12px 50px}
@@ -472,10 +657,11 @@ textarea{resize:vertical;min-height:80px}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
 /* =========================================================
-   SVG ICON LIBRARY (ganti emoji  hindari glyph broken)
+   SVG ICON LIBRARY
    ========================================================= */
 const ICONS = {
   link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
@@ -499,17 +685,17 @@ const ICONS = {
   whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
   tiktok:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>',
   lock:'<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
-  unlock:'<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
   sparkle:'<path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>',
   check:'<polyline points="20 6 9 17 4 12"/>',
   x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
   grip:'<circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/>',
   grid:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',
-  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  message:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
-  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
-  play:'<polygon points="5 3 19 12 5 21 5 3"/>'
+  menu:'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>',
+  crown:'<path d="M2 20h20M4 20l-2-9 6 4 4-7 4 7 6-4-2 9"/>',
+  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  google:'<path d="M21.35 11.1H12v2.8h5.35c-.23 1.24-.93 2.3-1.97 3v2.5h3.19c1.86-1.72 2.93-4.25 2.93-7.2 0-.69-.06-1.36-.15-2.1z" fill="#4285F4" stroke="none"/><path d="M12 21c2.66 0 4.9-.88 6.53-2.39l-3.19-2.5c-.88.6-2.02.95-3.34.95-2.57 0-4.75-1.73-5.53-4.07H3.18v2.56C4.8 18.92 8.16 21 12 21z" fill="#34A853" stroke="none"/><path d="M6.47 12.99A5.5 5.5 0 0 1 6.16 11c0-.69.12-1.36.32-1.99V6.45H3.18A9 9 0 0 0 2.16 11c0 1.46.35 2.85.97 4.08l3.34-2.09z" fill="#FBBC05" stroke="none"/><path d="M12 5.94c1.45 0 2.74.5 3.75 1.47l2.82-2.82C16.9 2.96 14.66 2 12 2 8.16 2 4.8 4.08 3.18 7.45l3.34 2.09C7.25 7.2 9.43 5.94 12 5.94z" fill="#EA4335" stroke="none"/>'
 };
 function ico(name, cls=""){
   const d = ICONS[name] || ICONS.link;
@@ -517,48 +703,73 @@ function ico(name, cls=""){
 }
 
 /* =========================================================
-   FIREBASE CONFIG
+   FIREBASE CONFIG — allweb-9dacd
    ========================================================= */
 const FIREBASE_CONFIG = {
-  apiKey: "ISI_API_KEY",
-  authDomain: "ISI.firebaseapp.com",
-  projectId: "ISI_PROJECT_ID",
-  storageBucket: "ISI.appspot.com",
-  messagingSenderId: "ISI_SENDER_ID",
-  appId: "ISI_APP_ID"
+  apiKey: "AIzaSyCzEZCtXJTLOLVK3xvcpcUQEgSmwcmPXuQ",
+  authDomain: "allweb-9dacd.firebaseapp.com",
+  projectId: "allweb-9dacd",
+  storageBucket: "allweb-9dacd.firebasestorage.app",
+  messagingSenderId: "876830048672",
+  appId: "1:876830048672:web:5795f72db6fa8e7a5324c5"
 };
-const DEMO_MODE = !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === "ISI_API_KEY";
-const FB = { app:null, db:null, storage:null, ready:false };
+const FB = { app:null, db:null, storage:null, auth:null, ready:false };
 (function initFirebase(){
-  if (DEMO_MODE){ console.log("%c[VarlinkB] DEMO MODE","color:#f59e0b;font-weight:bold"); return; }
   try{
     FB.app = firebase.initializeApp(FIREBASE_CONFIG);
     FB.db = firebase.firestore();
     FB.storage = firebase.storage();
+    FB.auth = firebase.auth();
     FB.ready = true;
-    console.log("%c[VarlinkB] Firebase siap","color:#22c55e;font-weight:bold");
-  }catch(e){ console.error(e); FB.ready=false; }
+    console.log("%c[VarlinkB] Firebase siap ✓","color:#22c55e;font-weight:bold");
+  }catch(e){ console.error("Firebase init error:",e); FB.ready=false; }
 })();
 
 /* =========================================================
-   STATE & CONST
+   KONFIGURASI
    ========================================================= */
-const STATE = { user:null, currentEdit:null, draft:null, cache:[] };
-const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
-const NEO_HEX = {
-  red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e",
-  blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff"
+const DEV_EMAILS = ["mynameisvaroo@gmail.com"];
+const ADMIN_WA = "6285823058292";
+const TAKO_URL = "https://tako.id/VarCodexx";
+
+const PLANS = {
+  free: {
+    id:"free", name:"Free", price:0, priceLabel:"Gratis", tagline:"Cocok buat coba-coba",
+    features:{ maxBios:1, maxLinks:5, themes:["neo-cream"], analytics:false, linkLock:false, featuredLink:false, embed:false, badge:null },
+    highlights:["1 bio link","Maks 5 tombol","1 tema (Neo Cream)","QR Code"]
+  },
+  pro: {
+    id:"pro", name:"Pro", price:15000, priceLabel:"Rp 15.000", tagline:"Paling populer untuk kreator",
+    features:{ maxBios:5, maxLinks:-1, themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"], analytics:true, linkLock:true, featuredLink:true, embed:true, badge:"PRO" },
+    highlights:["5 bio link","Unlimited tombol","6 tema lengkap","Analytics","Link Lock","Embed YouTube/Spotify/TikTok","Tombol dengan gambar"]
+  },
+  ultimate: {
+    id:"ultimate", name:"Ultimate", price:23000, priceLabel:"Rp 23.000", tagline:"Untuk profesional & brand",
+    features:{ maxBios:-1, maxLinks:-1, themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"], analytics:true, linkLock:true, featuredLink:true, embed:true, badge:"ULTIMATE" },
+    highlights:["Unlimited bio link","Semua fitur Pro","Custom domain (segera)","Priority support","Badge ULTIMATE"]
+  },
+  developer: {
+    id:"developer", name:"Developer", price:0, priceLabel:"∞", tagline:"Akses penuh tanpa batas",
+    features:{ maxBios:-1, maxLinks:-1, themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"], analytics:true, linkLock:true, featuredLink:true, embed:true, badge:"DEV" },
+    highlights:["Unlimited semua","Semua fitur unlock","Badge DEV","Akses admin"]
+  }
 };
 
+const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
+const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
+
 /* =========================================================
-   UTILS
+   STATE & UTILS
    ========================================================= */
+const STATE = { user:null, plan:null, planMeta:null, currentEdit:null, draft:null, cache:[] };
+
 const $  = (s,r=document)=>r.querySelector(s);
 const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
 const uid = (n=10)=>Math.random().toString(36).slice(2,2+n);
 const esc = (s="")=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const detectMediaType = f => f.type.startsWith("video")?"video":"image";
-const fileToDataURL = f => new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f);});
+const isUnlimited = n => n === -1;
+const isDev = email => DEV_EMAILS.map(e=>e.toLowerCase()).includes((email||"").toLowerCase());
 
 function toast(msg,type="info"){
   const el=document.createElement("div");
@@ -577,7 +788,7 @@ function openModal(html){
 }
 
 async function copyLink(id){
-  const url = `${location.origin}${location.pathname}#/u/${id}`;
+  const url=`${location.origin}${location.pathname}#/u/${id}`;
   try{ await navigator.clipboard.writeText(url); toast("Link disalin!","success"); }
   catch(e){
     const ta=document.createElement("textarea");
@@ -587,35 +798,31 @@ async function copyLink(id){
     catch(err){ toast("Gagal copy: "+url,"error"); }
     ta.remove();
   }
-  return url;
 }
-
-function showShareModal(id, name){
-  const url = `${location.origin}${location.pathname}#/u/${id}`;
-  const m = openModal(`
+function showShareModal(id){
+  const url=`${location.origin}${location.pathname}#/u/${id}`;
+  const m=openModal(`
     <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
     <h3>Bio Link Tersimpan!</h3>
-    <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan link ini:</p>
+    <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan:</p>
     <input id="share-url" value="${url}" readonly onclick="this.select()"
       style="text-align:center;font-family:monospace;font-size:12px;padding:12px"/>
     <div style="display:flex;gap:8px;margin-top:10px">
-      <button class="btn btn-primary btn-block" id="share-copy">${ico('copy')} Copy Link</button>
+      <button class="btn btn-primary btn-block" id="share-copy">${ico('copy')} Copy</button>
       <button class="btn btn-block" id="share-open">${ico('eye')} Buka</button>
     </div>
     <div style="display:flex;gap:8px;margin-top:6px">
       <button class="btn btn-block btn-sm" id="share-qr">${ico('qr')} QR</button>
-      <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WhatsApp</button>
-    </div>
-  `);
+      <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WA</button>
+    </div>`);
   $("#share-copy",m).addEventListener("click",()=>copyLink(id));
   $("#share-open",m).addEventListener("click",()=>window.open(`${location.pathname}#/u/${id}`,"_blank"));
   $("#share-wa",m).addEventListener("click",()=>{
-    const text = encodeURIComponent(`Cek link-in-bio aku: ${url}`);
+    const text=encodeURIComponent(`Cek link-in-bio aku: ${url}`);
     window.open(`https://wa.me/?text=${text}`,"_blank");
   });
   $("#share-qr",m).addEventListener("click",()=>{ m.remove(); PageDashboard.qr(id); });
 }
-
 async function generateQR(text, canvasEl){
   try{
     await QRCode.toCanvas(canvasEl, text, { width:220, margin:1,
@@ -623,126 +830,154 @@ async function generateQR(text, canvasEl){
     return true;
   }catch(e){ console.error(e); return false; }
 }
-
 function contrastText(hex){
   if(!hex) return "#0a0a0a";
-  const h = hex.replace("#","");
+  const h=hex.replace("#","");
   if(h.length!==6) return "#0a0a0a";
-  const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
-  const lum = (0.299*r + 0.587*g + 0.114*b)/255;
-  return lum > 0.6 ? "#0a0a0a" : "#ffffff";
+  const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);
+  const lum=(0.299*r+0.587*g+0.114*b)/255;
+  return lum>0.6?"#0a0a0a":"#ffffff";
 }
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+const Auth = {
+  current: null,
+  async init(){
+    return new Promise(resolve=>{
+      FB.auth.onAuthStateChanged(async user=>{
+        if(user){
+          let name = user.displayName || (user.email||"").split("@")[0];
+          try{
+            const doc = await FB.db.collection("users").doc(user.uid).get();
+            if(doc.exists && doc.data().name) name = doc.data().name;
+          }catch(e){}
+          this.current = { uid:user.uid, email:user.email, name, photo:user.photoURL||"" };
+        } else { this.current = null; }
+        resolve(this.current);
+      });
+    });
+  },
+  async register(email,password,name){
+    const cred = await FB.auth.createUserWithEmailAndPassword(email,password);
+    try{ await cred.user.updateProfile({ displayName:name }); }catch(e){}
+    await FB.db.collection("users").doc(cred.user.uid).set({
+      name, email, createdAt:Date.now(), plan:"free"
+    },{ merge:true });
+    return cred.user;
+  },
+  async login(email,password){
+    const cred = await FB.auth.signInWithEmailAndPassword(email,password);
+    return cred.user;
+  },
+  async loginGoogle(){
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const cred = await FB.auth.signInWithPopup(provider);
+    const doc = await FB.db.collection("users").doc(cred.user.uid).get();
+    if(!doc.exists){
+      await FB.db.collection("users").doc(cred.user.uid).set({
+        name: cred.user.displayName || cred.user.email.split("@")[0],
+        email: cred.user.email, createdAt:Date.now(), plan:"free"
+      });
+    }
+    return cred.user;
+  },
+  async logout(){ await FB.auth.signOut(); this.current = null; },
+  errMsg(code){
+    const map = {
+      "auth/email-already-in-use":"Email sudah terdaftar",
+      "auth/invalid-email":"Format email tidak valid",
+      "auth/weak-password":"Password terlalu lemah (min 6 karakter)",
+      "auth/user-not-found":"Email tidak terdaftar",
+      "auth/wrong-password":"Password salah",
+      "auth/invalid-credential":"Email atau password salah",
+      "auth/invalid-login-credentials":"Email atau password salah",
+      "auth/too-many-requests":"Terlalu banyak percobaan. Coba nanti",
+      "auth/popup-closed-by-user":"Login dibatalkan",
+      "auth/popup-blocked":"Popup diblokir browser",
+      "auth/network-request-failed":"Koneksi internet bermasalah",
+      "auth/operation-not-allowed":"Provider belum aktif di Firebase",
+      "auth/unauthorized-domain":"Domain belum di-whitelist di Firebase"
+    };
+    return map[code] || ("Error: " + (code||"tidak diketahui"));
+  }
+};
+
+/* =========================================================
+   GET USER PLAN
+   ========================================================= */
+async function loadUserPlan(){
+  if(!Auth.current) { STATE.plan = PLANS.free; return PLANS.free; }
+  if(isDev(Auth.current.email)) { STATE.plan = PLANS.developer; STATE.planMeta = null; return PLANS.developer; }
+  try{
+    const doc = await FB.db.collection("users").doc(Auth.current.uid).get();
+    const data = doc.exists ? doc.data() : {};
+    let planId = data.plan || "free";
+    if(planId !== "free" && data.planExpiry && data.planExpiry < Date.now()) planId = "free";
+    STATE.planMeta = data;
+    STATE.plan = PLANS[planId] || PLANS.free;
+    return STATE.plan;
+  }catch(e){ STATE.plan = PLANS.free; return PLANS.free; }
+}
+function canDo(feature){ return !!(STATE.plan?.features?.[feature]); }
+function themeAllowed(themeId){ return (STATE.plan?.features?.themes||[]).includes(themeId); }
+function planBadge(){ return STATE.plan?.features?.badge || null; }
 
 /* =========================================================
    STORE
    ========================================================= */
 const Store = {
-  key(){ return `varlinkb_bios_${STATE.user?.uid||"guest"}`; },
-  userKey(){ return `varlinkb_user`; },
-  async saveUser(u){
-    STATE.user=u;
-    if (FB.ready){ try{await FB.db.collection("users").doc(u.uid).set(u,{merge:true});}catch(e){console.warn(e);} }
-    localStorage.setItem(this.userKey(),JSON.stringify(u));
-  },
-  async loadUser(){
-    const raw=localStorage.getItem(this.userKey()); if(!raw) return null;
-    try{ const u=JSON.parse(raw);
-      if(FB.ready){ const d=await FB.db.collection("users").doc(u.uid).get(); if(d.exists) return d.data(); }
-      return u;
-    }catch{ return null; }
-  },
   async list(){
-    if(FB.ready){
-      const s=await FB.db.collection("bios").where("ownerUid","==",STATE.user.uid).orderBy("updatedAt","desc").get();
-      const a=[]; s.forEach(d=>a.push({id:d.id,...d.data()}));
-      STATE.cache=a; return a;
-    }
-    const raw=localStorage.getItem(this.key());
-    const a=raw?JSON.parse(raw):[];
+    const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
+    const a=[]; s.forEach(d=>a.push({id:d.id,...d.data()}));
     a.sort((x,y)=>(y.updatedAt||0)-(x.updatedAt||0));
-    STATE.cache=a; return a;
+    STATE.cache = a; return a;
   },
   async get(id){
-    if(FB.ready){
-      const d=await FB.db.collection("bios").doc(id).get();
-      if(!d.exists) return null;
-      return {id:d.id,...d.data()};
-    }
-    const raw=localStorage.getItem(this.key());
-    if(raw){ const a=JSON.parse(raw); const f=a.find(x=>x.id===id); if(f) return f; }
-    for(let i=0;i<localStorage.length;i++){
-      const k=localStorage.key(i);
-      if(k && k.startsWith("varlinkb_bios_")){
-        try{ const arr=JSON.parse(localStorage.getItem(k));
-          const f=arr.find(x=>x.id===id); if(f) return f;
-        }catch(e){}
-      }
-    }
-    return null;
+    const d = await FB.db.collection("bios").doc(id).get();
+    if(!d.exists) return null;
+    return { id:d.id, ...d.data() };
+  },
+  async count(){
+    const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
+    return s.size;
   },
   async save(bio){
-    bio.ownerUid=STATE.user.uid;
-    bio.ownerName=STATE.user.name;
-    bio.updatedAt=Date.now();
-    if(!bio.id) bio.id=uid(12);
-    if(!bio.createdAt) bio.createdAt=bio.updatedAt;
-    if(bio.stats===undefined) bio.stats={views:0,clicks:{}};
-    if(FB.ready){
-      const {id,...data}=bio;
-      await FB.db.collection("bios").doc(id).set(data,{merge:true});
-    }else{
-      const a=await this.list();
-      const i=a.findIndex(x=>x.id===bio.id);
-      if(i>=0) a[i]=bio; else a.unshift(bio);
-      localStorage.setItem(this.key(),JSON.stringify(a));
-    }
+    bio.ownerUid = Auth.current.uid;
+    bio.ownerName = Auth.current.name;
+    bio.updatedAt = Date.now();
+    if(!bio.id) bio.id = uid(12);
+    if(!bio.createdAt) bio.createdAt = bio.updatedAt;
+    if(bio.stats===undefined) bio.stats = { views:0, clicks:{} };
+    const {id, ...data} = bio;
+    await FB.db.collection("bios").doc(id).set(data, { merge:true });
     return bio;
   },
-  async remove(id){
-    if(FB.ready){ await FB.db.collection("bios").doc(id).delete(); }
-    else{
-      let a=await this.list(); a=a.filter(x=>x.id!==id);
-      localStorage.setItem(this.key(),JSON.stringify(a));
-    }
-  },
-  async upload(file,prefix="media"){
+  async remove(id){ await FB.db.collection("bios").doc(id).delete(); },
+  async upload(file, prefix="media"){
     if(!file) return null;
-    if(FB.ready){
-      const path=`varlinkb/${STATE.user.uid}/${prefix}_${Date.now()}_${file.name}`;
-      const ref=FB.storage.ref(path); await ref.put(file);
-      return await ref.getDownloadURL();
-    }
-    return await fileToDataURL(file);
+    const path = `varlinkb/${Auth.current.uid}/${prefix}_${Date.now()}_${file.name}`;
+    const ref = FB.storage.ref(path);
+    await ref.put(file);
+    return await ref.getDownloadURL();
   },
   async trackView(id){
-    if(FB.ready){
-      try{ await FB.db.collection("bios").doc(id).update({ "stats.views": firebase.firestore.FieldValue.increment(1) }); }
-      catch(e){ console.warn(e); }
-    }else{
-      const a=await this.list(); const i=a.findIndex(x=>x.id===id);
-      if(i>=0){ a[i].stats=a[i].stats||{views:0,clicks:{}};
-        a[i].stats.views=(a[i].stats.views||0)+1;
-        localStorage.setItem(this.key(),JSON.stringify(a)); }
-    }
+    try{ await FB.db.collection("bios").doc(id).update({
+      "stats.views": firebase.firestore.FieldValue.increment(1)
+    }); }catch(e){}
   },
-  async trackClick(id, linkIdx){
-    if(FB.ready){
-      try{ await FB.db.collection("bios").doc(id).update({ [`stats.clicks.${linkIdx}`]: firebase.firestore.FieldValue.increment(1) }); }
-      catch(e){ console.warn(e); }
-    }else{
-      const raw=localStorage.getItem(this.key()); let a=raw?JSON.parse(raw):[];
-      const i=a.findIndex(x=>x.id===id);
-      if(i>=0){ a[i].stats=a[i].stats||{views:0,clicks:{}};
-        a[i].stats.clicks=a[i].stats.clicks||{};
-        a[i].stats.clicks[linkIdx]=(a[i].stats.clicks[linkIdx]||0)+1;
-        localStorage.setItem(this.key(),JSON.stringify(a)); }
-    }
+  async trackClick(id, idx){
+    try{ await FB.db.collection("bios").doc(id).update({
+      [`stats.clicks.${idx}`]: firebase.firestore.FieldValue.increment(1)
+    }); }catch(e){}
   }
 };
 
 /* =========================================================
    ROUTER
    ========================================================= */
+const PROTECTED = ["/dashboard","/editor","/manage","/stats"];
 const Router = {
   routes:{},
   on(p,h){ this.routes[p]=h; },
@@ -752,10 +987,12 @@ const Router = {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.height = '';
-    const raw=location.hash.slice(1)||"/";
-    const path=raw.split("?")[0];
+    const raw = location.hash.slice(1) || "/";
+    const path = raw.split("?")[0];
+    const query = raw.split("?")[1] || "";
     if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
-    (this.routes[path]||this.routes["/404"]||(()=>{}))();
+    if(PROTECTED.includes(path) && !Auth.current) return this.navigate("/login");
+    (this.routes[path]||this.routes["/404"]||(()=>{}))(query);
   },
   start(){ window.addEventListener("hashchange",()=>this.resolve()); this.resolve(); }
 };
@@ -800,69 +1037,375 @@ const LinkTypes = {
    ========================================================= */
 const PageLanding = {
   render(){
-    $("#app").innerHTML=`
+    if(Auth.current) return Router.navigate("/dashboard");
+
+    $("#app").innerHTML = `
       <div class="landing">
-        <div class="hero-logo">${ico('link')}</div>
-        <h1>VarlinkB</h1>
-        <p class="sub">Bikin link in bio simpel & keren. Gratis, cepat, tinggal input nama.</p>
-        <div class="name-form">
-          <input id="input-name" type="text" placeholder="Masukkan nama kamu..." maxlength="40" autocomplete="off"/>
-          <button class="btn btn-primary btn-block" id="btn-masuk">Masuk ${ico('play')}</button>
+        <div class="landing-hero">
+          <div class="hero-logo">${ico('link')}</div>
+          <h1>VarlinkB</h1>
+          <p class="sub">Satu link untuk semua — bikin link in bio keren dalam hitungan detik.</p>
+          <div class="cta-row">
+            <button class="btn btn-primary btn-lg btn-block" id="btn-daftar">Daftar Gratis</button>
+            <button class="btn btn-block" id="btn-login">Login</button>
+          </div>
+          <div class="footer-tag">Dibuat oleh Varoo</div>
         </div>
-        <div class="footer-tag">Dibuat oleh Varoo</div>
+
+        <div class="pricing-section">
+          <div class="pricing-header">
+            <h2>Pilih Plan <span>Kamu</span></h2>
+            <p>Mulai gratis, upgrade kapan saja. Tanpa kontrak.</p>
+          </div>
+          <div class="pricing-grid">
+            ${this.renderPricingCard(PLANS.free, '')}
+            ${this.renderPricingCard(PLANS.pro, 'popular')}
+            ${this.renderPricingCard(PLANS.ultimate, 'ultimate-card')}
+          </div>
+        </div>
       </div>`;
-    const input=$("#input-name"), btn=$("#btn-masuk");
-    input.focus();
-    const submit=async()=>{
-      const name=input.value.trim();
-      if(!name){ toast("Nama tidak boleh kosong","error"); return; }
-      if(name.length<2){ toast("Nama minimal 2 karakter","error"); return; }
-      showLoading("Menyiapkan...");
-      await new Promise(r=>setTimeout(r,400));
-      let user=await Store.loadUser();
-      if(!user||user.name!==name){ user={uid:user?.uid||uid(12),name}; await Store.saveUser(user); }
-      else STATE.user=user;
-      hideLoading();
-      toast(`Selamat datang, ${name}!`,"success");
-      Router.navigate("/dashboard");
-    };
-    btn.addEventListener("click",submit);
-    input.addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
+
+    $("#btn-daftar").addEventListener("click",()=>Router.navigate("/register"));
+    $("#btn-login").addEventListener("click",()=>Router.navigate("/login"));
+    $$(".pricing-card .btn").forEach(b=>{
+      b.addEventListener("click",()=>Router.navigate("/register"));
+    });
+  },
+  renderPricingCard(plan, extraClass){
+    return `
+      <div class="pricing-card ${extraClass}">
+        ${extraClass==='popular'?'<div class="pop-badge">POPULER</div>':''}
+        <div class="plan-name">${plan.name}</div>
+        <div class="plan-tagline">${plan.tagline}</div>
+        <div class="price">${plan.priceLabel}<small>${plan.period?' / '+plan.period:''}</small></div>
+        <ul class="features">
+          ${plan.highlights.map(h=>`<li>${h}</li>`).join("")}
+        </ul>
+        <button class="btn ${extraClass==='ultimate-card'?'':'btn-primary'} btn-block">
+          ${plan.price===0?'Mulai Gratis':'Pilih '+plan.name}
+        </button>
+      </div>`;
   }
 };
+
+/* =========================================================
+   PAGE: LOGIN
+   ========================================================= */
+const PageLogin = {
+  render(){
+    if(Auth.current) return Router.navigate("/dashboard");
+
+    $("#app").innerHTML = `
+      <div class="auth-page">
+        <div class="auth-card">
+          <a href="#/" class="back-link">${ico('back')} Kembali</a>
+          <div class="auth-icon">${ico('user')}</div>
+          <h2>Login</h2>
+          <p class="auth-sub">Masuk ke akun VarlinkB kamu</p>
+          <div id="err-slot"></div>
+          <form id="login-form">
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="l-email" placeholder="nama@email.com" required autocomplete="email"/>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="l-pass" placeholder="••••••••" required autocomplete="current-password"/>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="l-submit">Masuk</button>
+          </form>
+          <div class="divider">— ATAU —</div>
+          <button class="btn btn-google btn-block" id="l-google">
+            <span style="display:inline-flex;width:18px;height:18px">${ico('google')}</span>
+            Login dengan Google
+          </button>
+          <div class="auth-footer">Belum punya akun? <a href="#/register">Daftar</a></div>
+        </div>
+      </div>`;
+
+    const showErr = msg => $("#err-slot").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+
+    $("#login-form").addEventListener("submit", async e=>{
+      e.preventDefault();
+      const email=$("#l-email").value.trim();
+      const pass=$("#l-pass").value;
+      if(!email||!pass){ showErr("Isi email & password"); return; }
+      showLoading("Login...");
+      try{
+        await Auth.login(email, pass);
+        await loadUserPlan();
+        hideLoading(); toast("Login berhasil!","success");
+        Router.navigate("/dashboard");
+      }catch(err){
+        hideLoading(); showErr(Auth.errMsg(err.code));
+      }
+    });
+
+    $("#l-google").addEventListener("click", async ()=>{
+      showLoading("Login Google...");
+      try{
+        await Auth.loginGoogle();
+        await loadUserPlan();
+        hideLoading(); toast("Login berhasil!","success");
+        Router.navigate("/dashboard");
+      }catch(err){
+        hideLoading(); showErr(Auth.errMsg(err.code));
+      }
+    });
+  }
+};
+
+/* =========================================================
+   PAGE: REGISTER
+   ========================================================= */
+const PageRegister = {
+  render(){
+    if(Auth.current) return Router.navigate("/dashboard");
+
+    $("#app").innerHTML = `
+      <div class="auth-page">
+        <div class="auth-card">
+          <a href="#/" class="back-link">${ico('back')} Kembali</a>
+          <div class="auth-icon">${ico('sparkle')}</div>
+          <h2>Daftar</h2>
+          <p class="auth-sub">Bikin akun VarlinkB gratis</p>
+          <div id="err-slot"></div>
+          <form id="reg-form">
+            <div class="field">
+              <label>Nama Lengkap</label>
+              <input type="text" id="r-name" placeholder="Nama kamu" required maxlength="40"/>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="r-email" placeholder="nama@email.com" required autocomplete="email"/>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="r-pass" placeholder="Min 6 karakter" required minlength="6" autocomplete="new-password"/>
+            </div>
+            <div class="field">
+              <label>Konfirmasi Password</label>
+              <input type="password" id="r-pass2" placeholder="Ulangi password" required minlength="6" autocomplete="new-password"/>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+          </form>
+          <div class="divider">— ATAU —</div>
+          <button class="btn btn-google btn-block" id="r-google">
+            <span style="display:inline-flex;width:18px;height:18px">${ico('google')}</span>
+            Daftar dengan Google
+          </button>
+          <div class="auth-footer">Sudah punya akun? <a href="#/login">Login</a></div>
+        </div>
+      </div>`;
+
+    const showErr = msg => $("#err-slot").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+
+    $("#reg-form").addEventListener("submit", async e=>{
+      e.preventDefault();
+      const name=$("#r-name").value.trim();
+      const email=$("#r-email").value.trim();
+      const pass=$("#r-pass").value;
+      const pass2=$("#r-pass2").value;
+
+      if(!name||name.length<2){ showErr("Nama minimal 2 karakter"); return; }
+      if(!email){ showErr("Email wajib diisi"); return; }
+      if(pass.length<6){ showErr("Password minimal 6 karakter"); return; }
+      if(pass!==pass2){ showErr("Konfirmasi password tidak sama"); return; }
+
+      showLoading("Mendaftar...");
+      try{
+        await Auth.register(email, pass, name);
+        await loadUserPlan();
+        hideLoading(); toast("Akun berhasil dibuat!","success");
+        Router.navigate("/dashboard");
+      }catch(err){
+        hideLoading(); showErr(Auth.errMsg(err.code));
+      }
+    });
+
+    $("#r-google").addEventListener("click", async ()=>{
+      showLoading("Daftar Google...");
+      try{
+        await Auth.loginGoogle();
+        await loadUserPlan();
+        hideLoading(); toast("Berhasil!","success");
+        Router.navigate("/dashboard");
+      }catch(err){
+        hideLoading(); showErr(Auth.errMsg(err.code));
+      }
+    });
+  }
+};
+
+/* =========================================================
+   TOPBAR + DRAWER
+   ========================================================= */
+function renderTopbar(){
+  const user = Auth.current || { name:"Guest", email:"" };
+  const badge = planBadge();
+  const badgeCls = STATE.plan?.id || "free";
+  return `
+    <div class="lt-topbar">
+      <div class="lt-brand">
+        <div class="lt-logo">${ico('link')}</div>
+        <span>VarlinkB</span>
+      </div>
+      <div class="lt-actions">
+        ${badge?`<button class="lt-btn lt-btn-plan" id="btn-plan-top"><span>${badge}</span></button>`:''}
+        <button class="lt-btn lt-btn-logout" id="btn-logout-top"><span>Log Out</span></button>
+        <button class="lt-btn lt-btn-hamburger" id="btn-drawer-open">${ico('menu')}</button>
+      </div>
+    </div>
+    <div class="lt-drawer" id="lt-drawer">
+      <div class="lt-drawer-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h4>Menu</h4>
+          <button class="icon-btn" id="btn-drawer-close">${ico('x')}</button>
+        </div>
+        <div class="user-box">
+          <b>${esc(user.name)}</b>
+          <span>${esc(user.email)}</span>
+          <div class="plan-badge ${badgeCls}">${badge || 'FREE'}</div>
+        </div>
+        <div class="menu-item" data-nav="/dashboard">${ico('grid')} Dashboard</div>
+        <div class="menu-item" data-nav="/manage">${ico('folder')} Kelola Bio</div>
+        <div class="menu-item" data-nav="/stats">${ico('stats')} Statistik</div>
+        <div class="menu-item" id="drawer-upgrade" style="background:var(--yellow)">
+          ${ico('crown')} Upgrade Plan
+        </div>
+        <div class="menu-item" id="drawer-logout" style="background:var(--red);color:#fff">
+          ${ico('logout')} Log Out
+        </div>
+        <div class="menu-item" id="drawer-back-home" style="background:var(--cream)">
+          ${ico('back')} Halaman Utama
+        </div>
+      </div>
+    </div>`;
+}
+
+function bindTopbar(){
+  const open=$("#btn-drawer-open");
+  const drawer=$("#lt-drawer");
+  if(open && drawer) open.addEventListener("click",()=>drawer.classList.add("open"));
+  const close=$("#btn-drawer-close");
+  if(close && drawer) close.addEventListener("click",()=>drawer.classList.remove("open"));
+  if(drawer) drawer.addEventListener("click",e=>{ if(e.target===drawer) drawer.classList.remove("open"); });
+  $$("[data-nav]").forEach(el=>{
+    el.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate(el.dataset.nav); });
+  });
+  const logoutBtn = $("#btn-logout-top");
+  const logoutBtn2 = $("#drawer-logout");
+  const doLogout = async ()=>{ await Auth.logout(); toast("Berhasil logout","info"); Router.navigate("/"); };
+  if(logoutBtn) logoutBtn.addEventListener("click",doLogout);
+  if(logoutBtn2) logoutBtn2.addEventListener("click",doLogout);
+  const homeBtn=$("#drawer-back-home");
+  if(homeBtn) homeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate("/"); });
+  const upgradeBtn=$("#drawer-upgrade");
+  if(upgradeBtn) upgradeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); showUpgradeModal(); });
+  const planBtn=$("#btn-plan-top");
+  if(planBtn) planBtn.addEventListener("click",()=>showUpgradeModal());
+}
+
+/* =========================================================
+   UPGRADE MODAL (Tako Donate)
+   ========================================================= */
+function showUpgradeModal(){
+  const cur = STATE.plan?.id || "free";
+  const m = openModal(`
+    <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+    <div class="upgrade-box">
+      <div class="plan-title">Upgrade Plan</div>
+      <p style="font-size:13px;font-weight:600;margin-bottom:16px">Pilih plan yang cocok buat kamu</p>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+        ${['pro','ultimate'].map(id=>{
+          const p = PLANS[id];
+          const active = cur === id;
+          return `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:${active?'var(--yellow)':'var(--cream)'};border:2.5px solid var(--ink);border-radius:10px;box-shadow:2px 2px 0 var(--ink)">
+              <div style="text-align:left">
+                <b style="font-size:15px;text-transform:uppercase;font-weight:900;display:block">${p.name}</b>
+                <span style="font-size:11.5px;font-weight:600">${p.tagline}</span>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:18px;font-weight:900">${p.priceLabel}</div>
+                <div style="font-size:10px;font-weight:700">per bulan</div>
+              </div>
+            </div>`;
+        }).join("")}
+      </div>
+
+      <div class="steps">
+        <b style="display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-size:11px">Cara Upgrade:</b>
+        <ol>
+          <li>Klik tombol Tako di bawah</li>
+          <li>Donate nominal plan pilihanmu</li>
+          <li>Setelah donasi, kirim bukti ke WA admin</li>
+          <li>Plan aktif dalam 1x24 jam</li>
+        </ol>
+      </div>
+
+      <a href="${TAKO_URL}" target="_blank" class="tako-link">
+        ${ico('crown')} Donate di Tako
+      </a>
+      <div style="height:8px"></div>
+      <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau upgrade VarlinkB. Email: '+(Auth.current?.email||''))}"
+         target="_blank" class="btn btn-green btn-block btn-lg">
+        ${ico('whatsapp')} Chat Admin
+      </a>
+    </div>
+  `);
+}
 
 /* =========================================================
    PAGE: DASHBOARD
    ========================================================= */
 const PageDashboard = {
-  async render(){
-    if(!STATE.user){ STATE.user=await Store.loadUser(); if(!STATE.user) return Router.navigate("/"); }
+  async render(query){
+    if(!Auth.current) return Router.navigate("/login");
+    if(!STATE.plan) await loadUserPlan();
 
-    $("#app").innerHTML=`
-      <div class="topbar">
-        <div class="brand"><div class="logo">${ico('link')}</div><span>VarlinkB</span></div>
-        <div class="actions">
-          <button class="btn btn-sm" id="btn-manage">${ico('folder')} Kelola</button>
-          <button class="btn btn-sm" id="btn-stats">${ico('stats')} Stats</button>
-          <button class="btn btn-sm" id="btn-logout">${ico('logout')} Keluar</button>
-        </div>
-      </div>
+    // Handle ?paid=1 dari Tako
+    if(query && query.includes("paid=1")){
+      setTimeout(()=>toast("Terima kasih! Admin akan konfirmasi donasimu dalam 1x24 jam.","info"),600);
+    }
+
+    const plan = STATE.plan;
+    const badge = planBadge();
+    const badgeCls = plan.id;
+
+    $("#app").innerHTML = `
+      ${renderTopbar()}
       <div class="dash">
         <div class="container">
           <div class="dash-hero">
-            <h2>Halo, ${esc(STATE.user.name)}</h2>
+            <h2>Halo, ${esc(Auth.current.name)}</h2>
             <p>Bikin link in bio kamu sekarang</p>
-            <div class="dash-actions">
-              <button class="btn btn-primary btn-block" id="btn-bikin">${ico('sparkle')} Bikin Link-in-Bio Baru</button>
-              <button class="btn btn-block" id="btn-manage2">${ico('folder')} Link-in-Bio Saya</button>
+          </div>
+
+          <div class="dash-plan-card">
+            <div class="picon" style="background:${plan.id==='developer'?'var(--red)':plan.id==='ultimate'?'var(--ink)':plan.id==='pro'?'var(--blue)':'var(--yellow)'};color:${plan.id==='ultimate'||plan.id==='developer'?'#fff':'var(--ink)'}">
+              ${ico(plan.id==='free'?'star':plan.id==='developer'?'zap':'crown')}
             </div>
+            <div class="pinfo">
+              <b>Plan: ${plan.name}</b>
+              <span>${plan.id==='free'?'Upgrade untuk unlock semua fitur':plan.id==='developer'?'Akses penuh tanpa batas':'Aktif'}</span>
+            </div>
+            <button class="btn ${plan.id==='free'?'btn-yellow':'btn-primary'} btn-sm" id="btn-upgrade">
+              ${plan.id==='free'?'Upgrade':'Kelola'}
+            </button>
+          </div>
+
+          <div class="dash-actions">
+            <button class="btn btn-primary btn-lg btn-block" id="btn-bikin">${ico('sparkle')} Bikin Link-in-Bio Baru</button>
+            <button class="btn btn-block" id="btn-manage">${ico('folder')} Link-in-Bio Saya</button>
           </div>
 
           <div class="dash-info">
             <div class="section-title">Fitur</div>
             <div class="features-grid">
-              <div class="feature-card"><div class="fi">${ico('grid')}</div><h4>6 Tema</h4><p>Neo, 3D, Galaxie, Rainbow, WA, Granite.</p></div>
-              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Gallery</h4><p>Foto & video untuk profil, banner, galeri.</p></div>
+              <div class="feature-card"><div class="fi">${ico('grid')}</div><h4>6 Tema</h4><p>6 varian Neo Brutalism.</p></div>
+              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Banner</h4><p>Foto & video untuk profil dan banner.</p></div>
               <div class="feature-card"><div class="fi">${ico('video')}</div><h4>Embed</h4><p>YouTube, Spotify, TikTok, Vimeo.</p></div>
               <div class="feature-card"><div class="fi">${ico('qr')}</div><h4>QR Code</h4><p>Download QR link-in-bio kamu.</p></div>
               <div class="feature-card"><div class="fi">${ico('stats')}</div><h4>Analytics</h4><p>Lihat views & klik per tombol.</p></div>
@@ -877,19 +1420,23 @@ const PageDashboard = {
         </div>
       </div>`;
 
-    $("#btn-logout").addEventListener("click",()=>{
-      localStorage.removeItem(Store.userKey()); STATE.user=null;
-      toast("Kamu telah keluar","info"); Router.navigate("/");
-    });
+    bindTopbar();
+
+    $("#btn-upgrade").addEventListener("click",()=>showUpgradeModal());
     $("#btn-manage").addEventListener("click",()=>Router.navigate("/manage"));
-    $("#btn-manage2").addEventListener("click",()=>Router.navigate("/manage"));
-    $("#btn-stats").addEventListener("click",()=>Router.navigate("/stats"));
-    $("#btn-bikin").addEventListener("click",()=>{
+    $("#btn-bikin").addEventListener("click", async ()=>{
+      const count = await Store.count();
+      if(!isUnlimited(plan.features.maxBios) && count >= plan.features.maxBios){
+        toast(`Plan ${plan.name} max ${plan.features.maxBios} bio. Upgrade dulu!`,"error");
+        showUpgradeModal();
+        return;
+      }
       STATE.currentEdit=null; STATE.draft=PageEditor.newDraft(); Router.navigate("/editor");
     });
 
     this.loadRecent();
   },
+
   async loadRecent(){
     const wrap=$("#recent-list");
     try{
@@ -902,7 +1449,7 @@ const PageDashboard = {
         <div class="recent-item">
           <div class="ri-left">
             ${b.profile?`<img class="ri-avatar" src="${esc(b.profile)}">`:`<div class="ri-avatar">${esc((b.name||"?")[0].toUpperCase())}</div>`}
-            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo"} · ${b.stats?.views||0} views</span></div>
+            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo-cream"} · ${b.stats?.views||0} views</span></div>
           </div>
           <div class="ri-actions">
             <button class="icon-btn" onclick="copyLink('${b.id}')" title="Copy">${ico('copy')}</button>
@@ -935,22 +1482,28 @@ const PageDashboard = {
    ========================================================= */
 const PageManage = {
   async render(){
-    if(!STATE.user){ STATE.user=await Store.loadUser(); }
-    if(!STATE.user) return Router.navigate("/");
+    if(!Auth.current) return Router.navigate("/login");
+    if(!STATE.plan) await loadUserPlan();
 
-    $("#app").innerHTML=`
-      <div class="topbar">
-        <div class="brand"><div class="logo">${ico('folder')}</div><span>Kelola</span></div>
-        <div class="actions">
-          <button class="btn btn-sm" id="btn-dash">${ico('back')} Dashboard</button>
+    $("#app").innerHTML = `
+      ${renderTopbar()}
+      <div class="container" style="padding-top:20px;padding-bottom:60px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div class="section-title" style="margin:0">Semua Bio</div>
           <button class="btn btn-primary btn-sm" id="btn-new">${ico('plus')} Baru</button>
         </div>
-      </div>
-      <div class="container" style="padding-top:20px;padding-bottom:60px">
         <div id="list" class="recent-list"></div>
       </div>`;
-    $("#btn-dash").addEventListener("click",()=>Router.navigate("/dashboard"));
-    $("#btn-new").addEventListener("click",()=>{ STATE.currentEdit=null; STATE.draft=PageEditor.newDraft(); Router.navigate("/editor"); });
+    bindTopbar();
+    $("#btn-new").addEventListener("click", async ()=>{
+      const plan = STATE.plan;
+      const count = await Store.count();
+      if(!isUnlimited(plan.features.maxBios) && count >= plan.features.maxBios){
+        toast(`Plan ${plan.name} max ${plan.features.maxBios} bio. Upgrade dulu!`,"error");
+        showUpgradeModal(); return;
+      }
+      STATE.currentEdit=null; STATE.draft=PageEditor.newDraft(); Router.navigate("/editor");
+    });
     await this.load();
   },
   async load(){
@@ -965,7 +1518,7 @@ const PageManage = {
         <div class="recent-item">
           <div class="ri-left">
             ${b.profile?`<img class="ri-avatar" src="${esc(b.profile)}">`:`<div class="ri-avatar">${esc((b.name||"?")[0].toUpperCase())}</div>`}
-            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo"} · ${b.stats?.views||0} views${b.lock?" · terkunci":""}</span></div>
+            <div class="ri-info"><b>${esc(b.name||"Tanpa nama")}</b><span>${b.theme||"neo-cream"} · ${b.stats?.views||0} views${b.lock?" · terkunci":""}</span></div>
           </div>
           <div class="ri-actions">
             <button class="icon-btn" onclick="copyLink('${b.id}')">${ico('copy')}</button>
@@ -986,8 +1539,24 @@ const PageManage = {
    ========================================================= */
 const PageStats = {
   async render(){
-    if(!STATE.user){ STATE.user=await Store.loadUser(); }
-    if(!STATE.user) return Router.navigate("/");
+    if(!Auth.current) return Router.navigate("/login");
+    if(!STATE.plan) await loadUserPlan();
+
+    if(!canDo("analytics")){
+      $("#app").innerHTML = `
+        ${renderTopbar()}
+        <div class="container" style="padding-top:40px;padding-bottom:60px">
+          <div class="empty-state">
+            <div class="ei">${ico('lock')}</div>
+            <p style="font-size:15px;margin-bottom:8px">Analytics cuma untuk plan Pro+</p>
+            <p style="font-size:12.5px;font-weight:600;margin-bottom:20px">Upgrade sekarang untuk lihat statistik views & klik</p>
+            <button class="btn btn-primary" id="btn-up">${ico('crown')} Upgrade</button>
+          </div>
+        </div>`;
+      bindTopbar();
+      $("#btn-up").addEventListener("click",()=>showUpgradeModal());
+      return;
+    }
 
     const list=await Store.list();
     const totalViews=list.reduce((s,b)=>s+(b.stats?.views||0),0);
@@ -996,11 +1565,8 @@ const PageStats = {
       return s+Object.values(c).reduce((x,y)=>x+y,0);
     },0);
 
-    $("#app").innerHTML=`
-      <div class="topbar">
-        <div class="brand"><div class="logo">${ico('stats')}</div><span>Statistik</span></div>
-        <div class="actions"><button class="btn btn-sm" id="btn-dash">${ico('back')} Dashboard</button></div>
-      </div>
+    $("#app").innerHTML = `
+      ${renderTopbar()}
       <div class="container" style="padding-top:20px;padding-bottom:60px">
         <div class="stats-grid">
           <div class="stat-card"><div class="sv">${list.length}</div><div class="sl">Total Bio</div></div>
@@ -1010,7 +1576,7 @@ const PageStats = {
         </div>
         <div id="stats-list"></div>
       </div>`;
-    $("#btn-dash").addEventListener("click",()=>Router.navigate("/dashboard"));
+    bindTopbar();
 
     const wrap=$("#stats-list");
     if(!list.length){ wrap.innerHTML=`<div class="empty-state"><p>Belum ada data.</p></div>`; return; }
@@ -1019,7 +1585,7 @@ const PageStats = {
       const totalClick=Object.values(clicks).reduce((a,c)=>a+c,0);
       const topLinks=(b.links||[]).map((l,i)=>`
         <div class="link-stat">
-          <div class="ls-l">${ico(LinkTypes.icon(l.url), "ic")}<div class="ls-info"><b>${esc(l.label||"Link")}</b><span>${esc(l.url)}</span></div></div>
+          <div class="ls-l">${ico(LinkTypes.icon(l.url))}<div class="ls-info"><b>${esc(l.label||"Link")}</b><span>${esc(l.url)}</span></div></div>
           <div class="ls-count">${clicks[i]||0}</div>
         </div>`).join("");
       return `
@@ -1035,44 +1601,46 @@ const PageStats = {
 };
 
 /* =========================================================
-   PAGE: EDITOR (background upload DIHAPUS)
+   PAGE: EDITOR
    ========================================================= */
 const PageEditor = {
   newDraft(){
     return {
-      id:null, name:STATE.user?.name||"", bio:"",
+      id:null, name:Auth.current?.name||"", bio:"",
       profile:"", profileType:"image",
       banner:"", bannerType:"image",
-      gallery:[],
-      links:[{label:"Instagram",url:"https://instagram.com/",type:"classic",featured:false,thumb:"",color:""}],
-      theme:"neo",
-      granite:{c1:"#7c5cff",c2:"#22d3ee",c3:"#ec4899"},
+      links:[{label:"Instagram",url:"https://instagram.com/",type:"classic",color:"",thumb:""}],
+      theme:"neo-cream",
       lock:"",
       stats:{views:0,clicks:{}}
     };
   },
 
   async render(){
-    if(!STATE.user) return Router.navigate("/");
+    if(!Auth.current) return Router.navigate("/login");
+    if(!STATE.plan) await loadUserPlan();
     if(!STATE.draft) STATE.draft=this.newDraft();
     const d=STATE.draft;
 
-    $("#app").innerHTML=`
-      <div class="topbar">
-        <div class="brand"><div class="logo">${ico('edit')}</div><span>${d.id?"Edit":"Bikin"} Bio</span></div>
-        <div class="actions">
-          <button class="btn btn-sm" id="btn-back">${ico('back')} Dashboard</button>
-          ${d.id?`<button class="btn btn-sm" id="btn-copy-top">${ico('copy')} Copy</button><button class="btn btn-sm" id="btn-qr">${ico('qr')} QR</button>`:""}
-          <button class="btn btn-primary btn-sm" id="btn-save">${ico('save')} Simpan</button>
+    $("#app").innerHTML = `
+      ${renderTopbar()}
+      <div style="max-width:1180px;margin:0 auto;padding:16px 18px 0">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div class="section-title" style="margin:0">${d.id?"Edit":"Bikin"} Link-in-Bio</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${d.id?`<button class="btn btn-sm" id="btn-copy-top">${ico('copy')} Copy</button><button class="btn btn-sm" id="btn-qr">${ico('qr')} QR</button>`:""}
+            <button class="btn btn-primary btn-sm" id="btn-save">${ico('save')} Simpan</button>
+          </div>
         </div>
       </div>
       <div class="editor-layout">
         <div class="editor-panel">
+
           <div class="editor-section">
             <h3><span class="num">1</span> Foto Profil</h3>
             <div class="profile-upload">
               <div class="pbox" id="pbox">
-                ${d.profile?(d.profileType==="video"?`<video src="${esc(d.profile)}" autoplay muted loop playsinline></video>`:`<img id="p-img" src="${esc(d.profile)}">`):`<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--ink)">${ico('camera')}</div>`}
+                ${d.profile?(d.profileType==="video"?`<video src="${esc(d.profile)}" autoplay muted loop playsinline></video>`:`<img src="${esc(d.profile)}">`):`<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--ink)">${ico('camera')}</div>`}
                 <div class="overlay">${ico('camera')}</div>
                 <input type="file" id="p-input" accept="image/*,video/*"/>
               </div>
@@ -1087,42 +1655,39 @@ const PageEditor = {
 
           <div class="editor-section">
             <h3><span class="num">3</span> Banner</h3>
-            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><input type="file" id="bn-input" accept="image/*,video/*"/></div>
+            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><small>JPG, PNG, MP4, WEBM</small><input type="file" id="bn-input" accept="image/*,video/*"/></div>
             <img id="bn-prev" class="upload-preview ${d.banner?"show":""}" src="${esc(d.banner||"")}"/>
-            <button class="btn btn-sm btn-danger btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus</button>
+            <button class="btn btn-sm btn-red btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus</button>
           </div>
 
           <div class="editor-section">
-            <h3><span class="num">4</span> Gallery</h3>
-            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Tambah ke galeri</p><input type="file" id="g-input" accept="image/*,video/*" multiple/></div>
-            <div id="g-list" class="bio-gallery" style="margin-top:12px"></div>
-          </div>
-
-          <div class="editor-section">
-            <h3><span class="num">5</span> Tombol Link <small style="font-weight:400;font-size:10px;text-transform:none;opacity:.8">(drag untuk urut)</small></h3>
+            <h3><span class="num">4</span> Tombol Link <small style="font-weight:400;font-size:10px;text-transform:none;opacity:.8">(drag untuk urut)</small></h3>
             <div id="links-list" class="links-list"></div>
             <button class="btn btn-sm btn-block" id="add-link" style="margin-top:10px">${ico('plus')} Tambah Link</button>
-          </div>
-
-          <div class="editor-section">
-            <h3><span class="num">6</span> Tema</h3>
-            <div class="theme-grid" id="theme-grid"></div>
-            <div class="granite-mixer" id="granite-mixer" style="${d.theme==="granite"?"":"display:none"}">
-              <h4>Granite Color Mixer</h4>
-              <div class="color-row"><label>Warna 1</label><input type="color" id="g-c1" value="${d.granite.c1}"/><span class="hex" id="hex1">${d.granite.c1}</span></div>
-              <div class="color-row"><label>Warna 2</label><input type="color" id="g-c2" value="${d.granite.c2}"/><span class="hex" id="hex2">${d.granite.c2}</span></div>
-              <div class="color-row"><label>Warna 3</label><input type="color" id="g-c3" value="${d.granite.c3}"/><span class="hex" id="hex3">${d.granite.c3}</span></div>
-              <div class="granite-preview" id="granite-prev"></div>
+            <div class="hint" style="font-size:11px;margin-top:8px;font-weight:600;text-align:center">
+              ${canDo("featuredLink")?'✓ Tombol bisa pakai gambar (upload thumbnail di tiap link)':'🔒 Tombol dengan gambar hanya untuk Pro+'}
             </div>
           </div>
 
           <div class="editor-section">
-            <h3><span class="num">7</span> ${ico('lock')} Link Lock</h3>
+            <h3><span class="num">5</span> Tema</h3>
+            <div class="theme-grid" id="theme-grid"></div>
+          </div>
+
+          ${canDo("linkLock")?`
+          <div class="editor-section">
+            <h3><span class="num">6</span> ${ico('lock')} Link Lock</h3>
             <div class="field">
               <label>Password (kosong = tidak dikunci)</label>
               <input id="f-lock" type="text" value="${esc(d.lock||"")}" placeholder="Password..."/>
             </div>
-          </div>
+          </div>`:`
+          <div class="editor-section">
+            <h3><span class="num">6</span> ${ico('lock')} Link Lock</h3>
+            <div class="locked-hint">
+              🔒 Fitur ini khusus Pro+.<br><a id="link-upgrade">Upgrade sekarang →</a>
+            </div>
+          </div>`}
         </div>
 
         <div class="editor-preview">
@@ -1137,85 +1702,81 @@ const PageEditor = {
     this.bind();
     this.renderThemeGrid();
     this.renderLinks();
-    this.renderGallery();
-    this.renderGranitePreview();
     this.updatePreview();
   },
 
   bind(){
-    $("#btn-back").addEventListener("click",()=>Router.navigate("/dashboard"));
+    const drawer=()=>$("#lt-drawer");
+    $("#btn-back")?.addEventListener("click",()=>Router.navigate("/dashboard"));
     $("#btn-save").addEventListener("click",()=>this.save());
     $("#btn-save2").addEventListener("click",()=>this.save());
     const qrBtn=$("#btn-qr"); if(qrBtn) qrBtn.addEventListener("click",()=>PageDashboard.qr(STATE.draft.id));
     const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft.id));
+    const upLink=$("#link-upgrade"); if(upLink) upLink.addEventListener("click",()=>showUpgradeModal());
 
     const pInput=$("#p-input");
-    if(pInput) pInput.addEventListener("change",async e=>{
+    if(pInput) pInput.addEventListener("change", async e=>{
       const f=e.target.files[0]; if(!f) return;
       showLoading("Upload foto...");
-      const url=await Store.upload(f,"profile");
-      STATE.draft.profile=url; STATE.draft.profileType=detectMediaType(f);
-      const box=$("#pbox");
-      box.innerHTML=`${STATE.draft.profileType==="video"?`<video src="${esc(url)}" autoplay muted loop playsinline></video>`:`<img src="${esc(url)}"/>`}<div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*,video/*"/>`;
-      this.bind();
-      hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
+      try{
+        const url=await Store.upload(f,"profile");
+        STATE.draft.profile=url; STATE.draft.profileType=detectMediaType(f);
+        const box=$("#pbox");
+        box.innerHTML=`${STATE.draft.profileType==="video"?`<video src="${esc(url)}" autoplay muted loop playsinline></video>`:`<img src="${esc(url)}"/>`}<div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*,video/*"/>`;
+        this.bind();
+        hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
+      }catch(err){ hideLoading(); toast("Gagal upload: "+err.message,"error"); }
     });
 
     $("#f-name").addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
     $("#f-bio").addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
-    $("#f-lock").addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
+    const lockField=$("#f-lock");
+    if(lockField) lockField.addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
 
-    $("#bn-input").addEventListener("change",async e=>{
+    $("#bn-input").addEventListener("change", async e=>{
       const f=e.target.files[0]; if(!f) return;
       showLoading("Upload banner...");
-      const url=await Store.upload(f,"banner");
-      STATE.draft.banner=url; STATE.draft.bannerType=detectMediaType(f);
-      const p=$("#bn-prev"); p.src=url; p.classList.add("show");
-      $("#bn-clear").style.display="";
-      hideLoading(); toast("Banner diupdate","success"); this.updatePreview();
+      try{
+        const url=await Store.upload(f,"banner");
+        STATE.draft.banner=url; STATE.draft.bannerType=detectMediaType(f);
+        const p=$("#bn-prev"); p.src=url; p.classList.add("show");
+        $("#bn-clear").style.display="";
+        hideLoading(); toast("Banner diupdate","success"); this.updatePreview();
+      }catch(err){ hideLoading(); toast("Gagal upload: "+err.message,"error"); }
     });
     $("#bn-clear").addEventListener("click",()=>{ STATE.draft.banner=""; $("#bn-prev").classList.remove("show"); $("#bn-clear").style.display="none"; this.updatePreview(); });
 
-    $("#g-input").addEventListener("change",async e=>{
-      const files=[...e.target.files]; if(!files.length) return;
-      showLoading(`Upload ${files.length} file...`);
-      for(const f of files){ const url=await Store.upload(f,"gallery"); STATE.draft.gallery.push({url,type:detectMediaType(f)}); }
-      hideLoading(); toast("Gallery diupdate","success"); this.renderGallery(); this.updatePreview();
-    });
-
     $("#add-link").addEventListener("click",()=>this.openLinkTypePicker());
-
-    ["c1","c2","c3"].forEach(k=>{
-      const el=$(`#g-${k}`); if(!el) return;
-      el.addEventListener("input",e=>{
-        STATE.draft.granite[k]=e.target.value;
-        $(`#hex${k[1]}`).textContent=e.target.value;
-        this.renderGranitePreview(); this.updatePreview();
-      });
-    });
-
     $("#btn-view").addEventListener("click",()=>{
       if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
       window.open(`${location.pathname}#/u/${STATE.draft.id}`,"_blank");
     });
+
+    bindTopbar();
   },
 
   openLinkTypePicker(){
+    const canFeatured = canDo("featuredLink");
+    const canEmbed = canDo("embed");
     const m=openModal(`
       <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
       <h3>Pilih Jenis Link</h3>
       <div class="link-types">
         <div class="link-type" data-t="classic"><div class="lti">${ico('link')}</div><b>Classic</b><small>Link biasa</small></div>
-        <div class="link-type" data-t="featured"><div class="lti">${ico('sparkle')}</div><b>Featured</b><small>Dengan gambar</small></div>
-        <div class="link-type" data-t="youtube"><div class="lti">${ico('youtube')}</div><b>YouTube</b><small>Embed</small></div>
-        <div class="link-type" data-t="spotify"><div class="lti">${ico('music')}</div><b>Spotify</b><small>Embed</small></div>
-        <div class="link-type" data-t="vimeo"><div class="lti">${ico('video')}</div><b>Vimeo</b><small>Embed</small></div>
-        <div class="link-type" data-t="tiktok"><div class="lti">${ico('tiktok')}</div><b>TikTok</b><small>Embed</small></div>
+        <div class="link-type" data-t="featured" style="${canFeatured?'':'opacity:.5'}"><div class="lti">${ico('image')}</div><b>Dengan Gambar</b><small>${canFeatured?'Upload thumbnail':'Pro+'}</small></div>
+        <div class="link-type" data-t="youtube" style="${canEmbed?'':'opacity:.5'}"><div class="lti">${ico('youtube')}</div><b>YouTube</b><small>${canEmbed?'Embed':'Pro+'}</small></div>
+        <div class="link-type" data-t="spotify" style="${canEmbed?'':'opacity:.5'}"><div class="lti">${ico('music')}</div><b>Spotify</b><small>${canEmbed?'Embed':'Pro+'}</small></div>
+        <div class="link-type" data-t="vimeo" style="${canEmbed?'':'opacity:.5'}"><div class="lti">${ico('video')}</div><b>Vimeo</b><small>${canEmbed?'Embed':'Pro+'}</small></div>
+        <div class="link-type" data-t="tiktok" style="${canEmbed?'':'opacity:.5'}"><div class="lti">${ico('tiktok')}</div><b>TikTok</b><small>${canEmbed?'Embed':'Pro+'}</small></div>
       </div>`);
     m.querySelectorAll(".link-type").forEach(el=>{
       el.addEventListener("click",()=>{
-        const t=el.dataset.t;
-        STATE.draft.links.push({label:"Link Baru",url:"https://",type:t,featured:t==="featured",thumb:"",color:""});
+        const t = el.dataset.t;
+        // check gating
+        if(t==="featured" && !canFeatured){ toast("Fitur ini khusus Pro+","error"); showUpgradeModal(); return; }
+        if(["youtube","spotify","vimeo","tiktok"].includes(t) && !canEmbed){ toast("Embed khusus Pro+","error"); showUpgradeModal(); return; }
+
+        STATE.draft.links.push({label:"Link Baru",url:"https://",type:t,color:"",thumb:""});
         this.renderLinks(); this.updatePreview();
         m.remove();
       });
@@ -1225,6 +1786,8 @@ const PageEditor = {
   renderLinks(){
     const wrap=$("#links-list");
     const links=STATE.draft.links;
+    const canFeatured = canDo("featuredLink");
+    const maxLinks = STATE.plan?.features?.maxLinks ?? 5;
     if(!links.length){ wrap.innerHTML=`<div style="font-size:12.5px;text-align:center;padding:6px;font-weight:600">Belum ada link.</div>`; return; }
     wrap.innerHTML=links.map((l,i)=>{
       const autoColor = NEO_COLORS[i % NEO_COLORS.length];
@@ -1232,11 +1795,11 @@ const PageEditor = {
       return `
       <div class="link-row" draggable="true" data-i="${i}">
         <span class="drag">${ico('grip')}</span>
-        <div class="link-thumb">${l.featured&&l.thumb?`<img src="${esc(l.thumb)}" style="width:100%;height:100%;object-fit:cover">`:ico(LinkTypes.icon(l.url))}</div>
+        <div class="link-thumb">${l.thumb?`<img src="${esc(l.thumb)}">`:ico(LinkTypes.icon(l.url))}</div>
         <div class="link-fields">
           <input type="text" placeholder="Label" value="${esc(l.label)}" data-field="label" data-i="${i}"/>
           <input type="text" placeholder="https://..." value="${esc(l.url)}" data-field="url" data-i="${i}"/>
-          ${l.featured?`<button class="btn btn-sm" style="align-self:flex-start" data-thumb="${i}">${ico('image')} ${l.thumb?"Ganti":"Upload"}</button>`:""}
+          ${canFeatured?`<button class="thumb-btn" data-thumb="${i}">${ico('image')} ${l.thumb?'Ganti':'Upload'} Gambar</button>`:''}
         </div>
         <input type="color" class="link-color-pick" data-color="${i}" value="${curColor}" title="Warna tombol"/>
         <button class="del" data-del="${i}">${ico('x')}</button>
@@ -1264,11 +1827,13 @@ const PageEditor = {
         const inp=document.createElement("input"); inp.type="file"; inp.accept="image/*";
         inp.onchange=async()=>{
           const f=inp.files[0]; if(!f) return;
-          showLoading("Upload thumbnail...");
-          const url=await Store.upload(f,"thumb");
-          STATE.draft.links[i].thumb=url;
-          hideLoading();
-          this.renderLinks(); this.updatePreview();
+          showLoading("Upload gambar...");
+          try{
+            const url=await Store.upload(f,"thumb");
+            STATE.draft.links[i].thumb=url;
+            hideLoading(); toast("Gambar diupdate","success");
+            this.renderLinks(); this.updatePreview();
+          }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
         };
         inp.click();
       });
@@ -1283,10 +1848,7 @@ const PageEditor = {
 
     let dragIdx=null;
     wrap.querySelectorAll(".link-row").forEach(row=>{
-      row.addEventListener("dragstart",e=>{
-        dragIdx=+row.dataset.i; row.classList.add("dragging");
-        e.dataTransfer.effectAllowed="move";
-      });
+      row.addEventListener("dragstart",e=>{ dragIdx=+row.dataset.i; row.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
       row.addEventListener("dragend",()=>{ row.classList.remove("dragging"); wrap.querySelectorAll(".link-row").forEach(r=>r.classList.remove("drag-over")); });
       row.addEventListener("dragover",e=>{ e.preventDefault(); row.classList.add("drag-over"); });
       row.addEventListener("dragleave",()=>row.classList.remove("drag-over"));
@@ -1303,53 +1865,35 @@ const PageEditor = {
     });
   },
 
-  renderGallery(){
-    const wrap=$("#g-list");
-    const g=STATE.draft.gallery;
-    if(!g.length){ wrap.innerHTML=""; return; }
-    wrap.innerHTML=g.map((m,i)=>`
-      <div class="gi">
-        ${m.type==="video"?`<video src="${esc(m.url)}" muted></video>`:`<img src="${esc(m.url)}"/>`}
-        <button style="position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:6px;background:#ff2a2a;color:#fff;border:2px solid #0a0a0a;cursor:pointer;display:grid;place-items:center;box-shadow:2px 2px 0 #0a0a0a" data-gdel="${i}">${ico('x')}</button>
-      </div>`).join("");
-    wrap.querySelectorAll("[data-gdel]").forEach(b=>{
-      b.addEventListener("click",e=>{
-        const i=+e.currentTarget.dataset.gdel;
-        STATE.draft.gallery.splice(i,1);
-        this.renderGallery(); this.updatePreview();
-      });
-    });
-  },
-
   renderThemeGrid(){
     const themes=[
-      {id:"neo",label:"Neo",css:"repeating-linear-gradient(45deg,#0a0a0a 0 6px,#ffd700 6px 12px)"},
-      {id:"3d",label:"3D",css:"linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)"},
-      {id:"galaxie",label:"Galaxie",css:"radial-gradient(circle,#a78bfa,#05010f)"},
-      {id:"rainbow",label:"Rainbow",css:"linear-gradient(45deg,#ff0080,#7928ca,#00d4ff,#00ff88)"},
-      {id:"wa",label:"WA",css:"linear-gradient(135deg,#0b141a,#005c4b)"},
-      {id:"granite",label:"Granite",css:"linear-gradient(135deg,#666,#333)"}
+      {id:"neo-cream",label:"Cream",css:"#f0ebe0"},
+      {id:"neo-dark",label:"Dark",css:"#0a0a0a"},
+      {id:"neo-blue",label:"Blue",css:"#2563eb"},
+      {id:"neo-pink",label:"Pink",css:"#ff69b4"},
+      {id:"neo-green",label:"Green",css:"#22c55e"},
+      {id:"neo-purple",label:"Purple",css:"#a78bfa"}
     ];
     const cur=STATE.draft.theme;
-    $("#theme-grid").innerHTML=themes.map(t=>`
-      <div class="theme-item ${cur===t.id?"active":""}" data-t="${t.id}" style="background:${t.css}">
+    $("#theme-grid").innerHTML=themes.map(t=>{
+      const allowed = themeAllowed(t.id);
+      return `
+      <div class="theme-item ${cur===t.id?"active":""} ${allowed?"":"locked"}" data-t="${t.id}" style="background:${t.css}">
         <div class="chk">${ico('check')}</div><div class="label">${t.label}</div>
-      </div>`).join("");
+      </div>`;
+    }).join("");
     $$("#theme-grid .theme-item").forEach(el=>{
       el.addEventListener("click",()=>{
-        STATE.draft.theme=el.dataset.t;
+        const tid = el.dataset.t;
+        if(!themeAllowed(tid)){
+          toast("Tema ini khusus Pro+","error"); showUpgradeModal(); return;
+        }
+        STATE.draft.theme=tid;
         $$("#theme-grid .theme-item").forEach(x=>x.classList.remove("active"));
         el.classList.add("active");
-        $("#granite-mixer").style.display=STATE.draft.theme==="granite"?"":"none";
         this.updatePreview();
       });
     });
-  },
-
-  renderGranitePreview(){
-    const {c1,c2,c3}=STATE.draft.granite;
-    const el=$("#granite-prev");
-    if(el) el.style.background=`linear-gradient(135deg, ${c1}, ${c2}, ${c3})`;
   },
 
   updatePreview(){
@@ -1359,6 +1903,12 @@ const PageEditor = {
 
   async save(){
     if(!STATE.draft.name?.trim()){ toast("Nama tidak boleh kosong","error"); return; }
+    const plan = STATE.plan;
+    const maxLinks = plan.features.maxLinks;
+    if(!isUnlimited(maxLinks) && STATE.draft.links.length > maxLinks){
+      toast(`Plan ${plan.name} max ${maxLinks} tombol. Upgrade dulu!`,"error");
+      showUpgradeModal(); return;
+    }
     showLoading("Menyimpan...");
     try{
       const saved=await Store.save({...STATE.draft});
@@ -1367,18 +1917,16 @@ const PageEditor = {
       toast("Tersimpan!","success");
 
       if(!$("#btn-qr")){
-        const acts=$(".topbar .actions");
-        const cp=document.createElement("button");
-        cp.className="btn btn-sm"; cp.id="btn-copy-top"; cp.innerHTML=`${ico('copy')} Copy`;
-        cp.addEventListener("click",()=>copyLink(saved.id));
-        const b=document.createElement("button");
-        b.className="btn btn-sm"; b.id="btn-qr"; b.innerHTML=`${ico('qr')} QR`;
-        b.addEventListener("click",()=>PageDashboard.qr(saved.id));
-        acts.insertBefore(cp,$("#btn-save"));
-        acts.insertBefore(b,$("#btn-save"));
+        const wrap=$(".editor-layout");
+        // tombol tambahan di section title
+        const titleBar=$("#app").querySelector('div[style*="1180px"] .section-title');
       }
 
-      showShareModal(saved.id, saved.name);
+      // reload editor kalau baru dibuat (biar tombol Copy/QR muncul)
+      if(!STATE.draft._wasSaved) STATE.draft._wasSaved = true;
+      this.render();
+
+      setTimeout(()=>showShareModal(saved.id), 300);
     }catch(e){ console.error(e); hideLoading(); toast("Gagal: "+e.message,"error"); }
   }
 };
@@ -1388,31 +1936,32 @@ const PageEditor = {
    ========================================================= */
 const PagePublic = {
 
-  buildNeo(d, opts){
-    const gallery=(d.gallery||[]).map((m,i)=>`
-      <div class="gi" onclick="LIGHTBOX(${i})">
-        ${m.type==="video"?`<video src="${esc(m.url)}" muted></video>`:`<img src="${esc(m.url)}" loading="lazy"/>`}
-      </div>`).join("");
+  buildHTML(d, opts={}){
+    const preview = !!(opts && opts.preview);
 
     const links=(d.links||[]).map((l,idx)=>{
-      const embed=LinkTypes.embed(l.url);
+      const embed = LinkTypes.embed(l.url);
+      const type = LinkTypes.detect(l.url);
       const autoColor = NEO_COLORS[idx % NEO_COLORS.length];
-      const inlineBg = l.color ? l.color : NEO_HEX[autoColor];
-      const fg = contrastText(inlineBg);
-      const inlineStyle = `style="background:${esc(inlineBg)};color:${fg}"`;
+      const bg = l.color || NEO_HEX[autoColor];
+      const fg = contrastText(bg);
 
-      if(l.featured){
+      // Featured / image link
+      if(l.thumb){
         return `<a class="bio-link bio-featured" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}">
-          ${l.thumb?`<img class="feat-img" src="${esc(l.thumb)}" alt="">`:`<div class="feat-img"></div>`}
-          <div class="feat-body"><b>${esc(l.label||"Link")}</b><small>${esc((l.url||"").replace(/^https?:\/\//,"").split("/")[0])}</small></div>
+          <img class="feat-img" src="${esc(l.thumb)}" alt=""/>
+          <div class="feat-body"><b>${esc(l.label||"Link")}</b></div>
         </a>`;
       }
 
-      if(embed){
+      // Embed
+      if(embed && ["youtube","spotify","vimeo","tiktok"].includes(type)){
         return `<div class="bio-embed"><iframe src="${esc(embed)}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>`;
       }
 
-      return `<a class="bio-link" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}" ${inlineStyle}>
+      // Classic
+      return `<a class="bio-link" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}"
+        style="background:${esc(bg)};color:${fg}">
         <span class="licon">${ico(LinkTypes.icon(l.url))}</span>
         <span class="ltext">${esc(l.label||"Link")}</span>
       </a>`;
@@ -1422,7 +1971,7 @@ const PagePublic = {
       ? (d.profileType==="video"
           ? `<video src="${esc(d.profile)}" autoplay muted loop playsinline></video>`
           : `<img src="${esc(d.profile)}" alt=""/>`)
-      : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user','')}</div>`;
+      : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
 
     const bannerBlock = d.banner
       ? `<div class="bio-banner">${
@@ -1432,12 +1981,17 @@ const PagePublic = {
         }</div>`
       : "";
 
-    const galleryBlock = gallery ? `<div class="bio-gallery">${gallery}</div>` : "";
     const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
-    const galleryJSON = JSON.stringify(d.gallery||[]).replace(/</g,"\\u003c");
+
+    // Badge plan (dari plan creator — kita simpan snapshot-nya di bio)
+    const badgeMap = { pro:"PRO", ultimate:"ULTIMATE", developer:"DEV" };
+    const badge = badgeMap[d.ownerPlan] || "";
+    const badgeCls = d.ownerPlan || "";
+    const badgeHtml = badge ? `<div class="bio-plan-badge ${badgeCls}">${badge}</div>` : "";
+
     const bioId = d.id||"";
     const isLocked = !!d.lock;
-    const preview = !!(opts && opts.preview);
+    const themeClass = `theme-${d.theme||"neo-cream"}`;
 
     return `<!DOCTYPE html>
 <html lang="id"><head>
@@ -1451,17 +2005,17 @@ const PagePublic = {
 <div class="bio-deco d2"></div>
 <div class="bio-deco d3"></div>
 
-<div class="bio-wrap">
+<div class="bio-wrap ${themeClass}">
   <div class="bio-inner">
     <div class="bio-header">
       <div class="bio-avatar">${profileBlock}</div>
       <div class="bio-title-top">Bio Link</div>
       <div class="bio-name">${esc(d.name||"Tanpa Nama")}</div>
       ${bioText}
+      ${badgeHtml}
     </div>
 
     ${bannerBlock}
-    ${galleryBlock}
 
     <div class="bio-links">${links}</div>
 
@@ -1471,7 +2025,6 @@ const PagePublic = {
   </div>
 </div>
 
-<div id="lightbox-root"></div>
 ${isLocked?`
 <div class="lock-overlay" id="lock-overlay">
   <div class="lock-card">
@@ -1484,16 +2037,9 @@ ${isLocked?`
 </div>`:""}
 
 <script>
-const GAL = ${galleryJSON};
 const BIO_ID = "${bioId}";
 const IS_PREVIEW = ${preview?"true":"false"};
 const LOCK_PASS = ${JSON.stringify(d.lock||"")};
-
-function LIGHTBOX(i){
-  const m=GAL[i]; if(!m) return;
-  const root=document.getElementById('lightbox-root');
-  root.innerHTML=\`<div class="lightbox" onclick="this.remove()"><button class="close" onclick="this.parentElement.remove()">×</button>\${m.type==='video'?\`<video src="\${m.url}" controls autoplay></video>\`:\`<img src="\${m.url}"/>\`}</div>\`;
-}
 
 function trackView(){
   if(IS_PREVIEW||!BIO_ID) return;
@@ -1539,18 +2085,15 @@ trackView();
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;
-  --red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;--pink:#ff69b4;--purple:#a78bfa;--white:#fff;
+  --red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;
+  --pink:#ff69b4;--purple:#a78bfa;--white:#fff;
 }
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  color:var(--ink);min-height:100vh;background:var(--cream);overflow-x:hidden}
+  color:var(--ink);min-height:100vh;background:var(--cream);overflow-x:hidden;font-weight:700}
 a{text-decoration:none;color:inherit}
 img,video{max-width:100%;display:block}
 .ic{width:18px;height:18px;display:inline-block;vertical-align:middle;
   stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-
-.bio-public{background-color:var(--cream);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:18px 18px}
 
 .bio-deco{position:fixed;pointer-events:none;z-index:1}
 .bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
@@ -1561,8 +2104,7 @@ img,video{max-width:100%;display:block}
   border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink)}
 
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
-  padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;
-  font-weight:700;z-index:2}
+  padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;z-index:2}
 .bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
 
 .bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
@@ -1587,18 +2129,17 @@ img,video{max-width:100%;display:block}
   border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;
   box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;
   word-break:break-word;z-index:1}
+.bio-plan-badge{display:inline-block;padding:3px 12px;background:var(--ink);
+  color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;
+  letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;
+  margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
+.bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
+.bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
+.bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
 
 .bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
 .bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover}
-
-.bio-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.bio-gallery .gi{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;
-  cursor:pointer;border:3px solid var(--ink);background:var(--white);
-  box-shadow:4px 4px 0 var(--ink);transition:transform .15s, box-shadow .15s}
-.bio-gallery .gi:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
-.bio-gallery .gi:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-.bio-gallery .gi img,.bio-gallery .gi video{width:100%;height:100%;object-fit:cover}
 
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
@@ -1610,17 +2151,14 @@ img,video{max-width:100%;display:block}
 .bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
 .bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
-.bio-link .licon .ic{width:18px;height:18px}
 .bio-link .ltext{flex:1;text-align:center}
 
 .bio-link.bio-featured{flex-direction:column;align-items:stretch;
-  padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);
-  min-height:0}
-.bio-link.bio-featured .feat-img{width:100%;height:120px;object-fit:cover;
+  padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
+.bio-link.bio-featured .feat-img{width:100%;height:130px;object-fit:cover;
   border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
 .bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
-.bio-link.bio-featured .feat-body b{display:block;font-size:14.5px;font-weight:900;text-transform:uppercase}
-.bio-link.bio-featured .feat-body small{font-size:11.5px;opacity:.7;display:block;margin-top:2px;font-weight:600}
+.bio-link.bio-featured .feat-body b{font-size:14.5px;font-weight:900;text-transform:uppercase}
 
 .bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);background:var(--white)}
@@ -1632,6 +2170,60 @@ img,video{max-width:100%;display:block}
   box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
 
+/* TEMA NEO CREAM */
+.theme-neo-cream{background-color:#f0ebe0;
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+
+/* TEMA NEO DARK */
+.theme-neo-dark{background-color:#0a0a0a;color:#fff;
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
+.theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
+.theme-neo-dark .bio-bio{background:var(--blue);color:#fff;border-color:#fff}
+.theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-dark .bio-banner{border-color:#fff}
+.theme-neo-dark .bio-embed{border-color:#fff}
+.theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
+
+/* TEMA NEO BLUE */
+.theme-neo-blue{background-color:#2563eb;color:#fff;
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
+.theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.theme-neo-blue .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
+.theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
+
+/* TEMA NEO PINK */
+.theme-neo-pink{background-color:#ff69b4;color:var(--ink);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
+.theme-neo-pink .bio-bio{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
+
+/* TEMA NEO GREEN */
+.theme-neo-green{background-color:#22c55e;color:var(--ink);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
+.theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
+.theme-neo-green .bio-bio{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* TEMA NEO PURPLE */
+.theme-neo-purple{background-color:#a78bfa;color:var(--ink);
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:18px 18px}
+.theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
+.theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
+.theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
+
+/* LIGHTBOX */
 .lightbox{position:fixed;inset:0;background:rgba(10,10,10,.94);z-index:9999;
   display:flex;align-items:center;justify-content:center;padding:18px}
 .lightbox img,.lightbox video{max-width:100%;max-height:90vh;border-radius:10px;
@@ -1639,6 +2231,7 @@ img,video{max-width:100%;display:block}
 .lightbox .close{position:absolute;top:18px;right:22px;font-size:34px;color:var(--white);
   cursor:pointer;background:none;border:none;line-height:1;font-weight:900}
 
+/* LOCK */
 .lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
   display:grid;place-items:center;padding:18px}
 .lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
@@ -1652,17 +2245,13 @@ img,video{max-width:100%;display:block}
 .lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
   background:var(--white);color:var(--ink);font-size:14px;outline:none;
   text-align:center;font-weight:700;font-family:inherit}
-.lock-card input:focus{box-shadow:3px 3px 0 var(--ink)}
 .lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
   background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
   margin-top:10px;font-size:13.5px;text-transform:uppercase;
-  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;font-family:inherit}
+  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;
+  font-family:inherit}
 .lock-card button:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--red)}
 `;
-  },
-
-  buildHTML(d, opts={}){
-    return this.buildNeo(d, opts);
   },
 
   async render(id){
@@ -1672,7 +2261,7 @@ img,video{max-width:100%;display:block}
     hideLoading();
 
     if(!data){
-      $("#app").innerHTML=`
+      $("#app").innerHTML = `
         <div style="min-height:100vh;display:flex;flex-direction:column;
           align-items:center;justify-content:center;padding:40px 18px;text-align:center">
           <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);
@@ -1689,7 +2278,7 @@ img,video{max-width:100%;display:block}
       return;
     }
 
-    document.title=`${data.name||"VarlinkB"} — Link in Bio`;
+    document.title = `${data.name||"VarlinkB"} — Link in Bio`;
 
     document.body.classList.add("public-mode");
     document.documentElement.style.overflow = 'hidden';
@@ -1697,7 +2286,7 @@ img,video{max-width:100%;display:block}
     document.body.style.height = '100vh';
     document.body.style.height = '100dvh';
 
-    $("#app").innerHTML=`
+    $("#app").innerHTML = `
       <iframe id="bio-full"
         style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;
           border:0;background:#f0ebe0;z-index:50;display:block"
@@ -1721,7 +2310,9 @@ window.addEventListener("message", async e=>{
    ROUTER REGISTER
    ========================================================= */
 Router.on("/",          ()=>PageLanding.render());
-Router.on("/dashboard", ()=>PageDashboard.render());
+Router.on("/login",     ()=>PageLogin.render());
+Router.on("/register",  ()=>PageRegister.render());
+Router.on("/dashboard", (q)=>PageDashboard.render(q));
 Router.on("/editor",    ()=>PageEditor.render());
 Router.on("/manage",    ()=>PageManage.render());
 Router.on("/stats",     ()=>PageStats.render());
@@ -1732,10 +2323,13 @@ Router.on("/404",       ()=>Router.navigate("/"));
    BOOT
    ========================================================= */
 (async function boot(){
-  STATE.user = await Store.loadUser();
-  if(!location.hash) location.hash = STATE.user ? "#/dashboard" : "#/";
+  showLoading("Memuat...");
+  await Auth.init();
+  if(Auth.current) await loadUserPlan();
+  hideLoading();
+  if(!location.hash) location.hash = Auth.current ? "#/dashboard" : "#/";
   Router.start();
 })();
 </script>
 </body>
-  </html>
+   </html>

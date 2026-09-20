@@ -91,7 +91,7 @@ textarea{resize:vertical;min-height:80px}
 
 .container{max-width:960px;margin:0 auto;padding:0 18px}
 
-/* ===== TOPBAR (TANPA LOGOUT BUTTON) ===== */
+/* TOPBAR */
 .lt-topbar{position:sticky;top:0;z-index:100;background:var(--white);
   border-bottom:3px solid var(--ink);padding:10px 14px;
   display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -129,7 +129,7 @@ textarea{resize:vertical;min-height:80px}
   .lt-badge{padding:4px 8px;font-size:10px}
 }
 
-/* ===== DRAWER ===== */
+/* DRAWER */
 .lt-drawer{position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:200;
   opacity:0;pointer-events:none;transition:opacity .25s}
 .lt-drawer.open{opacity:1;pointer-events:auto}
@@ -163,7 +163,7 @@ textarea{resize:vertical;min-height:80px}
 ::-webkit-scrollbar-track{background:var(--cream-2)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
 
-/* ===== LANDING ===== */
+/* LANDING */
 .landing{min-height:100vh;display:flex;flex-direction:column;position:relative}
 .landing-hero{flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;padding:60px 18px 40px;text-align:center;position:relative}
@@ -192,7 +192,7 @@ textarea{resize:vertical;min-height:80px}
 .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
-/* ===== UPDATE ===== */
+/* UPDATE */
 .update-section{padding:40px 18px 50px;background:var(--white);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .update-header{text-align:center;margin-bottom:24px}
@@ -229,7 +229,7 @@ textarea{resize:vertical;min-height:80px}
   font-weight:900;color:var(--ink);font-size:14px}
 .update-empty{text-align:center;padding:30px 18px;color:var(--ink-soft);font-weight:600}
 
-/* ===== PARTNER ===== */
+/* PARTNER */
 .partner-section{padding:40px 18px;background:var(--cream);
   border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
 .partner-header{text-align:center;margin-bottom:24px}
@@ -258,7 +258,7 @@ textarea{resize:vertical;min-height:80px}
 .partner-card.collab-cta .p-logo{background:var(--ink);color:var(--yellow);font-size:22px}
 .partner-empty{text-align:center;padding:20px;font-weight:600;color:var(--ink-soft)}
 
-/* ===== PRICING ===== */
+/* PRICING */
 .pricing-section{padding:40px 18px 60px;background:var(--cream-2);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .pricing-header{text-align:center;margin-bottom:28px}
@@ -285,6 +285,10 @@ textarea{resize:vertical;min-height:80px}
   border:2.5px solid var(--ink);border-radius:999px;text-transform:uppercase;
   letter-spacing:.5px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink);
   animation:pulseBadge 1.8s ease-in-out infinite}
+.pricing-card .perm-badge{position:absolute;top:-14px;left:-8px;background:var(--green);
+  color:var(--white);font-size:11px;font-weight:900;padding:4px 10px;
+  border:2.5px solid var(--white);border-radius:999px;text-transform:uppercase;
+  letter-spacing:.5px;transform:rotate(-8deg);box-shadow:2px 2px 0 var(--ink)}
 .pricing-card .plan-name{font-size:22px;font-weight:900;text-transform:uppercase;
   letter-spacing:.5px;margin-bottom:4px}
 .pricing-card .plan-tagline{font-size:12.5px;font-weight:600;opacity:.75;
@@ -297,7 +301,7 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card .features li::before{content:'✓';position:absolute;left:0;
   font-weight:900;font-size:14px;color:var(--green)}
 
-/* ===== HELP ===== */
+/* HELP */
 .help-page{max-width:720px;margin:0 auto;padding:20px 18px 80px}
 .help-hero{text-align:center;padding:24px 0 20px}
 .help-hero .hero-icon{width:72px;height:72px;border-radius:50%;
@@ -360,8 +364,6 @@ textarea{resize:vertical;min-height:80px}
 .help-empty{text-align:center;padding:40px 18px;color:var(--ink-soft);
   background:var(--white);border:2.5px dashed var(--ink-soft);border-radius:12px;
   font-weight:600;font-size:13.5px}
-
-/* Floating help */
 .help-fab{position:fixed;bottom:20px;right:20px;z-index:150;
   width:52px;height:52px;border-radius:50%;background:var(--yellow);
   border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
@@ -372,7 +374,7 @@ textarea{resize:vertical;min-height:80px}
 .help-fab .ic{width:24px;height:24px}
 @media(max-width:640px){.help-fab{bottom:16px;right:16px;width:48px;height:48px}}
 
-/* ===== SETTINGS ===== */
+/* SETTINGS */
 .settings-page{max-width:640px;margin:0 auto;padding:20px 18px 80px}
 .settings-hero{text-align:center;padding:20px 0 24px}
 .settings-hero .avatar-big{width:88px;height:88px;border-radius:50%;
@@ -414,7 +416,7 @@ textarea{resize:vertical;min-height:80px}
 @media(max-width:480px){.settings-actions{flex-direction:column}
   .settings-actions .btn{width:100%}}
 
-/* ===== AUTH ===== */
+/* AUTH */
 .auth-page{min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:40px 18px}
 .auth-card{width:100%;max-width:400px;background:var(--white);
@@ -445,7 +447,7 @@ textarea{resize:vertical;min-height:80px}
   font-weight:700;color:var(--ink-soft)}
 .btn-google{background:var(--white)}
 
-/* ===== DASHBOARD ===== */
+/* DASHBOARD */
 .dash{padding-bottom:60px}
 .dash-hero{padding:32px 18px 24px;text-align:center}
 .dash-hero h2{font-size:clamp(22px,5vw,30px);font-weight:900;letter-spacing:-.5px;
@@ -521,7 +523,7 @@ textarea{resize:vertical;min-height:80px}
 .empty-state .ei .ic{width:28px;height:28px}
 .empty-state p{margin-bottom:16px;font-weight:700}
 
-/* ===== EDITOR ===== */
+/* EDITOR */
 .editor-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;
   max-width:1180px;margin:0 auto;padding:18px;padding-bottom:60px}
 @media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
@@ -722,7 +724,7 @@ textarea{resize:vertical;min-height:80px}
 .link-stat .ls-count{font-weight:900;font-size:14px;flex-shrink:0;
   background:var(--ink);color:var(--white);padding:2px 8px;border-radius:6px}
 
-/* ===== DEV PANEL ===== */
+/* DEV PANEL */
 .dev-header{background:var(--ink);color:var(--yellow);padding:20px 18px;
   border-bottom:3px solid var(--yellow);position:relative;overflow:hidden}
 .dev-header::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;
@@ -822,7 +824,7 @@ textarea{resize:vertical;min-height:80px}
   background:var(--white);border:2.5px dashed var(--ink-soft);border-radius:var(--radius);
   font-weight:600}
 
-/* DEV FAVICON PANEL */
+/* DEV FAVICON */
 .favicon-panel{max-width:640px;margin:0 auto;padding:20px 18px 60px}
 .favicon-panel .fp-card{background:var(--white);border:2.5px solid var(--ink);
   border-radius:14px;padding:20px;box-shadow:5px 5px 0 var(--ink);margin-bottom:16px}
@@ -855,7 +857,7 @@ textarea{resize:vertical;min-height:80px}
   border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;
   margin-top:12px;line-height:1.5}
 
-/* ===== BIO PUBLIK ===== */
+/* BIO PUBLIK (fallback) */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
   color:var(--ink);padding:34px 18px 60px;
   display:flex;flex-direction:column;align-items:center;font-weight:700;z-index:2}
@@ -912,19 +914,12 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-
-/* Banner persegi panjang */
 .bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;
   border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
 .bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
 @media(max-width:480px){.bio-banner{max-width:100%}}
-
 .bio-links{display:flex;flex-direction:column;gap:14px}
-.bio-links.layout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.bio-links.layout-grid .bio-link{min-height:80px;padding:12px;font-size:12.5px;
-  flex-direction:column;text-align:center;gap:6px}
-.bio-links.layout-grid .bio-link .ltext{padding-right:0}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
   padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
   font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;
@@ -951,7 +946,6 @@ textarea{resize:vertical;min-height:80px}
   border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
   box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
-
 .bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
 @keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}
   50%{transform:translate(-2px,-8px)}}
@@ -959,7 +953,6 @@ textarea{resize:vertical;min-height:80px}
 @keyframes linkShake{0%,100%{transform:translate(4px,4px)}
   25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
 .bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
-
 .theme-neo-cream{background-color:#f0ebe0;
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
@@ -1013,7 +1006,6 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
 .theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
-
 .lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
   display:grid;place-items:center;padding:18px}
 .lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
@@ -1132,6 +1124,8 @@ const FB = { app:null, db:null, auth:null, ready:false };
 const DEV_EMAILS = ["mynameisvaroo@gmail.com"];
 const ADMIN_WA = "6285823058292";
 const TAKO_URL = "https://tako.id/VarCodexx";
+// ↓ GANTI dengan link Varlink (public viewer) kamu nanti
+const PUBLIC_BASE_URL = "https://varlink.vercel.app";
 
 const PLANS = {
   free: {
@@ -1140,32 +1134,35 @@ const PLANS = {
       maxBios:5, maxLinks:5,
       themes:["neo-cream"],
       analytics:false, linkLock:false, featuredLink:false, embed:false,
-      logos:false, layouts:false, patterns:false, animations:false,
-      betaAccess:false, badge:null
+      logos:false, animations:false,
+      betaAccess:false, badge:null, permanent:false
     },
     highlights:["5 bio link","Maks 5 tombol/bio","1 tema (Neo Cream)","QR Code"]
   },
   pro: {
     id:"pro", name:"Pro", price:15000, priceLabel:"Rp 15.000", tagline:"Paling populer untuk kreator",
+    period:"bulan",
     features:{
       maxBios:20, maxLinks:-1,
       themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
       analytics:true, linkLock:true, featuredLink:true, embed:true,
-      logos:true, layouts:false, patterns:false, animations:false,
-      betaAccess:false, badge:"PRO"
+      logos:true, animations:false,
+      betaAccess:false, badge:"PRO", permanent:false
     },
     highlights:["20 bio link","Unlimited tombol/bio","6 tema lengkap","Analytics","Link Lock","Embed YouTube/Spotify/TikTok","Tombol dengan gambar","Logo partner"]
   },
   ultimate: {
-    id:"ultimate", name:"Ultimate", price:50000, priceLabel:"Rp 50.000", tagline:"Unlimited + akses beta",
+    id:"ultimate", name:"Ultimate", price:50000, priceLabel:"Rp 50.000",
+    tagline:"Sekali bayar, akses selamanya",
+    period:null,
     features:{
       maxBios:-1, maxLinks:-1,
       themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
       analytics:true, linkLock:true, featuredLink:true, embed:true,
-      logos:true, layouts:true, patterns:true, animations:true,
-      betaAccess:true, badge:"ULTIMATE"
+      logos:true, animations:true,
+      betaAccess:true, badge:"ULTIMATE", permanent:true
     },
-    highlights:["Unlimited bio link","Unlimited tombol/bio","Semua fitur Pro","Akses fitur BETA","Layout grid","Pattern custom","Animasi lanjutan","Badge ULTIMATE"]
+    highlights:["♾️ PERMANEN — bayar sekali","Unlimited bio link","Unlimited tombol/bio","Semua fitur Pro","Akses fitur BETA","Animasi lanjutan","Badge ULTIMATE","Gak ada renewal"]
   },
   developer: {
     id:"developer", name:"Developer", price:0, priceLabel:"∞", tagline:"Akses penuh + admin",
@@ -1173,8 +1170,8 @@ const PLANS = {
       maxBios:-1, maxLinks:-1,
       themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
       analytics:true, linkLock:true, featuredLink:true, embed:true,
-      logos:true, layouts:true, patterns:true, animations:true,
-      betaAccess:true, badge:"DEV"
+      logos:true, animations:true,
+      betaAccess:true, badge:"DEV", permanent:true
     },
     highlights:["Unlimited semua","Semua fitur unlock","Semua fitur beta","Favicon custom","Badge DEV","Dev Panel"]
   }
@@ -1313,11 +1310,11 @@ async function applyAppFavicon(){
   }catch(e){ console.warn("applyAppFavicon:", e); }
 }
 
-/* CLIPBOARD */
+/* CLIPBOARD — ke Varlink */
 async function copyLink(bioOrId){
   const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
   const identifier = bio.slug || bio.id;
-  const url = `${location.origin}${location.pathname}#/u/${identifier}`;
+  const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
   try{ await navigator.clipboard.writeText(url); toast("Link disalin!","success"); }
   catch(e){
     const ta=document.createElement("textarea");
@@ -1331,11 +1328,11 @@ async function copyLink(bioOrId){
 function showShareModal(bioOrId){
   const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
   const identifier = bio.slug || bio.id;
-  const url = `${location.origin}${location.pathname}#/u/${identifier}`;
+  const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
   const m=openModal(`
     <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
     <h3>Bio Link Tersimpan!</h3>
-    <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan:</p>
+    <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan link ini:</p>
     <input id="share-url" value="${url}" readonly onclick="this.select()"
       style="text-align:center;font-family:monospace;font-size:12px;padding:12px"/>
     <div style="display:flex;gap:8px;margin-top:10px">
@@ -1347,7 +1344,7 @@ function showShareModal(bioOrId){
       <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WA</button>
     </div>`);
   $("#share-copy",m).addEventListener("click",()=>copyLink(bio));
-  $("#share-open",m).addEventListener("click",()=>window.open(`${location.pathname}#/u/${identifier}`,"_blank"));
+  $("#share-open",m).addEventListener("click",()=>window.open(url,"_blank"));
   $("#share-wa",m).addEventListener("click",()=>{
     const text=encodeURIComponent(`Cek link-in-bio aku: ${url}`);
     window.open(`https://wa.me/?text=${text}`,"_blank");
@@ -1390,15 +1387,25 @@ const Auth = {
           try{
             const doc = await FB.db.collection("users").doc(user.uid).get();
             if(doc.exists && doc.data().name) name = doc.data().name;
+            const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
+            const effectiveVerified = user.emailVerified || isGoogleProvider;
             await FB.db.collection("users").doc(user.uid).set({
-              emailVerified: user.emailVerified
+              emailVerified: effectiveVerified,
+              isGoogleUser: isGoogleProvider
             }, { merge:true });
-          }catch(e){}
-          this.current = {
-            uid:user.uid, email:user.email, name,
-            photo:user.photoURL||"",
-            emailVerified: user.emailVerified
-          };
+            this.current = {
+              uid:user.uid, email:user.email, name,
+              photo:user.photoURL||"",
+              emailVerified: effectiveVerified,
+              isGoogle: isGoogleProvider
+            };
+          }catch(e){
+            this.current = {
+              uid:user.uid, email:user.email, name,
+              photo:user.photoURL||"",
+              emailVerified: user.emailVerified
+            };
+          }
         } else { this.current = null; }
         resolve(this.current);
       });
@@ -1417,20 +1424,16 @@ const Auth = {
   async loginGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
-
     if(isInAppBrowser()){
       const err = new Error("in-app-browser");
       err.code = "app/in-app-browser";
       throw err;
     }
-
     const useRedirect = isMobile();
-
     if(useRedirect){
       await FB.auth.signInWithRedirect(provider);
       return null;
     }
-
     try{
       const cred = await FB.auth.signInWithPopup(provider);
       await this._ensureUserDoc(cred.user);
@@ -1470,7 +1473,6 @@ const Auth = {
   },
   async logout(){ await FB.auth.signOut(); this.current = null; },
 
-  /* GANTI NAMA */
   async updateName(newName){
     const user = FB.auth.currentUser;
     if(!user) throw new Error("Not logged in");
@@ -1479,8 +1481,6 @@ const Auth = {
     if(this.current) this.current.name = newName;
     return true;
   },
-
-  /* GANTI PASSWORD */
   async updatePassword(oldPass, newPass){
     const user = FB.auth.currentUser;
     if(!user) throw new Error("Not logged in");
@@ -1489,8 +1489,6 @@ const Auth = {
     await user.updatePassword(newPass);
     return true;
   },
-
-  /* GANTI EMAIL */
   async updateEmail(password, newEmail){
     const user = FB.auth.currentUser;
     if(!user) throw new Error("Not logged in");
@@ -1500,7 +1498,6 @@ const Auth = {
     await FB.db.collection("users").doc(user.uid).set({ pendingEmail: newEmail }, { merge:true });
     return true;
   },
-
   errMsg(code){
     const map = {
       "auth/email-already-in-use":"Email sudah terdaftar",
@@ -1522,6 +1519,9 @@ const Auth = {
   }
 };
 
+/* =========================================================
+   LOAD USER PLAN — Ultimate & Dev = permanen (gak cek expiry)
+   ========================================================= */
 async function loadUserPlan(){
   if(!Auth.current) { STATE.plan = PLANS.free; return PLANS.free; }
   if(isDev(Auth.current.email)) { STATE.plan = PLANS.developer; STATE.planMeta = null; return PLANS.developer; }
@@ -1529,7 +1529,21 @@ async function loadUserPlan(){
     const doc = await FB.db.collection("users").doc(Auth.current.uid).get();
     const data = doc.exists ? doc.data() : {};
     let planId = data.plan || "free";
-    if(planId !== "free" && data.planExpiry && data.planExpiry < Date.now()) planId = "free";
+
+    // Ultimate & Developer = permanen, tidak cek planExpiry
+    const planDef = PLANS[planId];
+    if(planDef && planDef.features.permanent){
+      // Selalu aktif
+    } else if(planId !== "free" && data.planExpiry && data.planExpiry < Date.now()){
+      planId = "free";
+      // Auto-update Firestore ke free
+      try{
+        await FB.db.collection("users").doc(Auth.current.uid).set({
+          plan: "free", planExpiredAt: Date.now()
+        }, { merge:true });
+      }catch(e){}
+    }
+
     STATE.planMeta = data;
     STATE.plan = PLANS[planId] || PLANS.free;
     return STATE.plan;
@@ -1538,6 +1552,7 @@ async function loadUserPlan(){
 function canDo(feature){ return !!(STATE.plan?.features?.[feature]); }
 function themeAllowed(t){ return (STATE.plan?.features?.themes||[]).includes(t); }
 function planBadge(){ return STATE.plan?.features?.badge || null; }
+function isPermanentPlan(){ return !!(STATE.plan?.features?.permanent); }
 
 /* =========================================================
    STORE
@@ -1618,8 +1633,6 @@ const Store = {
       [`stats.clicks.${idx}`]: firebase.firestore.FieldValue.increment(1)
     }); }catch(e){}
   },
-
-  /* SETTINGS */
   async getSettings(){
     try{
       const doc = await FB.db.collection("settings").doc("app").get();
@@ -1630,8 +1643,6 @@ const Store = {
     await FB.db.collection("settings").doc("app").set(data, { merge:true });
     return data;
   },
-
-  /* PARTNERS */
   async listPartners(){
     try{
       const s = await FB.db.collection("partners").get();
@@ -1650,8 +1661,6 @@ const Store = {
     }catch(e){ console.error("savePartner:", e); throw e; }
   },
   async removePartner(id){ await FB.db.collection("partners").doc(id).delete(); },
-
-  /* UPDATES */
   async listUpdates(){
     try{
       const s = await FB.db.collection("updates").get();
@@ -1691,7 +1700,7 @@ const Router = {
     if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
     if(PROTECTED.includes(path) && !Auth.current) return this.navigate("/login");
 
-    // Cek verifikasi email
+    // Cek verifikasi email (kecuali Dev + halaman help/verify + Google)
     if(PROTECTED.includes(path) && Auth.current && !isDev(Auth.current.email)){
       const user = FB.auth.currentUser;
       const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
@@ -1740,7 +1749,7 @@ const LinkTypes = {
 };
 
 /* =========================================================
-   COMPONENT: UPDATE LOG
+   COMPONENT: UPDATE & PARTNER
    ========================================================= */
 function renderUpdateSection(){
   const list = STATE.updates || [];
@@ -1775,8 +1784,6 @@ function renderUpdateSection(){
       </div>
     </div>`;
 }
-
-/* COMPONENT: PARTNER */
 function renderPartnerSection(){
   const list = STATE.partners || [];
   return `
@@ -1868,12 +1875,15 @@ const PageLanding = {
     });
   },
   renderPricingCard(plan, extraClass){
+    const isPerm = plan.features.permanent && plan.price > 0;
+    const permLabel = isPerm ? "Sekali Bayar" : (plan.period ? ` / ${plan.period}` : "");
     return `
       <div class="pricing-card ${extraClass}">
         ${extraClass==='popular'?'<div class="pop-badge">POPULER</div>':''}
+        ${isPerm && extraClass==='ultimate-card'?'<div class="perm-badge">PERMANEN</div>':''}
         <div class="plan-name">${plan.name}</div>
         <div class="plan-tagline">${plan.tagline}</div>
-        <div class="price">${plan.priceLabel}<small>${plan.period?' / '+plan.period:''}</small></div>
+        <div class="price">${plan.priceLabel}<small>${permLabel}</small></div>
         <ul class="features">
           ${plan.highlights.map(h=>`<li>${h}</li>`).join("")}
         </ul>
@@ -2040,7 +2050,6 @@ const PageVerify = {
       const bg = type === "success" ? "var(--green)" : "var(--red)";
       $("#err-slot").innerHTML = `<div class="err-box" style="background:${bg}">${esc(msg)}</div>`;
     };
-
     $("#v-check").addEventListener("click", async ()=>{
       showLoading("Cek status...");
       try{
@@ -2120,7 +2129,6 @@ function renderTopbar(){
       </div>
     </div>`;
 }
-
 function bindTopbar(){
   const open=$("#btn-drawer-open");
   const drawer=$("#lt-drawer");
@@ -2136,7 +2144,6 @@ function bindTopbar(){
   const planBtn=$("#btn-plan-top"); if(planBtn) planBtn.addEventListener("click",()=>showUpgradeModal());
   const devBtn=$("#btn-dev-top"); if(devBtn) devBtn.addEventListener("click",()=>Router.navigate("/dev"));
 }
-
 function showUpgradeModal(){
   const cur = STATE.plan?.id || "free";
   openModal(`
@@ -2147,15 +2154,16 @@ function showUpgradeModal(){
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
         ${['pro','ultimate'].map(id=>{
           const p = PLANS[id]; const active = cur === id;
+          const isPerm = p.features.permanent;
           return `
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:${active?'var(--yellow)':'var(--cream)'};border:2.5px solid var(--ink);border-radius:10px;box-shadow:2px 2px 0 var(--ink)">
               <div style="text-align:left">
-                <b style="font-size:15px;text-transform:uppercase;font-weight:900;display:block">${p.name}</b>
+                <b style="font-size:15px;text-transform:uppercase;font-weight:900;display:block">${p.name}${isPerm?' <span style="background:var(--green);color:#fff;font-size:9px;padding:2px 6px;border-radius:999px;border:1.5px solid var(--ink)">PERMANEN</span>':''}</b>
                 <span style="font-size:11.5px;font-weight:600">${p.tagline}</span>
               </div>
               <div style="text-align:right;flex-shrink:0">
                 <div style="font-size:18px;font-weight:900">${p.priceLabel}</div>
-                <div style="font-size:10px;font-weight:700">per bulan</div>
+                <div style="font-size:10px;font-weight:700">${isPerm?'sekali bayar':'per bulan'}</div>
               </div>
             </div>`;
         }).join("")}
@@ -2168,6 +2176,9 @@ function showUpgradeModal(){
           <li>Setelah donasi, kirim bukti ke WA admin</li>
           <li>Plan aktif dalam 1x24 jam</li>
         </ol>
+        <div style="background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;font-weight:700">
+          💎 <b>Ultimate</b> = bayar Rp 50.000 sekali, akses selamanya. Gak ada renewal!
+        </div>
       </div>
       <a href="${TAKO_URL}" target="_blank" class="tako-link">${ico('crown')} Donate di Tako</a>
       <div style="height:8px"></div>
@@ -2194,6 +2205,13 @@ const PageDashboard = {
     let bioCount = 0;
     try{ bioCount = await Store.count(); }catch(e){}
 
+    const isPerm = plan.features.permanent && plan.price > 0;
+    const planSubtitle = isPerm
+      ? `${bioCount} bio dibuat · PERMANEN ♾️`
+      : (isUnlimited(plan.features.maxBios)
+          ? `${bioCount} bio dibuat · unlimited`
+          : `${bioCount} / ${plan.features.maxBios} bio`);
+
     $("#app").innerHTML = `
       ${renderTopbar()}
       <div class="dash">
@@ -2207,8 +2225,8 @@ const PageDashboard = {
               ${ico(plan.id==='free'?'star':plan.id==='developer'?'zap':'crown')}
             </div>
             <div class="pinfo">
-              <b>Plan: ${plan.name}</b>
-              <span>${isUnlimited(plan.features.maxBios)?bioCount+' bio dibuat · unlimited':bioCount+' / '+plan.features.maxBios+' bio'}</span>
+              <b>Plan: ${plan.name}${isPerm?' ♾️':''}</b>
+              <span>${planSubtitle}</span>
             </div>
             <button class="btn ${plan.id==='free'?'btn-yellow':'btn-primary'} btn-sm" id="btn-upgrade">
               ${plan.id==='free'?'Upgrade':'Kelola'}
@@ -2270,7 +2288,7 @@ const PageDashboard = {
           <div class="ri-actions">
             <button class="icon-btn" onclick='copyLink(${bioJson})'>${ico('copy')}</button>
             <button class="icon-btn" onclick="PageDashboard.qr('${b.id}')">${ico('qr')}</button>
-            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="window.open('${PUBLIC_BASE_URL}/#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
             <button class="icon-btn" onclick="PageDashboard.edit('${b.id}')">${ico('edit')}</button>
             <button class="icon-btn danger" onclick="PageDashboard.remove('${b.id}')">${ico('trash')}</button>
           </div>
@@ -2283,7 +2301,7 @@ const PageDashboard = {
   async qr(id){
     const bio = await Store.get(id);
     const identifier = bio?.slug || id;
-    const url=`${location.origin}${location.pathname}#/u/${identifier}`;
+    const url=`${PUBLIC_BASE_URL}/#/u/${identifier}`;
     const m=openModal(`<button class="close-x" onclick="this.closest('.modal-back').remove()">×</button><h3>${ico('qr')} QR Code</h3><p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka</p><div style="text-align:center"><div class="qr-box"><canvas id="qr-canvas"></canvas></div><div class="qr-url">${esc(url)}</div></div><button class="btn btn-primary btn-block" id="qr-dl" style="margin-top:14px">${ico('save')} Download PNG</button>`);
     await generateQR(url, $("#qr-canvas",m));
     $("#qr-dl",m).addEventListener("click",()=>{
@@ -2342,7 +2360,7 @@ const PageManage = {
           <div class="ri-actions">
             <button class="icon-btn" onclick='copyLink(${bioJson})'>${ico('copy')}</button>
             <button class="icon-btn" onclick="PageDashboard.qr('${b.id}')">${ico('qr')}</button>
-            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="window.open('${PUBLIC_BASE_URL}/#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
             <button class="icon-btn" onclick="PageManage.edit('${b.id}')">${ico('edit')}</button>
             <button class="icon-btn danger" onclick="PageManage.remove('${b.id}')">${ico('trash')}</button>
           </div>
@@ -2361,7 +2379,6 @@ const PageStats = {
   async render(){
     if(!Auth.current) return Router.navigate("/login");
     if(!STATE.plan) await loadUserPlan();
-
     if(!canDo("analytics")){
       $("#app").innerHTML = `
         ${renderTopbar()}
@@ -2377,14 +2394,12 @@ const PageStats = {
       $("#btn-up").addEventListener("click",()=>showUpgradeModal());
       return;
     }
-
     const list=await Store.list();
     const totalViews=list.reduce((s,b)=>s+(b.stats?.views||0),0);
     const totalClicks=list.reduce((s,b)=>{
       const c=b.stats?.clicks||{};
       return s+Object.values(c).reduce((x,y)=>x+y,0);
     },0);
-
     $("#app").innerHTML = `
       ${renderTopbar()}
       <div class="container" style="padding-top:20px;padding-bottom:60px">
@@ -2397,7 +2412,6 @@ const PageStats = {
         <div id="stats-list"></div>
       </div>`;
     bindTopbar();
-
     const wrap=$("#stats-list");
     if(!list.length){ wrap.innerHTML=`<div class="empty-state"><p>Belum ada data.</p></div>`; return; }
     wrap.innerHTML=list.map(b=>{
@@ -2412,7 +2426,7 @@ const PageStats = {
         <div class="card" style="margin-bottom:12px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
             <div><b style="font-size:14px;text-transform:uppercase">${esc(b.name||"Tanpa nama")}</b><div style="font-size:11.5px;margin-top:2px;font-weight:600">#${esc(b.slug||b.id)} · ${b.stats?.views||0} views · ${totalClick} klik</div></div>
-            <button class="btn btn-sm" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')} Lihat</button>
+            <button class="btn btn-sm" onclick="window.open('${PUBLIC_BASE_URL}/#/u/${b.slug||b.id}','_blank')">${ico('eye')} Lihat</button>
           </div>
           ${topLinks||`<p style="font-size:12.5px;font-weight:600">Belum ada link.</p>`}
         </div>`;
@@ -2421,14 +2435,13 @@ const PageStats = {
 };
 
 /* =========================================================
-   PAGE: SETTINGS ACCOUNT
+   PAGE: SETTINGS
    ========================================================= */
 const PageSettings = {
   async render(){
     if(!Auth.current) return Router.navigate("/login");
     const user = FB.auth.currentUser;
     if(!user) return Router.navigate("/login");
-
     const u = Auth.current;
     const meta = STATE.planMeta || {};
     const isGoogle = (user.providerData||[]).some(p => p.providerId === "google.com");
@@ -2450,7 +2463,7 @@ const PageSettings = {
           <div class="info-row"><span class="lbl">Status Email</span><span class="val">
             ${isGoogle ? "🔵 Google Account" : (user.emailVerified ? "✅ Terverifikasi" : "⚠️ Belum")}
           </span></div>
-          <div class="info-row"><span class="lbl">Plan</span><span class="val">${STATE.plan?.name || "Free"}</span></div>
+          <div class="info-row"><span class="lbl">Plan</span><span class="val">${STATE.plan?.name || "Free"}${isPermanentPlan()?' ♾️':''}</span></div>
           <div class="info-row"><span class="lbl">Login via</span><span class="val">${isGoogle ? "Google" : "Email & Password"}</span></div>
           <div class="info-row"><span class="lbl">Member sejak</span><span class="val">${created}</span></div>
         </div>
@@ -2504,16 +2517,10 @@ const PageSettings = {
       </div>`;
 
     bindTopbar();
-
-    /* GANTI NAMA */
     $("#btn-save-name").addEventListener("click", async ()=>{
       const newName = $("#set-name").value.trim();
-      if(!newName || newName.length < 2){
-        $("#name-msg").innerHTML = `<div class="err-box">Nama minimal 2 karakter</div>`; return;
-      }
-      if(newName === u.name){
-        $("#name-msg").innerHTML = `<div class="err-box">Nama sama dengan yang sekarang</div>`; return;
-      }
+      if(!newName || newName.length < 2){ $("#name-msg").innerHTML = `<div class="err-box">Nama minimal 2 karakter</div>`; return; }
+      if(newName === u.name){ $("#name-msg").innerHTML = `<div class="err-box">Nama sama dengan yang sekarang</div>`; return; }
       showLoading("Menyimpan...");
       try{
         await Auth.updateName(newName);
@@ -2522,8 +2529,6 @@ const PageSettings = {
         this.render();
       }catch(e){ hideLoading(); $("#name-msg").innerHTML = `<div class="err-box">Gagal: ${esc(e.message)}</div>`; }
     });
-
-    /* GANTI PASSWORD */
     const btnPass = $("#btn-save-pass");
     if(btnPass) btnPass.addEventListener("click", async ()=>{
       const oldPass = $("#set-oldpass").value, newPass = $("#set-newpass").value, newPass2 = $("#set-newpass2").value;
@@ -2547,8 +2552,6 @@ const PageSettings = {
         $("#pass-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
       }
     });
-
-    /* GANTI EMAIL */
     const btnEmail = $("#btn-save-email");
     if(btnEmail) btnEmail.addEventListener("click", async ()=>{
       const pass = $("#set-emailpass").value, newEmail = $("#set-newemail").value.trim();
@@ -2573,8 +2576,6 @@ const PageSettings = {
         $("#email-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
       }
     });
-
-    /* LOGOUT */
     $("#btn-logout-here").addEventListener("click", async ()=>{
       if(!confirm("Logout dari device ini?")) return;
       await Auth.logout();
@@ -2617,7 +2618,7 @@ const FAQ_DATA = [
     a:`<ol><li>Login ke akun</li><li>Di Dashboard, klik <b>✨ Bikin Link-in-Bio Baru</b></li>
         <li>Isi nama, bio, foto profil, banner</li><li>Tambah tombol link</li>
         <li>Pilih tema</li><li>Klik <b>Simpan</b> 💾</li></ol>
-       <p>Link bio jadi: <code>varlinkbio-site.vercel.app/#/u/namamu</code></p>` },
+       <p>Link bio jadi: <code>varlink.vercel.app/#/u/namamu</code></p>` },
   { cat:"bio", q:"Gimana cara share link-in-bio saya?",
     a:`<ul><li>Klik icon 📋 <b>Copy</b> di dashboard</li>
         <li>Klik icon 📱 <b>QR</b> — download QR code</li>
@@ -2625,7 +2626,7 @@ const FAQ_DATA = [
         <li>Setelah Simpan, muncul modal dengan Copy / WA</li></ul>` },
   { cat:"bio", q:"Berapa jumlah bio link yang bisa saya buat?",
     a:`<ul><li><b>Free</b>: 5 bio</li><li><b>Pro</b> (Rp 15.000/bln): 20 bio</li>
-        <li><b>Ultimate</b> (Rp 50.000/bln): unlimited</li></ul>` },
+        <li><b>Ultimate</b> (Rp 50.000 sekali): unlimited + PERMANEN</li></ul>` },
   { cat:"bio", q:"Kenapa URL saya pakai nama seperti #/u/varo?",
     a:`<p>URL bio kamu otomatis dari nama (disebut <b>slug</b>):</p>
        <ul><li>Nama "Varo Codex" → <code>#/u/varo-codex</code></li>
@@ -2639,32 +2640,32 @@ const FAQ_DATA = [
   { cat:"bio", q:"Kenapa upload foto gagal / error 'terlalu besar'?",
     a:`<p>Sistem otomatis compress, tapi ada limit:</p>
        <ul><li>Foto profil/banner/thumbnail: max ~300 KB setelah compress</li>
-           <li>Foto HP modern (2-5 MB) biasanya OK karena di-compress</li>
-           <li>Kalau error, pakai foto lebih kecil</li></ul>` },
+           <li>Foto HP modern (2-5 MB) biasanya OK karena di-compress</li></ul>` },
   { cat:"bio", q:"Apa itu Link Lock?",
     a:`<p><b>Link Lock</b> = fitur mengunci bio dengan password (khusus <b>Pro</b>+).</p>
-       <ol><li>Editor → section <b>Link Lock</b></li>
-           <li>Isi password</li><li>Simpan</li></ol>` },
+       <ol><li>Editor → section <b>Link Lock</b></li><li>Isi password</li><li>Simpan</li></ol>` },
 
   { cat:"plan", q:"Apa saja plan yang tersedia?",
-    a:`<ul><li><b>Free</b> — Gratis, 5 bio, 5 tombol/bio, 1 tema</li>
-        <li><b>Pro</b> — Rp 15.000/bln, 20 bio, unlimited tombol, 6 tema, analytics, link lock, embed, logo partner</li>
-        <li><b>Ultimate</b> — Rp 50.000/bln, unlimited bio, semua fitur Pro + akses beta (animasi, pattern)</li></ul>` },
+    a:`<ul><li><b>Free</b> — Gratis, 5 bio, 1 tema</li>
+        <li><b>Pro</b> — Rp 15.000/bln, 20 bio, 6 tema, analytics, embed</li>
+        <li><b>Ultimate</b> — Rp 50.000 <b>SEKALI BAYAR</b> ♾️, unlimited bio, semua fitur + beta</li></ul>` },
+  { cat:"plan", q:"Ultimate itu permanen? Beneran?",
+    a:`<p><b>Iya, permanen!</b> Bayar Rp 50.000 sekali, akses selamanya.</p>
+       <ul><li>✅ Gak ada renewal bulanan</li><li>✅ Gak akan expired</li>
+           <li>✅ Unlimited bio selamanya</li><li>✅ Semua update fitur baru gratis</li></ul>
+       <div class="tip">💎 Ini pilihan terbaik buat yang serius dengan link-in-bio.</div>` },
   { cat:"plan", q:"Bagaimana cara upgrade?",
     a:`<ol><li>Klik tombol <b>Upgrade</b></li><li>Klik <b>Donate di Tako</b></li>
         <li>Bayar</li><li>Kirim bukti ke WhatsApp admin</li>
         <li>Plan aktif dalam <b>1x24 jam</b></li></ol>
        <div class="tip">💡 Admin: <b>+62 858-2305-8292</b></div>` },
-  { cat:"plan", q:"Apakah plan saya bisa kadaluarsa?",
-    a:`<p>Ya, plan Pro & Ultimate berlaku <b>30 hari</b>.</p>
-       <p>Setelah kadaluarsa:</p>
-       <ul><li>Turun otomatis ke Free</li><li>Bio tetap aman</li>
-           <li>Bio > 5 perlu upgrade lagi untuk edit</li></ul>` },
+  { cat:"plan", q:"Apakah plan Pro saya bisa kadaluarsa?",
+    a:`<p>Ya, plan Pro berlaku <b>30 hari</b>. Setelah kadaluarsa → turun ke Free.</p>
+       <p>Tapi kalau kamu pilih <b>Ultimate</b>, gak ada kadaluarsa sama sekali. 💎</p>` },
 
   { cat:"partner", q:"Apa itu Logo Partner?",
     a:`<p><b>Logo Partner</b> = logo perusahaan/brand yang kolaborasi. Muncul di bawah profil bio (khusus <b>Pro</b>+).</p>
-       <ol><li>Editor → section <b>Logo Partner</b></li>
-           <li>Klik <b>Tambah Logo</b></li>
+       <ol><li>Editor → section <b>Logo Partner</b></li><li>Klik <b>Tambah Logo</b></li>
            <li>Upload gambar</li><li>Isi nama + URL</li></ol>` },
   { cat:"partner", q:"Saya mau collab dengan Varlinkbio, bagaimana?",
     a:`<p>Kirim proposal ke WhatsApp admin:</p>
@@ -2681,7 +2682,7 @@ const FAQ_DATA = [
        <p><b>Solusi:</b></p>
        <ol><li>Tap titik tiga <b>⋮</b></li><li>Pilih <b>"Buka di Chrome"</b> / <b>"Open in Safari"</b></li>
            <li>Login Google lagi</li></ol>
-       <div class="tip">💡 Atau pakai login Email & Password — jalan di semua browser.</div>` },
+       <div class="tip">💡 Atau pakai login Email & Password.</div>` },
   { cat:"dev", q:"Apakah Varlinkbio aman?",
     a:`<p>Ya, kami pakai:</p>
        <ul><li>🔥 Firebase Authentication (Google)</li><li>🔒 HTTPS</li>
@@ -2700,9 +2701,8 @@ const FAQ_DATA = [
        <p>Kalau lapor bug, sertakan: screenshot, URL, browser/device.</p>` },
   { cat:"lain", q:"Bisakah saya pakai domain sendiri?",
     a:`<p>Fitur custom domain sedang dikembangkan. Sementara semua bio pakai:</p>
-       <p style="text-align:center"><code>varlinkbio-site.vercel.app/#/u/namamu</code></p>` }
+       <p style="text-align:center"><code>varlink.vercel.app/#/u/namamu</code></p>` }
 ];
-
 const FAQ_CATS = [
   { id:"all", label:"Semua", icon:"📚" },
   { id:"akun", label:"Akun", icon:"👤" },
@@ -2712,7 +2712,6 @@ const FAQ_CATS = [
   { id:"dev", label:"Teknis", icon:"🔧" },
   { id:"lain", label:"Lainnya", icon:"✨" }
 ];
-
 const PageHelp = {
   state: { cat:"all", search:"" },
   render(){
@@ -2738,7 +2737,6 @@ const PageHelp = {
              target="_blank" class="btn">${ico('whatsapp')} Chat Admin</a>
         </div>
       </div>`;
-
     bindTopbar();
     $("#help-cats").innerHTML = FAQ_CATS.map(c=>`
       <div class="help-cat ${this.state.cat===c.id?"active":""}" data-cat="${c.id}">
@@ -2807,7 +2805,6 @@ const PageEditor = {
       stats:{views:0,clicks:{}}
     };
   },
-
   async render(){
     if(!Auth.current) return Router.navigate("/login");
     if(!STATE.plan) await loadUserPlan();
@@ -2844,7 +2841,7 @@ const PageEditor = {
           <div class="editor-section">
             <h3><span class="num">2</span> Nama & Bio</h3>
             <div class="field"><label>Nama</label><input id="f-name" type="text" maxlength="40" value="${esc(d.name)}" placeholder="Nama kamu"/></div>
-            ${d.id?`<div class="slug-preview">URL: <b>${location.origin}/#/u/${esc(d.slug||"...")}</b></div>`:`<div class="slug-preview">URL akan otomatis dibuat dari nama kamu.</div>`}
+            ${d.id?`<div class="slug-preview">URL publik: <b>${PUBLIC_BASE_URL}/#/u/${esc(d.slug||"...")}</b></div>`:`<div class="slug-preview">URL akan otomatis dibuat dari nama kamu.</div>`}
             <div class="field" style="margin-top:12px"><label>Bio / Subtitle</label><textarea id="f-bio" maxlength="160" placeholder="Tulis bio singkat...">${esc(d.bio)}</textarea></div>
           </div>
 
@@ -2909,7 +2906,6 @@ const PageEditor = {
     this.renderLogos();
     this.updatePreview();
   },
-
   bindAll(){
     $("#btn-save").addEventListener("click",()=>this.save());
     $("#btn-save2").addEventListener("click",()=>this.save());
@@ -2958,11 +2954,10 @@ const PageEditor = {
     const addLink=$("#add-link"); if(addLink) addLink.addEventListener("click",()=>this.openLinkTypePicker());
     const btnView=$("#btn-view"); if(btnView) btnView.addEventListener("click",()=>{
       if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
-      window.open(`${location.pathname}#/u/${STATE.draft.slug||STATE.draft.id}`,"_blank");
+      window.open(`${PUBLIC_BASE_URL}/#/u/${STATE.draft.slug||STATE.draft.id}`,"_blank");
     });
     bindTopbar();
   },
-
   renderAnimGrid(){
     const el=$("#anim-grid"); if(!el) return;
     const opts=[
@@ -2982,7 +2977,6 @@ const PageEditor = {
       });
     });
   },
-
   renderLogos(){
     const wrap=$("#logos-list"); if(!wrap) return;
     const logos = STATE.draft.logos || [];
@@ -3002,7 +2996,6 @@ const PageEditor = {
         <button class="lg-up" data-lgup="${i}" title="Upload logo">${ico('camera')}</button>
         <button class="lg-del" data-lgdel="${i}">${ico('x')}</button>
       </div>`).join("");
-
     wrap.querySelectorAll("[data-lgname]").forEach(inp=>{
       inp.addEventListener("input",e=>{
         STATE.draft.logos[+e.target.dataset.lgname].name = e.target.value;
@@ -3040,7 +3033,6 @@ const PageEditor = {
       });
     });
   },
-
   openLinkTypePicker(){
     const canFeatured = canDo("featuredLink");
     const canEmbed = canDo("embed");
@@ -3066,7 +3058,6 @@ const PageEditor = {
       });
     });
   },
-
   renderLinks(){
     const wrap=$("#links-list");
     const links=STATE.draft.links || [];
@@ -3090,7 +3081,6 @@ const PageEditor = {
         <button class="del" data-del="${i}">${ico('x')}</button>
       </div>`;
     }).join("");
-
     wrap.querySelectorAll("input[data-field]").forEach(inp=>{
       inp.addEventListener("input",e=>{
         const i=+e.target.dataset.i, f=e.target.dataset.field;
@@ -3130,7 +3120,6 @@ const PageEditor = {
         this.updatePreview();
       });
     });
-
     let dragIdx=null;
     wrap.querySelectorAll(".link-row").forEach(row=>{
       row.addEventListener("dragstart",e=>{ dragIdx=+row.dataset.i; row.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
@@ -3149,7 +3138,6 @@ const PageEditor = {
       });
     });
   },
-
   renderThemeGrid(){
     const themes=[
       {id:"neo-cream",label:"Cream",css:"#f0ebe0"},
@@ -3178,12 +3166,10 @@ const PageEditor = {
       });
     });
   },
-
   updatePreview(){
     const frame=$("#prev-frame"); if(!frame) return;
     frame.srcdoc=PagePublic.buildHTML(STATE.draft,{preview:true});
   },
-
   async save(){
     if(!STATE.draft.name?.trim()){ toast("Nama tidak boleh kosong","error"); return; }
     const plan = STATE.plan;
@@ -3208,7 +3194,6 @@ const PageEditor = {
    ========================================================= */
 const PageDev = {
   state: { users:[], bios:[], partners:[], updates:[], filter:"all", search:"", tab:"users", settings:{} },
-
   async render(){
     if(!Auth.current) return Router.navigate("/login");
     if(!isDev(Auth.current.email)){ toast("Akses ditolak","error"); return Router.navigate("/dashboard"); }
@@ -3243,7 +3228,6 @@ const PageDev = {
     });
     await this.loadData();
   },
-
   async loadData(){
     try{
       const usersSnap = await FB.db.collection("users").get();
@@ -3263,7 +3247,6 @@ const PageDev = {
       $("#dev-content").innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
     }
   },
-
   renderStats(){
     const users = this.state.users;
     const countBy = (p)=>users.filter(u=>isDev(u.email) ? p==="developer" : (u.plan||"free")===p).length;
@@ -3275,7 +3258,6 @@ const PageDev = {
       <div class="dev-stat dev-dev"><div class="sv">${countBy("developer")}</div><div class="sl">Developer</div></div>
       <div class="dev-stat"><div class="sv">${this.state.bios.length}</div><div class="sl">Total Bio</div></div>`;
   },
-
   renderTab(){
     const tab = this.state.tab;
     if(tab === "partners") return this.renderPartners();
@@ -3283,7 +3265,6 @@ const PageDev = {
     if(tab === "favicon") return this.renderFavicon();
     return this.renderList();
   },
-
   renderList(){
     const el = $("#dev-content");
     const { tab, filter, search } = this.state;
@@ -3315,12 +3296,10 @@ const PageDev = {
     if(refreshEl) refreshEl.addEventListener("click", ()=>this.loadData());
     this.renderListContent();
   },
-
   renderListContent(){
     const wrap = $("#dev-list"); if(!wrap) return;
     const { tab, filter, search } = this.state;
     const matchSearch = (s)=> !search || (s||"").toLowerCase().includes(search);
-
     if(tab === "users"){
       let list = this.state.users.filter(u=>{
         const plan = isDev(u.email) ? "developer" : (u.plan||"free");
@@ -3331,7 +3310,7 @@ const PageDev = {
       wrap.innerHTML = list.map(u=>{
         const plan = isDev(u.email) ? "developer" : (u.plan||"free");
         const bios = this.state.bios.filter(b=>b.ownerUid===u.uid).length;
-        const expiry = u.planExpiry ? new Date(u.planExpiry).toLocaleDateString("id-ID") : "—";
+        const expiry = u.planExpiry ? new Date(u.planExpiry).toLocaleDateString("id-ID") : (plan==="ultimate"?"♾️ PERMANEN":"—");
         const initial = (u.name||u.email||"?")[0].toUpperCase();
         const verifyBadge = u.emailVerified
           ? '<span style="color:var(--green);font-size:11px;margin-left:4px;font-weight:900">✓ verified</span>'
@@ -3341,7 +3320,7 @@ const PageDev = {
             <div class="di-avatar">${initial}</div>
             <div class="di-info">
               <b>${esc(u.name||"Tanpa nama")} <span class="dev-plan-pill ${plan}">${plan}</span>${verifyBadge}</b>
-              <span>${esc(u.email||"")} · ${bios} bio${u.planExpiry?` · exp: ${expiry}`:""}</span>
+              <span>${esc(u.email||"")} · ${bios} bio${u.planExpiry?` · exp: ${expiry}`:(plan==="ultimate"?` · ${expiry}`:"")}</span>
             </div>
             <div class="di-actions">
               <button class="icon-btn" onclick="PageDev.openEdit('${u.uid}')">${ico('edit')}</button>
@@ -3360,14 +3339,12 @@ const PageDev = {
             <span>#${esc(b.slug||b.id)} · ${esc(b.ownerName||"—")} · ${b.stats?.views||0} views</span>
           </div>
           <div class="di-actions">
-            <button class="icon-btn" onclick="window.open('${location.pathname}#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
+            <button class="icon-btn" onclick="window.open('${PUBLIC_BASE_URL}/#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
             <button class="icon-btn danger" onclick="PageDev.deleteBio('${b.id}')">${ico('trash')}</button>
           </div>
         </div>`).join("");
     }
   },
-
-  /* PARTNERS */
   renderPartners(){
     const el = $("#dev-content");
     const list = this.state.partners || [];
@@ -3400,7 +3377,6 @@ const PageDev = {
     });
     this.renderPartnerList();
   },
-
   renderPartnerList(){
     const wrap = $("#partner-list");
     const list = this.state.partners || [];
@@ -3425,7 +3401,6 @@ const PageDev = {
           <button class="btn btn-sm btn-red" data-pdel="${p.id}">${ico('trash')} Hapus</button>
         </div>
       </div>`).join("");
-
     wrap.querySelectorAll("[data-upload]").forEach(b=>{
       b.addEventListener("click",()=>{
         const pid = b.dataset.upload;
@@ -3476,8 +3451,6 @@ const PageDev = {
       });
     });
   },
-
-  /* UPDATES */
   renderUpdates(){
     const el = $("#dev-content");
     const list = this.state.updates || [];
@@ -3514,7 +3487,6 @@ const PageDev = {
     });
     this.renderUpdateList();
   },
-
   renderUpdateList(){
     const wrap = $("#update-list");
     const list = this.state.updates || [];
@@ -3546,14 +3518,12 @@ const PageDev = {
           <button class="btn btn-sm btn-red" data-udel="${u.id}">${ico('trash')} Hapus</button>
         </div>
       </div>`).join("");
-
     wrap.querySelectorAll("[data-uchgdel]").forEach(b=>{
       b.addEventListener("click",()=>{
         const [uid_, iStr] = b.dataset.uchgdel.split("-");
         const i = +iStr;
         const idx = this.state.updates.findIndex(x=>x.id===uid_);
         const card = wrap.querySelector(`[data-uid="${uid_}"]`);
-        // Sync semua input changes ke state dulu
         const curChanges = [];
         card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>curChanges.push(inp.value));
         this.state.updates[idx].changes = curChanges;
@@ -3566,7 +3536,6 @@ const PageDev = {
         const u = b.dataset.uchgadd;
         const idx = this.state.updates.findIndex(x=>x.id===u);
         const card = wrap.querySelector(`[data-uid="${u}"]`);
-        // Sync dulu
         const curChanges = [];
         card.querySelectorAll(`[data-uchange^="${u}-"]`).forEach(inp=>curChanges.push(inp.value));
         this.state.updates[idx].changes = curChanges;
@@ -3609,8 +3578,6 @@ const PageDev = {
       });
     });
   },
-
-  /* FAVICON */
   renderFavicon(){
     const el = $("#dev-content");
     const s = this.state.settings || {};
@@ -3620,7 +3587,7 @@ const PageDev = {
         <div class="fp-card">
           <h3>${ico('image')} Favicon Situs Varlinkbio</h3>
           <p class="fp-desc">
-            Ganti icon kecil yang muncul di <b>tab browser</b> — di semua halaman Varlinkbio.
+            Ganti icon kecil yang muncul di <b>tab browser</b> — di semua halaman Varlinkbio & Varlink.
             Format: PNG / ICO / SVG ukuran kotak (rekomendasi 128×128 atau 256×256).
           </p>
           <div class="favicon-preview-big">
@@ -3646,7 +3613,6 @@ const PageDev = {
           </div>
         </div>
       </div>`;
-
     const uploadFn = ()=>{
       const inp = document.createElement("input");
       inp.type = "file"; inp.accept = "image/*";
@@ -3689,7 +3655,6 @@ const PageDev = {
       }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
     });
   },
-
   openEdit(uid){
     const u = this.state.users.find(x=>x.uid===uid);
     if(!u) return;
@@ -3706,32 +3671,46 @@ const PageDev = {
         <select id="dev-edit-plan" style="padding:12px;font-weight:800">
           <option value="free" ${curPlan==="free"?"selected":""}>Free</option>
           <option value="pro" ${curPlan==="pro"?"selected":""}>Pro</option>
-          <option value="ultimate" ${curPlan==="ultimate"?"selected":""}>Ultimate</option>
+          <option value="ultimate" ${curPlan==="ultimate"?"selected":""}>Ultimate ♾️ (Permanen)</option>
           <option value="developer" ${curPlan==="developer"?"selected":""}>Developer</option>
         </select>
       </div>
-      <div class="field">
+      <div class="field" id="dev-expiry-field" style="${curPlan==="ultimate"||curPlan==="developer"?"display:none":""}">
         <label>Tanggal Kadaluarsa (opsional)</label>
         <input type="date" id="dev-edit-expiry" value="${expiry}"/>
         <div class="hint">Kosongkan = tidak kadaluarsa</div>
       </div>
+      <div class="field" id="dev-perm-info" style="${curPlan==="ultimate"||curPlan==="developer"?"":"display:none"}">
+        <div style="background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px 12px;font-size:12.5px;font-weight:700">
+          ♾️ Plan ini <b>PERMANEN</b> — tidak butuh tanggal kadaluarsa.
+        </div>
+      </div>
       <button class="btn btn-primary btn-block" id="dev-edit-save" style="margin-top:14px">${ico('save')} Simpan</button>
       <button class="btn btn-red btn-block" id="dev-edit-del" style="margin-top:8px">${ico('trash')} Hapus User + Bio</button>
     `);
+    $("#dev-edit-plan",m).addEventListener("change", (e)=>{
+      const v = e.target.value;
+      const isPerm = v === "ultimate" || v === "developer";
+      $("#dev-expiry-field",m).style.display = isPerm ? "none" : "";
+      $("#dev-perm-info",m).style.display = isPerm ? "" : "none";
+    });
     $("#dev-edit-save",m).addEventListener("click", async ()=>{
       const newPlan = $("#dev-edit-plan",m).value;
-      const expiryVal = $("#dev-edit-expiry",m).value;
+      const isPerm = newPlan === "ultimate" || newPlan === "developer";
+      const expiryVal = isPerm ? "" : $("#dev-edit-expiry",m).value;
       const expiryMs = expiryVal ? new Date(expiryVal).getTime() : null;
       showLoading("Menyimpan...");
       try{
-        await FB.db.collection("users").doc(uid).update({ plan: newPlan, planExpiry: expiryMs });
+        await FB.db.collection("users").doc(uid).update({
+          plan: newPlan,
+          planExpiry: expiryMs
+        });
         hideLoading(); toast("Berhasil diupdate!","success");
         m.remove(); await this.loadData();
       }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
     });
     $("#dev-edit-del",m).addEventListener("click", ()=>{ m.remove(); this.deleteUser(uid); });
   },
-
   async deleteUser(uid){
     if(!confirm("Hapus user ini + semua bio-nya?")) return;
     showLoading("Menghapus...");
@@ -3743,7 +3722,6 @@ const PageDev = {
       await this.loadData();
     }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
   },
-
   async deleteBio(id){
     if(!confirm("Hapus bio ini?")) return;
     showLoading("Menghapus...");
@@ -3755,14 +3733,13 @@ const PageDev = {
 };
 
 /* =========================================================
-   PAGE: PUBLIC VIEWER
+   PAGE: PUBLIC VIEWER (fallback)
    ========================================================= */
 const PagePublic = {
   buildHTML(d, opts={}){
     const preview = !!(opts && opts.preview);
     const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
     const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
-
     const links=(d.links||[]).map((l,idx)=>{
       const embed = LinkTypes.embed(l.url);
       const type = LinkTypes.detect(l.url);
@@ -3784,39 +3761,32 @@ const PagePublic = {
         <span class="ltext">${esc(l.label||"Link")}</span>
       </a>`;
     }).join("");
-
     const profileBlock = d.profile
       ? `<img src="${esc(d.profile)}" alt=""/>`
       : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
-
     const bannerBlock = renderBannerHTML(d);
     const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
-
     const badgeMap = { pro:"PRO", ultimate:"ULTIMATE", developer:"DEV" };
     const badge = badgeMap[d.ownerPlan] || "";
     const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
-
     const logosHtml = (Array.isArray(d.logos) && d.logos.filter(lg=>lg.img).length)
       ? `<div class="bio-logos">
           ${d.logos.filter(lg=>lg.img).map(lg=>`
             <a class="bio-logo-item" href="${esc(lg.url||"#")}" target="_blank" rel="noopener" title="${esc(lg.name||"")}">
-              <img src="${esc(lg.img)}" alt="${esc(lg.name||"")}"/>
+              <img src="${esc(lg.img)}" alt=""/>
             </a>`).join("")}
         </div>`
       : "";
-
     const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
     const bioId = d.id||"";
     const slug = d.slug||bioId;
     const isLocked = !!d.lock;
     const themeClass = `theme-${d.theme||"neo-cream"}`;
-
     const pageTitle = `VarlinkBio-${d.name||"User"}`;
     const pageDesc = d.bio || `Cek link-in-bio ${d.name||"User"} di Varlinkbio`;
     const pageImage = d.profile || d.banner || "";
     const appFav = STATE.appSettings?.favicon || "";
     const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
-
     return `<!DOCTYPE html>
 <html lang="id"><head>
 <meta charset="UTF-8"/>
@@ -3827,7 +3797,7 @@ ${faviconTag}
 <meta property="og:type" content="profile"/>
 <meta property="og:title" content="${esc(pageTitle)}"/>
 <meta property="og:description" content="${esc(pageDesc)}"/>
-<meta property="og:url" content="${location.origin}${location.pathname}#/u/${slug}"/>
+<meta property="og:url" content="${PUBLIC_BASE_URL}/#/u/${slug}"/>
 ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>${PagePublic.css()}</style>
@@ -3846,7 +3816,7 @@ ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
     ${bannerBlock}
     <div class="bio-links">${links}</div>
     <div style="text-align:center">
-      <div class="bio-footer">Powered by <a href="${location.origin}${location.pathname}" target="_top">Varlinkbio</a> · by Varoo</div>
+      <div class="bio-footer">Powered by <a href="${PUBLIC_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>
     </div>
   </div>
 </div>
@@ -3883,7 +3853,6 @@ trackView();
 <\/script>
 </body></html>`;
   },
-
   css(){ return `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;--red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;--pink:#ff69b4;--purple:#a78bfa;--white:#fff}
@@ -3977,8 +3946,13 @@ img,video{max-width:100%;display:block}
 .lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--white);color:var(--ink);font-size:14px;outline:none;text-align:center;font-weight:700;font-family:inherit}
 .lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;margin-top:10px;font-size:13.5px;text-transform:uppercase;box-shadow:3px 3px 0 var(--red);font-family:inherit}
 `; },
-
   async render(idOrSlug){
+    // Redirect ke Varlink (public viewer) — kecuali jika PUBLIC_BASE_URL = hostname sendiri (development)
+    if(PUBLIC_BASE_URL && !PUBLIC_BASE_URL.includes(location.hostname)){
+      const cleanSlug = String(idOrSlug||"").trim();
+      location.replace(`${PUBLIC_BASE_URL}/#/u/${cleanSlug}`);
+      return;
+    }
     showLoading("Memuat...");
     if(!STATE.appSettings){
       try{ STATE.appSettings = await Store.getSettings(); }catch(e){ STATE.appSettings = {}; }
@@ -4048,7 +4022,6 @@ Router.on("/404",       ()=>Router.navigate("/"));
       console.warn("Redirect error:", err.code, err.message);
     }
   }catch(e){ console.warn("boot redirect:", e); }
-
   await Auth.init();
   if(Auth.current) await loadUserPlan();
   hideLoading();

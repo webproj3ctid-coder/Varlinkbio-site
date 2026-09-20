@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<title>VarlinkB — Link in Bio Generator</title>
+<title>Varlinkbio — Link in Bio Generator</title>
 <meta name="theme-color" content="#f0ebe0"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><circle cx='50' cy='50' r='22' fill='%23ffd700' stroke='%23fff' stroke-width='4'/></svg>"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -16,12 +16,20 @@
   --shadow:5px 5px 0 var(--ink);--shadow-sm:3px 3px 0 var(--ink);
   --border:2.5px solid var(--ink);--radius:10px;
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
 }
 html,body{height:100%;font-family:var(--font);color:var(--ink);
   font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body{background-color:var(--cream);
-  background-image:radial-gradient(circle,#0a0a0a 1.2px,transparent 1.2px);
-  background-size:16px 16px;min-height:100vh}
+  background-image:radial-gradient(circle,#0a0a0a 1.2px,transparent 1.2px),
+    radial-gradient(circle,#0a0a0a 1.2px,transparent 1.2px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite;min-height:100vh}
+@keyframes dotsFlow{
+  from{background-position:0 0,10px 10px}
+  to{background-position:400px -400px,410px -390px}
+}
 #app{min-height:100vh}
 body.public-mode{overflow:hidden;height:100vh;height:100dvh}
 body.public-mode #app{min-height:0;height:100vh;height:100dvh;overflow:hidden}
@@ -39,6 +47,8 @@ textarea{resize:vertical;min-height:80px}
 .ic{width:16px;height:16px;display:inline-block;vertical-align:middle;
   stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;
   stroke-linejoin:round;flex-shrink:0}
+.ic-sm{width:12px;height:12px}
+.ic-lg{width:20px;height:20px}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
   padding:11px 18px;border-radius:var(--radius);font-weight:800;font-size:13.5px;
@@ -53,7 +63,7 @@ textarea{resize:vertical;min-height:80px}
 .btn-green{background:var(--green);color:var(--white)}
 .btn-blue{background:var(--blue);color:var(--white)}
 .btn-pink{background:var(--pink)}
-.btn-orange{background:var(--orange);color:var(--white)}
+.btn-purple{background:var(--purple)}
 .btn-sm{padding:8px 12px;font-size:12px}
 .btn-lg{padding:15px 22px;font-size:14px}
 .btn-block{width:100%}
@@ -81,44 +91,66 @@ textarea{resize:vertical;min-height:80px}
 
 .container{max-width:960px;margin:0 auto;padding:0 18px}
 
-/* Topbar */
+/* TOPBAR */
 .lt-topbar{position:sticky;top:0;z-index:100;background:var(--white);
   border-bottom:3px solid var(--ink);padding:10px 14px;
   display:flex;align-items:center;justify-content:space-between;gap:10px}
 .lt-topbar .lt-brand{display:flex;align-items:center;gap:8px;font-weight:900;
-  font-size:16px;text-transform:uppercase;letter-spacing:.5px}
+  font-size:15px;text-transform:uppercase;letter-spacing:.5px;
+  white-space:nowrap;min-width:0;overflow:hidden}
 .lt-topbar .lt-brand .lt-logo{width:32px;height:32px;background:var(--ink);
   color:var(--yellow);border-radius:50%;display:grid;place-items:center;
   font-size:15px;font-weight:900;border:2.5px solid var(--ink);
-  box-shadow:2px 2px 0 var(--red)}
+  box-shadow:2px 2px 0 var(--red);flex-shrink:0}
 .lt-topbar .lt-actions{display:flex;gap:6px;align-items:center}
-.lt-btn{padding:9px 14px;border-radius:999px;font-weight:800;font-size:12.5px;
-  border:2.5px solid var(--ink);background:var(--white);color:var(--ink);
-  text-transform:uppercase;letter-spacing:.3px;box-shadow:2px 2px 0 var(--ink);
-  display:inline-flex;align-items:center;gap:6px}
-.lt-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
-.lt-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
-.lt-btn-logout{background:var(--ink);color:var(--white)}
-.lt-btn-hamburger{padding:8px;width:38px;height:38px;justify-content:center;border-radius:50%}
-.lt-btn-plan{background:var(--yellow)}
-@media(max-width:520px){
-  .lt-topbar .lt-actions .lt-btn span{display:none}
-  .lt-btn{padding:9px 10px}
+
+.lt-badge{padding:6px 12px;border-radius:999px;font-weight:900;font-size:11px;
+  text-transform:uppercase;letter-spacing:.5px;border:2.5px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);display:inline-flex;align-items:center;gap:5px;
+  cursor:pointer;transition:transform .1s, box-shadow .1s}
+.lt-badge:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.lt-badge.dev{background:var(--red);color:#fff}
+.lt-badge.pro{background:var(--blue);color:#fff}
+.lt-badge.ultimate{background:var(--ink);color:var(--yellow)}
+.lt-badge .ic{width:11px;height:11px}
+
+.lt-menu-btn{display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:999px;background:var(--ink);color:var(--white);
+  border:2.5px solid var(--ink);box-shadow:2px 2px 0 var(--red);
+  font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
+  cursor:pointer;transition:transform .1s, box-shadow .1s}
+.lt-menu-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--red)}
+.lt-menu-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--red)}
+.lt-menu-btn .ic{width:16px;height:16px;stroke-width:3}
+
+.lt-logout-btn{padding:8px 14px;border-radius:999px;background:var(--white);
+  color:var(--ink);border:2.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
+  font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
+  cursor:pointer;transition:transform .1s, box-shadow .1s}
+.lt-logout-btn:hover{background:var(--red);color:#fff;transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink)}
+.lt-logout-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+
+@media(max-width:640px){
+  .lt-menu-btn .label{display:none}
+  .lt-menu-btn{padding:8px;width:40px;height:40px;justify-content:center}
+  .lt-logout-btn{padding:6px 10px;font-size:10.5px}
+  .lt-badge{padding:4px 8px;font-size:10px}
 }
 
+/* DRAWER */
 .lt-drawer{position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:200;
-  opacity:0;pointer-events:none;transition:opacity .2s}
+  opacity:0;pointer-events:none;transition:opacity .25s}
 .lt-drawer.open{opacity:1;pointer-events:auto}
-.lt-drawer-panel{position:absolute;top:0;right:0;bottom:0;width:min(320px,80vw);
+.lt-drawer-panel{position:absolute;top:0;right:0;bottom:0;width:min(340px,85vw);
   background:var(--cream);border-left:3px solid var(--ink);
-  padding:20px;transform:translateX(100%);transition:transform .25s;
+  padding:20px;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
   display:flex;flex-direction:column;gap:10px;overflow-y:auto}
 .lt-drawer.open .lt-drawer-panel{transform:translateX(0)}
 .lt-drawer-panel h4{font-size:12px;text-transform:uppercase;letter-spacing:1px;
   color:var(--ink-soft);margin-bottom:4px;font-weight:800}
 .lt-drawer-panel .user-box{background:var(--white);border:var(--border);
-  border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);
-  margin-bottom:6px}
+  border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);margin-bottom:6px}
 .lt-drawer-panel .user-box b{display:block;font-size:15px;text-transform:uppercase;
   font-weight:900;letter-spacing:.3px}
 .lt-drawer-panel .user-box span{font-size:12px;color:var(--ink-soft);font-weight:600;
@@ -133,35 +165,107 @@ textarea{resize:vertical;min-height:80px}
   border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;
   gap:10px;font-weight:800;font-size:13.5px;text-transform:uppercase;
   letter-spacing:.3px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
-.lt-drawer-panel .menu-item:hover{transform:translate(-1px,-1px);
-  box-shadow:3px 3px 0 var(--ink)}
-.lt-drawer-panel .menu-item:active{transform:translate(2px,2px);
-  box-shadow:0 0 0 var(--ink)}
+.lt-drawer-panel .menu-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.lt-drawer-panel .menu-item:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--cream-2)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
 
-/* Landing */
-.landing{min-height:100vh;display:flex;flex-direction:column}
+/* LANDING */
+.landing{min-height:100vh;display:flex;flex-direction:column;position:relative}
 .landing-hero{flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:60px 18px 40px;text-align:center}
+  justify-content:center;padding:60px 18px 40px;text-align:center;position:relative}
 .hero-logo{width:88px;height:88px;border-radius:50%;background:var(--white);
   border:4px solid var(--ink);box-shadow:6px 6px 0 var(--red);
-  display:grid;place-items:center;margin-bottom:24px;transform:rotate(-3deg)}
+  display:grid;place-items:center;margin-bottom:24px;transform:rotate(-3deg);
+  animation:heroFloat 3s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:rotate(-3deg) translateY(0)}
+  50%{transform:rotate(-3deg) translateY(-8px)}}
 .hero-logo .ic{width:44px;height:44px}
 .landing h1{font-size:clamp(38px,8vw,68px);font-weight:900;letter-spacing:-1.5px;
   margin-bottom:10px;text-transform:uppercase;line-height:1;
-  text-shadow:4px 4px 0 var(--yellow)}
+  text-shadow:4px 4px 0 var(--yellow);
+  animation:titlePop .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes titlePop{from{opacity:0;transform:scale(.8) rotate(-3deg)}
+  to{opacity:1;transform:scale(1) rotate(0)}}
 .landing p.sub{color:var(--ink);font-size:15px;max-width:460px;margin-bottom:28px;
   font-weight:600;background:var(--white);border:var(--border);padding:10px 16px;
-  border-radius:var(--radius);box-shadow:var(--shadow-sm);transform:rotate(-1deg)}
-.cta-row{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px}
+  border-radius:var(--radius);box-shadow:var(--shadow-sm);transform:rotate(-1deg);
+  animation:slideUp .7s .1s both}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px) rotate(-1deg)}
+  to{opacity:1;transform:translateY(0) rotate(-1deg)}}
+.cta-row{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px;
+  animation:slideUp .7s .2s both}
 .cta-row .btn{padding:15px;font-size:14px}
 .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
-/* Pricing */
+/* UPDATE LOG */
+.update-section{padding:40px 18px 50px;background:var(--white);
+  border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.update-header{text-align:center;margin-bottom:24px}
+.update-header h2{font-size:clamp(22px,4.5vw,32px);font-weight:900;
+  text-transform:uppercase;letter-spacing:-.3px;display:inline-block;
+  background:var(--yellow);border:3px solid var(--ink);padding:6px 18px;
+  box-shadow:5px 5px 0 var(--ink);transform:rotate(-1deg)}
+.update-header p{margin-top:12px;font-size:13.5px;font-weight:600;color:var(--ink-soft)}
+.update-list{display:flex;flex-direction:column;gap:12px;max-width:640px;margin:0 auto}
+.update-item{background:var(--cream);border:2.5px solid var(--ink);border-radius:12px;
+  padding:14px 16px;box-shadow:4px 4px 0 var(--ink);position:relative;
+  transition:transform .15s, box-shadow .15s}
+.update-item:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.update-item.new::before{content:'NEW';position:absolute;top:-10px;right:-6px;
+  background:var(--red);color:#fff;font-size:10px;font-weight:900;
+  padding:3px 10px;border:2.5px solid var(--ink);border-radius:999px;
+  transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink);
+  animation:pulseBadge 1.8s ease-in-out infinite}
+@keyframes pulseBadge{0%,100%{transform:rotate(8deg) scale(1)}
+  50%{transform:rotate(8deg) scale(1.08)}}
+.update-item .u-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;
+  flex-wrap:wrap}
+.update-item .u-version{background:var(--ink);color:var(--yellow);
+  font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 10px;
+  border-radius:6px;letter-spacing:.5px}
+.update-item .u-date{font-size:11.5px;font-weight:700;color:var(--ink-soft);
+  font-family:var(--mono)}
+.update-item .u-title{font-size:15px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.3px;margin-bottom:8px}
+.update-item .u-changes{list-style:none;padding:0;display:flex;flex-direction:column;gap:5px}
+.update-item .u-changes li{font-size:12.5px;font-weight:600;padding-left:20px;
+  position:relative;line-height:1.45;color:var(--ink-soft)}
+.update-item .u-changes li::before{content:'▸';position:absolute;left:0;
+  font-weight:900;color:var(--ink);font-size:14px}
+
+/* PARTNER */
+.partner-section{padding:40px 18px;background:var(--cream);
+  border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
+.partner-header{text-align:center;margin-bottom:24px}
+.partner-header h2{font-size:clamp(20px,4vw,28px);font-weight:900;
+  text-transform:uppercase;letter-spacing:-.3px;display:inline-block;
+  background:var(--ink);color:var(--yellow);padding:5px 16px;border-radius:8px}
+.partner-header p{margin-top:10px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+.partner-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:12px;max-width:720px;margin:0 auto}
+.partner-card{background:var(--white);border:2.5px solid var(--ink);border-radius:12px;
+  padding:14px 10px;text-align:center;box-shadow:3px 3px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-decoration:none;color:var(--ink);transition:transform .15s, box-shadow .15s;
+  cursor:pointer;position:relative;overflow:hidden;min-height:120px;justify-content:center}
+.partner-card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.partner-card .p-logo{width:44px;height:44px;border-radius:50%;
+  border:2.5px solid var(--ink);display:grid;place-items:center;
+  overflow:hidden;flex-shrink:0;font-weight:900;font-size:18px;
+  color:#fff;background:var(--ink)}
+.partner-card .p-logo img{width:100%;height:100%;object-fit:cover}
+.partner-card .p-name{font-size:11.5px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.3px;line-height:1.2;word-break:break-word}
+.partner-card .p-tag{font-size:9.5px;font-weight:700;color:var(--ink-soft);
+  text-transform:uppercase;letter-spacing:.5px;opacity:.75}
+.partner-card.collab-cta{background:var(--yellow);border-style:dashed}
+.partner-card.collab-cta .p-logo{background:var(--ink);color:var(--yellow);font-size:22px}
+
+/* PRICING */
 .pricing-section{padding:40px 18px 60px;background:var(--cream-2);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .pricing-header{text-align:center;margin-bottom:28px}
@@ -175,8 +279,8 @@ textarea{resize:vertical;min-height:80px}
   gap:16px;max-width:960px;margin:0 auto}
 .pricing-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
   padding:20px;position:relative;box-shadow:6px 6px 0 var(--ink);
-  display:flex;flex-direction:column;transition:transform .15s, box-shadow .15s}
-.pricing-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+  display:flex;flex-direction:column;transition:transform .2s, box-shadow .2s}
+.pricing-card:hover{transform:translate(-4px,-4px);box-shadow:10px 10px 0 var(--ink)}
 .pricing-card.popular{background:var(--yellow);transform:rotate(-1deg)}
 .pricing-card.ultimate-card{background:var(--ink);color:var(--white)}
 .pricing-card.ultimate-card .price{color:var(--yellow)}
@@ -186,7 +290,8 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card .pop-badge{position:absolute;top:-14px;right:-8px;background:var(--red);
   color:var(--white);font-size:11px;font-weight:900;padding:4px 10px;
   border:2.5px solid var(--ink);border-radius:999px;text-transform:uppercase;
-  letter-spacing:.5px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink)}
+  letter-spacing:.5px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink);
+  animation:pulseBadge 1.8s ease-in-out infinite}
 .pricing-card .plan-name{font-size:22px;font-weight:900;text-transform:uppercase;
   letter-spacing:.5px;margin-bottom:4px}
 .pricing-card .plan-tagline{font-size:12.5px;font-weight:600;opacity:.75;
@@ -199,12 +304,12 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card .features li::before{content:'✓';position:absolute;left:0;
   font-weight:900;font-size:14px;color:var(--green)}
 
-/* Auth */
+/* AUTH */
 .auth-page{min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:40px 18px}
 .auth-card{width:100%;max-width:400px;background:var(--white);
   border:3px solid var(--ink);border-radius:14px;padding:24px;
-  box-shadow:8px 8px 0 var(--ink)}
+  box-shadow:8px 8px 0 var(--ink);animation:slideUp .4s both}
 .auth-card .auth-icon{width:56px;height:56px;background:var(--yellow);
   border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;
   margin:0 auto 14px;box-shadow:3px 3px 0 var(--red);color:var(--ink)}
@@ -226,17 +331,19 @@ textarea{resize:vertical;min-height:80px}
 .auth-card .back-link{display:inline-flex;align-items:center;gap:4px;
   font-size:12px;font-weight:700;margin-bottom:14px;text-transform:uppercase;
   letter-spacing:.5px}
-.auth-card .back-link:hover{text-decoration:underline}
 .auth-card .divider{text-align:center;margin:14px 0;font-size:12px;
   font-weight:700;color:var(--ink-soft)}
 .btn-google{background:var(--white)}
 
-/* Dashboard */
+/* DASHBOARD */
 .dash{padding-bottom:60px}
 .dash-hero{padding:32px 18px 24px;text-align:center}
 .dash-hero h2{font-size:clamp(22px,5vw,30px);font-weight:900;letter-spacing:-.5px;
   text-transform:uppercase;display:inline-block;background:var(--yellow);
-  border:var(--border);padding:6px 16px;box-shadow:var(--shadow);transform:rotate(-1deg)}
+  border:var(--border);padding:6px 16px;box-shadow:var(--shadow);transform:rotate(-1deg);
+  animation:heroFloat2 4s ease-in-out infinite}
+@keyframes heroFloat2{0%,100%{transform:rotate(-1deg) translateY(0)}
+  50%{transform:rotate(-1deg) translateY(-4px)}}
 .dash-hero p{color:var(--ink);margin-top:14px;font-weight:600;font-size:14px}
 .dash-plan-card{max-width:520px;margin:0 auto 20px;background:var(--white);
   border:3px solid var(--ink);border-radius:14px;padding:16px;
@@ -258,24 +365,30 @@ textarea{resize:vertical;min-height:80px}
   padding:4px 12px;border-radius:6px}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
 .feature-card{background:var(--white);border:var(--border);border-radius:var(--radius);
-  padding:14px;box-shadow:var(--shadow-sm)}
+  padding:14px;box-shadow:var(--shadow-sm);transition:transform .2s, box-shadow .2s;
+  position:relative}
+.feature-card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
 .feature-card .fi{width:34px;height:34px;background:var(--yellow);border:var(--border);
   border-radius:8px;display:grid;place-items:center;margin-bottom:10px;
   box-shadow:2px 2px 0 var(--ink)}
 .feature-card h4{font-size:13.5px;margin-bottom:4px;text-transform:uppercase;
   font-weight:900;letter-spacing:.3px}
 .feature-card p{color:var(--ink-soft);font-size:12px;line-height:1.5;font-weight:500}
+.feature-card.beta-tag::after{content:'BETA';position:absolute;top:8px;right:8px;
+  background:var(--purple);color:#fff;font-size:9px;font-weight:900;
+  padding:2px 8px;border:2px solid var(--ink);border-radius:999px;letter-spacing:.5px}
+.feature-card.locked-feat::before{content:'🔒';position:absolute;top:8px;right:8px;
+  font-size:16px}
 .dash-recent{padding:16px 0}
 .recent-list{display:flex;flex-direction:column;gap:10px}
 .recent-item{background:var(--white);border:var(--border);border-radius:var(--radius);
   padding:12px 14px;display:flex;align-items:center;justify-content:space-between;
-  gap:10px;box-shadow:var(--shadow-sm);transition:transform .1s, box-shadow .1s}
+  gap:10px;box-shadow:var(--shadow-sm);transition:transform .15s, box-shadow .15s}
 .recent-item:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
 .recent-item .ri-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
 .recent-item .ri-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;
   background:var(--yellow);flex-shrink:0;display:grid;place-items:center;
-  font-weight:900;color:var(--ink);font-size:14px;overflow:hidden;
-  border:2.5px solid var(--ink)}
+  font-weight:900;color:var(--ink);font-size:14px;overflow:hidden;border:2.5px solid var(--ink)}
 .recent-item .ri-info{min-width:0;flex:1}
 .recent-item .ri-info b{display:block;font-size:13.5px;white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis;font-weight:800;text-transform:uppercase;
@@ -283,8 +396,8 @@ textarea{resize:vertical;min-height:80px}
 .recent-item .ri-info span{color:var(--ink-soft);font-size:11.5px;font-weight:600}
 .recent-item .ri-actions{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap}
 .icon-btn{width:32px;height:32px;border-radius:8px;background:var(--white);
-  border:2px solid var(--ink);display:grid;place-items:center;
-  color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+  border:2px solid var(--ink);display:grid;place-items:center;color:var(--ink);
+  box-shadow:2px 2px 0 var(--ink)}
 .icon-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .icon-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 .icon-btn.danger{background:var(--red);color:var(--white)}
@@ -294,11 +407,11 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:var(--shadow)}
 .empty-state .ei{width:60px;height:60px;background:var(--yellow);border:var(--border);
   border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;
-  box-shadow:var(--shadow-sm)}
+  box-shadow:var(--shadow-sm);animation:heroFloat 2.5s ease-in-out infinite}
 .empty-state .ei .ic{width:28px;height:28px}
 .empty-state p{margin-bottom:16px;font-weight:700}
 
-/* Editor */
+/* EDITOR */
 .editor-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;
   max-width:1180px;margin:0 auto;padding:18px;padding-bottom:60px}
 @media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
@@ -320,11 +433,17 @@ textarea{resize:vertical;min-height:80px}
   border-radius:var(--radius);padding:10px;font-size:12px;font-weight:700;
   text-align:center;margin-top:8px}
 .locked-hint a{text-decoration:underline;font-weight:900;cursor:pointer}
+.dev-only-badge{display:inline-block;padding:2px 8px;background:var(--red);color:#fff;
+  font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
+  margin-left:6px;vertical-align:middle}
+.beta-only-badge{display:inline-block;padding:2px 8px;background:var(--purple);color:#fff;
+  font-size:9px;font-weight:900;border-radius:999px;letter-spacing:.5px;
+  margin-left:6px;vertical-align:middle}
 
 .upload-box{border:2.5px dashed var(--ink);border-radius:var(--radius);
-  padding:18px;text-align:center;cursor:pointer;transition:all .1s;
+  padding:18px;text-align:center;cursor:pointer;transition:all .15s;
   background:var(--cream);position:relative;overflow:hidden}
-.upload-box:hover{background:var(--yellow);border-style:solid}
+.upload-box:hover{background:var(--yellow);border-style:solid;transform:translate(-1px,-1px)}
 .upload-box .ui{width:36px;height:36px;background:var(--ink);color:var(--yellow);
   border-radius:8px;display:grid;place-items:center;margin:0 auto 8px}
 .upload-box p{color:var(--ink);font-size:12.5px;font-weight:800;text-transform:uppercase}
@@ -338,10 +457,29 @@ textarea{resize:vertical;min-height:80px}
   border:3px solid var(--ink);overflow:hidden;cursor:pointer;background:var(--yellow);
   box-shadow:var(--shadow-sm);transform:rotate(-3deg)}
 .profile-upload .pbox img{width:100%;height:100%;object-fit:cover}
+.profile-upload .pbox video{width:100%;height:100%;object-fit:cover}
 .profile-upload .pbox .overlay{position:absolute;inset:0;background:rgba(10,10,10,.6);
   color:var(--white);display:grid;place-items:center;opacity:0;transition:opacity .15s}
 .profile-upload .pbox:hover .overlay{opacity:1}
 .profile-upload .pbox input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.logo-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.logo-item{display:flex;gap:8px;align-items:center;background:var(--cream);
+  border:2px solid var(--ink);border-radius:var(--radius);padding:8px;
+  box-shadow:2px 2px 0 var(--ink)}
+.logo-item .lg-thumb{width:40px;height:40px;border-radius:8px;flex-shrink:0;
+  background:var(--white);border:2px solid var(--ink);overflow:hidden;
+  display:grid;place-items:center}
+.logo-item .lg-thumb img{width:100%;height:100%;object-fit:contain}
+.logo-item .lg-fields{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.logo-item .lg-fields input{border:1.5px solid var(--ink);background:var(--white);
+  padding:6px 8px;font-size:12.5px;box-shadow:none!important}
+.logo-item .lg-up{width:30px;height:30px;border-radius:7px;border:2px solid var(--ink);
+  background:var(--yellow);display:grid;place-items:center;flex-shrink:0;
+  box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.logo-item .lg-del{width:30px;height:30px;border-radius:7px;border:2px solid var(--ink);
+  background:var(--red);color:#fff;display:grid;place-items:center;flex-shrink:0;
+  box-shadow:2px 2px 0 var(--ink);cursor:pointer}
 
 .links-list{display:flex;flex-direction:column;gap:8px}
 .link-row{display:flex;gap:6px;align-items:flex-start;background:var(--cream);
@@ -373,13 +511,14 @@ textarea{resize:vertical;min-height:80px}
   display:grid;place-items:center;padding:18px;animation:fadeIn .15s ease}
 .modal{background:var(--white);border:3px solid var(--ink);border-radius:14px;
   padding:20px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;
-  box-shadow:8px 8px 0 var(--ink);position:relative}
+  box-shadow:8px 8px 0 var(--ink);position:relative;animation:modalPop .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes modalPop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 .modal h3{font-size:16px;margin-bottom:14px;text-transform:uppercase;font-weight:900;
   letter-spacing:.3px}
 .modal .link-types{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .link-type{background:var(--cream);border:2.5px solid var(--ink);border-radius:var(--radius);
   padding:12px;text-align:center;cursor:pointer;transition:all .1s;
-  box-shadow:2px 2px 0 var(--ink)}
+  box-shadow:2px 2px 0 var(--ink);position:relative}
 .link-type:hover{background:var(--yellow);transform:translate(-1px,-1px);
   box-shadow:3px 3px 0 var(--ink)}
 .link-type .lti{width:32px;height:32px;background:var(--ink);color:var(--yellow);
@@ -410,6 +549,19 @@ textarea{resize:vertical;min-height:80px}
 .theme-item .chk .ic{width:12px;height:12px}
 .theme-item.active .chk{display:grid}
 
+.opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.opt-item{padding:10px;text-align:center;border:2px solid var(--ink);border-radius:8px;
+  background:var(--cream);font-weight:800;font-size:11.5px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:.3px;box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;position:relative}
+.opt-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.opt-item.active{background:var(--ink);color:var(--yellow)}
+.opt-item.locked{opacity:.5;cursor:not-allowed}
+.opt-item.locked::after{content:'🔒';position:absolute;top:4px;right:6px;font-size:11px}
+.opt-item .opt-preview{width:100%;height:32px;background:var(--white);
+  border:1.5px solid var(--ink);border-radius:4px;margin-bottom:6px;
+  display:grid;place-items:center;font-size:16px}
+
 .editor-preview{position:sticky;top:70px;align-self:start}
 .preview-phone{width:100%;max-width:300px;margin:0 auto;aspect-ratio:9/19;
   border-radius:28px;border:4px solid var(--ink);overflow:hidden;
@@ -421,15 +573,13 @@ textarea{resize:vertical;min-height:80px}
   border-radius:var(--radius);display:inline-block;margin:10px auto;
   box-shadow:var(--shadow-sm)}
 .qr-box canvas{display:block}
-.qr-url{font-family:monospace;font-size:11.5px;word-break:break-all;
+.qr-url{font-family:var(--mono);font-size:11.5px;word-break:break-all;
   text-align:center;margin-top:10px;font-weight:600;
   background:var(--cream);padding:8px;border-radius:6px;border:1.5px solid var(--ink)}
 
 .upgrade-box{text-align:center}
 .upgrade-box .plan-title{font-size:22px;font-weight:900;text-transform:uppercase;
   margin-bottom:6px}
-.upgrade-box .plan-price{font-size:26px;font-weight:900;color:var(--green);
-  margin-bottom:16px}
 .upgrade-box .steps{text-align:left;background:var(--cream);border:2px solid var(--ink);
   border-radius:var(--radius);padding:14px;margin-bottom:14px;font-size:13px;
   font-weight:600;line-height:1.6}
@@ -441,7 +591,6 @@ textarea{resize:vertical;min-height:80px}
   border:3px solid var(--ink);box-shadow:4px 4px 0 var(--yellow);margin-bottom:12px}
 .upgrade-box .tako-link:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--yellow)}
 
-/* Analytics */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
   gap:10px;margin-bottom:18px}
 .stat-card{background:var(--white);border:var(--border);border-radius:var(--radius);
@@ -466,14 +615,20 @@ textarea{resize:vertical;min-height:80px}
 
 /* DEV PANEL */
 .dev-header{background:var(--ink);color:var(--yellow);padding:20px 18px;
-  border-bottom:3px solid var(--yellow)}
+  border-bottom:3px solid var(--yellow);position:relative;overflow:hidden}
+.dev-header::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;
+  border:3px solid var(--yellow);border-radius:50%;opacity:.15;animation:pulseRing 4s ease-in-out infinite}
+@keyframes pulseRing{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 .dev-header h1{font-size:22px;text-transform:uppercase;font-weight:900;
-  letter-spacing:1px;display:flex;align-items:center;gap:10px}
-.dev-header p{font-size:12.5px;color:#fff;font-weight:600;margin-top:4px;opacity:.8}
+  letter-spacing:1px;display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.dev-header p{font-size:12.5px;color:#fff;font-weight:600;margin-top:4px;opacity:.8;
+  position:relative;z-index:1}
 .dev-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:10px;padding:18px}
 .dev-stat{background:var(--white);border:2.5px solid var(--ink);border-radius:var(--radius);
-  padding:14px;box-shadow:3px 3px 0 var(--ink);text-align:center}
+  padding:14px;box-shadow:3px 3px 0 var(--ink);text-align:center;
+  transition:transform .15s, box-shadow .15s}
+.dev-stat:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 .dev-stat .sv{font-size:22px;font-weight:900;color:var(--ink)}
 .dev-stat .sl{font-size:10.5px;font-weight:800;text-transform:uppercase;
   letter-spacing:.5px;color:var(--ink-soft);margin-top:3px}
@@ -484,20 +639,17 @@ textarea{resize:vertical;min-height:80px}
 .dev-stat.dev-ultimate .sv,.dev-stat.dev-ultimate .sl{color:var(--yellow)}
 .dev-stat.dev-dev{background:var(--red);color:#fff}
 .dev-stat.dev-dev .sv,.dev-stat.dev-dev .sl{color:#fff}
-
 .dev-tabs{display:flex;gap:6px;padding:0 18px 12px;flex-wrap:wrap}
 .dev-tab{padding:8px 14px;border:2px solid var(--ink);border-radius:999px;
   background:var(--white);font-weight:900;font-size:12px;text-transform:uppercase;
   letter-spacing:.5px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
 .dev-tab.active{background:var(--ink);color:var(--yellow)}
 .dev-tab:hover{transform:translate(-1px,-1px)}
-
 .dev-tools{padding:0 18px 14px;display:flex;gap:8px;flex-wrap:wrap}
 .dev-tools input{flex:1;min-width:180px;padding:10px 14px;font-size:13px;
   box-shadow:2px 2px 0 var(--ink)}
 .dev-tools select{padding:10px;font-size:13px;font-weight:800;
   text-transform:uppercase;box-shadow:2px 2px 0 var(--ink);cursor:pointer;width:auto}
-
 .dev-list{padding:0 18px 60px;display:flex;flex-direction:column;gap:8px}
 .dev-item{background:var(--white);border:2.5px solid var(--ink);border-radius:var(--radius);
   padding:12px 14px;box-shadow:3px 3px 0 var(--ink);display:flex;
@@ -521,28 +673,37 @@ textarea{resize:vertical;min-height:80px}
 .dev-plan-pill.ultimate{background:var(--ink);color:var(--yellow)}
 .dev-plan-pill.developer{background:var(--red);color:#fff}
 
-/* Bio themes */
+/* BIO PUBLIK */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
   color:var(--ink);padding:34px 18px 60px;
   display:flex;flex-direction:column;align-items:center;font-weight:700;z-index:2}
 .bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
 .bio-deco{position:fixed;pointer-events:none;z-index:1}
 .bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
-  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink)}
+  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink);
+  animation:deco1 6s ease-in-out infinite}
 .bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);
   border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);
-  box-shadow:4px 4px 0 var(--ink)}
+  box-shadow:4px 4px 0 var(--ink);animation:deco2 7s ease-in-out infinite}
 .bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);
-  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink)}
+  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink);
+  animation:deco3 8s ease-in-out infinite}
+@keyframes deco1{0%,100%{transform:rotate(-12deg) translate(0,0)}
+  50%{transform:rotate(-12deg) translate(6px,-8px)}}
+@keyframes deco2{0%,100%{transform:rotate(20deg) translate(0,0)}
+  50%{transform:rotate(20deg) translate(-6px,8px)}}
+@keyframes deco3{0%,100%{transform:rotate(15deg) translate(0,0)}
+  50%{transform:rotate(15deg) translate(4px,-6px)}}
 
 .bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
   overflow:hidden;background:var(--white);margin:0 auto;
   box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-avatar img{width:100%;height:100%;object-fit:cover}
+.bio-avatar video{width:100%;height:100%;object-fit:cover}
 .bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 
 .bio-header{display:flex;flex-direction:column;align-items:center;
-  margin-bottom:24px;position:relative}
+  margin-bottom:14px;position:relative}
 .bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
   color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;
   letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);
@@ -565,45 +726,71 @@ textarea{resize:vertical;min-height:80px}
 .bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
 .bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
 
+.bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
+.bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);
+  background:var(--white);overflow:hidden;display:grid;place-items:center;
+  box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
+.bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+
 .bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
-.bio-banner img{width:100%;max-height:200px;object-fit:cover}
-
+.bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover;display:block}
 .bio-links{display:flex;flex-direction:column;gap:14px}
+.bio-links.layout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.bio-links.layout-grid .bio-link{min-height:80px;padding:12px;font-size:12.5px;
+  flex-direction:column;text-align:center;gap:6px}
+.bio-links.layout-grid .bio-link .ltext{padding-right:0}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
   padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
   font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;
   position:relative;transition:transform .12s, box-shadow .12s;
   box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;
-  background:var(--white);color:var(--ink)}
+  background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
+@keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}}
 .bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
 .bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
 .bio-link .ltext{flex:1;text-align:center}
-
-.bio-link.bio-featured{flex-direction:column;align-items:stretch;
-  padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
+.bio-link.bio-featured{flex-direction:column;align-items:stretch;padding:0;
+  overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
 .bio-link.bio-featured .feat-img{width:100%;height:130px;object-fit:cover;
   border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
 .bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
 .bio-link.bio-featured .feat-body b{font-size:14.5px;font-weight:900;text-transform:uppercase}
-
 .bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);background:var(--white)}
 .bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
-
 .bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;
   text-transform:uppercase;letter-spacing:1px;background:var(--white);
   border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
   box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
 
+/* ANIMASI VARIAN */
+.bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
+@keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}
+  50%{transform:translate(-2px,-8px)}}
+.bio-wrap.anim-shake .bio-link:active{animation:linkShake .3s ease}
+@keyframes linkShake{0%,100%{transform:translate(4px,4px)}
+  25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
+.bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
+
+/* THEMES */
 .theme-neo-cream{background-color:#f0ebe0;
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-dark{background-color:#0a0a0a;color:#fff;
-  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);
-  background-size:18px 18px}
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
 .theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
@@ -611,9 +798,13 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-banner,.theme-neo-dark .bio-embed{border-color:#fff}
 .theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
+.theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
 .theme-neo-blue{background-color:#2563eb;color:#fff;
-  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);
-  background-size:18px 18px}
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
@@ -621,30 +812,32 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
 .theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
 .theme-neo-pink{background-color:#ff69b4;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-pink .bio-bio{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
 .theme-neo-green{background-color:#22c55e;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-green .bio-bio{background:var(--ink);color:#fff;border-color:var(--ink)}
 .theme-neo-purple{background-color:#a78bfa;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
-  background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
 .theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
-
-.lightbox{position:fixed;inset:0;background:rgba(10,10,10,.94);z-index:9999;
-  display:flex;align-items:center;justify-content:center;padding:18px}
-.lightbox img{max-width:100%;max-height:90vh;border-radius:10px;
-  border:3px solid var(--white);box-shadow:6px 6px 0 var(--red)}
-.lightbox .close{position:absolute;top:18px;right:22px;font-size:34px;color:var(--white);
-  cursor:pointer;background:none;border:none;line-height:1;font-weight:900}
 
 .lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
   display:grid;place-items:center;padding:18px}
@@ -670,6 +863,7 @@ textarea{resize:vertical;min-height:80px}
   .preview-phone{max-width:260px}
   .bio-name{font-size:18px}
   .bio-bio{font-size:11px}
+  .partner-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
 }
 </style>
 </head>
@@ -722,6 +916,10 @@ const ICONS = {
   crown:'<path d="M2 20h20M4 20l-2-9 6 4 4-7 4 7 6-4-2 9"/>',
   zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
   star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  megaphone:'<path d="M3 11l19-9-9 19-2-8-8-2z"/>',
+  news:'<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>',
+  flask:'<path d="M9 3h6v6l4 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2l4-10V3z"/><line x1="8" y1="3" x2="16" y2="3"/><line x1="6.5" y1="12" x2="17.5" y2="12"/>',
+  handshake:'<path d="M11 17l-2-2a1 1 0 0 1 0-1.4l3-3a1 1 0 0 1 1.4 0l2 2 2-2 4 4-4 4-4-4-2 2z"/><path d="M13 7l-3 3M3 12l6-6 3 3"/>',
   google:'<path d="M21.35 11.1H12v2.8h5.35c-.23 1.24-.93 2.3-1.97 3v2.5h3.19c1.86-1.72 2.93-4.25 2.93-7.2 0-.69-.06-1.36-.15-2.1z" fill="#4285F4" stroke="none"/><path d="M12 21c2.66 0 4.9-.88 6.53-2.39l-3.19-2.5c-.88.6-2.02.95-3.34.95-2.57 0-4.75-1.73-5.53-4.07H3.18v2.56C4.8 18.92 8.16 21 12 21z" fill="#34A853" stroke="none"/><path d="M6.47 12.99A5.5 5.5 0 0 1 6.16 11c0-.69.12-1.36.32-1.99V6.45H3.18A9 9 0 0 0 2.16 11c0 1.46.35 2.85.97 4.08l3.34-2.09z" fill="#FBBC05" stroke="none"/><path d="M12 5.94c1.45 0 2.74.5 3.75 1.47l2.82-2.82C16.9 2.96 14.66 2 12 2 8.16 2 4.8 4.08 3.18 7.45l3.34 2.09C7.25 7.2 9.43 5.94 12 5.94z" fill="#EA4335" stroke="none"/>'
 };
 function ico(name, cls=""){
@@ -730,7 +928,7 @@ function ico(name, cls=""){
 }
 
 /* =========================================================
-   FIREBASE CONFIG — allweb-9dacd
+   FIREBASE CONFIG
    ========================================================= */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCzEZCtXJTLOLVK3xvcpcUQEgSmwcmPXuQ",
@@ -747,7 +945,7 @@ const FB = { app:null, db:null, auth:null, ready:false };
     FB.db = firebase.firestore();
     FB.auth = firebase.auth();
     FB.ready = true;
-    console.log("%c[VarlinkB] Firebase siap ✓ (base64 mode)","color:#22c55e;font-weight:bold");
+    console.log("%c[Varlinkbio] Firebase siap ✓","color:#22c55e;font-weight:bold");
   }catch(e){ console.error("Firebase init error:",e); FB.ready=false; }
 })();
 
@@ -761,28 +959,110 @@ const TAKO_URL = "https://tako.id/VarCodexx";
 const PLANS = {
   free: {
     id:"free", name:"Free", price:0, priceLabel:"Gratis", tagline:"Cocok buat coba-coba",
-    features:{ maxBios:1, maxLinks:5, themes:["neo-cream"], analytics:false, linkLock:false, featuredLink:false, embed:false, badge:null },
-    highlights:["1 bio link","Maks 5 tombol","1 tema (Neo Cream)","QR Code"]
+    features:{
+      maxBios:5, maxLinks:5,
+      themes:["neo-cream"],
+      analytics:false, linkLock:false, featuredLink:false, embed:false,
+      logos:false, layouts:false, patterns:false, animations:false,
+      betaAccess:false, badge:null
+    },
+    highlights:["5 bio link","Maks 5 tombol/bio","1 tema (Neo Cream)","QR Code"]
   },
   pro: {
     id:"pro", name:"Pro", price:15000, priceLabel:"Rp 15.000", tagline:"Paling populer untuk kreator",
-    features:{ maxBios:5, maxLinks:-1, themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"], analytics:true, linkLock:true, featuredLink:true, embed:true, badge:"PRO" },
-    highlights:["5 bio link","Unlimited tombol","6 tema lengkap","Analytics","Link Lock","Embed YouTube/Spotify/TikTok","Tombol dengan gambar"]
+    features:{
+      maxBios:20, maxLinks:-1,
+      themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
+      analytics:true, linkLock:true, featuredLink:true, embed:true,
+      logos:true, layouts:false, patterns:false, animations:false,
+      betaAccess:false, badge:"PRO"
+    },
+    highlights:["20 bio link","Unlimited tombol/bio","6 tema lengkap","Analytics","Link Lock","Embed YouTube/Spotify/TikTok","Tombol dengan gambar","Logo partner"]
   },
   ultimate: {
-    id:"ultimate", name:"Ultimate", price:23000, priceLabel:"Rp 23.000", tagline:"Untuk profesional & brand",
-    features:{ maxBios:-1, maxLinks:-1, themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"], analytics:true, linkLock:true, featuredLink:true, embed:true, badge:"ULTIMATE" },
-    highlights:["Unlimited bio link","Semua fitur Pro","Custom domain (segera)","Priority support","Badge ULTIMATE"]
+    id:"ultimate", name:"Ultimate", price:50000, priceLabel:"Rp 50.000", tagline:"Unlimited + akses beta",
+    features:{
+      maxBios:-1, maxLinks:-1,
+      themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
+      analytics:true, linkLock:true, featuredLink:true, embed:true,
+      logos:true, layouts:true, patterns:true, animations:true,
+      betaAccess:true, badge:"ULTIMATE"
+    },
+    highlights:["Unlimited bio link","Unlimited tombol/bio","Semua fitur Pro","Akses fitur BETA","Layout grid","Pattern custom","Animasi lanjutan","Badge ULTIMATE"]
   },
   developer: {
-    id:"developer", name:"Developer", price:0, priceLabel:"∞", tagline:"Akses penuh tanpa batas",
-    features:{ maxBios:-1, maxLinks:-1, themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"], analytics:true, linkLock:true, featuredLink:true, embed:true, badge:"DEV" },
-    highlights:["Unlimited semua","Semua fitur unlock","Badge DEV","Akses admin"]
+    id:"developer", name:"Developer", price:0, priceLabel:"∞", tagline:"Akses penuh + admin",
+    features:{
+      maxBios:-1, maxLinks:-1,
+      themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
+      analytics:true, linkLock:true, featuredLink:true, embed:true,
+      logos:true, layouts:true, patterns:true, animations:true,
+      betaAccess:true, badge:"DEV"
+    },
+    highlights:["Unlimited semua","Semua fitur unlock","Semua fitur beta","Favicon custom","Badge DEV","Dev Panel"]
   }
 };
 
-const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
-const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
+/* =========================================================
+   UPDATE LOG DATA
+   ========================================================= */
+const UPDATES = [
+  {
+    version:"v11.1", date:"Hari ini", isNew:true,
+    title:"Update Plan Limits",
+    changes:[
+      "Free: 5 bio link (sebelumnya 1)",
+      "Pro: 20 bio link (sebelumnya 5) — Rp 15.000/bln",
+      "Ultimate: unlimited bio link — Rp 50.000/bln",
+      "Ultimate dapat akses semua fitur beta"
+    ]
+  },
+  {
+    version:"v11.0", date:"Hari ini", isNew:false,
+    title:"Major Update — Fitur Beta & Partner",
+    changes:[
+      "Section Update Log (info fitur baru)",
+      "Partner/Collab section di landing",
+      "Logo partner di bio publik (Pro+)",
+      "Layout grid untuk tombol link (Ultimate Beta)",
+      "Pattern custom: grid & waves (Ultimate Beta)",
+      "Animasi tombol: bounce, shake, glow (Ultimate Beta)",
+      "Background dots animasi bergerak",
+      "Hamburger menu lebih jelas dengan label"
+    ]
+  },
+  {
+    version:"v10.5", date:"3 hari lalu", isNew:false,
+    title:"Dev Panel & Favicon",
+    changes:[
+      "Dev Panel untuk kontrol semua user",
+      "Favicon custom (khusus Dev)",
+      "Banner video support",
+      "Perbaikan bug login Google"
+    ]
+  },
+  {
+    version:"v10.0", date:"1 minggu lalu", isNew:false,
+    title:"Sistem Plan Baru",
+    changes:[
+      "Plan Free / Pro / Ultimate / Developer",
+      "Tako donate integration",
+      "Badge plan di bio publik",
+      "Firestore rules aman"
+    ]
+  }
+];
+
+/* =========================================================
+   PARTNER DATA
+   ========================================================= */
+const PARTNERS = [
+  { name:"VarCodex", tag:"Creator", color:"#ff2a2a", initial:"V" },
+  { name:"Nekome", tag:"Studio", color:"#22c55e", initial:"N" },
+  { name:"WebProj3ctID", tag:"Dev Team", color:"#2563eb", initial:"W" },
+  { name:"AzzamCodex", tag:"Dev", color:"#ffd700", initial:"A" },
+  { name:"+ Kolaborasi", tag:"Slot Kosong", color:"#0a0a0a", initial:"+" }
+];
 
 /* =========================================================
    STATE & UTILS
@@ -812,12 +1092,10 @@ function openModal(html){
   document.body.appendChild(b); return b;
 }
 
-/* ===== COMPRESS IMAGE (base64) ===== */
 function compressImage(file, maxSize=900, quality=0.72){
   return new Promise((resolve, reject)=>{
     if(!file.type.startsWith("image/")){
-      reject(new Error("Hanya file gambar yang didukung (jpg/png/webp)"));
-      return;
+      reject(new Error("Hanya file gambar (jpg/png/webp)")); return;
     }
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -835,9 +1113,7 @@ function compressImage(file, maxSize=900, quality=0.72){
       ctx.drawImage(img, 0, 0, width, height);
       canvas.toBlob(blob=>{
         if(!blob){ reject(new Error("Compress gagal")); return; }
-        const compressed = new File([blob], file.name.replace(/\.[^.]+$/,".jpg"), {
-          type: "image/jpeg"
-        });
+        const compressed = new File([blob], file.name.replace(/\.[^.]+$/,".jpg"), { type:"image/jpeg" });
         resolve(compressed);
       }, "image/jpeg", quality);
     };
@@ -897,6 +1173,13 @@ function contrastText(hex){
   const lum=(0.299*r+0.587*g+0.114*b)/255;
   return lum>0.6?"#0a0a0a":"#ffffff";
 }
+function renderBannerHTML(d){
+  if(!d.banner) return "";
+  if(d.bannerType === "video"){
+    return `<div class="bio-banner"><video src="${esc(d.banner)}" autoplay muted loop playsinline></video></div>`;
+  }
+  return `<div class="bio-banner"><img src="${esc(d.banner)}"/></div>`;
+}
 
 /* =========================================================
    AUTH
@@ -926,10 +1209,7 @@ const Auth = {
     },{ merge:true });
     return cred.user;
   },
-  async login(email,password){
-    const cred = await FB.auth.signInWithEmailAndPassword(email,password);
-    return cred.user;
-  },
+  async login(email,password){ return (await FB.auth.signInWithEmailAndPassword(email,password)).user; },
   async loginGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider();
     const cred = await FB.auth.signInWithPopup(provider);
@@ -978,11 +1258,11 @@ async function loadUserPlan(){
   }catch(e){ STATE.plan = PLANS.free; return PLANS.free; }
 }
 function canDo(feature){ return !!(STATE.plan?.features?.[feature]); }
-function themeAllowed(themeId){ return (STATE.plan?.features?.themes||[]).includes(themeId); }
+function themeAllowed(t){ return (STATE.plan?.features?.themes||[]).includes(t); }
 function planBadge(){ return STATE.plan?.features?.badge || null; }
 
 /* =========================================================
-   STORE (base64 — no Firebase Storage)
+   STORE
    ========================================================= */
 const Store = {
   async list(){
@@ -1009,28 +1289,32 @@ const Store = {
     if(!bio.createdAt) bio.createdAt = bio.updatedAt;
     if(bio.stats===undefined) bio.stats = { views:0, clicks:{} };
     const {id, ...data} = bio;
-    // cek ukuran total doc
     const sizeKB = Math.round(JSON.stringify(data).length / 1024);
-    if(sizeKB > 950){
-      throw new Error(`Data terlalu besar (${sizeKB}KB). Kurangi gambar atau hapus banner.`);
-    }
+    if(sizeKB > 950) throw new Error(`Data terlalu besar (${sizeKB}KB). Kurangi gambar.`);
     await FB.db.collection("bios").doc(id).set(data, { merge:true });
     return bio;
   },
   async remove(id){ await FB.db.collection("bios").doc(id).delete(); },
   async upload(file, prefix="media"){
     if(!file) return null;
+    if(file.type.startsWith("video/")){
+      const sizeKB = Math.round(file.size / 1024);
+      if(sizeKB > 500) throw new Error(`Video terlalu besar (${sizeKB}KB). Max 500KB — pakai video pendek.`);
+      return new Promise((res, rej)=>{
+        const r = new FileReader();
+        r.onload = ()=>res(r.result);
+        r.onerror = ()=>rej(new Error("Gagal baca video"));
+        r.readAsDataURL(file);
+      });
+    }
     const compressed = await compressImage(file);
     return new Promise((resolve, reject)=>{
       const reader = new FileReader();
       reader.onload = ()=>{
         const dataUrl = reader.result;
         const sizeKB = Math.round((dataUrl.length * 3 / 4) / 1024);
-        if(sizeKB > 400){
-          reject(new Error(`Gambar terlalu besar (${sizeKB}KB). Max ~400KB per gambar.`));
-          return;
-        }
-        resolve(dataUrl);
+        if(sizeKB > 300) reject(new Error(`Gambar terlalu besar (${sizeKB}KB). Max ~300KB.`));
+        else resolve(dataUrl);
       };
       reader.onerror = ()=>reject(new Error("Gagal baca file"));
       reader.readAsDataURL(compressed);
@@ -1107,17 +1391,69 @@ const LinkTypes = {
 };
 
 /* =========================================================
+   COMPONENT: UPDATE LOG SECTION
+   ========================================================= */
+function renderUpdateSection(){
+  return `
+    <div class="update-section">
+      <div class="update-header">
+        <h2>${ico('news','ic-lg')} Update Terbaru</h2>
+        <p>Apa yang baru di Varlinkbio?</p>
+      </div>
+      <div class="update-list">
+        ${UPDATES.map(u=>`
+          <div class="update-item ${u.isNew?"new":""}">
+            <div class="u-head">
+              <span class="u-version">${u.version}</span>
+              <span class="u-date">${u.date}</span>
+            </div>
+            <div class="u-title">${esc(u.title)}</div>
+            <ul class="u-changes">
+              ${u.changes.map(c=>`<li>${esc(c)}</li>`).join("")}
+            </ul>
+          </div>`).join("")}
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   COMPONENT: PARTNER SECTION
+   ========================================================= */
+function renderPartnerSection(){
+  return `
+    <div class="partner-section">
+      <div class="partner-header">
+        <h2>${ico('handshake','ic-lg')} Kolaborasi</h2>
+        <p>Berkolaborasi dengan perusahaan digital & kreator lain</p>
+      </div>
+      <div class="partner-grid">
+        ${PARTNERS.map(p=>{
+          const isCollab = p.name.startsWith("+");
+          return `
+            <div class="partner-card ${isCollab?"collab-cta":""}"
+                 ${isCollab?`onclick="window.open('https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}','_blank')"`:''}>
+              <div class="p-logo" style="${p.color&&!isCollab?`background:${p.color};color:#fff`:''}">
+                ${p.initial}
+              </div>
+              <div class="p-name">${esc(p.name)}</div>
+              <div class="p-tag">${esc(p.tag)}</div>
+            </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+}
+
+/* =========================================================
    PAGE: LANDING
    ========================================================= */
 const PageLanding = {
   render(){
     if(Auth.current) return Router.navigate("/dashboard");
-
     $("#app").innerHTML = `
       <div class="landing">
         <div class="landing-hero">
           <div class="hero-logo">${ico('link')}</div>
-          <h1>VarlinkB</h1>
+          <h1>Varlinkbio</h1>
           <p class="sub">Satu link untuk semua — bikin link in bio keren dalam hitungan detik.</p>
           <div class="cta-row">
             <button class="btn btn-primary btn-lg btn-block" id="btn-daftar">Daftar Gratis</button>
@@ -1125,6 +1461,9 @@ const PageLanding = {
           </div>
           <div class="footer-tag">Dibuat oleh Varoo</div>
         </div>
+
+        ${renderUpdateSection()}
+
         <div class="pricing-section">
           <div class="pricing-header">
             <h2>Pilih Plan <span>Kamu</span></h2>
@@ -1136,6 +1475,8 @@ const PageLanding = {
             ${this.renderPricingCard(PLANS.ultimate, 'ultimate-card')}
           </div>
         </div>
+
+        ${renderPartnerSection()}
       </div>`;
 
     $("#btn-daftar").addEventListener("click",()=>Router.navigate("/register"));
@@ -1167,14 +1508,13 @@ const PageLanding = {
 const PageLogin = {
   render(){
     if(Auth.current) return Router.navigate("/dashboard");
-
     $("#app").innerHTML = `
       <div class="auth-page">
         <div class="auth-card">
           <a href="#/" class="back-link">${ico('back')} Kembali</a>
           <div class="auth-icon">${ico('user')}</div>
           <h2>Login</h2>
-          <p class="auth-sub">Masuk ke akun VarlinkB kamu</p>
+          <p class="auth-sub">Masuk ke akun Varlinkbio kamu</p>
           <div id="err-slot"></div>
           <form id="login-form">
             <div class="field"><label>Email</label><input type="email" id="l-email" placeholder="nama@email.com" required/></div>
@@ -1191,11 +1531,9 @@ const PageLogin = {
       </div>`;
 
     const showErr = msg => $("#err-slot").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
-
     $("#login-form").addEventListener("submit", async e=>{
       e.preventDefault();
-      const email=$("#l-email").value.trim();
-      const pass=$("#l-pass").value;
+      const email=$("#l-email").value.trim(), pass=$("#l-pass").value;
       if(!email||!pass){ showErr("Isi email & password"); return; }
       showLoading("Login...");
       try{
@@ -1205,12 +1543,10 @@ const PageLogin = {
         Router.navigate("/dashboard");
       }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
     });
-
     $("#l-google").addEventListener("click", async ()=>{
       showLoading("Login Google...");
       try{
-        await Auth.loginGoogle();
-        await loadUserPlan();
+        await Auth.loginGoogle(); await loadUserPlan();
         hideLoading(); toast("Login berhasil!","success");
         Router.navigate("/dashboard");
       }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
@@ -1224,14 +1560,13 @@ const PageLogin = {
 const PageRegister = {
   render(){
     if(Auth.current) return Router.navigate("/dashboard");
-
     $("#app").innerHTML = `
       <div class="auth-page">
         <div class="auth-card">
           <a href="#/" class="back-link">${ico('back')} Kembali</a>
           <div class="auth-icon">${ico('sparkle')}</div>
           <h2>Daftar</h2>
-          <p class="auth-sub">Bikin akun VarlinkB gratis</p>
+          <p class="auth-sub">Bikin akun Varlinkbio gratis</p>
           <div id="err-slot"></div>
           <form id="reg-form">
             <div class="field"><label>Nama Lengkap</label><input type="text" id="r-name" placeholder="Nama kamu" required maxlength="40"/></div>
@@ -1250,13 +1585,10 @@ const PageRegister = {
       </div>`;
 
     const showErr = msg => $("#err-slot").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
-
     $("#reg-form").addEventListener("submit", async e=>{
       e.preventDefault();
-      const name=$("#r-name").value.trim();
-      const email=$("#r-email").value.trim();
-      const pass=$("#r-pass").value;
-      const pass2=$("#r-pass2").value;
+      const name=$("#r-name").value.trim(), email=$("#r-email").value.trim();
+      const pass=$("#r-pass").value, pass2=$("#r-pass2").value;
       if(!name||name.length<2){ showErr("Nama minimal 2 karakter"); return; }
       if(!email){ showErr("Email wajib diisi"); return; }
       if(pass.length<6){ showErr("Password minimal 6 karakter"); return; }
@@ -1269,12 +1601,10 @@ const PageRegister = {
         Router.navigate("/dashboard");
       }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
     });
-
     $("#r-google").addEventListener("click", async ()=>{
       showLoading("Daftar Google...");
       try{
-        await Auth.loginGoogle();
-        await loadUserPlan();
+        await Auth.loginGoogle(); await loadUserPlan();
         hideLoading(); toast("Berhasil!","success");
         Router.navigate("/dashboard");
       }catch(err){ hideLoading(); showErr(Auth.errMsg(err.code)); }
@@ -1290,17 +1620,22 @@ function renderTopbar(){
   const badge = planBadge();
   const badgeCls = STATE.plan?.id || "free";
   const devMode = isDev(user.email);
+  const badgeIcon = STATE.plan?.id === "developer" ? "zap"
+    : STATE.plan?.id === "ultimate" ? "crown"
+    : STATE.plan?.id === "pro" ? "star" : "";
   return `
     <div class="lt-topbar">
       <div class="lt-brand">
         <div class="lt-logo">${ico('link')}</div>
-        <span>VarlinkB</span>
+        <span>Varlinkbio</span>
       </div>
       <div class="lt-actions">
-        ${devMode?`<button class="lt-btn" id="btn-dev-top" style="background:var(--red);color:#fff"><span>DEV</span></button>`:''}
-        ${badge?`<button class="lt-btn lt-btn-plan" id="btn-plan-top"><span>${badge}</span></button>`:''}
-        <button class="lt-btn lt-btn-logout" id="btn-logout-top"><span>Log Out</span></button>
-        <button class="lt-btn lt-btn-hamburger" id="btn-drawer-open">${ico('menu')}</button>
+        ${devMode?`<button class="lt-badge dev" id="btn-dev-top">${ico('zap','ic-sm')} DEV</button>`:''}
+        ${badge && !devMode?`<button class="lt-badge ${badgeCls}" id="btn-plan-top">${ico(badgeIcon,'ic-sm')} ${badge}</button>`:''}
+        <button class="lt-logout-btn" id="btn-logout-top">Log Out</button>
+        <button class="lt-menu-btn" id="btn-drawer-open">
+          ${ico('menu','ic-lg')}<span class="label">Menu</span>
+        </button>
       </div>
     </div>
     <div class="lt-drawer" id="lt-drawer">
@@ -1343,19 +1678,13 @@ function bindTopbar(){
   $$("[data-nav]").forEach(el=>{
     el.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate(el.dataset.nav); });
   });
-  const logoutBtn = $("#btn-logout-top");
-  const logoutBtn2 = $("#drawer-logout");
   const doLogout = async ()=>{ await Auth.logout(); toast("Berhasil logout","info"); Router.navigate("/"); };
-  if(logoutBtn) logoutBtn.addEventListener("click",doLogout);
-  if(logoutBtn2) logoutBtn2.addEventListener("click",doLogout);
-  const homeBtn=$("#drawer-back-home");
-  if(homeBtn) homeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate("/"); });
-  const upgradeBtn=$("#drawer-upgrade");
-  if(upgradeBtn) upgradeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); showUpgradeModal(); });
-  const planBtn=$("#btn-plan-top");
-  if(planBtn) planBtn.addEventListener("click",()=>showUpgradeModal());
-  const devBtn=$("#btn-dev-top");
-  if(devBtn) devBtn.addEventListener("click",()=>Router.navigate("/dev"));
+  const logoutBtn = $("#btn-logout-top"); if(logoutBtn) logoutBtn.addEventListener("click",doLogout);
+  const logoutBtn2 = $("#drawer-logout"); if(logoutBtn2) logoutBtn2.addEventListener("click",doLogout);
+  const homeBtn=$("#drawer-back-home"); if(homeBtn) homeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); Router.navigate("/"); });
+  const upgradeBtn=$("#drawer-upgrade"); if(upgradeBtn) upgradeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); showUpgradeModal(); });
+  const planBtn=$("#btn-plan-top"); if(planBtn) planBtn.addEventListener("click",()=>showUpgradeModal());
+  const devBtn=$("#btn-dev-top"); if(devBtn) devBtn.addEventListener("click",()=>Router.navigate("/dev"));
 }
 
 function showUpgradeModal(){
@@ -1367,8 +1696,7 @@ function showUpgradeModal(){
       <p style="font-size:13px;font-weight:600;margin-bottom:16px">Pilih plan yang cocok buat kamu</p>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
         ${['pro','ultimate'].map(id=>{
-          const p = PLANS[id];
-          const active = cur === id;
+          const p = PLANS[id]; const active = cur === id;
           return `
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:${active?'var(--yellow)':'var(--cream)'};border:2.5px solid var(--ink);border-radius:10px;box-shadow:2px 2px 0 var(--ink)">
               <div style="text-align:left">
@@ -1391,16 +1719,11 @@ function showUpgradeModal(){
           <li>Plan aktif dalam 1x24 jam</li>
         </ol>
       </div>
-      <a href="${TAKO_URL}" target="_blank" class="tako-link">
-        ${ico('crown')} Donate di Tako
-      </a>
+      <a href="${TAKO_URL}" target="_blank" class="tako-link">${ico('crown')} Donate di Tako</a>
       <div style="height:8px"></div>
-      <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau upgrade VarlinkB. Email: '+(Auth.current?.email||''))}"
-         target="_blank" class="btn btn-green btn-block btn-lg">
-        ${ico('whatsapp')} Chat Admin
-      </a>
-    </div>
-  `);
+      <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau upgrade Varlinkbio. Email: '+(Auth.current?.email||''))}"
+         target="_blank" class="btn btn-green btn-block btn-lg">${ico('whatsapp')} Chat Admin</a>
+    </div>`);
 }
 
 /* =========================================================
@@ -1410,12 +1733,11 @@ const PageDashboard = {
   async render(query){
     if(!Auth.current) return Router.navigate("/login");
     if(!STATE.plan) await loadUserPlan();
-
     if(query && query.includes("paid=1")){
       setTimeout(()=>toast("Terima kasih! Admin akan konfirmasi donasimu 1x24 jam.","info"),600);
     }
-
     const plan = STATE.plan;
+    const bioCount = await Store.count();
 
     $("#app").innerHTML = `
       ${renderTopbar()}
@@ -1431,7 +1753,7 @@ const PageDashboard = {
             </div>
             <div class="pinfo">
               <b>Plan: ${plan.name}</b>
-              <span>${plan.id==='free'?'Upgrade untuk unlock semua fitur':plan.id==='developer'?'Akses penuh tanpa batas':'Aktif'}</span>
+              <span>${isUnlimited(plan.features.maxBios)?bioCount+' bio dibuat · unlimited':bioCount+' / '+plan.features.maxBios+' bio'}</span>
             </div>
             <button class="btn ${plan.id==='free'?'btn-yellow':'btn-primary'} btn-sm" id="btn-upgrade">
               ${plan.id==='free'?'Upgrade':'Kelola'}
@@ -1445,13 +1767,16 @@ const PageDashboard = {
             <div class="section-title">Fitur</div>
             <div class="features-grid">
               <div class="feature-card"><div class="fi">${ico('grid')}</div><h4>6 Tema</h4><p>6 varian Neo Brutalism.</p></div>
-              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Banner</h4><p>Foto untuk profil dan banner.</p></div>
+              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Banner</h4><p>Foto & video untuk banner.</p></div>
               <div class="feature-card"><div class="fi">${ico('video')}</div><h4>Embed</h4><p>YouTube, Spotify, TikTok, Vimeo.</p></div>
-              <div class="feature-card"><div class="fi">${ico('qr')}</div><h4>QR Code</h4><p>Download QR link-in-bio kamu.</p></div>
-              <div class="feature-card"><div class="fi">${ico('stats')}</div><h4>Analytics</h4><p>Lihat views & klik per tombol.</p></div>
-              <div class="feature-card"><div class="fi">${ico('lock')}</div><h4>Link Lock</h4><p>Kunci dengan password.</p></div>
+              <div class="feature-card"><div class="fi">${ico('handshake')}</div><h4>Logo Partner</h4><p>Logo kerjasama di bio kamu.</p></div>
+              <div class="feature-card ${canDo("layouts")?"":'locked-feat'}"><div class="fi">${ico('grid')}</div><h4>Layout Grid</h4><p>Grid 2 kolom untuk tombol.</p></div>
+              <div class="feature-card beta-tag ${canDo("animations")?"":'locked-feat'}"><div class="fi">${ico('flask')}</div><h4>Animasi Pro</h4><p>Bounce, shake, glow.</p></div>
             </div>
           </div>
+
+          ${renderUpdateSection()}
+
           <div class="dash-recent">
             <div class="section-title">Terbaru</div>
             <div id="recent-list" class="recent-list"></div>
@@ -1472,7 +1797,6 @@ const PageDashboard = {
     });
     this.loadRecent();
   },
-
   async loadRecent(){
     const wrap=$("#recent-list");
     try{
@@ -1506,7 +1830,7 @@ const PageDashboard = {
     $("#qr-dl",m).addEventListener("click",()=>{
       const c=$("#qr-canvas",m);
       const a=document.createElement("a");
-      a.download=`varlinkb-qr-${id}.png`;
+      a.download=`varlinkbio-qr-${id}.png`;
       a.href=c.toDataURL("image/png");
       a.click();
     });
@@ -1531,10 +1855,9 @@ const PageManage = {
       </div>`;
     bindTopbar();
     $("#btn-new").addEventListener("click", async ()=>{
-      const plan = STATE.plan;
       const count = await Store.count();
-      if(!isUnlimited(plan.features.maxBios) && count >= plan.features.maxBios){
-        toast(`Plan ${plan.name} max ${plan.features.maxBios} bio. Upgrade dulu!`,"error");
+      if(!isUnlimited(STATE.plan.features.maxBios) && count >= STATE.plan.features.maxBios){
+        toast(`Plan ${STATE.plan.name} max ${STATE.plan.features.maxBios} bio. Upgrade dulu!`,"error");
         showUpgradeModal(); return;
       }
       STATE.currentEdit=null; STATE.draft=PageEditor.newDraft(); Router.navigate("/editor");
@@ -1642,7 +1965,12 @@ const PageEditor = {
   newDraft(){
     return {
       id:null, name:Auth.current?.name||"", bio:"",
-      profile:"", banner:"",
+      profile:"", banner:"", bannerType:"image",
+      favicon:"",
+      logos:[],
+      layout:"list",
+      pattern:"dots",
+      animation:"none",
       links:[{label:"Instagram",url:"https://instagram.com/",type:"classic",color:"",thumb:""}],
       theme:"neo-cream",
       lock:"",
@@ -1669,6 +1997,7 @@ const PageEditor = {
       </div>
       <div class="editor-layout">
         <div class="editor-panel">
+
           <div class="editor-section">
             <h3><span class="num">1</span> Foto Profil</h3>
             <div class="profile-upload">
@@ -1688,35 +2017,74 @@ const PageEditor = {
 
           <div class="editor-section">
             <h3><span class="num">3</span> Banner</h3>
-            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><small>JPG, PNG, WEBP</small><input type="file" id="bn-input" accept="image/*"/></div>
-            <img id="bn-prev" class="upload-preview ${d.banner?"show":""}" src="${esc(d.banner||"")}"/>
-            <button class="btn btn-sm btn-red btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus</button>
+            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><small>JPG, PNG, WEBP, MP4 (max 500KB)</small><input type="file" id="bn-input" accept="image/*,video/*"/></div>
+            ${d.banner
+              ? (d.bannerType==="video"
+                  ? `<video class="upload-preview show" src="${esc(d.banner)}" autoplay muted loop playsinline style="object-fit:cover"></video>`
+                  : `<img class="upload-preview show" src="${esc(d.banner)}"/>`)
+              : `<img class="upload-preview" style="display:none"/>`}
+            <button class="btn btn-sm btn-red btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus Banner</button>
           </div>
 
+          ${canDo("logos")?`
           <div class="editor-section">
-            <h3><span class="num">4</span> Tombol Link <small style="font-weight:400;font-size:10px;text-transform:none;opacity:.8">(drag untuk urut)</small></h3>
+            <h3><span class="num">4</span> Logo Partner</h3>
+            <div class="field">
+              <label style="font-size:12px">Logo kerjasama (muncul di bawah profil bio)</label>
+              <div id="logos-list" class="logo-list"></div>
+              <button class="btn btn-sm btn-block" id="add-logo" style="margin-top:8px">${ico('plus')} Tambah Logo</button>
+            </div>
+          </div>`:''}
+
+          <div class="editor-section">
+            <h3><span class="num">${canDo("logos")?"5":"4"}</span> Tombol Link</h3>
             <div id="links-list" class="links-list"></div>
             <button class="btn btn-sm btn-block" id="add-link" style="margin-top:10px">${ico('plus')} Tambah Link</button>
-            <div style="font-size:11px;margin-top:8px;font-weight:600;text-align:center">
-              ${canDo("featuredLink")?'✓ Tombol bisa pakai gambar':'🔒 Tombol dengan gambar hanya untuk Pro+'}
-            </div>
           </div>
 
           <div class="editor-section">
-            <h3><span class="num">5</span> Tema</h3>
+            <h3><span class="num">${canDo("logos")?"6":"5"}</span> Tema</h3>
             <div class="theme-grid" id="theme-grid"></div>
           </div>
 
+          ${canDo("layouts")?`
+          <div class="editor-section">
+            <h3><span class="num">${canDo("logos")?"7":"6"}</span> Layout <span class="beta-only-badge">BETA</span></h3>
+            <div class="opt-grid" id="layout-grid"></div>
+          </div>`:''}
+
+          ${canDo("patterns")?`
+          <div class="editor-section">
+            <h3><span class="num">${canDo("logos")?"8":"7"}</span> Pattern Background <span class="beta-only-badge">BETA</span></h3>
+            <div class="opt-grid" id="pattern-grid"></div>
+          </div>`:''}
+
+          ${canDo("animations")?`
+          <div class="editor-section">
+            <h3><span class="num">${canDo("logos")?"9":"8"}</span> Animasi Tombol <span class="beta-only-badge">BETA</span></h3>
+            <div class="opt-grid" id="anim-grid"></div>
+          </div>`:''}
+
           ${canDo("linkLock")?`
           <div class="editor-section">
-            <h3><span class="num">6</span> ${ico('lock')} Link Lock</h3>
+            <h3><span class="num">★</span> ${ico('lock')} Link Lock</h3>
             <div class="field"><label>Password (kosong = tidak dikunci)</label><input id="f-lock" type="text" value="${esc(d.lock||"")}" placeholder="Password..."/></div>
-          </div>`:`
+          </div>`:''}
+
+          ${isDev(Auth.current?.email)?`
           <div class="editor-section">
-            <h3><span class="num">6</span> ${ico('lock')} Link Lock</h3>
-            <div class="locked-hint">🔒 Fitur ini khusus Pro+.<br><a id="link-upgrade">Upgrade sekarang →</a></div>
-          </div>`}
+            <h3><span class="num">★</span> Favicon <span class="dev-only-badge">DEV</span></h3>
+            <div class="profile-upload">
+              <div class="pbox" id="fvbox" style="width:64px;height:64px;border-radius:12px;transform:none;background:var(--cream)">
+                ${d.favicon?`<img src="${esc(d.favicon)}">`:`<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:20px">${ico('image')}</div>`}
+                <div class="overlay">${ico('camera')}</div>
+                <input type="file" id="fv-input" accept="image/*"/>
+              </div>
+            </div>
+            ${d.favicon?`<button class="btn btn-sm btn-red btn-block" id="fv-clear" style="margin-top:8px">${ico('trash')} Hapus Favicon</button>`:''}
+          </div>`:''}
         </div>
+
         <div class="editor-preview">
           <div class="preview-phone"><iframe id="prev-frame" sandbox="allow-scripts"></iframe></div>
           <div class="editor-actions">
@@ -1728,7 +2096,11 @@ const PageEditor = {
 
     this.bind();
     this.renderThemeGrid();
+    this.renderLayoutGrid();
+    this.renderPatternGrid();
+    this.renderAnimGrid();
     this.renderLinks();
+    this.renderLogos();
     this.updatePreview();
   },
 
@@ -1737,12 +2109,11 @@ const PageEditor = {
     $("#btn-save2").addEventListener("click",()=>this.save());
     const qrBtn=$("#btn-qr"); if(qrBtn) qrBtn.addEventListener("click",()=>PageDashboard.qr(STATE.draft.id));
     const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft.id));
-    const upLink=$("#link-upgrade"); if(upLink) upLink.addEventListener("click",()=>showUpgradeModal());
 
     const pInput=$("#p-input");
     if(pInput) pInput.addEventListener("change", async e=>{
       const f=e.target.files[0]; if(!f) return;
-      showLoading("Compress & upload...");
+      showLoading("Upload foto...");
       try{
         const url=await Store.upload(f,"profile");
         STATE.draft.profile=url;
@@ -1758,23 +2129,166 @@ const PageEditor = {
 
     $("#bn-input").addEventListener("change", async e=>{
       const f=e.target.files[0]; if(!f) return;
-      showLoading("Compress & upload...");
+      const isVid = f.type.startsWith("video/");
+      showLoading(isVid?"Upload video...":"Compress & upload...");
       try{
         const url=await Store.upload(f,"banner");
         STATE.draft.banner=url;
-        const p=$("#bn-prev"); p.src=url; p.classList.add("show");
-        $("#bn-clear").style.display="";
-        hideLoading(); toast("Banner diupdate","success"); this.updatePreview();
+        STATE.draft.bannerType = isVid ? "video" : "image";
+        hideLoading(); toast("Banner diupdate","success");
+        this.render();
       }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
     });
-    $("#bn-clear").addEventListener("click",()=>{ STATE.draft.banner=""; $("#bn-prev").classList.remove("show"); $("#bn-clear").style.display="none"; this.updatePreview(); });
+    const bnClear=$("#bn-clear");
+    if(bnClear) bnClear.addEventListener("click",()=>{
+      STATE.draft.banner=""; STATE.draft.bannerType="image";
+      this.render();
+    });
+
+    const addLogo=$("#add-logo");
+    if(addLogo) addLogo.addEventListener("click", ()=>{
+      STATE.draft.logos.push({name:"Partner", url:"https://", img:""});
+      this.renderLogos(); this.updatePreview();
+    });
 
     $("#add-link").addEventListener("click",()=>this.openLinkTypePicker());
     $("#btn-view").addEventListener("click",()=>{
       if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
       window.open(`${location.pathname}#/u/${STATE.draft.id}`,"_blank");
     });
+
+    const fvInput=$("#fv-input");
+    if(fvInput) fvInput.addEventListener("change", async e=>{
+      const f=e.target.files[0]; if(!f) return;
+      showLoading("Upload favicon...");
+      try{
+        const url=await Store.upload(f,"favicon");
+        STATE.draft.favicon=url;
+        hideLoading(); toast("Favicon diupdate","success"); this.render();
+      }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+    });
+    const fvClear=$("#fv-clear");
+    if(fvClear) fvClear.addEventListener("click",()=>{
+      STATE.draft.favicon=""; toast("Favicon dihapus","info"); this.render();
+    });
+
     bindTopbar();
+  },
+
+  renderLayoutGrid(){
+    const el=$("#layout-grid"); if(!el) return;
+    const opts=[
+      { id:"list", label:"List", icon:"≡" },
+      { id:"grid", label:"Grid", icon:"⊞" }
+    ];
+    el.innerHTML = opts.map(o=>`
+      <div class="opt-item ${STATE.draft.layout===o.id?"active":""}" data-layout="${o.id}">
+        <div class="opt-preview">${o.icon}</div>${o.label}
+      </div>`).join("");
+    $$("#layout-grid .opt-item").forEach(x=>{
+      x.addEventListener("click",()=>{
+        STATE.draft.layout=x.dataset.layout;
+        this.renderLayoutGrid(); this.updatePreview();
+      });
+    });
+  },
+
+  renderPatternGrid(){
+    const el=$("#pattern-grid"); if(!el) return;
+    const opts=[
+      { id:"dots", label:"Dots", icon:"⋰" },
+      { id:"grid", label:"Grid", icon:"▦" },
+      { id:"waves", label:"Waves", icon:"≈" },
+      { id:"none", label:"None", icon:"·" }
+    ];
+    el.innerHTML = opts.map(o=>`
+      <div class="opt-item ${STATE.draft.pattern===o.id?"active":""}" data-pattern="${o.id}">
+        <div class="opt-preview">${o.icon}</div>${o.label}
+      </div>`).join("");
+    $$("#pattern-grid .opt-item").forEach(x=>{
+      x.addEventListener("click",()=>{
+        STATE.draft.pattern=x.dataset.pattern;
+        this.renderPatternGrid(); this.updatePreview();
+      });
+    });
+  },
+
+  renderAnimGrid(){
+    const el=$("#anim-grid"); if(!el) return;
+    const opts=[
+      { id:"none", label:"None", icon:"·" },
+      { id:"bounce", label:"Bounce", icon:"↑" },
+      { id:"shake", label:"Shake", icon:"↔" },
+      { id:"glow", label:"Glow", icon:"✦" }
+    ];
+    el.innerHTML = opts.map(o=>`
+      <div class="opt-item ${STATE.draft.animation===o.id?"active":""}" data-anim="${o.id}">
+        <div class="opt-preview">${o.icon}</div>${o.label}
+      </div>`).join("");
+    $$("#anim-grid .opt-item").forEach(x=>{
+      x.addEventListener("click",()=>{
+        STATE.draft.animation=x.dataset.anim;
+        this.renderAnimGrid(); this.updatePreview();
+      });
+    });
+  },
+
+  renderLogos(){
+    const wrap=$("#logos-list"); if(!wrap) return;
+    const logos = STATE.draft.logos || [];
+    if(!logos.length){
+      wrap.innerHTML = `<div style="font-size:12px;text-align:center;padding:8px;font-weight:600;color:var(--ink-soft)">Belum ada logo. Klik "Tambah Logo".</div>`;
+      return;
+    }
+    wrap.innerHTML = logos.map((lg,i)=>`
+      <div class="logo-item">
+        <div class="lg-thumb">
+          ${lg.img?`<img src="${esc(lg.img)}">`:`<span style="font-size:16px">${ico('image')}</span>`}
+        </div>
+        <div class="lg-fields">
+          <input type="text" placeholder="Nama" value="${esc(lg.name)}" data-lgname="${i}"/>
+          <input type="text" placeholder="https://..." value="${esc(lg.url)}" data-lgurl="${i}"/>
+        </div>
+        <button class="lg-up" data-lgup="${i}" title="Upload logo">${ico('camera')}</button>
+        <button class="lg-del" data-lgdel="${i}">${ico('x')}</button>
+      </div>`).join("");
+
+    wrap.querySelectorAll("[data-lgname]").forEach(inp=>{
+      inp.addEventListener("input",e=>{
+        STATE.draft.logos[+e.target.dataset.lgname].name = e.target.value;
+        this.updatePreview();
+      });
+    });
+    wrap.querySelectorAll("[data-lgurl]").forEach(inp=>{
+      inp.addEventListener("input",e=>{
+        STATE.draft.logos[+e.target.dataset.lgurl].url = e.target.value;
+        this.updatePreview();
+      });
+    });
+    wrap.querySelectorAll("[data-lgdel]").forEach(b=>{
+      b.addEventListener("click",e=>{
+        STATE.draft.logos.splice(+e.currentTarget.dataset.lgdel,1);
+        this.renderLogos(); this.updatePreview();
+      });
+    });
+    wrap.querySelectorAll("[data-lgup]").forEach(b=>{
+      b.addEventListener("click",e=>{
+        const i=+e.currentTarget.dataset.lgup;
+        const inp=document.createElement("input");
+        inp.type="file"; inp.accept="image/*";
+        inp.onchange = async ()=>{
+          const f=inp.files[0]; if(!f) return;
+          showLoading("Upload logo...");
+          try{
+            const url = await Store.upload(f, "logo");
+            STATE.draft.logos[i].img = url;
+            hideLoading(); toast("Logo diupdate","success");
+            this.renderLogos(); this.updatePreview();
+          }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
+        };
+        inp.click();
+      });
+    });
   },
 
   openLinkTypePicker(){
@@ -1807,6 +2321,8 @@ const PageEditor = {
     const wrap=$("#links-list");
     const links=STATE.draft.links;
     const canFeatured = canDo("featuredLink");
+    const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
+    const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
     if(!links.length){ wrap.innerHTML=`<div style="font-size:12.5px;text-align:center;padding:6px;font-weight:600">Belum ada link.</div>`; return; }
     wrap.innerHTML=links.map((l,i)=>{
       const autoColor = NEO_COLORS[i % NEO_COLORS.length];
@@ -1846,7 +2362,7 @@ const PageEditor = {
         const inp=document.createElement("input"); inp.type="file"; inp.accept="image/*";
         inp.onchange=async()=>{
           const f=inp.files[0]; if(!f) return;
-          showLoading("Compress & upload...");
+          showLoading("Upload gambar...");
           try{
             const url=await Store.upload(f,"thumb");
             STATE.draft.links[i].thumb=url;
@@ -1945,16 +2461,13 @@ const PageDev = {
 
   async render(){
     if(!Auth.current) return Router.navigate("/login");
-    if(!isDev(Auth.current.email)){
-      toast("Akses ditolak","error"); return Router.navigate("/dashboard");
-    }
-
+    if(!isDev(Auth.current.email)){ toast("Akses ditolak","error"); return Router.navigate("/dashboard"); }
     $("#app").innerHTML = `
       ${renderTopbar()}
       <div style="background:var(--cream);min-height:calc(100vh - 60px)">
         <div class="dev-header">
           <h1>${ico('zap')} Dev Panel</h1>
-          <p>Control semua user & bio di VarlinkB</p>
+          <p>Control semua user & bio di Varlinkbio</p>
         </div>
         <div class="dev-stats" id="dev-stats"></div>
         <div class="dev-tabs">
@@ -1970,12 +2483,11 @@ const PageDev = {
             <option value="ultimate">Ultimate</option>
             <option value="developer">Developer</option>
           </select>
-          <button class="btn btn-sm" id="dev-refresh">🔄 Refresh</button>
+          <button class="btn btn-sm" id="dev-refresh">${ico('back')} Refresh</button>
         </div>
         <div class="dev-list" id="dev-list"></div>
       </div>`;
     bindTopbar();
-
     $$(".dev-tab").forEach(t=>{
       t.addEventListener("click",()=>{
         $$(".dev-tab").forEach(x=>x.classList.remove("active"));
@@ -1984,14 +2496,8 @@ const PageDev = {
         this.renderList();
       });
     });
-    $("#dev-search").addEventListener("input", e=>{
-      this.state.search = e.target.value.toLowerCase();
-      this.renderList();
-    });
-    $("#dev-filter").addEventListener("change", e=>{
-      this.state.filter = e.target.value;
-      this.renderList();
-    });
+    $("#dev-search").addEventListener("input", e=>{ this.state.search = e.target.value.toLowerCase(); this.renderList(); });
+    $("#dev-filter").addEventListener("change", e=>{ this.state.filter = e.target.value; this.renderList(); });
     $("#dev-refresh").addEventListener("click", ()=>this.loadData());
     await this.loadData();
   },
@@ -2004,10 +2510,8 @@ const PageDev = {
       const bios = []; biosSnap.forEach(d=>bios.push({id:d.id, ...d.data()}));
       users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
       bios.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
-      this.state.users = users;
-      this.state.bios = bios;
-      this.renderStats();
-      this.renderList();
+      this.state.users = users; this.state.bios = bios;
+      this.renderStats(); this.renderList();
     }catch(e){
       console.error(e);
       $("#dev-list").innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
@@ -2016,10 +2520,7 @@ const PageDev = {
 
   renderStats(){
     const users = this.state.users;
-    const countBy = (p)=>users.filter(u=>{
-      if(isDev(u.email)) return p==="developer";
-      return (u.plan||"free") === p;
-    }).length;
+    const countBy = (p)=>users.filter(u=>isDev(u.email) ? p==="developer" : (u.plan||"free")===p).length;
     $("#dev-stats").innerHTML = `
       <div class="dev-stat"><div class="sv">${users.length}</div><div class="sl">Total Users</div></div>
       <div class="dev-stat dev-free"><div class="sv">${countBy("free")}</div><div class="sl">Free</div></div>
@@ -2032,7 +2533,7 @@ const PageDev = {
   renderList(){
     const wrap = $("#dev-list");
     const { tab, filter, search } = this.state;
-    const matchSearch = (str)=> !search || (str||"").toLowerCase().includes(search);
+    const matchSearch = (s)=> !search || (s||"").toLowerCase().includes(search);
 
     if(tab === "users"){
       let list = this.state.users.filter(u=>{
@@ -2063,9 +2564,7 @@ const PageDev = {
           </div>`;
       }).join("");
     } else {
-      let list = this.state.bios.filter(b=>{
-        return matchSearch(b.name) || matchSearch(b.ownerName) || matchSearch(b.ownerUid);
-      });
+      let list = this.state.bios.filter(b=> matchSearch(b.name) || matchSearch(b.ownerName) || matchSearch(b.ownerUid));
       if(!list.length){
         wrap.innerHTML = `<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Tidak ada bio.</p></div>`;
         return;
@@ -2110,12 +2609,8 @@ const PageDev = {
         <input type="date" id="dev-edit-expiry" value="${expiry}"/>
         <div class="hint">Kosongkan = tidak kadaluarsa</div>
       </div>
-      <button class="btn btn-primary btn-block" id="dev-edit-save" style="margin-top:14px">
-        ${ico('save')} Simpan
-      </button>
-      <button class="btn btn-red btn-block" id="dev-edit-del" style="margin-top:8px">
-        ${ico('trash')} Hapus User + Bio
-      </button>
+      <button class="btn btn-primary btn-block" id="dev-edit-save" style="margin-top:14px">${ico('save')} Simpan</button>
+      <button class="btn btn-red btn-block" id="dev-edit-del" style="margin-top:8px">${ico('trash')} Hapus User + Bio</button>
     `);
     $("#dev-edit-save",m).addEventListener("click", async ()=>{
       const newPlan = $("#dev-edit-plan",m).value;
@@ -2123,13 +2618,9 @@ const PageDev = {
       const expiryMs = expiryVal ? new Date(expiryVal).getTime() : null;
       showLoading("Menyimpan...");
       try{
-        await FB.db.collection("users").doc(uid).update({
-          plan: newPlan,
-          planExpiry: expiryMs
-        });
+        await FB.db.collection("users").doc(uid).update({ plan: newPlan, planExpiry: expiryMs });
         hideLoading(); toast("Berhasil diupdate!","success");
-        m.remove();
-        await this.loadData();
+        m.remove(); await this.loadData();
       }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
     });
     $("#dev-edit-del",m).addEventListener("click", ()=>{ m.remove(); this.deleteUser(uid); });
@@ -2140,9 +2631,7 @@ const PageDev = {
     showLoading("Menghapus...");
     try{
       const biosToDelete = this.state.bios.filter(b=>b.ownerUid===uid);
-      for(const b of biosToDelete){
-        try{ await FB.db.collection("bios").doc(b.id).delete(); }catch(e){}
-      }
+      for(const b of biosToDelete){ try{ await FB.db.collection("bios").doc(b.id).delete(); }catch(e){} }
       await FB.db.collection("users").doc(uid).delete();
       hideLoading(); toast("User & bio terhapus","success");
       await this.loadData();
@@ -2154,8 +2643,7 @@ const PageDev = {
     showLoading("Menghapus...");
     try{
       await FB.db.collection("bios").doc(id).delete();
-      hideLoading(); toast("Bio terhapus","success");
-      await this.loadData();
+      hideLoading(); toast("Bio terhapus","success"); await this.loadData();
     }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
   }
 };
@@ -2166,6 +2654,9 @@ const PageDev = {
 const PagePublic = {
   buildHTML(d, opts={}){
     const preview = !!(opts && opts.preview);
+    const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
+    const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
+
     const links=(d.links||[]).map((l,idx)=>{
       const embed = LinkTypes.embed(l.url);
       const type = LinkTypes.detect(l.url);
@@ -2192,28 +2683,52 @@ const PagePublic = {
       ? `<img src="${esc(d.profile)}" alt=""/>`
       : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
 
-    const bannerBlock = d.banner
-      ? `<div class="bio-banner"><img src="${esc(d.banner)}"/></div>`
-      : "";
-
+    const bannerBlock = renderBannerHTML(d);
     const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
+
     const badgeMap = { pro:"PRO", ultimate:"ULTIMATE", developer:"DEV" };
     const badge = badgeMap[d.ownerPlan] || "";
     const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
+
+    const logosHtml = (d.logos||[]).filter(lg=>lg.img).length
+      ? `<div class="bio-logos">
+          ${(d.logos||[]).filter(lg=>lg.img).map(lg=>`
+            <a class="bio-logo-item" href="${esc(lg.url||"#")}" target="_blank" rel="noopener" title="${esc(lg.name||"")}">
+              <img src="${esc(lg.img)}" alt="${esc(lg.name||"")}"/>
+            </a>`).join("")}
+        </div>`
+      : "";
+
+    const layoutCls = d.layout === "grid" ? "layout-grid" : "";
+    const patternCls = d.pattern && d.pattern !== "dots" ? `pattern-${d.pattern}` : "";
+    const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
+
     const bioId = d.id||"";
     const isLocked = !!d.lock;
     const themeClass = `theme-${d.theme||"neo-cream"}`;
+
+    const pageTitle = `VarlinkBio-${d.name||"User"}`;
+    const pageDesc = d.bio || `Cek link-in-bio ${d.name||"User"} di Varlinkbio`;
+    const pageImage = d.profile || d.banner || "";
+    const faviconTag = d.favicon ? `<link rel="icon" href="${esc(d.favicon)}"/>` : "";
 
     return `<!DOCTYPE html>
 <html lang="id"><head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<title>${esc(d.name||"VarlinkB")} — Link in Bio</title>
+<title>${esc(pageTitle)}</title>
+<meta name="description" content="${esc(pageDesc)}"/>
+${faviconTag}
+<meta property="og:type" content="profile"/>
+<meta property="og:title" content="${esc(pageTitle)}"/>
+<meta property="og:description" content="${esc(pageDesc)}"/>
+<meta property="og:url" content="${location.origin}${location.pathname}#/u/${bioId}"/>
+${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>${PagePublic.css()}</style>
 </head><body class="bio-public">
 <div class="bio-deco d1"></div><div class="bio-deco d2"></div><div class="bio-deco d3"></div>
-<div class="bio-wrap ${themeClass}">
+<div class="bio-wrap ${themeClass} ${patternCls} ${animCls}">
   <div class="bio-inner">
     <div class="bio-header">
       <div class="bio-avatar">${profileBlock}</div>
@@ -2222,10 +2737,11 @@ const PagePublic = {
       ${bioText}
       ${badgeHtml}
     </div>
+    ${logosHtml}
     ${bannerBlock}
-    <div class="bio-links">${links}</div>
+    <div class="bio-links ${layoutCls}">${links}</div>
     <div style="text-align:center">
-      <div class="bio-footer">Powered by <a href="${location.origin}${location.pathname}" target="_top">VarlinkB</a> · by Varoo</div>
+      <div class="bio-footer">Powered by <a href="${location.origin}${location.pathname}" target="_top">Varlinkbio</a> · by Varoo</div>
     </div>
   </div>
 </div>
@@ -2292,13 +2808,21 @@ a{text-decoration:none;color:inherit}
 img,video{max-width:100%;display:block}
 .ic{width:18px;height:18px;display:inline-block;vertical-align:middle;
   stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes dotsFlow{from{background-position:0 0,10px 10px}
+  to{background-position:400px -400px,410px -390px}}
 .bio-deco{position:fixed;pointer-events:none;z-index:1}
 .bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);
-  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink)}
+  border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink);
+  animation:deco1 6s ease-in-out infinite}
 .bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);
-  border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);box-shadow:4px 4px 0 var(--ink)}
+  border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);
+  box-shadow:4px 4px 0 var(--ink);animation:deco2 7s ease-in-out infinite}
 .bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);
-  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink)}
+  border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink);
+  animation:deco3 8s ease-in-out infinite}
+@keyframes deco1{0%,100%{transform:rotate(-12deg) translate(0,0)}50%{transform:rotate(-12deg) translate(6px,-8px)}}
+@keyframes deco2{0%,100%{transform:rotate(20deg) translate(0,0)}50%{transform:rotate(20deg) translate(-6px,8px)}}
+@keyframes deco3{0%,100%{transform:rotate(15deg) translate(0,0)}50%{transform:rotate(15deg) translate(4px,-6px)}}
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
   padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;z-index:2}
 .bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
@@ -2307,7 +2831,7 @@ img,video{max-width:100%;display:block}
   box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-avatar img{width:100%;height:100%;object-fit:cover}
 .bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-.bio-header{display:flex;flex-direction:column;align-items:center;margin-bottom:24px;position:relative}
+.bio-header{display:flex;flex-direction:column;align-items:center;margin-bottom:14px;position:relative}
 .bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);
   color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;
   letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);
@@ -2329,16 +2853,28 @@ img,video{max-width:100%;display:block}
 .bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
 .bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
+.bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
+.bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);
+  background:var(--white);overflow:hidden;display:grid;place-items:center;
+  box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
+.bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
+.bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 .bio-banner{width:100%;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;background:var(--white)}
-.bio-banner img{width:100%;max-height:200px;object-fit:cover}
+.bio-banner img,.bio-banner video{width:100%;max-height:200px;object-fit:cover;display:block}
 .bio-links{display:flex;flex-direction:column;gap:14px}
+.bio-links.layout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.bio-links.layout-grid .bio-link{min-height:80px;padding:12px;font-size:12.5px;
+  flex-direction:column;text-align:center;gap:6px}
+.bio-links.layout-grid .bio-link .ltext{padding-right:0}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
   padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
   font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;
   position:relative;transition:transform .12s, box-shadow .12s;
   box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;
-  background:var(--white);color:var(--ink)}
+  background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
+@keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
 .bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
@@ -2357,10 +2893,21 @@ img,video{max-width:100%;display:block}
   border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
   box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
+.bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
+@keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}50%{transform:translate(-2px,-8px)}}
+.bio-wrap.anim-shake .bio-link:active{animation:linkShake .3s ease}
+@keyframes linkShake{0%,100%{transform:translate(4px,4px)}25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
+.bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
 .theme-neo-cream{background-color:#f0ebe0;
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-dark{background-color:#0a0a0a;color:#fff;
-  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:18px 18px}
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
 .theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
@@ -2368,8 +2915,12 @@ img,video{max-width:100%;display:block}
 .theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-banner,.theme-neo-dark .bio-embed{border-color:#fff}
 .theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
+.theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
 .theme-neo-blue{background-color:#2563eb;color:#fff;
-  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:18px 18px}
+  background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
@@ -2377,24 +2928,34 @@ img,video{max-width:100%;display:block}
 .theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
 .theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
 .theme-neo-pink{background-color:#ff69b4;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-pink .bio-bio{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
 .theme-neo-green{background-color:#22c55e;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-green .bio-bio{background:var(--ink);color:#fff;border-color:var(--ink)}
 .theme-neo-purple{background-color:#a78bfa;color:var(--ink);
-  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:18px 18px}
+  background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
+  animation:dotsFlow 24s linear infinite}
 .theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
 .theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
 .lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
   display:grid;place-items:center;padding:18px}
 .lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
-  padding:28px;max-width:340px;width:100%;text-align:center;box-shadow:8px 8px 0 var(--red)}
+  padding:28px;max-width:340px;width:100%;text-align:center;
+  box-shadow:8px 8px 0 var(--red)}
 .lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);
   border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
 .lock-card .li .ic{width:26px;height:26px}
@@ -2406,7 +2967,8 @@ img,video{max-width:100%;display:block}
 .lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
   background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
   margin-top:10px;font-size:13.5px;text-transform:uppercase;
-  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;font-family:inherit}
+  box-shadow:3px 3px 0 var(--red);transition:transform .1s, box-shadow .1s;
+  font-family:inherit}
 `;
   },
 
@@ -2428,7 +2990,7 @@ img,video{max-width:100%;display:block}
         </div>`;
       return;
     }
-    document.title = `${data.name||"VarlinkB"} — Link in Bio`;
+    document.title = `VarlinkBio-${data.name||"User"}`;
     document.body.classList.add("public-mode");
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';

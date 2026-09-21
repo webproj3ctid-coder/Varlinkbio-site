@@ -108,6 +108,7 @@ textarea{resize:vertical;min-height:80px}
   cursor:pointer;transition:transform .1s, box-shadow .1s}
 .lt-badge:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .lt-badge.dev{background:var(--red);color:#fff}
+.lt-badge.starter{background:var(--green);color:#fff}
 .lt-badge.pro{background:var(--blue);color:#fff}
 .lt-badge.ultimate{background:var(--ink);color:var(--yellow)}
 .lt-badge .ic{width:11px;height:11px}
@@ -144,6 +145,7 @@ textarea{resize:vertical;min-height:80px}
 .plan-badge{display:inline-block;padding:3px 10px;font-size:10px;
   font-weight:900;text-transform:uppercase;letter-spacing:1px;border:2px solid var(--ink);
   border-radius:999px;margin-top:6px;background:var(--yellow)}
+.plan-badge.starter{background:var(--green);color:var(--white)}
 .plan-badge.pro{background:var(--blue);color:var(--white)}
 .plan-badge.ultimate{background:var(--ink);color:var(--yellow)}
 .plan-badge.developer{background:var(--red);color:var(--white)}
@@ -250,6 +252,7 @@ textarea{resize:vertical;min-height:80px}
 .partner-card.collab-cta .p-logo{background:var(--ink);color:var(--yellow);font-size:22px}
 .partner-empty{text-align:center;padding:20px;font-weight:600;color:var(--ink-soft)}
 
+/* ============ PRICING (4 PLAN) ============ */
 .pricing-section{padding:40px 18px 60px;background:var(--cream-2);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .pricing-header{text-align:center;margin-bottom:28px}
@@ -259,7 +262,28 @@ textarea{resize:vertical;min-height:80px}
   padding:2px 10px;box-shadow:4px 4px 0 var(--ink);display:inline-block;
   transform:rotate(-1deg);margin-top:6px}
 .pricing-header p{margin-top:14px;font-size:14px;font-weight:600}
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+/* Starter banner */
+.starter-banner{max-width:900px;margin:0 auto 20px;background:var(--green);
+  color:#fff;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;
+  box-shadow:6px 6px 0 var(--ink);display:flex;align-items:center;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;
+  transform:rotate(-.5deg)}
+.starter-banner .sb-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.starter-banner .sb-icon{width:44px;height:44px;background:#fff;color:var(--green);
+  border:2.5px solid var(--ink);border-radius:12px;display:grid;place-items:center;
+  flex-shrink:0;font-size:20px;font-weight:900}
+.starter-banner .sb-text b{display:block;font-size:15px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px}
+.starter-banner .sb-text span{font-size:12px;font-weight:700;opacity:.95}
+.starter-banner .sb-btn{background:var(--ink);color:var(--yellow);
+  border:2.5px solid var(--ink);box-shadow:3px 3px 0 #fff;
+  padding:10px 18px;border-radius:999px;font-weight:900;font-size:12px;
+  text-transform:uppercase;letter-spacing:.5px;cursor:pointer;white-space:nowrap}
+.starter-banner .sb-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #fff}
+
+/* Main pricing grid: 3 utama */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:16px;max-width:960px;margin:0 auto}
 .pricing-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
   padding:20px;position:relative;box-shadow:6px 6px 0 var(--ink);
@@ -271,6 +295,7 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card.ultimate-card .features li::before{color:var(--yellow)}
 .pricing-card.ultimate-card .btn{background:var(--yellow);color:var(--ink);
   border-color:var(--white);box-shadow:3px 3px 0 var(--white)}
+.pricing-card.starter-card{background:#e8f5e9}
 .pricing-card .pop-badge{position:absolute;top:-14px;right:-8px;background:var(--red);
   color:var(--white);font-size:11px;font-weight:900;padding:4px 10px;
   border:2.5px solid var(--ink);border-radius:999px;text-transform:uppercase;
@@ -291,6 +316,14 @@ textarea{resize:vertical;min-height:80px}
   position:relative;line-height:1.4}
 .pricing-card .features li::before{content:'✓';position:absolute;left:0;
   font-weight:900;font-size:14px;color:var(--green)}
+
+/* Starter detail modal */
+.plan-detail-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.plan-detail-list .pd-item{display:flex;justify-content:space-between;
+  background:var(--cream);border:2px solid var(--ink);border-radius:8px;
+  padding:10px 12px;font-size:13px;font-weight:700}
+.plan-detail-list .pd-item .pd-name{color:var(--ink-soft)}
+.plan-detail-list .pd-item .pd-val{font-family:var(--mono);font-weight:900}
 
 .help-page{max-width:720px;margin:0 auto;padding:20px 18px 80px}
 .help-hero{text-align:center;padding:24px 0 20px}
@@ -687,6 +720,19 @@ textarea{resize:vertical;min-height:80px}
   font-weight:900;text-transform:uppercase;letter-spacing:.5px;font-size:14px;
   border:3px solid var(--ink);box-shadow:4px 4px 0 var(--yellow);margin-bottom:12px}
 .upgrade-box .tako-link:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--yellow)}
+.upgrade-box .plan-option{display:flex;justify-content:space-between;align-items:center;
+  padding:12px 14px;background:var(--cream);border:2.5px solid var(--ink);
+  border-radius:10px;box-shadow:2px 2px 0 var(--ink);margin-bottom:8px;
+  text-align:left;cursor:pointer;transition:transform .1s, box-shadow .1s}
+.upgrade-box .plan-option:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.upgrade-box .plan-option.active{background:var(--yellow)}
+.upgrade-box .plan-option b{font-size:14px;text-transform:uppercase;font-weight:900;
+  display:block}
+.upgrade-box .plan-option .po-desc{font-size:11px;font-weight:600;color:var(--ink-soft)}
+.upgrade-box .plan-option .po-price{font-size:16px;font-weight:900;text-align:right;
+  flex-shrink:0;margin-left:10px}
+.upgrade-box .plan-option .po-price small{font-size:10px;font-weight:700;display:block;
+  opacity:.7}
 
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
   gap:10px;margin-bottom:18px}
@@ -738,12 +784,12 @@ textarea{resize:vertical;min-height:80px}
 .dev-stat .sl{font-size:10.5px;font-weight:800;text-transform:uppercase;
   letter-spacing:.5px;color:var(--ink-soft);margin-top:3px}
 .dev-stat.dev-free{background:var(--cream)}
+.dev-stat.dev-starter{background:var(--green);color:#fff}
+.dev-stat.dev-starter .sv,.dev-stat.dev-starter .sl{color:#fff}
 .dev-stat.dev-pro{background:var(--blue);color:#fff}
 .dev-stat.dev-pro .sv,.dev-stat.dev-pro .sl{color:#fff}
 .dev-stat.dev-ultimate{background:var(--ink);color:var(--yellow)}
 .dev-stat.dev-ultimate .sv,.dev-stat.dev-ultimate .sl{color:var(--yellow)}
-.dev-stat.dev-dev{background:var(--red);color:#fff}
-.dev-stat.dev-dev .sv,.dev-stat.dev-dev .sl{color:#fff}
 .dev-tabs{display:flex;gap:6px;padding:0 18px 12px;flex-wrap:wrap}
 .dev-tab{padding:8px 14px;border:2px solid var(--ink);border-radius:999px;
   background:var(--white);font-weight:900;font-size:12px;text-transform:uppercase;
@@ -774,9 +820,9 @@ textarea{resize:vertical;min-height:80px}
   text-transform:uppercase;letter-spacing:.5px;border:2px solid var(--ink);margin-left:6px;
   display:inline-block;vertical-align:middle}
 .dev-plan-pill.free{background:var(--cream)}
+.dev-plan-pill.starter{background:var(--green);color:#fff}
 .dev-plan-pill.pro{background:var(--blue);color:#fff}
 .dev-plan-pill.ultimate{background:var(--ink);color:var(--yellow)}
-.dev-plan-pill.developer{background:var(--red);color:#fff}
 
 .dev-manager{padding:0 18px 60px}
 .dev-manager-head{display:flex;justify-content:space-between;align-items:center;
@@ -840,6 +886,7 @@ textarea{resize:vertical;min-height:80px}
   border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;
   margin-top:12px;line-height:1.5}
 
+/* ============ PUBLIC BIO CSS ============ */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
   color:var(--ink);padding:34px 18px 60px;
   display:flex;flex-direction:column;align-items:center;font-weight:700;z-index:2}
@@ -886,9 +933,9 @@ textarea{resize:vertical;min-height:80px}
   color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;
   letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;
   margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
+.bio-plan-badge.starter{background:var(--green);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
-.bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
 .bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;
   flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
 .bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);
@@ -896,11 +943,15 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-.bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;
+
+/* ============ BANNER KURUS (ATAS) ============ */
+.bio-banner{width:100%;max-width:100%;margin:0 auto 16px;height:110px;
   border:3px solid var(--ink);border-radius:12px;overflow:hidden;
-  box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
+  box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative;
+  aspect-ratio:unset}
 .bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:480px){.bio-banner{max-width:100%}}
+@media(max-width:480px){.bio-banner{height:95px;margin-bottom:14px}}
+
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;
   padding:15px 18px;border:3px solid var(--ink);border-radius:12px;
@@ -1079,6 +1130,129 @@ function ico(name, cls=""){
 }
 
 /* =========================================================
+   SOUND EFFECT (Web Audio API — tanpa file, ringan)
+   ========================================================= */
+const Sound = {
+  _ctx: null,
+  _enabled: true,
+  init(){
+    try{
+      const saved = localStorage.getItem("varlinkbio_sound");
+      this._enabled = saved !== "off";
+    }catch(e){ this._enabled = true; }
+  },
+  toggle(){
+    this._enabled = !this._enabled;
+    try{ localStorage.setItem("varlinkbio_sound", this._enabled ? "on" : "off"); }catch(e){}
+    if(this._enabled) this.click();
+    return this._enabled;
+  },
+  isEnabled(){ return this._enabled; },
+  _getCtx(){
+    if(!this._ctx){
+      try{
+        const AC = window.AudioContext || window.webkitAudioContext;
+        this._ctx = new AC();
+      }catch(e){ return null; }
+    }
+    if(this._ctx && this._ctx.state === "suspended"){
+      this._ctx.resume().catch(()=>{});
+    }
+    return this._ctx;
+  },
+  // klik tombol — frekuensi 800Hz, durasi 60ms
+  click(){
+    if(!this._enabled) return;
+    const ctx = this._getCtx();
+    if(!ctx) return;
+    try{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.06);
+    }catch(e){}
+  },
+  // sukses — nada naik 2x
+  success(){
+    if(!this._enabled) return;
+    const ctx = this._getCtx();
+    if(!ctx) return;
+    try{
+      const now = ctx.currentTime;
+      [523.25, 783.99].forEach((freq, i)=>{  // C5 → G5
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now + i*0.08);
+        gain.gain.linearRampToValueAtTime(0.08, now + i*0.08 + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i*0.08 + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i*0.08);
+        osc.stop(now + i*0.08 + 0.15);
+      });
+    }catch(e){}
+  },
+  // error — nada turun
+  error(){
+    if(!this._enabled) return;
+    const ctx = this._getCtx();
+    if(!ctx) return;
+    try{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(400, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.15);
+    }catch(e){}
+  },
+  // tap — untuk tap kecil
+  tap(){
+    if(!this._enabled) return;
+    const ctx = this._getCtx();
+    if(!ctx) return;
+    try{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.value = 1200;
+      gain.gain.setValueAtTime(0.03, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.03);
+    }catch(e){}
+  }
+};
+
+// Global click binding — otomatis bunyi saat tombol diklik
+function bindGlobalSound(){
+  document.addEventListener("click", e=>{
+    const target = e.target.closest("button, .btn, .menu-item, .icon-btn, .help-cat, .dev-tab, .lt-menu-btn, .lt-badge, .link-type, .theme-item, .opt-item");
+    if(target && !target.disabled){
+      // Skip sound untuk sound toggle button
+      if(target.id === "sound-toggle-btn") return;
+      Sound.click();
+    }
+  }, true);
+}
+
+/* =========================================================
    FIREBASE
    ========================================================= */
 const FIREBASE_CONFIG = {
@@ -1096,7 +1270,7 @@ const FB = { app:null, db:null, auth:null, ready:false };
     FB.db = firebase.firestore();
     FB.auth = firebase.auth();
     FB.ready = true;
-    console.log("%c[Varlinkbio] Firebase siap ✓","color:#22c55e;font-weight:bold");
+    console.log("%c[Varlinkbio v20] Firebase siap ✓","color:#22c55e;font-weight:bold");
   }catch(e){ console.error("Firebase init error:",e); FB.ready=false; }
 })();
 
@@ -1108,29 +1282,70 @@ const ADMIN_WA = "6285823058292";
 const TAKO_URL = "https://tako.id/VarCodexx";
 const PUBLIC_BASE_URL = "https://vlink-bio.vercel.app";
 
+const RESERVED_SLUGS = [
+  "admin","dev","developer","api","login","register","dashboard",
+  "editor","manage","stats","settings","help","u","verify",
+  "varoo","varcodexz","official","support","team","varlinkbio","vlink",
+  "root","system","null","undefined","about","contact","new","edit",
+  "signin","signup","auth","account","profile","user","app","www"
+];
+
 const PLANS = {
   free: {
-    id:"free", name:"Free", price:0, priceLabel:"Gratis", tagline:"Cocok buat coba-coba",
+    id:"free", name:"Free", price:0, priceLabel:"Gratis",
+    tagline:"Cocok buat coba-coba",
     features:{
       maxBios:5, maxLinks:5,
       themes:["neo-cream"],
-      analytics:false, linkLock:false, featuredLink:false, embed:false,
+      analytics:false, topLinks:false,
+      linkLock:false, featuredLink:false, embed:false,
       logos:false, animations:false,
+      toggleLink:false, shareNative:false, vcard:false,
+      fontPicker:false, bgPattern:false,
+      customSlug:false, slugChangesPerMonth:0, slugMinLength:8,
+      qrCustom:false, passwordLink:false, layout2Col:false,
+      noWatermark:false,
       betaAccess:false, badge:null, permanent:false
     },
-    highlights:["5 bio link","Maks 5 tombol/bio","1 tema (Neo Cream)","QR Code"]
+    highlights:["5 bio link","Maks 5 tombol","1 tema","QR Code","💧 Watermark"]
+  },
+  starter: {
+    id:"starter", name:"Starter", price:5000, priceLabel:"Rp 5.000",
+    tagline:"Upgrade pemula, worth it!",
+    period:"bulan",
+    features:{
+      maxBios:5, maxLinks:-1,
+      themes:["neo-cream","neo-dark","neo-blue"],
+      analytics:true, topLinks:false,
+      linkLock:false, featuredLink:false, embed:false,
+      logos:false, animations:false,
+      toggleLink:true, shareNative:true, vcard:false,
+      fontPicker:false, bgPattern:false,
+      customSlug:false, slugChangesPerMonth:0, slugMinLength:8,
+      qrCustom:false, passwordLink:false, layout2Col:false,
+      noWatermark:false,
+      betaAccess:false, badge:"STARTER", permanent:false
+    },
+    highlights:["5 bio link","Unlimited tombol","3 tema","Toggle Link","Share Button","Analytics basic","💧 Watermark"]
   },
   pro: {
-    id:"pro", name:"Pro", price:15000, priceLabel:"Rp 15.000", tagline:"Paling populer untuk kreator",
+    id:"pro", name:"Pro", price:15000, priceLabel:"Rp 15.000",
+    tagline:"Paling populer untuk kreator",
     period:"bulan",
     features:{
       maxBios:20, maxLinks:-1,
       themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
-      analytics:true, linkLock:true, featuredLink:true, embed:true,
+      analytics:true, topLinks:true,
+      linkLock:true, featuredLink:true, embed:true,
       logos:true, animations:false,
+      toggleLink:true, shareNative:true, vcard:true,
+      fontPicker:true, bgPattern:true,
+      customSlug:true, slugChangesPerMonth:3, slugMinLength:4,
+      qrCustom:false, passwordLink:false, layout2Col:false,
+      noWatermark:false,
       betaAccess:false, badge:"PRO", permanent:false
     },
-    highlights:["20 bio link","Unlimited tombol/bio","6 tema lengkap","Analytics","Link Lock","Embed YouTube/Spotify/TikTok","Tombol dengan gambar","Logo partner"]
+    highlights:["20 bio link","Unlimited tombol","6 tema","Analytics + Top Links","Embed YT/Spotify/TikTok","Toggle + Share + vCard","URL Kustom (3x/bulan)","💧 Watermark"]
   },
   ultimate: {
     id:"ultimate", name:"Ultimate", price:50000, priceLabel:"Rp 50.000",
@@ -1139,22 +1354,36 @@ const PLANS = {
     features:{
       maxBios:-1, maxLinks:-1,
       themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
-      analytics:true, linkLock:true, featuredLink:true, embed:true,
+      analytics:true, topLinks:true,
+      linkLock:true, featuredLink:true, embed:true,
       logos:true, animations:true,
+      toggleLink:true, shareNative:true, vcard:true,
+      fontPicker:true, bgPattern:true,
+      customSlug:true, slugChangesPerMonth:-1, slugMinLength:1,
+      qrCustom:true, passwordLink:true, layout2Col:true,
+      noWatermark:true,
       betaAccess:true, badge:"ULTIMATE", permanent:true
     },
-    highlights:["♾️ PERMANEN — bayar sekali","Unlimited bio link","Unlimited tombol/bio","Semua fitur Pro","Akses fitur BETA","Animasi lanjutan","Badge ULTIMATE","Gak ada renewal"]
+    highlights:["SEMUA fitur Pro","Unlimited bio & link","♾️ PERMANEN","TANPA Watermark ✨","URL Kustom Unlimited","QR Custom Warna+Logo","Animasi Lanjutan","Priority Support"]
   },
   developer: {
-    id:"developer", name:"Developer", price:0, priceLabel:"∞", tagline:"Akses penuh + admin",
+    id:"developer", name:"Developer", price:0, priceLabel:"∞",
+    tagline:"Owner access",
+    period:null,
     features:{
       maxBios:-1, maxLinks:-1,
       themes:["neo-cream","neo-dark","neo-blue","neo-pink","neo-green","neo-purple"],
-      analytics:true, linkLock:true, featuredLink:true, embed:true,
+      analytics:true, topLinks:true,
+      linkLock:true, featuredLink:true, embed:true,
       logos:true, animations:true,
+      toggleLink:true, shareNative:true, vcard:true,
+      fontPicker:true, bgPattern:true,
+      customSlug:true, slugChangesPerMonth:-1, slugMinLength:1,
+      qrCustom:true, passwordLink:true, layout2Col:true,
+      noWatermark:true,
       betaAccess:true, badge:"DEV", permanent:true
     },
-    highlights:["Unlimited semua","Semua fitur unlock","Semua fitur beta","Favicon custom","Badge DEV","Dev Panel"]
+    highlights:["Unlimited semua","Semua fitur unlock","Dev Panel","Favicon custom"]
   }
 };
 
@@ -1177,6 +1406,8 @@ function toast(msg,type="info"){
   const el=document.createElement("div");
   el.className=`toast ${type}`; el.textContent=msg;
   $("#toast-container").appendChild(el);
+  if(type === "success") Sound.success();
+  else if(type === "error") Sound.error();
   setTimeout(()=>{ el.style.opacity="0"; el.style.transform="translateY(-8px)";
     setTimeout(()=>el.remove(),220); },2800);
 }
@@ -1194,6 +1425,27 @@ function generateSlug(text){
   return String(text || "").toLowerCase().trim()
     .replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-")
     .replace(/-+/g, "-").replace(/^-|-$/g, "");
+}
+function validateSlug(slug, plan){
+  slug = String(slug || "").toLowerCase().trim()
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  const minLen = plan?.features?.slugMinLength || 4;
+  if(!slug) return { ok:false, msg:"URL gak boleh kosong" };
+  if(slug.length < minLen) return { ok:false, msg:`Minimal ${minLen} karakter untuk plan ${plan?.name||""}` };
+  if(slug.length > 30) return { ok:false, msg:"Maksimal 30 karakter" };
+  if(/^\d+$/.test(slug)) return { ok:false, msg:"Gak boleh angka semua" };
+  if(RESERVED_SLUGS.includes(slug)) return { ok:false, msg:`URL "${slug}" tidak bisa dipakai` };
+  return { ok:true, slug };
+}
+async function checkSlugAvailable(slug, currentBioId=null){
+  try{
+    const q = await FB.db.collection("bios").where("slug","==",slug).get();
+    let taken = false;
+    q.forEach(d => { if(d.id !== currentBioId) taken = true; });
+    return !taken;
+  }catch(e){ return false; }
 }
 async function getUniqueSlug(baseSlug, currentBioId=null){
   let slug = baseSlug || `user-${Math.random().toString(36).slice(2,7)}`;
@@ -1291,7 +1543,7 @@ async function applyAppFavicon(){
   }catch(e){ console.warn("applyAppFavicon:", e); }
 }
 
-/* CLIPBOARD — ke Varlink */
+/* CLIPBOARD */
 async function copyLink(bioOrId){
   const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
   const identifier = bio.slug || bio.id;
@@ -1323,6 +1575,7 @@ function showShareModal(bioOrId){
     <div style="display:flex;gap:8px;margin-top:6px">
       <button class="btn btn-block btn-sm" id="share-qr">${ico('qr')} QR</button>
       <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WA</button>
+      <button class="btn btn-purple btn-block btn-sm" id="share-native">📤 Share</button>
     </div>`);
   $("#share-copy",m).addEventListener("click",()=>copyLink(bio));
   $("#share-open",m).addEventListener("click",()=>window.open(url,"_blank"));
@@ -1331,6 +1584,16 @@ function showShareModal(bioOrId){
     window.open(`https://wa.me/?text=${text}`,"_blank");
   });
   $("#share-qr",m).addEventListener("click",()=>{ m.remove(); PageDashboard.qr(bio.id); });
+  $("#share-native",m).addEventListener("click", async ()=>{
+    if(navigator.share){
+      try{
+        await navigator.share({ title: bio.name || "Varlinkbio", text: "Cek link-in-bio aku!", url });
+        toast("Berhasil share!","success");
+      }catch(e){}
+    } else {
+      toast("Browser gak support share native. Pakai Copy aja.","info");
+    }
+  });
 }
 async function generateQR(text, canvasEl){
   try{
@@ -1418,6 +1681,18 @@ const Auth = {
     try{
       const cred = await FB.auth.signInWithPopup(provider);
       await this._ensureUserDoc(cred.user);
+      let name = cred.user.displayName || (cred.user.email||"").split("@")[0];
+      try{
+        const doc = await FB.db.collection("users").doc(cred.user.uid).get();
+        if(doc.exists && doc.data().name) name = doc.data().name;
+      }catch(e){}
+      const isGoogleProvider = (cred.user.providerData||[]).some(p => p.providerId === "google.com");
+      this.current = {
+        uid: cred.user.uid, email: cred.user.email, name,
+        photo: cred.user.photoURL || "",
+        emailVerified: cred.user.emailVerified || isGoogleProvider,
+        isGoogle: isGoogleProvider
+      };
       return cred.user;
     }catch(err){
       const fallback = ["auth/popup-blocked","auth/popup-closed-by-user",
@@ -1445,7 +1720,22 @@ const Auth = {
   async handleRedirectResult(){
     try{
       const result = await FB.auth.getRedirectResult();
-      if(result && result.user){ await this._ensureUserDoc(result.user); return result.user; }
+      if(result && result.user){
+        await this._ensureUserDoc(result.user);
+        let name = result.user.displayName || (result.user.email||"").split("@")[0];
+        try{
+          const doc = await FB.db.collection("users").doc(result.user.uid).get();
+          if(doc.exists && doc.data().name) name = doc.data().name;
+        }catch(e){}
+        const isGoogleProvider = (result.user.providerData||[]).some(p => p.providerId === "google.com");
+        this.current = {
+          uid: result.user.uid, email: result.user.email, name,
+          photo: result.user.photoURL || "",
+          emailVerified: result.user.emailVerified || isGoogleProvider,
+          isGoogle: isGoogleProvider
+        };
+        return result.user;
+      }
     }catch(err){
       console.warn("getRedirectResult:", err);
       return { __error: err };
@@ -1557,17 +1847,37 @@ const Store = {
     return s.size;
   },
   async save(bio){
-    const baseSlug = generateSlug(bio.name);
-    bio.slug = await getUniqueSlug(baseSlug, bio.id);
+    // === SLUG LOGIC ===
+    if(bio.slug && canDo("customSlug") && bio._slugManual){
+      // Custom slug dari user (Pro+)
+      const v = validateSlug(bio.slug, STATE.plan);
+      if(v.ok){
+        const available = await checkSlugAvailable(v.slug, bio.id);
+        if(available){
+          bio.slug = v.slug;
+        } else {
+          bio.slug = await getUniqueSlug(generateSlug(bio.name), bio.id);
+        }
+      } else {
+        bio.slug = await getUniqueSlug(generateSlug(bio.name), bio.id);
+      }
+    } else if(!bio.slug){
+      // Baru pertama kali → auto-generate
+      const baseSlug = generateSlug(bio.name);
+      bio.slug = await getUniqueSlug(baseSlug, bio.id);
+    }
+    // Kalau bio.slug udah ada & _slugManual false → biarkan apa adanya (gak auto regenerate)
+
     bio.ownerUid = Auth.current.uid;
     bio.ownerName = Auth.current.name;
     bio.ownerPlan = STATE.plan?.id || "free";
+    bio.showWatermark = !(STATE.plan?.features?.noWatermark);
     bio.updatedAt = Date.now();
     if(!bio.id) bio.id = uid(12);
     if(!bio.createdAt) bio.createdAt = bio.updatedAt;
     if(bio.stats===undefined) bio.stats = { views:0, clicks:{} };
     if(!Array.isArray(bio.logos)) bio.logos = [];
-    const {id, ...data} = bio;
+    const {id, _slugManual, ...data} = bio;
     const sizeKB = Math.round(JSON.stringify(data).length / 1024);
     if(sizeKB > 950) throw new Error(`Data terlalu besar (${sizeKB}KB). Kurangi gambar.`);
     await FB.db.collection("bios").doc(id).set(data, { merge:true });
@@ -1658,7 +1968,7 @@ const Store = {
 };
 
 /* =========================================================
-   ROUTER
+   ROUTER (v18 FIX)
    ========================================================= */
 const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help"];
 const Router = {
@@ -1670,6 +1980,23 @@ const Router = {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.height = '';
+
+    // STEP 1 — Firebase Action URL (oobCode dari email)
+    const fullSearch = location.search.slice(1);
+    if(fullSearch){
+      const p = new URLSearchParams(fullSearch);
+      const oobCode = p.get("oobCode");
+      const mode = p.get("mode");
+      if(oobCode && (mode === "verifyEmail" || mode === "resetPassword" || mode === "recoverEmail")){
+        const targetHash = `#/verify?${fullSearch}`;
+        if(location.hash !== targetHash){
+          location.replace(location.pathname + targetHash);
+          return;
+        }
+      }
+    }
+
+    // STEP 2 — Normal hash routing
     const raw = location.hash.slice(1) || "/";
     const path = raw.split("?")[0];
     const query = raw.split("?")[1] || "";
@@ -1792,7 +2119,7 @@ function renderPartnerSection(){
 }
 
 /* =========================================================
-   PAGE: LANDING
+   PAGE: LANDING (v20 — 4 plan)
    ========================================================= */
 const PageLanding = {
   async render(){
@@ -1816,6 +2143,20 @@ const PageLanding = {
             <h2>Pilih Plan <span>Kamu</span></h2>
             <p>Mulai gratis, upgrade kapan saja. Tanpa kontrak.</p>
           </div>
+
+          <!-- Starter Banner -->
+          <div class="starter-banner">
+            <div class="sb-left">
+              <div class="sb-icon">🚀</div>
+              <div class="sb-text">
+                <b>Baru! Plan Starter Rp 5.000/bln</b>
+                <span>Unlimited tombol + 3 tema + Analytics basic</span>
+              </div>
+            </div>
+            <button class="sb-btn" id="btn-starter-banner">Lihat Detail</button>
+          </div>
+
+          <!-- 3 Kartu Utama -->
           <div class="pricing-grid">
             ${this.renderPricingCard(PLANS.free, '')}
             ${this.renderPricingCard(PLANS.pro, 'popular')}
@@ -1838,7 +2179,11 @@ const PageLanding = {
       if(Auth.current) Router.navigate("/help");
       else { toast("Login dulu untuk akses halaman bantuan","info"); Router.navigate("/login"); }
     });
+
+    // Starter banner → modal detail
+    $("#btn-starter-banner")?.addEventListener("click", ()=>this.showStarterModal());
   },
+
   renderPricingCard(plan, extraClass){
     const isPerm = plan.features.permanent && plan.price > 0;
     const permLabel = isPerm ? "Sekali Bayar" : (plan.period ? ` / ${plan.period}` : "");
@@ -1854,6 +2199,33 @@ const PageLanding = {
           ${plan.price===0?'Mulai Gratis':'Pilih '+plan.name}
         </button>
       </div>`;
+  },
+
+  showStarterModal(){
+    const p = PLANS.starter;
+    const m = openModal(`
+      <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+      <h3>🚀 Plan Starter</h3>
+      <p style="font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:14px">
+        Upgrade pemula, worth it! Cuma Rp 5.000/bulan — segelas es teh 🧊
+      </p>
+      <div class="plan-detail-list">
+        <div class="pd-item"><span class="pd-name">💰 Harga</span><span class="pd-val">Rp 5.000/bln</span></div>
+        <div class="pd-item"><span class="pd-name">📁 Max Bio</span><span class="pd-val">5</span></div>
+        <div class="pd-item"><span class="pd-name">🔗 Max Tombol/Bio</span><span class="pd-val">∞</span></div>
+        <div class="pd-item"><span class="pd-name">🎨 Tema</span><span class="pd-val">3</span></div>
+        <div class="pd-item"><span class="pd-name">📊 Analytics</span><span class="pd-val">Basic</span></div>
+        <div class="pd-item"><span class="pd-name">🔘 Toggle Link</span><span class="pd-val">✓</span></div>
+        <div class="pd-item"><span class="pd-name">📤 Share Button</span><span class="pd-val">✓</span></div>
+        <div class="pd-item"><span class="pd-name">💧 Watermark</span><span class="pd-val">Ada</span></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="starter-cta" style="margin-top:10px">
+        Daftar Sekarang →
+      </button>
+    `);
+    $("#starter-cta",m).addEventListener("click",()=>{
+      m.remove(); Router.navigate("/register");
+    });
   }
 };
 
@@ -1981,15 +2353,62 @@ const PageRegister = {
 };
 
 /* =========================================================
-   PAGE: VERIFY EMAIL
+   PAGE: VERIFY EMAIL (v18 — handle Firebase Action URL)
    ========================================================= */
 const PageVerify = {
   async render(){
     if(!Auth.current) return Router.navigate("/login");
     const user = FB.auth.currentUser;
-    const email = Auth.current.email;
+    const email = Auth.current?.email || "";
     const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
-    if(user?.emailVerified || isGoogle) return Router.navigate("/dashboard");
+
+    const rawQuery = (location.hash.split("?")[1] || "");
+    const params = new URLSearchParams(rawQuery);
+    const oobCode = params.get("oobCode");
+    const mode = params.get("mode");
+
+    if(oobCode && (mode === "verifyEmail" || mode === "recoverEmail")){
+      showLoading("Memverifikasi email...");
+      try{
+        await FB.auth.applyActionCode(oobCode);
+        if(FB.auth.currentUser){
+          await FB.auth.currentUser.reload();
+          await FB.auth.currentUser.getIdToken(true);
+        }
+        await Auth.init();
+        await loadUserPlan();
+        hideLoading();
+        toast("🎉 Email berhasil diverifikasi!","success");
+        location.replace(location.pathname + "#/dashboard");
+        return;
+      }catch(e){
+        hideLoading();
+        console.error("applyActionCode error:", e);
+        const map = {
+          "auth/invalid-action-code":"Link verifikasi tidak valid atau sudah dipakai",
+          "auth/expired-action-code":"Link verifikasi sudah kadaluarsa",
+          "auth/user-disabled":"Akun dinonaktifkan",
+          "auth/user-not-found":"Akun tidak ditemukan"
+        };
+        const msg = map[e.code] || e.message || "Gagal verifikasi";
+        $("#app").innerHTML = `
+          <div class="auth-page">
+            <div class="auth-card">
+              <div class="auth-icon" style="background:var(--red);color:#fff">${ico('x')}</div>
+              <h2>Verifikasi Gagal</h2>
+              <p class="auth-sub">${esc(msg)}</p>
+              <button class="btn btn-primary btn-block" id="vf-retry">${ico('back')} Ke Halaman Verifikasi</button>
+            </div>
+          </div>`;
+        $("#vf-retry").addEventListener("click", ()=>{
+          location.replace(location.pathname + "#/verify");
+        });
+        return;
+      }
+    }
+
+    if(isGoogle) return Router.navigate("/dashboard");
+    if(user?.emailVerified) return Router.navigate("/dashboard");
 
     $("#app").innerHTML = `
       <div class="auth-page">
@@ -2016,10 +2435,12 @@ const PageVerify = {
       try{
         await user.reload();
         if(user.emailVerified){
-          hideLoading(); toast("Email terverifikasi! Lanjut.","success");
+          await FB.auth.currentUser.getIdToken(true);
+          await Auth.init();
+          hideLoading(); toast("Email terverifikasi! 🎉","success");
           Router.navigate("/dashboard");
         }else{
-          hideLoading(); showMsg("Email belum diverifikasi. Cek inbox (jangan lupa folder spam).");
+          hideLoading(); showMsg("Email belum diverifikasi. Cek inbox (folder Spam juga).");
         }
       }catch(e){ hideLoading(); showMsg("Gagal cek: "+e.message); }
     });
@@ -2039,7 +2460,7 @@ const PageVerify = {
 };
 
 /* =========================================================
-   TOPBAR + DRAWER
+   TOPBAR + DRAWER (v20 — 4 plan badge)
    ========================================================= */
 function renderTopbar(){
   const user = Auth.current || { name:"Guest", email:"" };
@@ -2048,7 +2469,8 @@ function renderTopbar(){
   const devMode = isDev(user.email);
   const badgeIcon = STATE.plan?.id === "developer" ? "zap"
     : STATE.plan?.id === "ultimate" ? "crown"
-    : STATE.plan?.id === "pro" ? "star" : "";
+    : STATE.plan?.id === "pro" ? "star"
+    : STATE.plan?.id === "starter" ? "sparkle" : "";
   return `
     <div class="lt-topbar">
       <div class="lt-brand">
@@ -2056,6 +2478,9 @@ function renderTopbar(){
         <span>Varlinkbio</span>
       </div>
       <div class="lt-actions">
+        <button class="lt-badge" id="sound-toggle-btn" title="Toggle Sound">
+          ${Sound.isEnabled() ? '🔊' : '🔇'}
+        </button>
         ${devMode?`<button class="lt-badge dev" id="btn-dev-top">${ico('zap','ic-sm')} DEV</button>`:''}
         ${badge && !devMode?`<button class="lt-badge ${badgeCls}" id="btn-plan-top">${ico(badgeIcon,'ic-sm')} ${badge}</button>`:''}
         <button class="lt-menu-btn" id="btn-drawer-open">
@@ -2105,6 +2530,14 @@ function bindTopbar(){
   const upgradeBtn=$("#drawer-upgrade"); if(upgradeBtn) upgradeBtn.addEventListener("click",()=>{ drawer.classList.remove("open"); showUpgradeModal(); });
   const planBtn=$("#btn-plan-top"); if(planBtn) planBtn.addEventListener("click",()=>showUpgradeModal());
   const devBtn=$("#btn-dev-top"); if(devBtn) devBtn.addEventListener("click",()=>Router.navigate("/dev"));
+  const soundBtn = $("#sound-toggle-btn");
+  if(soundBtn){
+    soundBtn.addEventListener("click", ()=>{
+      const enabled = Sound.toggle();
+      soundBtn.textContent = enabled ? '🔊' : '🔇';
+      toast(enabled ? "Sound ON 🔊" : "Sound OFF 🔇", "info");
+    });
+  }
 }
 function showUpgradeModal(){
   const cur = STATE.plan?.id || "free";
@@ -2113,19 +2546,19 @@ function showUpgradeModal(){
     <div class="upgrade-box">
       <div class="plan-title">Upgrade Plan</div>
       <p style="font-size:13px;font-weight:600;margin-bottom:16px">Pilih plan yang cocok buat kamu</p>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
-        ${['pro','ultimate'].map(id=>{
+      <div style="margin-bottom:18px">
+        ${['starter','pro','ultimate'].map(id=>{
           const p = PLANS[id]; const active = cur === id;
           const isPerm = p.features.permanent;
           return `
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:${active?'var(--yellow)':'var(--cream)'};border:2.5px solid var(--ink);border-radius:10px;box-shadow:2px 2px 0 var(--ink)">
-              <div style="text-align:left">
-                <b style="font-size:15px;text-transform:uppercase;font-weight:900;display:block">${p.name}${isPerm?' <span style="background:var(--green);color:#fff;font-size:9px;padding:2px 6px;border-radius:999px;border:1.5px solid var(--ink)">PERMANEN</span>':''}</b>
-                <span style="font-size:11.5px;font-weight:600">${p.tagline}</span>
+            <div class="plan-option ${active?'active':''}" data-plan="${id}">
+              <div>
+                <b>${p.name}${isPerm?' ♾️':''}</b>
+                <div class="po-desc">${p.tagline}</div>
               </div>
-              <div style="text-align:right;flex-shrink:0">
-                <div style="font-size:18px;font-weight:900">${p.priceLabel}</div>
-                <div style="font-size:10px;font-weight:700">${isPerm?'sekali bayar':'per bulan'}</div>
+              <div class="po-price">
+                ${p.priceLabel}
+                <small>${isPerm?'sekali':`/${p.period||'bln'}`}</small>
               </div>
             </div>`;
         }).join("")}
@@ -2174,6 +2607,15 @@ const PageDashboard = {
           ? `${bioCount} bio dibuat · unlimited`
           : `${bioCount} / ${plan.features.maxBios} bio`);
 
+    const planIcon = plan.id === 'developer' ? 'zap'
+      : plan.id === 'ultimate' ? 'crown'
+      : plan.id === 'pro' ? 'star'
+      : plan.id === 'starter' ? 'sparkle' : 'star';
+    const planColor = plan.id === 'developer' ? 'var(--red)'
+      : plan.id === 'ultimate' ? 'var(--ink)'
+      : plan.id === 'pro' ? 'var(--blue)'
+      : plan.id === 'starter' ? 'var(--green)' : 'var(--yellow)';
+
     $("#app").innerHTML = `
       ${renderTopbar()}
       <div class="dash">
@@ -2183,8 +2625,8 @@ const PageDashboard = {
             <p>Bikin link in bio kamu sekarang</p>
           </div>
           <div class="dash-plan-card">
-            <div class="picon" style="background:${plan.id==='developer'?'var(--red)':plan.id==='ultimate'?'var(--ink)':plan.id==='pro'?'var(--blue)':'var(--yellow)'};color:${plan.id==='ultimate'||plan.id==='developer'?'#fff':'var(--ink)'}">
-              ${ico(plan.id==='free'?'star':plan.id==='developer'?'zap':'crown')}
+            <div class="picon" style="background:${planColor};color:${plan.id==='ultimate'||plan.id==='developer'?'#fff':'var(--ink)'}">
+              ${ico(planIcon)}
             </div>
             <div class="pinfo">
               <b>Plan: ${plan.name}${isPerm?' ♾️':''}</b>
@@ -2202,9 +2644,10 @@ const PageDashboard = {
             <div class="section-title">Fitur</div>
             <div class="features-grid">
               <div class="feature-card"><div class="fi">${ico('grid')}</div><h4>6 Tema</h4><p>6 varian Neo Brutalism.</p></div>
-              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Banner</h4><p>Foto & video untuk banner.</p></div>
+              <div class="feature-card"><div class="fi">${ico('image')}</div><h4>Banner</h4><p>Foto & video di atas profil.</p></div>
               <div class="feature-card"><div class="fi">${ico('video')}</div><h4>Embed</h4><p>YouTube, Spotify, TikTok, Vimeo.</p></div>
               <div class="feature-card"><div class="fi">${ico('handshake')}</div><h4>Logo Partner</h4><p>Logo kerjasama di bio kamu.</p></div>
+              <div class="feature-card ${canDo("customSlug")?"":'locked-feat'}"><div class="fi">${ico('link')}</div><h4>URL Kustom</h4><p>Ganti slug bio kamu.</p></div>
               <div class="feature-card ${canDo("animations")?"":'locked-feat'}"><div class="fi">${ico('flask')}</div><h4>Animasi Pro</h4><p>Bounce, shake, glow.</p></div>
             </div>
           </div>
@@ -2344,7 +2787,7 @@ const PageStats = {
         <div class="container" style="padding-top:40px;padding-bottom:60px">
           <div class="empty-state">
             <div class="ei">${ico('lock')}</div>
-            <p style="font-size:15px;margin-bottom:8px">Analytics cuma untuk plan Pro+</p>
+            <p style="font-size:15px;margin-bottom:8px">Analytics cuma untuk plan Starter+</p>
             <p style="font-size:12.5px;font-weight:600;margin-bottom:20px">Upgrade sekarang untuk lihat statistik views & klik</p>
             <button class="btn btn-primary" id="btn-up">${ico('crown')} Upgrade</button>
           </div>
@@ -2394,7 +2837,7 @@ const PageStats = {
 };
 
 /* =========================================================
-   PAGE: SETTINGS (v16 — dengan Verifikasi Email)
+   PAGE: SETTINGS
    ========================================================= */
 const PageSettings = {
   async render(){
@@ -2421,8 +2864,7 @@ const PageSettings = {
         <div class="settings-section" style="border-color:var(--yellow);background:#fffbe6">
           <h3 style="background:var(--warn);color:var(--white)">⚠️ Verifikasi Email</h3>
           <p style="font-size:13px;font-weight:600;line-height:1.6;margin-bottom:12px">
-            Email kamu <b>belum terverifikasi</b>. Verifikasi dulu supaya bisa akses fitur lengkap
-            (bikin bio, edit, dll).
+            Email kamu <b>belum terverifikasi</b>. Verifikasi dulu supaya bisa akses fitur lengkap.
           </p>
           <div id="verify-msg"></div>
           <button class="btn btn-yellow btn-block" id="btn-verify-email" style="margin-top:4px">
@@ -2431,10 +2873,6 @@ const PageSettings = {
           <button class="btn btn-ghost btn-block btn-sm" id="btn-check-verify" style="margin-top:8px">
             ${ico('check')} Saya Sudah Verifikasi
           </button>
-          <div class="hint" style="margin-top:8px">
-            Link verifikasi akan dikirim ke <b>${esc(u.email||"")}</b>.
-            Cek juga folder <b>Spam</b> atau <b>Promotions</b> kalau gak muncul.
-          </div>
         </div>
         ` : ""}
 
@@ -2442,10 +2880,10 @@ const PageSettings = {
           <h3>${ico('user')} Info Akun</h3>
           <div class="info-row"><span class="lbl">Email</span><span class="val">${esc(u.email||"—")}</span></div>
           <div class="info-row"><span class="lbl">Status Email</span><span class="val">
-            ${isGoogle ? "🔵 Google Account" : (isVerified ? "✅ Terverifikasi" : "⚠️ Belum Terverifikasi")}
+            ${isGoogle ? "🔵 Google Account" : (isVerified ? "✅ Terverifikasi" : "⚠️ Belum")}
           </span></div>
           <div class="info-row"><span class="lbl">Plan</span><span class="val">${STATE.plan?.name || "Free"}${isPermanentPlan()?' ♾️':''}</span></div>
-          <div class="info-row"><span class="lbl">Login via</span><span class="val">${isGoogle ? "Google" : "Email & Password"}</span></div>
+          <div class="info-row"><span class="lbl">Login via</span><span class="val">${isGoogle ? "Google" : "Email"}</span></div>
           <div class="info-row"><span class="lbl">Member sejak</span><span class="val">${created}</span></div>
         </div>
 
@@ -2467,37 +2905,17 @@ const PageSettings = {
           <div id="pass-msg"></div>
           <div class="field"><label>Password Lama</label><input type="password" id="set-oldpass" placeholder="••••••••"/></div>
           <div class="field"><label>Password Baru</label><input type="password" id="set-newpass" placeholder="Min 6 karakter"/></div>
-          <div class="field"><label>Konfirmasi Password Baru</label><input type="password" id="set-newpass2" placeholder="Ulangi password baru"/></div>
+          <div class="field"><label>Konfirmasi Password Baru</label><input type="password" id="set-newpass2" placeholder="Ulangi"/></div>
           <button class="btn btn-primary btn-block" id="btn-save-pass" style="margin-top:8px">
             ${ico('lock')} Ganti Password
           </button>
-          <div class="hint">Setelah ganti, kamu tetap login di device ini.</div>
         </div>
-
-        <div class="settings-section">
-          <h3>${ico('mail')} Ganti Email</h3>
-          <div id="email-msg"></div>
-          <div class="field"><label>Password (verifikasi)</label><input type="password" id="set-emailpass" placeholder="••••••••"/></div>
-          <div class="field"><label>Email Baru</label><input type="email" id="set-newemail" placeholder="emailbaru@mail.com"/></div>
-          <button class="btn btn-primary btn-block" id="btn-save-email" style="margin-top:8px">
-            ${ico('mail')} Ganti Email
-          </button>
-          <div class="hint">Kamu akan menerima email verifikasi di <b>email baru</b>. Klik link untuk menyelesaikan.</div>
-        </div>
-        ` : `
-        <div class="settings-section">
-          <h3>${ico('lock')} Password</h3>
-          <p style="font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.6">
-            Kamu login dengan <b>Google</b>. Untuk ganti password, buka
-            <a href="https://myaccount.google.com/security" target="_blank" style="text-decoration:underline;font-weight:900">Akun Google kamu</a>.
-          </p>
-        </div>
-        `}
+        ` : ""}
 
         <div class="settings-section danger">
           <h3>${ico('logout')} Keluar Akun</h3>
           <p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);line-height:1.5;margin-bottom:12px">
-            Kamu akan keluar dari device ini. Login ulang kapan saja pakai email & password atau Google.
+            Kamu akan keluar dari device ini.
           </p>
           <button class="btn btn-red btn-block" id="btn-logout-here">${ico('logout')} Logout dari Device Ini</button>
         </div>
@@ -2505,7 +2923,6 @@ const PageSettings = {
 
     bindTopbar();
 
-    /* VERIFIKASI EMAIL */
     const btnVerify = $("#btn-verify-email");
     if(btnVerify) btnVerify.addEventListener("click", async ()=>{
       showLoading("Mengirim email...");
@@ -2516,9 +2933,7 @@ const PageSettings = {
         toast("Email verifikasi terkirim!","success");
       }catch(e){
         hideLoading();
-        let msg = e.message || e.code || "Gagal kirim";
-        if(e.code === "auth/too-many-requests") msg = "Terlalu banyak permintaan. Tunggu sebentar.";
-        $("#verify-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+        $("#verify-msg").innerHTML = `<div class="err-box">${esc(e.message||e.code)}</div>`;
       }
     });
 
@@ -2535,77 +2950,45 @@ const PageSettings = {
           this.render();
         }else{
           hideLoading();
-          $("#verify-msg").innerHTML = `<div class="err-box">Email belum terverifikasi. Cek inbox (folder Spam juga).</div>`;
+          $("#verify-msg").innerHTML = `<div class="err-box">Email belum terverifikasi.</div>`;
         }
       }catch(e){ hideLoading(); $("#verify-msg").innerHTML = `<div class="err-box">Gagal cek: ${esc(e.message)}</div>`; }
     });
 
-    /* GANTI NAMA */
     $("#btn-save-name").addEventListener("click", async ()=>{
       const newName = $("#set-name").value.trim();
       if(!newName || newName.length < 2){ $("#name-msg").innerHTML = `<div class="err-box">Nama minimal 2 karakter</div>`; return; }
-      if(newName === u.name){ $("#name-msg").innerHTML = `<div class="err-box">Nama sama dengan yang sekarang</div>`; return; }
+      if(newName === u.name){ $("#name-msg").innerHTML = `<div class="err-box">Nama sama</div>`; return; }
       showLoading("Menyimpan...");
       try{
         await Auth.updateName(newName);
         await Auth.init();
-        hideLoading(); toast("Nama berhasil diubah!","success");
+        hideLoading(); toast("Nama diubah!","success");
         this.render();
       }catch(e){ hideLoading(); $("#name-msg").innerHTML = `<div class="err-box">Gagal: ${esc(e.message)}</div>`; }
     });
 
-    /* GANTI PASSWORD */
     const btnPass = $("#btn-save-pass");
     if(btnPass) btnPass.addEventListener("click", async ()=>{
       const oldPass = $("#set-oldpass").value, newPass = $("#set-newpass").value, newPass2 = $("#set-newpass2").value;
       if(!oldPass || !newPass || !newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Isi semua field</div>`; return; }
       if(newPass.length < 6){ $("#pass-msg").innerHTML = `<div class="err-box">Password baru minimal 6 karakter</div>`; return; }
-      if(newPass !== newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Konfirmasi password tidak sama</div>`; return; }
-      if(newPass === oldPass){ $("#pass-msg").innerHTML = `<div class="err-box">Password baru sama dengan yang lama</div>`; return; }
-      showLoading("Verifikasi & ganti password...");
+      if(newPass !== newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Konfirmasi tidak sama</div>`; return; }
+      showLoading("Verifikasi...");
       try{
         await Auth.updatePassword(oldPass, newPass);
         hideLoading();
         $("#set-oldpass").value = ""; $("#set-newpass").value = ""; $("#set-newpass2").value = "";
-        $("#pass-msg").innerHTML = `<div class="ok-box">✅ Password berhasil diubah!</div>`;
+        $("#pass-msg").innerHTML = `<div class="ok-box">✅ Password diubah!</div>`;
         toast("Password diubah","success");
       }catch(e){
         hideLoading();
         let msg = e.message || e.code || "Gagal";
         if(e.code === "auth/wrong-password" || e.code === "auth/invalid-credential") msg = "Password lama salah";
-        else if(e.code === "auth/weak-password") msg = "Password baru terlalu lemah";
-        else if(e.code === "auth/requires-recent-login") msg = "Sesi sudah lama. Logout lalu login ulang.";
         $("#pass-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
       }
     });
 
-    /* GANTI EMAIL */
-    const btnEmail = $("#btn-save-email");
-    if(btnEmail) btnEmail.addEventListener("click", async ()=>{
-      const pass = $("#set-emailpass").value, newEmail = $("#set-newemail").value.trim();
-      if(!pass || !newEmail){ $("#email-msg").innerHTML = `<div class="err-box">Isi semua field</div>`; return; }
-      if(!newEmail.includes("@") || !newEmail.includes(".")){ $("#email-msg").innerHTML = `<div class="err-box">Format email tidak valid</div>`; return; }
-      if(newEmail === u.email){ $("#email-msg").innerHTML = `<div class="err-box">Email sama dengan yang sekarang</div>`; return; }
-      if(!confirm(`Ganti email ke ${newEmail}?\n\nEmail lama tetap aktif sampai kamu verifikasi email baru.`)) return;
-      showLoading("Memproses...");
-      try{
-        await Auth.updateEmail(pass, newEmail);
-        hideLoading();
-        $("#set-emailpass").value = ""; $("#set-newemail").value = "";
-        $("#email-msg").innerHTML = `<div class="ok-box">✅ Cek email <b>${esc(newEmail)}</b> — klik link verifikasi untuk selesaikan.</div>`;
-        toast("Email verifikasi terkirim!","success");
-      }catch(e){
-        hideLoading();
-        let msg = e.message || e.code || "Gagal";
-        if(e.code === "auth/wrong-password" || e.code === "auth/invalid-credential") msg = "Password salah";
-        else if(e.code === "auth/email-already-in-use") msg = "Email sudah dipakai akun lain";
-        else if(e.code === "auth/invalid-email") msg = "Format email tidak valid";
-        else if(e.code === "auth/requires-recent-login") msg = "Sesi sudah lama. Logout lalu login ulang.";
-        $("#email-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
-      }
-    });
-
-    /* LOGOUT */
     $("#btn-logout-here").addEventListener("click", async ()=>{
       if(!confirm("Logout dari device ini?")) return;
       await Auth.logout();
@@ -2616,7 +2999,7 @@ const PageSettings = {
 };
 
 /* =========================================================
-   PAGE: HELP
+   PAGE: HELP (FAQ)
    ========================================================= */
 const FAQ_DATA = [
   { cat:"akun", q:"Bagaimana cara daftar akun?",
@@ -2625,106 +3008,61 @@ const FAQ_DATA = [
        <p>Atau langsung pakai <b>Login dengan Google</b>.</p>` },
   { cat:"akun", q:"Kenapa saya harus verifikasi email?",
     a:`<p>Verifikasi email penting supaya:</p>
-       <ul><li>Akun aman dari spam / akun palsu</li><li>Bisa reset password</li><li>Bisa ganti email</li></ul>
+       <ul><li>Akun aman</li><li>Bisa reset password</li><li>Bisa ganti email</li></ul>
        <p>Cek inbox, klik link verifikasi. Cek juga folder <b>Spam</b>.</p>` },
   { cat:"akun", q:"Email verifikasi gak masuk, gimana?",
-    a:`<ol><li>Cek folder <b>Spam</b> / <b>Promotions</b></li>
-        <li>Tunggu 5-10 menit</li>
+    a:`<ol><li>Cek folder <b>Spam</b></li><li>Tunggu 5-10 menit</li>
         <li>Buka <b>Settings Account</b> → klik <b>Kirim Email Verifikasi</b></li>
         <li>Pastikan email tidak typo</li></ol>
        <div class="tip">💡 Login pakai Google gak perlu verifikasi.</div>` },
-  { cat:"akun", q:"Bagaimana cara ganti nama, password, atau email?",
-    a:`<p>Buka menu <b>Settings Account</b> dari drawer (icon ☰):</p>
-       <ul><li><b>Ganti Nama</b> — isi nama baru</li>
-           <li><b>Ganti Password</b> — butuh password lama</li>
-           <li><b>Ganti Email</b> — butuh password, verifikasi ke email baru</li></ul>` },
-  { cat:"akun", q:"Lupa password, bagaimana?",
-    a:`<p>Untuk sementara, hubungi admin via WhatsApp untuk reset manual.</p>
-       <div class="tip">💡 Login Google tidak punya password.</div>` },
   { cat:"bio", q:"Bagaimana cara bikin link-in-bio?",
     a:`<ol><li>Login ke akun</li><li>Dashboard → <b>✨ Bikin Link-in-Bio Baru</b></li>
         <li>Isi nama, bio, foto profil, banner</li><li>Tambah tombol link</li>
         <li>Pilih tema</li><li>Klik <b>Simpan</b></li></ol>
        <p>Link bio jadi: <code>vlink-bio.vercel.app/#/u/namamu</code></p>` },
-  { cat:"bio", q:"Gimana cara share link-in-bio saya?",
-    a:`<ul><li>Klik 📋 <b>Copy</b> di dashboard</li>
-        <li>Klik 📱 <b>QR</b> — download QR</li>
-        <li>Klik 👁️ <b>Preview</b> — buka di tab baru</li>
-        <li>Setelah Simpan, muncul modal Copy / WA</li></ul>` },
+  { cat:"bio", q:"Apa itu URL Kustom?",
+    a:`<p><b>URL Kustom</b> = fitur ganti slug bio kamu (Pro+).</p>
+       <p>Contoh: dari <code>varo-codexz-2</code> jadi <code>varocodexz</code></p>
+       <ul><li><b>Free</b>: gak bisa custom</li>
+           <li><b>Starter</b>: gak bisa custom</li>
+           <li><b>Pro</b>: 3x ganti/bulan</li>
+           <li><b>Ultimate</b>: unlimited + slug 1-2 karakter</li></ul>` },
   { cat:"bio", q:"Berapa jumlah bio link yang bisa saya buat?",
-    a:`<ul><li><b>Free</b>: 5 bio</li><li><b>Pro</b> (Rp 15.000/bln): 20 bio</li>
-        <li><b>Ultimate</b> (Rp 50.000 sekali): unlimited + PERMANEN</li></ul>` },
-  { cat:"bio", q:"Kenapa URL saya pakai nama seperti #/u/varo?",
-    a:`<p>URL bio dari nama (disebut <b>slug</b>):</p>
-       <ul><li>"Varo Codex" → <code>#/u/varo-codex</code></li>
-           <li>Kalau dipakai orang → <code>varo-codex-2</code></li></ul>` },
-  { cat:"bio", q:"Bisa pakai video untuk banner?",
-    a:`<p><b>Bisa!</b> Batasan:</p>
-       <ul><li>Maks <b>500 KB</b></li><li>Format MP4, WEBM, MOV</li>
-           <li>Durasi 2-5 detik, loop</li></ul>` },
-  { cat:"bio", q:"Kenapa upload foto gagal?",
-    a:`<p>Sistem otomatis compress, tapi ada limit:</p>
-       <ul><li>Foto profil/banner/thumbnail: max ~300 KB setelah compress</li></ul>` },
-  { cat:"bio", q:"Apa itu Link Lock?",
-    a:`<p><b>Link Lock</b> = mengunci bio dengan password (Pro+).</p>
-       <ol><li>Editor → section <b>Link Lock</b></li><li>Isi password</li><li>Simpan</li></ol>` },
+    a:`<ul><li><b>Free</b>: 5 bio</li><li><b>Starter</b>: 5 bio</li>
+        <li><b>Pro</b>: 20 bio</li><li><b>Ultimate</b>: unlimited ♾️</li></ul>` },
   { cat:"plan", q:"Apa saja plan yang tersedia?",
-    a:`<ul><li><b>Free</b> — Gratis, 5 bio, 1 tema</li>
-        <li><b>Pro</b> — Rp 15.000/bln, 20 bio, 6 tema, analytics, embed</li>
-        <li><b>Ultimate</b> — Rp 50.000 <b>SEKALI BAYAR</b> ♾️, unlimited bio, semua fitur + beta</li></ul>` },
+    a:`<ul>
+        <li><b>Free</b> — Rp 0, 5 bio, 1 tema</li>
+        <li><b>Starter</b> — Rp 5.000/bln, 5 bio, unlimited tombol, 3 tema, analytics</li>
+        <li><b>Pro</b> — Rp 15.000/bln, 20 bio, 6 tema, URL kustom, embed</li>
+        <li><b>Ultimate</b> — Rp 50.000 <b>SEKALI BAYAR</b> ♾️, unlimited, no watermark</li>
+       </ul>` },
   { cat:"plan", q:"Ultimate itu permanen? Beneran?",
     a:`<p><b>Iya, permanen!</b> Bayar Rp 50.000 sekali, akses selamanya.</p>
-       <ul><li>✅ Gak ada renewal bulanan</li><li>✅ Gak akan expired</li>
-           <li>✅ Unlimited bio selamanya</li><li>✅ Semua update fitur baru gratis</li></ul>` },
+       <ul><li>✅ Gak ada renewal</li><li>✅ Gak expired</li>
+           <li>✅ Unlimited bio</li><li>✅ No watermark</li></ul>` },
   { cat:"plan", q:"Bagaimana cara upgrade?",
     a:`<ol><li>Klik tombol <b>Upgrade</b></li><li>Klik <b>Donate di Tako</b></li>
         <li>Bayar</li><li>Kirim bukti ke WhatsApp admin</li>
         <li>Plan aktif dalam <b>1x24 jam</b></li></ol>` },
-  { cat:"plan", q:"Apakah plan Pro saya bisa kadaluarsa?",
-    a:`<p>Ya, Pro berlaku <b>30 hari</b>. Setelah kadaluarsa → turun ke Free.</p>
+  { cat:"plan", q:"Apakah plan Pro/Starter bisa kadaluarsa?",
+    a:`<p>Ya, Starter & Pro berlaku <b>30 hari</b>. Setelah kadaluarsa → turun ke Free.</p>
        <p>Kalau pilih <b>Ultimate</b>, gak ada kadaluarsa. 💎</p>` },
-  { cat:"partner", q:"Apa itu Logo Partner?",
-    a:`<p><b>Logo Partner</b> = logo perusahaan/brand kolaborasi (Pro+).</p>
-       <ol><li>Editor → <b>Logo Partner</b></li><li>Klik <b>Tambah Logo</b></li>
-           <li>Upload gambar</li><li>Isi nama + URL</li></ol>` },
-  { cat:"partner", q:"Saya mau collab dengan Varlinkbio, bagaimana?",
-    a:`<p>Chat admin via WhatsApp:</p>
-       <p style="text-align:center;margin:12px 0">
-         <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau collab dengan Varlinkbio')}" target="_blank" class="btn btn-green">💬 Chat Admin</a>
-       </p>` },
-  { cat:"dev", q:"Apa itu Dev Panel?",
-    a:`<p><b>Dev Panel</b> = panel khusus Developer. Fungsinya:</p>
-       <ul><li>Kelola user (ubah plan, hapus)</li><li>Lihat semua bio</li>
-           <li>Kelola Partner & Update Log</li><li>Ganti favicon situs</li></ul>` },
   { cat:"dev", q:"Kenapa login Google gagal di WhatsApp / Instagram?",
     a:`<p>Karena link dibuka di <b>in-app browser</b>. Google blokir login di situ.</p>
        <p><b>Solusi:</b></p>
        <ol><li>Tap titik tiga <b>⋮</b></li><li>Pilih <b>"Buka di Chrome"</b></li>
-           <li>Login Google lagi</li></ol>
-       <div class="tip">💡 Atau pakai login Email & Password.</div>` },
-  { cat:"dev", q:"Apakah Varlinkbio aman?",
-    a:`<p>Ya, kami pakai:</p>
-       <ul><li>🔥 Firebase Authentication</li><li>🔒 HTTPS</li>
-           <li>🛡️ Firestore Rules</li><li>📧 Email verification</li></ul>
-       <p>Kami <b>tidak</b> jual data kamu.</p>` },
-  { cat:"dev", q:"Apakah data saya bisa hilang?",
-    a:`<p>Data tersimpan di <b>Firebase (Google Cloud)</b>. Sarankan:</p>
-       <ul><li>Jangan simpan file > 500 KB</li><li>Backup manual kalau penting</li></ul>` },
+           <li>Login Google lagi</li></ol>` },
   { cat:"lain", q:"Siapa yang membuat Varlinkbio?",
     a:`<p>Dibuat oleh <b>Varoo</b> — developer Indonesia. ❤️</p>` },
   { cat:"lain", q:"Bagaimana cara kontak / lapor bug?",
-    a:`<ul><li>💬 WhatsApp: <b>+62 858-2305-8292</b></li>
-        <li>📧 Email: mynameisvaroo@gmail.com</li></ul>` },
-  { cat:"lain", q:"Bisakah saya pakai domain sendiri?",
-    a:`<p>Fitur custom domain sedang dikembangkan. Sementara semua bio pakai:</p>
-       <p style="text-align:center"><code>vlink-bio.vercel.app/#/u/namamu</code></p>` }
+    a:`<ul><li>💬 WhatsApp: <b>+62 858-2305-8292</b></li></ul>` }
 ];
 const FAQ_CATS = [
   { id:"all", label:"Semua", icon:"📚" },
   { id:"akun", label:"Akun", icon:"👤" },
   { id:"bio", label:"Bio & Link", icon:"🔗" },
   { id:"plan", label:"Plan", icon:"💎" },
-  { id:"partner", label:"Partner", icon:"🤝" },
   { id:"dev", label:"Teknis", icon:"🔧" },
   { id:"lain", label:"Lainnya", icon:"✨" }
 ];
@@ -2783,7 +3121,7 @@ const PageHelp = {
       );
     }
     if(!list.length){
-      el.innerHTML = `<div class="help-empty">🔍 Gak ada hasil untuk "${esc(this.state.search)}". Coba kata kunci lain atau chat admin.</div>`;
+      el.innerHTML = `<div class="help-empty">🔍 Gak ada hasil untuk "${esc(this.state.search)}".</div>`;
       return;
     }
     const catLabel = (cid) => (FAQ_CATS.find(c=>c.id===cid) || {}).label || cid;
@@ -2806,7 +3144,7 @@ const PageHelp = {
 };
 
 /* =========================================================
-   PAGE: EDITOR
+   PAGE: EDITOR (v20 — Custom Slug UI)
    ========================================================= */
 const PageEditor = {
   newDraft(){
@@ -2828,6 +3166,7 @@ const PageEditor = {
     const d = STATE.draft;
     if(!Array.isArray(d.logos)) d.logos = [];
     if(!Array.isArray(d.links)) d.links = [];
+    if(d._slugManual === undefined) d._slugManual = false;
 
     $("#app").innerHTML = `
       ${renderTopbar()}
@@ -2842,8 +3181,25 @@ const PageEditor = {
       </div>
       <div class="editor-layout">
         <div class="editor-panel">
+
+          <!-- 1. Banner (pindah ke atas) -->
           <div class="editor-section">
-            <h3><span class="num">1</span> Foto Profil</h3>
+            <h3><span class="num">1</span> Banner</h3>
+            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><small>JPG, PNG, WEBP, MP4 (max 500KB)</small><input type="file" id="bn-input" accept="image/*,video/*"/></div>
+            ${d.banner
+              ? (d.bannerType==="video"
+                  ? `<video class="upload-preview show" src="${esc(d.banner)}" autoplay muted loop playsinline style="object-fit:cover"></video>`
+                  : `<img class="upload-preview show" src="${esc(d.banner)}"/>`)
+              : `<img class="upload-preview" style="display:none"/>`}
+            <button class="btn btn-sm btn-red btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus Banner</button>
+            <div class="hint" style="font-size:11px;color:var(--ink-soft);margin-top:6px;font-weight:500">
+              💡 Banner muncul <b>di atas foto profil</b>, bentuk tipis (110px tinggi).
+            </div>
+          </div>
+
+          <!-- 2. Foto Profil -->
+          <div class="editor-section">
+            <h3><span class="num">2</span> Foto Profil</h3>
             <div class="profile-upload">
               <div class="pbox" id="pbox">
                 ${d.profile?`<img src="${esc(d.profile)}">`:`<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--ink)">${ico('camera')}</div>`}
@@ -2852,50 +3208,82 @@ const PageEditor = {
               </div>
             </div>
           </div>
+
+          <!-- 3. Nama & Bio -->
           <div class="editor-section">
-            <h3><span class="num">2</span> Nama & Bio</h3>
+            <h3><span class="num">3</span> Nama & Bio</h3>
             <div class="field"><label>Nama</label><input id="f-name" type="text" maxlength="40" value="${esc(d.name)}" placeholder="Nama kamu"/></div>
             ${d.id?`<div class="slug-preview">URL publik: <b>${PUBLIC_BASE_URL}/#/u/${esc(d.slug||"...")}</b></div>`:`<div class="slug-preview">URL akan otomatis dibuat dari nama kamu.</div>`}
             <div class="field" style="margin-top:12px"><label>Bio / Subtitle</label><textarea id="f-bio" maxlength="160" placeholder="Tulis bio singkat...">${esc(d.bio)}</textarea></div>
           </div>
+
+          <!-- 4. URL KUSTOM (Pro+) -->
+          ${canDo("customSlug")?`
           <div class="editor-section">
-            <h3><span class="num">3</span> Banner</h3>
-            <div class="upload-box"><div class="ui">${ico('image')}</div><p>Upload banner</p><small>JPG, PNG, WEBP, MP4 (max 500KB)</small><input type="file" id="bn-input" accept="image/*,video/*"/></div>
-            ${d.banner
-              ? (d.bannerType==="video"
-                  ? `<video class="upload-preview show" src="${esc(d.banner)}" autoplay muted loop playsinline style="object-fit:cover"></video>`
-                  : `<img class="upload-preview show" src="${esc(d.banner)}"/>`)
-              : `<img class="upload-preview" style="display:none"/>`}
-            <button class="btn btn-sm btn-red btn-block" id="bn-clear" style="margin-top:8px;${d.banner?"":"display:none"}">${ico('trash')} Hapus Banner</button>
+            <h3><span class="num">★</span> URL Kustom <span class="beta-only-badge">${STATE.plan.id.toUpperCase()}</span></h3>
+            <div class="field">
+              <label>URL Publik Kamu</label>
+              <div class="slug-preview">
+                ${PUBLIC_BASE_URL}/#/u/<b id="slug-display">${esc(d.slug||"...")}</b>
+              </div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Ganti Slug</label>
+              <div style="display:flex;gap:6px">
+                <input id="f-slug" type="text" maxlength="30" 
+                  placeholder="contoh: varcodexz" 
+                  value="${esc(d.slug||"")}"
+                  style="flex:1;font-family:var(--mono);font-size:13px"/>
+                <button class="btn btn-sm btn-primary" id="btn-check-slug">Cek</button>
+              </div>
+              <div class="hint" id="slug-hint" style="margin-top:6px">
+                ${STATE.plan.features.slugChangesPerMonth === -1 
+                  ? "♾️ Unlimited ganti slug (Ultimate)" 
+                  : `Bisa ganti ${STATE.plan.features.slugChangesPerMonth}x/bulan · Min ${STATE.plan.features.slugMinLength} karakter`}
+              </div>
+              <div id="slug-msg" style="margin-top:6px"></div>
+            </div>
           </div>
+          `:''}
+
+          <!-- 5. Logo Partner -->
           ${canDo("logos")?`
           <div class="editor-section">
-            <h3><span class="num">4</span> Logo Partner</h3>
+            <h3><span class="num">5</span> Logo Partner</h3>
             <div class="field">
-              <label style="font-size:12px">Logo kerjasama (muncul di bawah profil bio)</label>
+              <label style="font-size:12px">Logo kerjasama (muncul di bawah profil)</label>
               <div id="logos-list" class="logo-list"></div>
               <button class="btn btn-sm btn-block" id="add-logo" style="margin-top:8px">${ico('plus')} Tambah Logo</button>
             </div>
           </div>`:''}
+
+          <!-- 6. Tombol Link -->
           <div class="editor-section">
-            <h3><span class="num">${canDo("logos")?"5":"4"}</span> Tombol Link</h3>
+            <h3><span class="num">${canDo("logos")?"6":"5"}</span> Tombol Link</h3>
             <div id="links-list" class="links-list"></div>
             <button class="btn btn-sm btn-block" id="add-link" style="margin-top:10px">${ico('plus')} Tambah Link</button>
           </div>
+
+          <!-- 7. Tema -->
           <div class="editor-section">
-            <h3><span class="num">${canDo("logos")?"6":"5"}</span> Tema</h3>
+            <h3><span class="num">${canDo("logos")?"7":"6"}</span> Tema</h3>
             <div class="theme-grid" id="theme-grid"></div>
           </div>
+
+          <!-- 8. Animasi (Ultimate) -->
           ${canDo("animations")?`
           <div class="editor-section">
-            <h3><span class="num">${canDo("logos")?"7":"6"}</span> Animasi Tombol <span class="beta-only-badge">BETA</span></h3>
+            <h3><span class="num">${canDo("logos")?"8":"7"}</span> Animasi Tombol <span class="beta-only-badge">BETA</span></h3>
             <div class="opt-grid" id="anim-grid"></div>
           </div>`:''}
+
+          <!-- 9. Link Lock (Pro+) -->
           ${canDo("linkLock")?`
           <div class="editor-section">
             <h3><span class="num">★</span> ${ico('lock')} Link Lock</h3>
             <div class="field"><label>Password (kosong = tidak dikunci)</label><input id="f-lock" type="text" value="${esc(d.lock||"")}" placeholder="Password..."/></div>
           </div>`:''}
+
         </div>
         <div class="editor-preview">
           <div class="preview-phone"><iframe id="prev-frame" sandbox="allow-scripts"></iframe></div>
@@ -2917,6 +3305,7 @@ const PageEditor = {
     $("#btn-save2").addEventListener("click",()=>this.save());
     const qrBtn=$("#btn-qr"); if(qrBtn) qrBtn.addEventListener("click",()=>PageDashboard.qr(STATE.draft.id));
     const cpBtn=$("#btn-copy-top"); if(cpBtn) cpBtn.addEventListener("click",()=>copyLink(STATE.draft));
+
     const pInput=$("#p-input");
     if(pInput) pInput.addEventListener("change", async e=>{
       const f=e.target.files[0]; if(!f) return;
@@ -2929,9 +3318,50 @@ const PageEditor = {
         hideLoading(); toast("Profil diupdate","success"); this.updatePreview();
       }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
     });
+
     const fn=$("#f-name"); if(fn) fn.addEventListener("input",e=>{ STATE.draft.name=e.target.value; this.updatePreview(); });
     const fb=$("#f-bio"); if(fb) fb.addEventListener("input",e=>{ STATE.draft.bio=e.target.value; this.updatePreview(); });
     const fl=$("#f-lock"); if(fl) fl.addEventListener("input",e=>{ STATE.draft.lock=e.target.value; });
+
+    // === CUSTOM SLUG HANDLER ===
+    const btnCheckSlug = $("#btn-check-slug");
+    if(btnCheckSlug){
+      btnCheckSlug.addEventListener("click", async ()=>{
+        const raw = $("#f-slug").value;
+        const plan = STATE.plan;
+        const v = validateSlug(raw, plan);
+        const msgEl = $("#slug-msg");
+        
+        if(!v.ok){
+          msgEl.innerHTML = `<div style="background:var(--red);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">❌ ${esc(v.msg)}</div>`;
+          return;
+        }
+        
+        showLoading("Cek ketersediaan...");
+        const available = await checkSlugAvailable(v.slug, STATE.draft.id);
+        hideLoading();
+        
+        if(!available){
+          msgEl.innerHTML = `<div style="background:var(--red);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">❌ URL "${esc(v.slug)}" sudah dipakai</div>`;
+          return;
+        }
+        
+        msgEl.innerHTML = `<div style="background:var(--green);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">✅ URL "${esc(v.slug)}" tersedia! Klik Simpan untuk apply.</div>`;
+        STATE.draft.slug = v.slug;
+        STATE.draft._slugManual = true;
+        STATE.draft.slugChangedAt = Date.now();
+        $("#slug-display").textContent = v.slug;
+      });
+    }
+
+    const fSlug = $("#f-slug");
+    if(fSlug){
+      fSlug.addEventListener("input", e=>{
+        const cleaned = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
+        e.target.value = cleaned;
+      });
+    }
+
     const bnInput=$("#bn-input");
     if(bnInput) bnInput.addEventListener("change", async e=>{
       const f=e.target.files[0]; if(!f) return;
@@ -3191,7 +3621,7 @@ const PageEditor = {
 };
 
 /* =========================================================
-   PAGE: DEV PANEL
+   PAGE: DEV PANEL (v20 — 4 plan user, no developer option)
    ========================================================= */
 const PageDev = {
   state: { users:[], bios:[], partners:[], updates:[], filter:"all", search:"", tab:"users", settings:{} },
@@ -3249,14 +3679,14 @@ const PageDev = {
     }
   },
   renderStats(){
-    const users = this.state.users;
-    const countBy = (p)=>users.filter(u=>isDev(u.email) ? p==="developer" : (u.plan||"free")===p).length;
+    const users = this.state.users.filter(u => !isDev(u.email)); // exclude dev dari count
+    const countBy = (p)=>users.filter(u=> (u.plan||"free")===p).length;
     $("#dev-stats").innerHTML = `
-      <div class="dev-stat"><div class="sv">${users.length}</div><div class="sl">Total Users</div></div>
+      <div class="dev-stat"><div class="sv">${users.length}</div><div class="sl">Total User</div></div>
       <div class="dev-stat dev-free"><div class="sv">${countBy("free")}</div><div class="sl">Free</div></div>
+      <div class="dev-stat dev-starter"><div class="sv">${countBy("starter")}</div><div class="sl">Starter</div></div>
       <div class="dev-stat dev-pro"><div class="sv">${countBy("pro")}</div><div class="sl">Pro</div></div>
       <div class="dev-stat dev-ultimate"><div class="sv">${countBy("ultimate")}</div><div class="sl">Ultimate</div></div>
-      <div class="dev-stat dev-dev"><div class="sv">${countBy("developer")}</div><div class="sl">Developer</div></div>
       <div class="dev-stat"><div class="sv">${this.state.bios.length}</div><div class="sl">Total Bio</div></div>`;
   },
   renderTab(){
@@ -3276,9 +3706,9 @@ const PageDev = {
         <select id="dev-filter">
           <option value="all">Semua Plan</option>
           <option value="free" ${filter==="free"?"selected":""}>Free</option>
+          <option value="starter" ${filter==="starter"?"selected":""}>Starter</option>
           <option value="pro" ${filter==="pro"?"selected":""}>Pro</option>
           <option value="ultimate" ${filter==="ultimate"?"selected":""}>Ultimate</option>
-          <option value="developer" ${filter==="developer"?"selected":""}>Developer</option>
         </select>`:''}
         <button class="btn btn-sm" id="dev-refresh">${ico('back')} Refresh</button>
       </div>
@@ -3303,13 +3733,13 @@ const PageDev = {
     const matchSearch = (s)=> !search || (s||"").toLowerCase().includes(search);
     if(tab === "users"){
       let list = this.state.users.filter(u=>{
-        const plan = isDev(u.email) ? "developer" : (u.plan||"free");
+        const plan = u.plan||"free";
         if(filter !== "all" && plan !== filter) return false;
         return matchSearch(u.email) || matchSearch(u.name);
       });
       if(!list.length){ wrap.innerHTML = `<div class="empty-state"><p>Tidak ada user.</p></div>`; return; }
       wrap.innerHTML = list.map(u=>{
-        const plan = isDev(u.email) ? "developer" : (u.plan||"free");
+        const plan = u.plan||"free";
         const bios = this.state.bios.filter(b=>b.ownerUid===u.uid).length;
         const expiry = u.planExpiry ? new Date(u.planExpiry).toLocaleDateString("id-ID") : (plan==="ultimate"?"♾️ PERMANEN":"—");
         const initial = (u.name||u.email||"?")[0].toUpperCase();
@@ -3382,7 +3812,7 @@ const PageDev = {
     const wrap = $("#partner-list");
     const list = this.state.partners || [];
     if(!list.length){
-      wrap.innerHTML = `<div class="mgr-empty">Belum ada partner. Klik "Tambah Partner" untuk mulai.</div>`;
+      wrap.innerHTML = `<div class="mgr-empty">Belum ada partner.</div>`;
       return;
     }
     wrap.innerHTML = list.map(p=>`
@@ -3492,7 +3922,7 @@ const PageDev = {
     const wrap = $("#update-list");
     const list = this.state.updates || [];
     if(!list.length){
-      wrap.innerHTML = `<div class="mgr-empty">Belum ada update. Klik "Tambah Update" untuk mulai.</div>`;
+      wrap.innerHTML = `<div class="mgr-empty">Belum ada update.</div>`;
       return;
     }
     wrap.innerHTML = list.map(u=>`
@@ -3588,8 +4018,8 @@ const PageDev = {
         <div class="fp-card">
           <h3>${ico('image')} Favicon Situs Varlinkbio</h3>
           <p class="fp-desc">
-            Ganti icon kecil yang muncul di <b>tab browser</b> — di semua halaman Varlinkbio & Varlink.
-            Format: PNG / ICO / SVG ukuran kotak (rekomendasi 128×128 atau 256×256).
+            Ganti icon kecil yang muncul di <b>tab browser</b>.
+            Format: PNG / ICO / SVG ukuran kotak (rekomendasi 128×128).
           </p>
           <div class="favicon-preview-big">
             <div class="fp-thumb" id="fp-thumb">
@@ -3643,7 +4073,7 @@ const PageDev = {
     $("#fp-thumb")?.addEventListener("click", uploadFn);
     $("#fp-upload")?.addEventListener("click", uploadFn);
     $("#fp-clear")?.addEventListener("click", async ()=>{
-      if(!confirm("Hapus favicon? Akan kembali ke default.")) return;
+      if(!confirm("Hapus favicon?")) return;
       showLoading("Menghapus...");
       try{
         await Store.saveSettings({ favicon: "" });
@@ -3671,17 +4101,17 @@ const PageDev = {
         <label>Plan</label>
         <select id="dev-edit-plan" style="padding:12px;font-weight:800">
           <option value="free" ${curPlan==="free"?"selected":""}>Free</option>
+          <option value="starter" ${curPlan==="starter"?"selected":""}>Starter</option>
           <option value="pro" ${curPlan==="pro"?"selected":""}>Pro</option>
           <option value="ultimate" ${curPlan==="ultimate"?"selected":""}>Ultimate ♾️ (Permanen)</option>
-          <option value="developer" ${curPlan==="developer"?"selected":""}>Developer</option>
         </select>
       </div>
-      <div class="field" id="dev-expiry-field" style="${curPlan==="ultimate"||curPlan==="developer"?"display:none":""}">
+      <div class="field" id="dev-expiry-field" style="${curPlan==="ultimate"?"display:none":""}">
         <label>Tanggal Kadaluarsa (opsional)</label>
         <input type="date" id="dev-edit-expiry" value="${expiry}"/>
         <div class="hint">Kosongkan = tidak kadaluarsa</div>
       </div>
-      <div class="field" id="dev-perm-info" style="${curPlan==="ultimate"||curPlan==="developer"?"":"display:none"}">
+      <div class="field" id="dev-perm-info" style="${curPlan==="ultimate"?"":"display:none"}">
         <div style="background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px 12px;font-size:12.5px;font-weight:700">
           ♾️ Plan ini <b>PERMANEN</b> — tidak butuh tanggal kadaluarsa.
         </div>
@@ -3691,13 +4121,13 @@ const PageDev = {
     `);
     $("#dev-edit-plan",m).addEventListener("change", (e)=>{
       const v = e.target.value;
-      const isPerm = v === "ultimate" || v === "developer";
+      const isPerm = v === "ultimate";
       $("#dev-expiry-field",m).style.display = isPerm ? "none" : "";
       $("#dev-perm-info",m).style.display = isPerm ? "" : "none";
     });
     $("#dev-edit-save",m).addEventListener("click", async ()=>{
       const newPlan = $("#dev-edit-plan",m).value;
-      const isPerm = newPlan === "ultimate" || newPlan === "developer";
+      const isPerm = newPlan === "ultimate";
       const expiryVal = isPerm ? "" : $("#dev-edit-expiry",m).value;
       const expiryMs = expiryVal ? new Date(expiryVal).getTime() : null;
       showLoading("Menyimpan...");
@@ -3734,7 +4164,7 @@ const PageDev = {
 };
 
 /* =========================================================
-   PAGE: PUBLIC VIEWER (fallback)
+   PAGE: PUBLIC VIEWER (v20 — banner atas, watermark logic)
    ========================================================= */
 const PagePublic = {
   buildHTML(d, opts={}){
@@ -3767,7 +4197,7 @@ const PagePublic = {
       : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
     const bannerBlock = renderBannerHTML(d);
     const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
-    const badgeMap = { pro:"PRO", ultimate:"ULTIMATE", developer:"DEV" };
+    const badgeMap = { starter:"STARTER", pro:"PRO", ultimate:"ULTIMATE" };
     const badge = badgeMap[d.ownerPlan] || "";
     const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
     const logosHtml = (Array.isArray(d.logos) && d.logos.filter(lg=>lg.img).length)
@@ -3788,6 +4218,11 @@ const PagePublic = {
     const pageImage = d.profile || d.banner || "";
     const appFav = STATE.appSettings?.favicon || "";
     const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
+    // Watermark: tampil kecuali plan noWatermark (Ultimate & Dev)
+    const showWatermark = d.showWatermark !== false;
+    const watermarkHtml = showWatermark
+      ? `<div class="bio-footer">Powered by <a href="${PUBLIC_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>`
+      : `<div class="bio-footer" style="opacity:.5">by Varoo</div>`;
     return `<!DOCTYPE html>
 <html lang="id"><head>
 <meta charset="UTF-8"/>
@@ -3806,6 +4241,7 @@ ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
 <div class="bio-deco d1"></div><div class="bio-deco d2"></div><div class="bio-deco d3"></div>
 <div class="bio-wrap ${themeClass} ${animCls}">
   <div class="bio-inner">
+    ${bannerBlock}
     <div class="bio-header">
       <div class="bio-avatar">${profileBlock}</div>
       <div class="bio-title-top">Bio Link</div>
@@ -3814,11 +4250,8 @@ ${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
       ${badgeHtml}
     </div>
     ${logosHtml}
-    ${bannerBlock}
     <div class="bio-links">${links}</div>
-    <div style="text-align:center">
-      <div class="bio-footer">Powered by <a href="${PUBLIC_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>
-    </div>
+    <div style="text-align:center">${watermarkHtml}</div>
   </div>
 </div>
 ${isLocked?`
@@ -3879,16 +4312,16 @@ img,video{max-width:100%;display:block}
 .bio-name{display:inline-block;padding:7px 18px;background:var(--yellow);color:var(--ink);font-size:21px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(2deg);margin-top:-4px;box-shadow:5px 5px 0 var(--ink);text-align:center;max-width:100%;word-break:break-word;z-index:2}
 .bio-bio{display:inline-block;padding:6px 14px;background:var(--red);color:var(--white);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;word-break:break-word;z-index:1}
 .bio-plan-badge{display:inline-block;padding:3px 12px;background:var(--ink);color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
+.bio-plan-badge.starter{background:var(--green);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
 .bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
-.bio-plan-badge.developer{background:var(--red);color:#fff;border-color:var(--ink)}
 .bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
 .bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);background:var(--white);overflow:hidden;display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
 .bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-.bio-banner{width:100%;max-width:320px;margin:0 auto 18px;aspect-ratio:16/9;border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
+.bio-banner{width:100%;max-width:100%;margin:0 auto 16px;height:110px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
 .bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:480px){.bio-banner{max-width:100%}}
+@media(max-width:480px){.bio-banner{height:95px;margin-bottom:14px}}
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;border:3px solid var(--ink);border-radius:12px;font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;position:relative;transition:transform .12s, box-shadow .12s;box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
 @keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -4010,11 +4443,23 @@ Router.on("/u/:id",     (id)=>PagePublic.render(id));
 Router.on("/404",       ()=>Router.navigate("/"));
 
 /* =========================================================
-   BOOT
+   BOOT (v20)
    ========================================================= */
 (async function boot(){
   showLoading("Memuat...");
+  Sound.init();
+  bindGlobalSound();
   await applyAppFavicon();
+
+  // 0) Cek Action URL Firebase (oobCode dari email verifikasi)
+  const fullSearch = location.search.slice(1) || "";
+  const fullParams = new URLSearchParams(fullSearch);
+  if(fullParams.get("oobCode")){
+    location.replace(location.pathname + `#/verify?${fullSearch}`);
+    return;
+  }
+
+  // 1) Handle redirect result
   try{
     const redirectUser = await Auth.handleRedirectResult();
     if(redirectUser && redirectUser.__error){
@@ -4022,12 +4467,53 @@ Router.on("/404",       ()=>Router.navigate("/"));
       console.warn("Redirect error:", err.code, err.message);
     }
   }catch(e){ console.warn("boot redirect:", e); }
+
+  // 2) Init Auth
   await Auth.init();
+
+  // 3) Kalau habis redirect tapi Auth.current masih null → tunggu sync
+  if(!Auth.current){
+    await new Promise(resolve => {
+      let done = false;
+      const finish = ()=>{ if(!done){ done = true; resolve(); } };
+      const unsub = FB.auth.onAuthStateChanged(async user => {
+        if(user){
+          try{
+            let name = user.displayName || (user.email||"").split("@")[0];
+            try{
+              const doc = await FB.db.collection("users").doc(user.uid).get();
+              if(doc.exists && doc.data().name) name = doc.data().name;
+            }catch(e){}
+            const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
+            Auth.current = {
+              uid: user.uid, email: user.email, name,
+              photo: user.photoURL || "",
+              emailVerified: user.emailVerified || isGoogleProvider,
+              isGoogle: isGoogleProvider
+            };
+          }catch(e){ console.warn("post-redirect user:", e); }
+        }
+        unsub();
+        finish();
+      });
+      setTimeout(finish, 3000);
+    });
+  }
+
+  // 4) Load plan
   if(Auth.current) await loadUserPlan();
   hideLoading();
-  if(!location.hash) location.hash = Auth.current ? "#/dashboard" : "#/";
+
+  // 5) Redirect logic
+  const hashPath = (location.hash.slice(1) || "/").split("?")[0];
+  if(Auth.current && (hashPath === "/login" || hashPath === "/register" || hashPath === "/")){
+    location.hash = "#/dashboard";
+  } else if(!location.hash){
+    location.hash = Auth.current ? "#/dashboard" : "#/";
+  }
+
   Router.start();
 })();
-</script>
+  </script>
 </body>
-  </html>
+</html>

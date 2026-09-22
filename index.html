@@ -21,8 +21,6 @@
   --border:2.5px solid var(--ink);--radius:10px;
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --app-domain:'varlinkbio-site.vercel.app';
-  --bio-domain:'vlink-bio.vercel.app';
 }
 html,body{height:100%;font-family:var(--font);color:var(--ink);
   font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -39,6 +37,7 @@ body{background-color:var(--cream);
 #app{min-height:100vh}
 body.public-mode{overflow:hidden;height:100vh;height:100dvh}
 body.public-mode #app{min-height:0;height:100vh;height:100dvh;overflow:hidden}
+body.tour-active{overflow:hidden!important}
 .hidden{display:none!important}
 a{color:var(--ink);text-decoration:none}
 button{font-family:inherit;font-size:15px;cursor:pointer;border:none;outline:none;
@@ -50,18 +49,12 @@ input:focus,textarea:focus,select:focus{box-shadow:var(--shadow-sm)}
 input::placeholder,textarea::placeholder{color:#888;font-weight:500}
 textarea{resize:vertical;min-height:80px}
 
-/* =========================================================
-   IKON
-   ========================================================= */
 .ic{width:16px;height:16px;display:inline-block;vertical-align:middle;
   stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;
   stroke-linejoin:round;flex-shrink:0}
 .ic-sm{width:12px;height:12px}
 .ic-lg{width:20px;height:20px}
 
-/* =========================================================
-   TOMBOL
-   ========================================================= */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
   padding:11px 18px;border-radius:var(--radius);font-weight:800;font-size:13.5px;
   white-space:nowrap;background:var(--white);color:var(--ink);
@@ -84,9 +77,6 @@ textarea{resize:vertical;min-height:80px}
 .card{background:var(--white);border:var(--border);border-radius:var(--radius);
   box-shadow:var(--shadow);padding:18px}
 
-/* =========================================================
-   TOAST
-   ========================================================= */
 #toast-container{position:fixed;top:16px;right:16px;z-index:9999;display:flex;
   flex-direction:column;gap:8px;pointer-events:none;max-width:calc(100vw - 32px)}
 .toast{background:var(--white);border:var(--border);border-radius:var(--radius);
@@ -97,9 +87,6 @@ textarea{resize:vertical;min-height:80px}
 .toast.info{background:var(--yellow)}
 @keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
-/* =========================================================
-   LOADING
-   ========================================================= */
 #loading-overlay{position:fixed;inset:0;background:rgba(240,235,224,.85);z-index:10000;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
   font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:1px}
@@ -122,6 +109,23 @@ textarea{resize:vertical;min-height:80px}
   color:var(--yellow);border-radius:50%;display:grid;place-items:center;
   font-size:15px;font-weight:900;border:2.5px solid var(--ink);
   box-shadow:2px 2px 0 var(--red);flex-shrink:0}
+.lt-topbar .lt-back-btn{
+  width:34px;height:34px;background:var(--white);color:var(--ink);
+  border-radius:50%;display:grid;place-items:center;
+  border:2.5px solid var(--ink);box-shadow:2px 2px 0 var(--yellow);
+  cursor:pointer;flex-shrink:0;transition:transform .1s, box-shadow .1s;
+  padding:0;
+}
+.lt-topbar .lt-back-btn:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--yellow);
+  background:var(--yellow);
+}
+.lt-topbar .lt-back-btn:active{
+  transform:translate(2px,2px);
+  box-shadow:0 0 0 var(--yellow);
+}
+.lt-topbar .lt-back-btn .ic{width:18px;height:18px;stroke-width:3}
 .lt-topbar .lt-actions{display:flex;gap:6px;align-items:center}
 .lt-badge{padding:6px 12px;border-radius:999px;font-weight:900;font-size:11px;
   text-transform:uppercase;letter-spacing:.5px;border:2.5px solid var(--ink);
@@ -182,7 +186,6 @@ textarea{resize:vertical;min-height:80px}
 .lt-drawer-panel .menu-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .lt-drawer-panel .menu-item:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 
-/* Scrollbar */
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--cream-2)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--cream-2)}
@@ -218,7 +221,9 @@ textarea{resize:vertical;min-height:80px}
 .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
-/* Update section */
+/* =========================================================
+   UPDATE + PARTNER + PRICING
+   ========================================================= */
 .update-section{padding:40px 18px 50px;background:var(--white);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .update-header{text-align:center;margin-bottom:24px}
@@ -239,13 +244,11 @@ textarea{resize:vertical;min-height:80px}
   animation:pulseBadge 1.8s ease-in-out infinite}
 @keyframes pulseBadge{0%,100%{transform:rotate(8deg) scale(1)}
   50%{transform:rotate(8deg) scale(1.08)}}
-.update-item .u-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;
-  flex-wrap:wrap}
+.update-item .u-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
 .update-item .u-version{background:var(--ink);color:var(--yellow);
   font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 10px;
   border-radius:6px;letter-spacing:.5px}
-.update-item .u-date{font-size:11.5px;font-weight:700;color:var(--ink-soft);
-  font-family:var(--mono)}
+.update-item .u-date{font-size:11.5px;font-weight:700;color:var(--ink-soft);font-family:var(--mono)}
 .update-item .u-title{font-size:15px;font-weight:900;text-transform:uppercase;
   letter-spacing:.3px;margin-bottom:8px}
 .update-item .u-changes{list-style:none;padding:0;display:flex;flex-direction:column;gap:5px}
@@ -255,9 +258,6 @@ textarea{resize:vertical;min-height:80px}
   font-weight:900;color:var(--ink);font-size:14px}
 .update-empty{text-align:center;padding:30px 18px;color:var(--ink-soft);font-weight:600}
 
-/* =========================================================
-   PARTNER
-   ========================================================= */
 .partner-section{padding:40px 18px;background:var(--cream);
   border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
 .partner-header{text-align:center;margin-bottom:24px}
@@ -275,8 +275,7 @@ textarea{resize:vertical;min-height:80px}
 .partner-card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 .partner-card .p-logo{width:44px;height:44px;border-radius:50%;
   border:2.5px solid var(--ink);display:grid;place-items:center;
-  overflow:hidden;flex-shrink:0;font-weight:900;font-size:18px;
-  color:#fff;background:var(--ink)}
+  overflow:hidden;flex-shrink:0;font-weight:900;font-size:18px;color:#fff;background:var(--ink)}
 .partner-card .p-logo img{width:100%;height:100%;object-fit:cover}
 .partner-card .p-name{font-size:11.5px;font-weight:900;text-transform:uppercase;
   letter-spacing:.3px;line-height:1.2;word-break:break-word}
@@ -285,9 +284,6 @@ textarea{resize:vertical;min-height:80px}
 .partner-card.collab-cta{background:var(--yellow);border-style:dashed}
 .partner-card.collab-cta .p-logo{background:var(--ink);color:var(--yellow);font-size:22px}
 
-/* =========================================================
-   PRICING (4 PLAN)
-   ========================================================= */
 .pricing-section{padding:40px 18px 60px;background:var(--cream-2);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .pricing-header{text-align:center;margin-bottom:28px}
@@ -297,7 +293,6 @@ textarea{resize:vertical;min-height:80px}
   padding:2px 10px;box-shadow:4px 4px 0 var(--ink);display:inline-block;
   transform:rotate(-1deg);margin-top:6px}
 .pricing-header p{margin-top:14px;font-size:14px;font-weight:600}
-
 .starter-banner{max-width:900px;margin:0 auto 20px;background:var(--green);
   color:#fff;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;
   box-shadow:6px 6px 0 var(--ink);display:flex;align-items:center;
@@ -313,8 +308,6 @@ textarea{resize:vertical;min-height:80px}
   border:2.5px solid var(--ink);box-shadow:3px 3px 0 #fff;
   padding:10px 18px;border-radius:999px;font-weight:900;font-size:12px;
   text-transform:uppercase;letter-spacing:.5px;cursor:pointer;white-space:nowrap}
-.starter-banner .sb-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #fff}
-
 .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:16px;max-width:960px;margin:0 auto}
 .pricing-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
@@ -330,8 +323,7 @@ textarea{resize:vertical;min-height:80px}
 .pricing-card .pop-badge{position:absolute;top:-14px;right:-8px;background:var(--red);
   color:var(--white);font-size:11px;font-weight:900;padding:4px 10px;
   border:2.5px solid var(--ink);border-radius:999px;text-transform:uppercase;
-  letter-spacing:.5px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink);
-  animation:pulseBadge 1.8s ease-in-out infinite}
+  letter-spacing:.5px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--ink)}
 .pricing-card .perm-badge{position:absolute;top:-14px;left:-8px;background:var(--green);
   color:var(--white);font-size:11px;font-weight:900;padding:4px 10px;
   border:2.5px solid var(--white);border-radius:999px;text-transform:uppercase;
@@ -349,7 +341,7 @@ textarea{resize:vertical;min-height:80px}
   font-weight:900;font-size:14px;color:var(--green)}
 
 /* =========================================================
-   MODAL
+   MODAL + AUTH
    ========================================================= */
 .modal-back{position:fixed;inset:0;background:rgba(10,10,10,.7);z-index:500;
   display:grid;place-items:center;padding:18px;animation:fadeIn .15s ease}
@@ -358,15 +350,11 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:8px 8px 0 var(--ink);position:relative;
   animation:modalPop .25s cubic-bezier(.34,1.56,.64,1)}
 @keyframes modalPop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-.modal h3{font-size:16px;margin-bottom:14px;text-transform:uppercase;font-weight:900;
-  letter-spacing:.3px}
+.modal h3{font-size:16px;margin-bottom:14px;text-transform:uppercase;font-weight:900;letter-spacing:.3px}
 .modal .close-x{position:absolute;top:12px;right:14px;font-size:22px;
   color:var(--ink);cursor:pointer;background:none;border:none;line-height:1;font-weight:900}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* =========================================================
-   AUTH (LOGIN / REGISTER)
-   ========================================================= */
 .auth-page{min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:40px 18px}
 .auth-card{width:100%;max-width:400px;background:var(--white);
@@ -411,11 +399,9 @@ textarea{resize:vertical;min-height:80px}
 .dash-hero p{color:var(--ink);margin-top:14px;font-weight:600;font-size:14px}
 .dash-plan-card{max-width:520px;margin:0 auto 20px;background:var(--white);
   border:3px solid var(--ink);border-radius:14px;padding:16px;
-  box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;gap:14px;
-  flex-wrap:wrap}
+  box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .dash-plan-card .picon{width:48px;height:48px;border-radius:12px;
-  display:grid;place-items:center;flex-shrink:0;border:2.5px solid var(--ink);
-  background:var(--yellow)}
+  display:grid;place-items:center;flex-shrink:0;border:2.5px solid var(--ink);background:var(--yellow)}
 .dash-plan-card .picon .ic{width:22px;height:22px}
 .dash-plan-card .pinfo{flex:1;min-width:180px}
 .dash-plan-card .pinfo b{display:block;font-size:15px;font-weight:900;
@@ -463,13 +449,257 @@ textarea{resize:vertical;min-height:80px}
 .icon-btn.danger{background:var(--red);color:var(--white)}
 .icon-btn .ic{width:14px;height:14px}
 .empty-state{text-align:center;padding:40px 18px;color:var(--ink);
-  background:var(--white);border:var(--border);border-radius:var(--radius);
-  box-shadow:var(--shadow)}
+  background:var(--white);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
 .empty-state .ei{width:60px;height:60px;background:var(--yellow);border:var(--border);
   border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;
   box-shadow:var(--shadow-sm);animation:heroFloat 2.5s ease-in-out infinite}
 .empty-state .ei .ic{width:28px;height:28px}
 .empty-state p{margin-bottom:16px;font-weight:700}
+
+/* =========================================================
+   CHECKLIST (Dashboard)
+   ========================================================= */
+.onb-checklist{
+  background:linear-gradient(135deg,var(--ink),#2a2a2a);
+  border:3px solid var(--ink);
+  border-radius:14px;
+  padding:18px;
+  box-shadow:6px 6px 0 var(--yellow);
+  margin:0 auto 20px;
+  max-width:520px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.onb-checklist::before{
+  content:'🎯';
+  position:absolute;right:-10px;top:-15px;
+  font-size:80px;opacity:.08;
+  transform:rotate(-15deg);
+}
+.onb-checklist-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;flex-wrap:wrap;gap:8px;
+}
+.onb-checklist-head b{
+  font-size:15px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--yellow);
+  display:flex;align-items:center;gap:8px;
+}
+.onb-checklist-progress{
+  background:var(--yellow);color:var(--ink);
+  font-family:var(--mono);font-size:12px;
+  font-weight:900;padding:4px 12px;
+  border-radius:999px;border:2px solid var(--ink);
+}
+.onb-checklist-bar{
+  height:8px;background:rgba(255,255,255,.15);
+  border-radius:4px;overflow:hidden;margin-bottom:14px;
+}
+.onb-checklist-bar-fill{
+  height:100%;background:var(--green);
+  transition:width .5s ease;
+  border-radius:4px;
+  box-shadow:0 0 10px var(--green);
+}
+.onb-checklist-list{
+  list-style:none;padding:0;
+  display:flex;flex-direction:column;gap:6px;
+}
+.onb-check-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;
+  background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.15);
+  border-radius:8px;
+  font-size:13px;font-weight:600;
+  transition:all .2s;
+}
+.onb-check-item.done{
+  background:rgba(34,197,94,.15);
+  border-color:var(--green);
+  opacity:.7;
+}
+.onb-check-item.done .onb-check-text{
+  text-decoration:line-through;
+  text-decoration-color:var(--green);
+  text-decoration-thickness:2px;
+}
+.onb-check-box{
+  width:22px;height:22px;
+  border:2px solid rgba(255,255,255,.4);
+  border-radius:6px;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  transition:all .2s;
+}
+.onb-check-item.done .onb-check-box{
+  background:var(--green);border-color:var(--green);color:#fff;
+}
+.onb-check-box .ic{
+  width:14px;height:14px;
+  stroke-width:3.5;
+  opacity:0;
+  transition:opacity .2s;
+}
+.onb-check-item.done .onb-check-box .ic{opacity:1}
+.onb-check-text{flex:1}
+.onb-check-hint{
+  font-size:10.5px;font-weight:700;
+  opacity:.6;font-style:italic;
+}
+
+/* =========================================================
+   ONBOARDING TOUR
+   ========================================================= */
+.onb-overlay{
+  position:fixed;inset:0;z-index:99000;
+  background:rgba(10,10,10,.75);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;
+}
+.onb-overlay.active{opacity:1;pointer-events:auto}
+
+.onb-spotlight{
+  position:fixed;z-index:99001;pointer-events:none;
+  border:3px solid var(--yellow);
+  border-radius:12px;
+  box-shadow:0 0 0 9999px rgba(10,10,10,.75),
+             0 0 0 6px var(--ink),
+             0 0 30px 4px var(--yellow);
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  background:transparent;
+}
+
+.onb-popup{
+  position:relative;z-index:99010;
+  background:var(--white);
+  border:3px solid var(--ink);
+  border-radius:16px;
+  box-shadow:8px 8px 0 var(--ink);
+  max-width:400px;width:100%;
+  padding:20px;
+  animation:onbPop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes onbPop{
+  from{opacity:0;transform:scale(.85) translateY(20px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+.onb-progress{
+  display:flex;gap:4px;margin-bottom:14px;
+}
+.onb-progress-dot{
+  flex:1;height:6px;
+  background:var(--cream-2);
+  border-radius:3px;
+  transition:background .3s;
+}
+.onb-progress-dot.done{background:var(--green)}
+.onb-progress-dot.active{
+  background:var(--yellow);
+  animation:onbPulse 1.5s ease-in-out infinite;
+}
+@keyframes onbPulse{
+  0%,100%{opacity:1}
+  50%{opacity:.6}
+}
+
+.onb-icon{
+  width:60px;height:60px;
+  background:var(--yellow);
+  border:3px solid var(--ink);
+  border-radius:50%;
+  display:grid;place-items:center;
+  margin-bottom:12px;
+  box-shadow:3px 3px 0 var(--red);
+  font-size:28px;
+  transform:rotate(-5deg);
+  animation:onbIconFloat 2.5s ease-in-out infinite;
+}
+@keyframes onbIconFloat{
+  0%,100%{transform:rotate(-5deg) translateY(0)}
+  50%{transform:rotate(-5deg) translateY(-6px)}
+}
+
+.onb-step{
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--ink-soft);margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.onb-step-num{
+  background:var(--ink);color:var(--yellow);
+  padding:2px 8px;border-radius:6px;
+  font-family:var(--mono);font-size:10.5px;
+}
+
+.onb-title{
+  font-size:20px;font-weight:900;
+  text-transform:uppercase;letter-spacing:-.3px;
+  margin-bottom:8px;line-height:1.15;
+}
+.onb-desc{
+  font-size:13.5px;font-weight:600;
+  color:var(--ink-soft);line-height:1.55;
+  margin-bottom:18px;
+}
+.onb-desc b{color:var(--ink);font-weight:900}
+
+.onb-actions{
+  display:flex;gap:8px;align-items:center;
+}
+.onb-actions .btn{flex:1;padding:12px;font-size:13px}
+.onb-skip{
+  background:transparent;border:none;
+  color:var(--ink-soft);font-size:11.5px;
+  font-weight:800;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;
+  padding:8px;text-decoration:underline;
+  flex:0 0 auto;
+}
+.onb-skip:hover{color:var(--ink)}
+
+.onb-arrow{
+  position:fixed;z-index:99005;
+  width:0;height:0;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-top:20px solid var(--yellow);
+  filter:drop-shadow(0 2px 0 var(--ink));
+  animation:onbArrowBounce 1s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes onbArrowBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(8px)}
+}
+
+.onb-confetti{
+  position:fixed;inset:0;z-index:99004;
+  pointer-events:none;overflow:hidden;
+}
+.onb-confetti-piece{
+  position:absolute;top:-20px;
+  width:10px;height:14px;
+  animation:onbFall 3s linear infinite;
+}
+@keyframes onbFall{
+  0%{transform:translateY(0) rotate(0);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:.3}
+}
+
+@media(max-width:640px){
+  .onb-popup{padding:16px;max-width:calc(100% - 24px)}
+  .onb-icon{width:50px;height:50px;font-size:22px}
+  .onb-title{font-size:17px}
+  .onb-desc{font-size:12.5px}
+  .onb-actions{flex-direction:column-reverse}
+  .onb-skip{width:100%;text-align:center;order:3}
+}
 
 /* =========================================================
    EDITOR
@@ -585,7 +815,6 @@ textarea{resize:vertical;min-height:80px}
 .theme-item.locked{opacity:.55;cursor:not-allowed}
 .theme-item.locked::after{content:'🔒';position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);font-size:22px}
-.theme-item.locked:hover{transform:none}
 .theme-item .label{position:absolute;bottom:0;left:0;right:0;padding:4px;
   background:rgba(10,10,10,.85);font-size:10.5px;font-weight:900;text-align:center;
   color:#fff;text-transform:uppercase;letter-spacing:.3px}
@@ -614,7 +843,7 @@ textarea{resize:vertical;min-height:80px}
 .editor-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 
 /* =========================================================
-   QR
+   QR + STATS + SETTINGS + HELP
    ========================================================= */
 .qr-box{text-align:center;padding:14px;background:var(--white);border:var(--border);
   border-radius:var(--radius);display:inline-block;margin:10px auto;
@@ -623,20 +852,14 @@ textarea{resize:vertical;min-height:80px}
 .qr-url{font-family:var(--mono);font-size:11.5px;word-break:break-all;
   text-align:center;margin-top:10px;font-weight:600;
   background:var(--cream);padding:8px;border-radius:6px;border:1.5px solid var(--ink)}
-
-/* QR Custom options */
 .qr-custom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin:12px 0}
 .qr-color-opt{aspect-ratio:1;border-radius:10px;border:2.5px solid var(--ink);
   cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:transform .1s}
 .qr-color-opt:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .qr-color-opt.active{box-shadow:0 0 0 3px var(--yellow), 2px 2px 0 var(--ink)}
 
-/* =========================================================
-   UPGRADE MODAL
-   ========================================================= */
 .upgrade-box{text-align:center}
-.upgrade-box .plan-title{font-size:22px;font-weight:900;text-transform:uppercase;
-  margin-bottom:6px}
+.upgrade-box .plan-title{font-size:22px;font-weight:900;text-transform:uppercase;margin-bottom:6px}
 .upgrade-box .steps{text-align:left;background:var(--cream);border:2px solid var(--ink);
   border-radius:var(--radius);padding:14px;margin-bottom:14px;font-size:13px;
   font-weight:600;line-height:1.6}
@@ -658,9 +881,6 @@ textarea{resize:vertical;min-height:80px}
   flex-shrink:0;margin-left:10px}
 .upgrade-box .plan-option .po-price small{font-size:10px;font-weight:700;display:block;opacity:.7}
 
-/* =========================================================
-   STATS (Analytics)
-   ========================================================= */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
   gap:10px;margin-bottom:18px}
 .stat-card{background:var(--white);border:var(--border);border-radius:var(--radius);
@@ -683,7 +903,6 @@ textarea{resize:vertical;min-height:80px}
 .link-stat .ls-count{font-weight:900;font-size:14px;flex-shrink:0;
   background:var(--ink);color:var(--white);padding:2px 8px;border-radius:6px}
 
-/* Chart */
 .chart-wrap{background:var(--white);border:var(--border);border-radius:var(--radius);
   padding:16px;box-shadow:var(--shadow-sm);margin-bottom:16px;overflow-x:auto}
 .chart-wrap h4{font-size:12px;text-transform:uppercase;letter-spacing:.5px;
@@ -699,7 +918,6 @@ textarea{resize:vertical;min-height:80px}
 .chart-bar-val{position:absolute;top:-16px;left:50%;transform:translateX(-50%);
   font-size:9px;font-weight:900;color:var(--ink)}
 
-/* Badge Hot 🔥 */
 .hot-badge{display:inline-flex;align-items:center;gap:3px;
   background:var(--red);color:#fff;font-size:9.5px;font-weight:900;
   padding:2px 7px;border-radius:999px;border:1.5px solid var(--ink);
@@ -707,9 +925,6 @@ textarea{resize:vertical;min-height:80px}
   animation:pulseHot 1.5s ease-in-out infinite}
 @keyframes pulseHot{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 
-/* =========================================================
-   SETTINGS
-   ========================================================= */
 .settings-page{max-width:640px;margin:0 auto;padding:20px 18px 80px}
 .settings-hero{text-align:center;padding:20px 0 24px}
 .settings-hero .avatar-big{width:88px;height:88px;border-radius:50%;
@@ -742,9 +957,6 @@ textarea{resize:vertical;min-height:80px}
 .settings-section.danger{border-color:var(--red)}
 .settings-section.danger h3{background:var(--red)}
 
-/* =========================================================
-   HELP (FAQ)
-   ========================================================= */
 .help-page{max-width:720px;margin:0 auto;padding:20px 18px 80px}
 .help-hero{text-align:center;padding:24px 0 20px}
 .help-hero .hero-icon{width:72px;height:72px;border-radius:50%;
@@ -854,7 +1066,6 @@ textarea{resize:vertical;min-height:80px}
   background:var(--white);font-weight:900;font-size:12px;text-transform:uppercase;
   letter-spacing:.5px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
 .dev-tab.active{background:var(--ink);color:var(--yellow)}
-.dev-tab:hover{transform:translate(-1px,-1px)}
 .dev-tools{padding:0 18px 14px;display:flex;gap:8px;flex-wrap:wrap}
 .dev-tools input{flex:1;min-width:180px;padding:10px 14px;font-size:13px;
   box-shadow:2px 2px 0 var(--ink)}
@@ -882,6 +1093,7 @@ textarea{resize:vertical;min-height:80px}
 .dev-plan-pill.starter{background:var(--green);color:#fff}
 .dev-plan-pill.pro{background:var(--blue);color:#fff}
 .dev-plan-pill.ultimate{background:var(--ink);color:var(--yellow)}
+
 .dev-manager{padding:0 18px 60px}
 .dev-manager-head{display:flex;justify-content:space-between;align-items:center;
   gap:10px;flex-wrap:wrap;margin-bottom:14px}
@@ -894,13 +1106,11 @@ textarea{resize:vertical;min-height:80px}
 .mgr-card .mgr-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
 .mgr-card .mgr-thumb{width:44px;height:44px;border-radius:8px;flex-shrink:0;
   background:var(--cream);border:2px solid var(--ink);overflow:hidden;
-  display:grid;place-items:center;font-weight:900;color:var(--ink);cursor:pointer;
-  position:relative}
+  display:grid;place-items:center;font-weight:900;color:var(--ink);cursor:pointer;position:relative}
 .mgr-card .mgr-thumb img{width:100%;height:100%;object-fit:cover}
 .mgr-card .mgr-fields{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
 .mgr-card input,.mgr-card textarea{font-size:12.5px;padding:7px 10px;font-weight:600;
   box-shadow:none!important;border:1.5px solid var(--ink)}
-.mgr-card textarea{min-height:60px;font-size:12px;font-family:inherit;resize:vertical}
 .mgr-card .mgr-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .mgr-card .mgr-changes-list{display:flex;flex-direction:column;gap:5px;margin-top:6px}
 .mgr-card .mgr-changes-list .change-row{display:flex;gap:6px;align-items:center}
@@ -911,8 +1121,6 @@ textarea{resize:vertical;min-height:80px}
 .mgr-empty{text-align:center;padding:30px 18px;color:var(--ink-soft);
   background:var(--white);border:2.5px dashed var(--ink-soft);border-radius:var(--radius);
   font-weight:600}
-
-/* Favicon panel */
 .favicon-panel{max-width:640px;margin:0 auto;padding:20px 18px 60px}
 .favicon-panel .fp-card{background:var(--white);border:2.5px solid var(--ink);
   border-radius:14px;padding:20px;box-shadow:5px 5px 0 var(--ink);margin-bottom:16px}
@@ -926,7 +1134,6 @@ textarea{resize:vertical;min-height:80px}
   background:var(--cream);border:2.5px solid var(--ink);overflow:hidden;
   display:grid;place-items:center;box-shadow:4px 4px 0 var(--ink);
   cursor:pointer;transition:transform .15s}
-.favicon-preview-big .fp-thumb:hover{transform:translate(-2px,-2px)}
 .favicon-preview-big .fp-thumb img{width:100%;height:100%;object-fit:cover}
 .favicon-preview-big .fp-thumb .ph{font-size:11.5px;font-weight:800;
   color:var(--ink-soft);text-align:center;padding:8px}
@@ -937,7 +1144,6 @@ textarea{resize:vertical;min-height:80px}
 .favicon-preview-big .fp-tab-mock .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
 .favicon-preview-big .fp-tab-mock .icon{width:16px;height:16px;border-radius:4px;
   overflow:hidden;flex-shrink:0;background:var(--cream);display:grid;place-items:center}
-.favicon-preview-big .fp-tab-mock .icon img{width:100%;height:100%;object-fit:cover}
 .favicon-preview-big .fp-tab-mock .title{font-size:11px;font-weight:700;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
 .favicon-panel .fp-note{background:var(--yellow);border:2px dashed var(--ink);
@@ -945,7 +1151,7 @@ textarea{resize:vertical;min-height:80px}
   margin-top:12px;line-height:1.5}
 
 /* =========================================================
-   DIRECTORY / EXPLORE
+   EXPLORE
    ========================================================= */
 .explore-hero{text-align:center;padding:40px 18px 20px;background:var(--white);
   border-bottom:3px solid var(--ink)}
@@ -959,7 +1165,6 @@ textarea{resize:vertical;min-height:80px}
   background:var(--white);font-weight:900;font-size:11.5px;text-transform:uppercase;
   letter-spacing:.5px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);
   display:inline-flex;align-items:center;gap:6px}
-.explore-filter:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
 .explore-filter.active{background:var(--ink);color:var(--yellow)}
 .explore-search{padding:14px 18px;background:var(--white);border-bottom:3px solid var(--ink);
   display:flex;justify-content:center}
@@ -998,7 +1203,7 @@ textarea{resize:vertical;min-height:80px}
   font-weight:600;font-size:14px;grid-column:1/-1}
 
 /* =========================================================
-   PUBLIC BIO (viewer)
+   PUBLIC BIO
    ========================================================= */
 .bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;
   color:var(--ink);padding:34px 18px 60px;
@@ -1025,12 +1230,10 @@ textarea{resize:vertical;min-height:80px}
   box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
 .bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
 @media(max-width:480px){.bio-banner{height:95px;margin-bottom:14px}}
-
 .bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);
   overflow:hidden;background:var(--white);margin:0 auto;
   box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-avatar img{width:100%;height:100%;object-fit:cover}
-.bio-avatar video{width:100%;height:100%;object-fit:cover}
 .bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 .bio-header{display:flex;flex-direction:column;align-items:center;
   margin-bottom:14px;position:relative}
@@ -1069,8 +1272,7 @@ textarea{resize:vertical;min-height:80px}
   position:relative;transition:transform .12s, box-shadow .12s;
   box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;
   background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
-@keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}}
+@keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
 .bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
 .bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
@@ -1084,33 +1286,24 @@ textarea{resize:vertical;min-height:80px}
 .bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;
   box-shadow:6px 6px 0 var(--ink);background:var(--white)}
 .bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
-
 .bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;
   text-transform:uppercase;letter-spacing:1px;background:var(--white);
   border:2px solid var(--ink);padding:6px 12px;border-radius:20px;
   box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
-
-/* CTA Floating (bio viewer) */
 .bio-cta-float{position:fixed;bottom:16px;right:16px;z-index:9990;
   display:inline-flex;align-items:center;gap:6px;
   background:var(--ink);color:var(--yellow);font-weight:900;font-size:11px;
   text-transform:uppercase;letter-spacing:.5px;text-decoration:none;
   padding:8px 14px;border-radius:999px;border:2.5px solid var(--yellow);
   box-shadow:3px 3px 0 var(--yellow);animation:ctaBounce 2.5s ease-in-out infinite}
-.bio-cta-float:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--yellow)}
 @keyframes ctaBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-
-/* Animasi bio */
 .bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
-@keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}
-  50%{transform:translate(-2px,-8px)}}
+@keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}50%{transform:translate(-2px,-8px)}}
 .bio-wrap.anim-shake .bio-link:active{animation:linkShake .3s ease}
-@keyframes linkShake{0%,100%{transform:translate(4px,4px)}
-  25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
+@keyframes linkShake{0%,100%{transform:translate(4px,4px)}25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
 .bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
 
-/* Tema Neo-Brutalism */
 .theme-neo-cream{background-color:#f0ebe0;
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
@@ -1126,20 +1319,16 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
 .theme-neo-dark .bio-bio{background:var(--blue);color:#fff;border-color:#fff}
 .theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-dark .bio-banner,.theme-neo-dark .bio-embed{border-color:#fff}
 .theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
-.theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
 .theme-neo-blue{background-color:#2563eb;color:#fff;
   background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
     radial-gradient(circle,#fff 1.4px,transparent 1.4px);
   background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;
   animation:dotsFlow 24s linear infinite}
 .theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
 .theme-neo-blue .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
-.theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
 .theme-neo-pink{background-color:#ff69b4;color:var(--ink);
   background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
     radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
@@ -1165,15 +1354,12 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
 .theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
 
-/* Lock overlay */
 .lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;
   display:grid;place-items:center;padding:18px}
 .lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;
-  padding:28px;max-width:340px;width:100%;text-align:center;
-  box-shadow:8px 8px 0 var(--red)}
+  padding:28px;max-width:340px;width:100%;text-align:center;box-shadow:8px 8px 0 var(--red)}
 .lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);
   border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
-.lock-card .li .ic{width:26px;height:26px}
 .lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;font-weight:900}
 .lock-card p{font-size:13px;margin-bottom:16px;font-weight:600}
 .lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);
@@ -1183,15 +1369,6 @@ textarea{resize:vertical;min-height:80px}
   background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;
   margin-top:10px;font-size:13.5px;text-transform:uppercase;
   box-shadow:3px 3px 0 var(--red);font-family:inherit}
-
-/* Watermark removal CTA */
-.watermark-cta{background:linear-gradient(135deg,var(--yellow),var(--orange));
-  border:3px solid var(--ink);border-radius:12px;padding:14px;
-  box-shadow:5px 5px 0 var(--ink);margin-top:10px;text-align:center}
-.watermark-cta b{display:block;font-size:14px;font-weight:900;text-transform:uppercase;
-  letter-spacing:.5px;margin-bottom:6px}
-.watermark-cta p{font-size:12px;font-weight:600;margin-bottom:10px;line-height:1.5}
-.watermark-cta .btn{background:var(--ink);color:var(--yellow);border:2.5px solid var(--ink)}
 
 @media(max-width:640px){
   .editor-layout{padding:14px 12px 50px}
@@ -1219,8 +1396,8 @@ textarea{resize:vertical;min-height:80px}
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
 /* =========================================================
-   v22 — JS CORE (LOGIN FIX TOTAL)
-   Config · Icons · Sound · Firebase · Auth · Store · Router
+   v23 — JS CORE
+   Icons · Sound · Firebase · Auth v22 · Store · Router
    ========================================================= */
 
 /* =========================================================
@@ -1289,7 +1466,7 @@ const IS_BIO_DOMAIN = !IS_LOCAL && (location.hostname.includes("vlink-bio") || l
 const PUBLIC_BASE_URL = IS_LOCAL ? location.origin : `https://${DOMAIN.BIO}`;
 const APP_BASE_URL = IS_LOCAL ? location.origin : `https://${DOMAIN.APP}`;
 
-console.log(`%c[Varlinkbio v22] Domain: ${IS_APP_DOMAIN?"APP":(IS_BIO_DOMAIN?"BIO":"UNKNOWN")}`,"color:#ffd700;font-weight:bold");
+console.log(`%c[Varlinkbio v23] Domain: ${IS_APP_DOMAIN?"APP":(IS_BIO_DOMAIN?"BIO":"UNKNOWN")}`,"color:#ffd700;font-weight:bold");
 
 /* =========================================================
    SOUND EFFECT
@@ -1413,11 +1590,28 @@ const Sound = {
         osc.start(now + i*0.09); osc.stop(now + i*0.09 + 0.2);
       });
     }catch(e){}
+  },
+  // Tutorial: bunyi khusus saat pindah step
+  ding(){
+    if(!this._enabled) return;
+    const ctx = this._getCtx(); if(!ctx) return;
+    try{
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.exponentialRampToValueAtTime(1320, now + 0.1);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.25);
+    }catch(e){}
   }
 };
 function bindGlobalSound(){
   document.addEventListener("click", e=>{
-    const target = e.target.closest("button, .btn, .menu-item, .icon-btn, .help-cat, .dev-tab, .lt-menu-btn, .lt-badge, .link-type, .theme-item, .opt-item, .qr-color-opt, .explore-filter");
+    const target = e.target.closest("button, .btn, .menu-item, .icon-btn, .help-cat, .dev-tab, .lt-menu-btn, .lt-badge, .link-type, .theme-item, .opt-item, .qr-color-opt, .explore-filter, .onb-skip");
     if(target && !target.disabled){
       if(target.id === "sound-toggle-btn") return;
       Sound.click();
@@ -1444,7 +1638,7 @@ const FB = { app:null, db:null, auth:null, ready:false };
     FB.auth = firebase.auth();
     FB.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
     FB.ready = true;
-    console.log("%c[Varlinkbio v22] Firebase siap ✓","color:#22c55e;font-weight:bold");
+    console.log("%c[Varlinkbio v23] Firebase siap ✓","color:#22c55e;font-weight:bold");
   }catch(e){ console.error("Firebase init error:", e); FB.ready=false; }
 })();
 
@@ -1751,7 +1945,7 @@ async function applyAppFavicon(){
 }
 
 /* =========================================================
-   COPY LINK + SHARE
+   COPY + SHARE
    ========================================================= */
 async function copyLink(bioOrId){
   const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
@@ -1951,7 +2145,7 @@ const AutoSave = {
 };
 
 /* =========================================================
-   AUTH — v22 (LOGIN FIX TOTAL)
+   AUTH — v22/v23 (LOGIN FIX + TUTORIAL SUPPORT)
    ========================================================= */
 const Auth = {
   current: null,
@@ -1971,13 +2165,17 @@ const Auth = {
     });
   },
   
-  // Helper baru — set Auth.current dari user object
   async _setCurrentFromUser(user){
     if(!user) return null;
     let name = user.displayName || (user.email||"").split("@")[0];
+    let tutorialShown = false;
     try{
       const doc = await FB.db.collection("users").doc(user.uid).get();
-      if(doc.exists && doc.data().name) name = doc.data().name;
+      if(doc.exists){
+        const d = doc.data();
+        if(d.name) name = d.name;
+        tutorialShown = d.tutorialShown === true;
+      }
       const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
       const effectiveVerified = user.emailVerified || isGoogleProvider;
       await FB.db.collection("users").doc(user.uid).set({
@@ -1988,7 +2186,8 @@ const Auth = {
         uid: user.uid, email: user.email, name,
         photo: user.photoURL || "",
         emailVerified: effectiveVerified,
-        isGoogle: isGoogleProvider
+        isGoogle: isGoogleProvider,
+        tutorialShown
       };
     }catch(e){
       const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
@@ -1996,7 +2195,8 @@ const Auth = {
         uid: user.uid, email: user.email, name,
         photo: user.photoURL || "",
         emailVerified: user.emailVerified || isGoogleProvider,
-        isGoogle: isGoogleProvider
+        isGoogle: isGoogleProvider,
+        tutorialShown
       };
     }
     return this.current;
@@ -2006,7 +2206,11 @@ const Auth = {
     const cred = await FB.auth.createUserWithEmailAndPassword(email, password);
     try{ await cred.user.updateProfile({ displayName: name }); }catch(e){}
     await FB.db.collection("users").doc(cred.user.uid).set({
-      name, email, createdAt: Date.now(), plan:"free", emailVerified: false
+      name, email,
+      createdAt: Date.now(),
+      plan: "free",
+      emailVerified: false,
+      tutorialShown: false // ← Akan muncul tutorial
     },{ merge:true });
     try{ await cred.user.sendEmailVerification(); }catch(e){}
     return cred.user;
@@ -2016,9 +2220,6 @@ const Auth = {
     return (await FB.auth.signInWithEmailAndPassword(email, password)).user;
   },
   
-  // ==========================================================
-  // v22 FIX — Popup DULU, redirect cuma kalau popup gagal
-  // ==========================================================
   async loginGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
@@ -2068,7 +2269,8 @@ const Auth = {
           email: user.email || "",
           createdAt: Date.now(),
           plan: "free",
-          emailVerified: user.emailVerified || false
+          emailVerified: user.emailVerified || false,
+          tutorialShown: false
         });
       }
     }catch(e){ console.warn("ensureUserDoc:", e); }
@@ -2120,6 +2322,32 @@ const Auth = {
     await user.verifyBeforeUpdateEmail(newEmail);
     await FB.db.collection("users").doc(user.uid).set({ pendingEmail: newEmail }, { merge:true });
     return true;
+  },
+  
+  // ==========================================================
+  // TUTORIAL
+  // ==========================================================
+  async markTutorialDone(){
+    if(!this.current) return;
+    try{
+      await FB.db.collection("users").doc(this.current.uid).update({
+        tutorialShown: true,
+        tutorialCompletedAt: Date.now(),
+        tutorialVersion: "v1"
+      });
+      this.current.tutorialShown = true;
+    }catch(e){ console.warn("markTutorialDone:", e); }
+  },
+  
+  async resetTutorial(){
+    if(!this.current) return;
+    try{
+      await FB.db.collection("users").doc(this.current.uid).update({
+        tutorialShown: false,
+        tutorialCompletedAt: null
+      });
+      this.current.tutorialShown = false;
+    }catch(e){ console.warn("resetTutorial:", e); }
   },
   
   errMsg(code){
@@ -2239,7 +2467,7 @@ const Store = {
     bio.allowDirectory = bio.allowDirectory !== false && canDo("directoryListing");
     bio.updatedAt = Date.now();
     if(!bio.id) bio.id = uid(12);
-    if(!bio.createdAt) bio.createdAt = bio.updatedAt;
+    if(!bio.createdAt) bio.createdAt = Date.now();
     if(bio.stats === undefined) bio.stats = { views:0, clicks:{}, daily:{} };
     if(!bio.stats.daily) bio.stats.daily = {};
     if(!Array.isArray(bio.logos)) bio.logos = [];
@@ -2390,7 +2618,7 @@ const Store = {
 };
 
 /* =========================================================
-   ROUTER — v22
+   ROUTER — v23
    ========================================================= */
 const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help","/explore"];
 const Router = {
@@ -2441,7 +2669,6 @@ const Router = {
     }
     
     if(PROTECTED.includes(path) && !Auth.current){
-      // v22: tunggu 500ms
       const self = this;
       setTimeout(()=>{
         if(Auth.current){ self.resolve(); }
@@ -2526,9 +2753,10 @@ function renderBannerHTML(d){
    </script>
    <script>
 /* =========================================================
-   PART 3 — PAGES
-   Landing · Login · Register · Verify · Dashboard
-   Editor · Manage · Stats · Settings · Help
+   PART 3 — PAGES v23
+   Landing · Login · Register · Verify · Dashboard (+Checklist)
+   Editor · Manage · Stats · Settings · Help · Explore
+   + Tombol Back di topbar
    ========================================================= */
 
 /* =========================================================
@@ -2600,7 +2828,7 @@ function renderPartnerSection(){
 }
 
 /* =========================================================
-   TOPBAR + DRAWER
+   TOPBAR + DRAWER (v23 — Tombol Back)
    ========================================================= */
 function renderTopbar(){
   const user = Auth.current || { name:"Guest", email:"" };
@@ -2611,10 +2839,22 @@ function renderTopbar(){
     : STATE.plan?.id === "ultimate" ? "crown"
     : STATE.plan?.id === "pro" ? "star"
     : STATE.plan?.id === "starter" ? "sparkle" : "";
+  
+  // Halaman yang BUTUH tombol back ke Dashboard
+  const BACK_PAGES = ["/editor", "/manage", "/stats", "/settings", "/help"];
+  const hashPath = (location.hash.slice(1) || "/").split("?")[0];
+  const showBack = Auth.current && BACK_PAGES.includes(hashPath);
+  
   return `
     <div class="lt-topbar">
       <div class="lt-brand">
-        <div class="lt-logo">${ico('link')}</div>
+        ${showBack ? `
+          <button class="lt-back-btn" id="btn-back-dashboard" title="Kembali ke Dashboard">
+            ${ico('back','ic-lg')}
+          </button>
+        ` : `
+          <div class="lt-logo">${ico('link')}</div>
+        `}
         <span>Varlinkbio</span>
       </div>
       <div class="lt-actions">
@@ -2659,6 +2899,21 @@ function renderTopbar(){
 }
 
 function bindTopbar(){
+  // === Tombol Back ke Dashboard ===
+  const backBtn = $("#btn-back-dashboard");
+  if(backBtn){
+    backBtn.addEventListener("click", ()=>{
+      // Kalau di editor & ada draft belum save → tanya dulu
+      if(location.hash.includes("/editor") && STATE.draft && STATE.draft.name){
+        const saved = STATE.draft.id && STATE.draft.updatedAt;
+        if(!saved){
+          if(!confirm("Keluar dari editor?\n\nPerubahan belum disimpan.")) return;
+        }
+      }
+      Router.navigate("/dashboard");
+    });
+  }
+  
   const open = $("#btn-drawer-open");
   const drawer = $("#lt-drawer");
   if(open && drawer) open.addEventListener("click", ()=>drawer.classList.add("open"));
@@ -2743,6 +2998,86 @@ function showUpgradeModal(){
 }
 
 /* =========================================================
+   CHECKLIST COMPONENT
+   ========================================================= */
+const Checklist = {
+  ITEMS: [
+    { key:"createBio", label:"Bikin bio pertama", hint:"Dashboard → Bikin Bio", icon:"✨" },
+    { key:"fillProfile", label:"Isi nama & foto profil", hint:"Editor → Foto Profil", icon:"👤" },
+    { key:"add3Links", label:"Tambah minimal 3 link", hint:"Editor → Tombol Link", icon:"🔗" },
+    { key:"pickTheme", label:"Pilih tema favorit", hint:"Editor → Tema", icon:"🎨" },
+    { key:"saveBio", label:"Simpan & share", hint:"Editor → Simpan", icon:"💾" }
+  ],
+  
+  _data: null,
+  
+  async load(){
+    if(!Auth.current) return;
+    try{
+      const doc = await FB.db.collection("users").doc(Auth.current.uid).get();
+      const d = doc.exists ? doc.data() : {};
+      this._data = d.checklistProgress || {};
+    }catch(e){ this._data = {}; }
+    // Cek kondisi aktual
+    try{
+      const list = await Store.list();
+      this._bioCount = list.length;
+      this._linkCount = list.reduce((s,b)=>s + ((b.links||[]).filter(l=>l.active!==false).length), 0);
+      
+      if(this._bioCount > 0) this._data.createBio = true;
+      if(list.some(b => b.name && b.profile)) this._data.fillProfile = true;
+      if(this._linkCount >= 3) this._data.add3Links = true;
+      if(list.some(b => b.theme && b.theme !== "neo-cream")) this._data.pickTheme = true;
+      if(list.some(b => b.id && b.updatedAt)) this._data.saveBio = true;
+      
+      // Save progress ke Firestore
+      await FB.db.collection("users").doc(Auth.current.uid).set({
+        checklistProgress: this._data
+      }, { merge:true });
+    }catch(e){ console.warn("Checklist load:", e); }
+  },
+  
+  isComplete(){
+    if(!this._data) return false;
+    return this.ITEMS.every(it => this._data[it.key]);
+  },
+  
+  count(){
+    if(!this._data) return 0;
+    return this.ITEMS.filter(it => this._data[it.key]).length;
+  },
+  
+  render(){
+    if(!this._data) return "";
+    const done = this.count();
+    const total = this.ITEMS.length;
+    const pct = Math.round((done/total)*100);
+    
+    // Kalau semua udah selesai → gak muncul lagi
+    if(done === total) return "";
+    
+    return `
+      <div class="onb-checklist" id="dash-checklist">
+        <div class="onb-checklist-head">
+          <b>🎯 Selesaikan Setup</b>
+          <div class="onb-checklist-progress">${done}/${total}</div>
+        </div>
+        <div class="onb-checklist-bar">
+          <div class="onb-checklist-bar-fill" style="width:${pct}%"></div>
+        </div>
+        <ul class="onb-checklist-list">
+          ${this.ITEMS.map(it=>`
+            <li class="onb-check-item ${this._data[it.key]?'done':''}">
+              <span class="onb-check-box">${ico('check')}</span>
+              <span class="onb-check-text">${it.label}</span>
+              <span class="onb-check-hint">${it.hint}</span>
+            </li>`).join("")}
+        </ul>
+      </div>`;
+  }
+};
+
+/* =========================================================
    PAGE: LANDING
    ========================================================= */
 const PageLanding = {
@@ -2770,7 +3105,6 @@ const PageLanding = {
             <h2>Pilih Plan <span>Kamu</span></h2>
             <p>Mulai gratis, upgrade kapan saja. Tanpa kontrak.</p>
           </div>
-
           <div class="starter-banner">
             <div class="sb-left">
               <div class="sb-icon">🚀</div>
@@ -2781,7 +3115,6 @@ const PageLanding = {
             </div>
             <button class="sb-btn" id="btn-starter-banner">Lihat Detail</button>
           </div>
-
           <div class="pricing-grid">
             ${this.renderPricingCard(PLANS.free, '')}
             ${this.renderPricingCard(PLANS.pro, 'popular')}
@@ -2808,7 +3141,7 @@ const PageLanding = {
     });
     $("#btn-starter-banner")?.addEventListener("click", ()=>this.showStarterModal());
   },
-
+  
   renderPricingCard(plan, extraClass){
     const isPerm = plan.features.permanent && plan.price > 0;
     const permLabel = isPerm ? "Sekali Bayar" : (plan.period ? ` / ${plan.period}` : "");
@@ -2825,7 +3158,7 @@ const PageLanding = {
         </button>
       </div>`;
   },
-
+  
   showStarterModal(){
     const p = PLANS.starter;
     const m = openModal(`
@@ -2924,14 +3257,12 @@ const PageLogin = {
       showLoading("Login Google...");
       try{
         const user = await Auth.loginGoogle();
-        // Popup desktop → resolve langsung
         if(user){
           await loadUserPlan();
           hideLoading();
           toast("Login berhasil!","success");
           Router.navigate("/dashboard");
         }
-        // Redirect mobile → biarkan halaman reload, gak perlu lakukan apa-apa
       }catch(err){
         hideLoading();
         if(err.code === "app/in-app-browser") showInAppBrowserModal();
@@ -3031,7 +3362,6 @@ const PageVerify = {
     const oobCode = params.get("oobCode");
     const mode = params.get("mode");
 
-    // Apply oobCode (dari email action URL)
     if(oobCode && (mode === "verifyEmail" || mode === "recoverEmail")){
       showLoading("Memverifikasi email...");
       try{
@@ -3088,6 +3418,7 @@ const PageVerify = {
           <button class="btn btn-primary btn-block" id="v-check">${ico('check')} Sudah Verifikasi</button>
           <button class="btn btn-block" id="v-resend" style="margin-top:8px">${ico('back')} Kirim Ulang Email</button>
           <button class="btn btn-block" id="v-settings" style="margin-top:8px;background:var(--yellow)">${ico('settings')} Buka Settings</button>
+          <button class="btn btn-block" id="v-back-dash" style="margin-top:8px;background:var(--cream)">${ico('grid')} Ke Dashboard</button>
           <button class="btn btn-block" id="v-logout" style="margin-top:8px;background:var(--cream)">${ico('logout')} Logout</button>
         </div>
       </div>`;
@@ -3125,6 +3456,7 @@ const PageVerify = {
     });
     
     $("#v-settings").addEventListener("click", ()=>Router.navigate("/settings"));
+    $("#v-back-dash").addEventListener("click", ()=>Router.navigate("/dashboard"));
     $("#v-logout").addEventListener("click", async ()=>{
       await Auth.logout();
       toast("Logout","info");
@@ -3134,7 +3466,7 @@ const PageVerify = {
 };
 
 /* =========================================================
-   PAGE: DASHBOARD
+   PAGE: DASHBOARD (dengan Checklist)
    ========================================================= */
 const PageDashboard = {
   async render(query){
@@ -3147,6 +3479,9 @@ const PageDashboard = {
     if(query && query.includes("paid=1")){
       setTimeout(()=>toast("Terima kasih! Admin akan konfirmasi donasimu 1x24 jam.","info"),600);
     }
+    
+    // Load checklist
+    await Checklist.load();
     
     const plan = STATE.plan;
     let bioCount = 0;
@@ -3176,6 +3511,9 @@ const PageDashboard = {
             <h2>Halo, ${esc(Auth.current.name)}</h2>
             <p>Bikin link in bio kamu sekarang</p>
           </div>
+          
+          ${Checklist.render()}
+          
           <div class="dash-plan-card">
             <div class="picon" style="background:${planColor};color:${plan.id==='ultimate'||plan.id==='developer'?'#fff':'var(--ink)'}">
               ${ico(planIcon)}
@@ -3297,7 +3635,7 @@ const PageDashboard = {
 };
 
 /* =========================================================
-   QR MODAL (v21 — dengan QR Custom)
+   QR MODAL (v23 — QR Custom)
    ========================================================= */
 async function showQRModal(bio, url){
   const canCustom = canDo("qrCustom");
@@ -3310,7 +3648,6 @@ async function showQRModal(bio, url){
     { name:"Ungu", hex:"#a78bfa" },
     { name:"Oranye", hex:"#ff8c00" }
   ];
-  const currentColor = "#0a0a0a";
   const useLogo = bio.profile && canCustom;
   
   const m = openModal(`
@@ -3346,7 +3683,6 @@ async function showQRModal(bio, url){
     <button class="btn btn-primary btn-block" id="qr-dl" style="margin-top:14px">${ico('save')} Download PNG</button>
   `);
   
-  // State QR
   const qrState = {
     color: "#0a0a0a",
     useLogo: !!useLogo
@@ -3369,7 +3705,6 @@ async function showQRModal(bio, url){
   await refreshQR();
   Sound.tada();
   
-  // Bind color picker
   if(canCustom){
     m.querySelectorAll(".qr-color-opt").forEach(el=>{
       el.addEventListener("click", async ()=>{
@@ -3389,7 +3724,6 @@ async function showQRModal(bio, url){
     if(upBtn) upBtn.addEventListener("click", ()=>{ m.remove(); showUpgradeModal(); });
   }
   
-  // Download
   $("#qr-dl", m).addEventListener("click", ()=>{
     const img = $("#qr-img", m);
     const a = document.createElement("a");
@@ -3483,7 +3817,7 @@ const PageManage = {
 };
 
 /* =========================================================
-   PAGE: STATS (v21 — Analytics Chart)
+   PAGE: STATS
    ========================================================= */
 const PageStats = {
   async render(){
@@ -3512,7 +3846,7 @@ const PageStats = {
       return s+Object.values(c).reduce((x,y)=>x+y,0);
     },0);
     
-    // Aggregate daily
+    // Daily aggregate
     const dailyAgg = {};
     const today = new Date();
     for(let i=6; i>=0; i--){
@@ -3543,7 +3877,7 @@ const PageStats = {
         </div>`;
     }).join("");
     
-    // Top Links (Pro+)
+    // Top links (Pro+)
     let topLinksHTML = "";
     if(canDo("topLinks")){
       const allLinks = [];
@@ -3556,7 +3890,6 @@ const PageStats = {
       allLinks.sort((a,b)=>b.count - a.count);
       const top5 = allLinks.slice(0,5);
       if(top5.length){
-        const maxC = top5[0].count;
         topLinksHTML = `
           <div class="chart-wrap">
             <h4>🔥 Top 5 Link Paling Diklik</h4>
@@ -3647,7 +3980,7 @@ const PageStats = {
 };
 
 /* =========================================================
-   PAGE: SETTINGS
+   PAGE: SETTINGS (+ Reset Tutorial)
    ========================================================= */
 const PageSettings = {
   async render(){
@@ -3721,6 +4054,16 @@ const PageSettings = {
           </button>
         </div>
         ` : ""}
+        
+        <div class="settings-section">
+          <h3>${ico('help')} Bantuan & Tutorial</h3>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);line-height:1.5;margin-bottom:12px">
+            Mau lihat lagi tutorial onboarding Varlinkbio?
+          </p>
+          <button class="btn btn-yellow btn-block" id="btn-replay-tutorial">
+            ${ico('sparkle')} Ulangi Tutorial Onboarding
+          </button>
+        </div>
         
         <div class="settings-section danger">
           <h3>${ico('logout')} Keluar Akun</h3>
@@ -3802,6 +4145,20 @@ const PageSettings = {
       }
     });
     
+    // Replay tutorial
+    $("#btn-replay-tutorial").addEventListener("click", async ()=>{
+      if(!confirm("Ulangi tutorial onboarding?\n\nTutorial akan muncul sebentar lagi.")) return;
+      showLoading("Menyiapkan tutorial...");
+      try{
+        await Auth.resetTutorial();
+        hideLoading();
+        toast("Tutorial akan muncul...","info");
+        setTimeout(()=>{
+          if(typeof Tutorial !== "undefined") Tutorial.start();
+        }, 500);
+      }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
+    });
+    
     $("#btn-logout-here").addEventListener("click", async ()=>{
       if(!confirm("Logout dari device ini?")) return;
       await Auth.logout();
@@ -3869,17 +4226,20 @@ const FAQ_DATA = [
   { cat:"plan", q:"Apakah plan Pro/Starter bisa kadaluarsa?",
     a:`<p>Ya, Starter & Pro berlaku <b>30 hari</b>. Setelah kadaluarsa → turun ke Free.</p>
        <p>Kalau pilih <b>Ultimate</b>, gak ada kadaluarsa. 💎</p>` },
+  { cat:"tutor", q:"Ada tutorial untuk user baru?",
+    a:`<p><b>Iya!</b> Pas pertama kali login, bakal muncul <b>tutorial 5 step</b>:</p>
+       <ol><li>Selamat datang</li><li>Bikin bio pertama</li>
+           <li>Kelola bio</li><li>Info plan</li><li>Siap ngoding</li></ol>
+       <p>Kalau mau lihat lagi → <b>Settings</b> → <b>Ulangi Tutorial Onboarding</b>.</p>` },
+  { cat:"tutor", q:"Apa itu Checklist Setup?",
+    a:`<p><b>Checklist Setup</b> = daftar tugas kecil yang muncul di dashboard buat ngebantu kamu bikin bio pertama.</p>
+       <p>Kalau semua ✅, checklist otomatis hilang.</p>` },
   { cat:"explore", q:"Apa itu Explore Bio?",
     a:`<p><b>Explore Bio</b> = galeri bio publik dari user Varlinkbio lain.</p>
        <ul><li>Muncul otomatis untuk semua user Starter+</li>
            <li>Bio diurutkan: Ultimate & Pro di atas</li>
            <li>Bisa filter & search</li></ul>
        <p>💡 Kamu bisa opt-out dari Explore lewat editor bio.</p>` },
-  { cat:"explore", q:"Kenapa bio saya gak muncul di Explore?",
-    a:`<p>Cek hal berikut:</p>
-       <ul><li>Plan kamu minimal <b>Starter</b></li>
-           <li>Di editor, opsi <b>"Tampil di Explore"</b> harus ON</li>
-           <li>Bio kamu harus sudah disimpan minimal sekali</li></ul>` },
   { cat:"dev", q:"Kenapa login Google gagal di WhatsApp / Instagram?",
     a:`<p>Karena link dibuka di <b>in-app browser</b>. Google blokir login di situ.</p>
        <p><b>Solusi:</b></p>
@@ -3895,6 +4255,7 @@ const FAQ_CATS = [
   { id:"akun", label:"Akun", icon:"👤" },
   { id:"bio", label:"Bio & Link", icon:"🔗" },
   { id:"plan", label:"Plan", icon:"💎" },
+  { id:"tutor", label:"Tutorial", icon:"🎓" },
   { id:"explore", label:"Explore", icon:"🧭" },
   { id:"dev", label:"Teknis", icon:"🔧" },
   { id:"lain", label:"Lainnya", icon:"✨" }
@@ -3977,7 +4338,7 @@ const PageHelp = {
 };
 
 /* =========================================================
-   PAGE: EDITOR (v21 — Toggle Link + QR + Watermark CTA)
+   PAGE: EDITOR v23
    ========================================================= */
 const PageEditor = {
   newDraft(){
@@ -4008,7 +4369,6 @@ const PageEditor = {
     if(!Array.isArray(d.logos)) d.logos = [];
     if(!Array.isArray(d.links)) d.links = [];
     if(d._slugManual === undefined) d._slugManual = false;
-    // Migrasi: pastikan semua link punya field active
     d.links.forEach(l => { if(l.active === undefined) l.active = true; });
     
     $("#app").innerHTML = `
@@ -4027,7 +4387,6 @@ const PageEditor = {
       <div class="editor-layout">
         <div class="editor-panel">
           
-          <!-- 1. Banner (paling atas) -->
           <div class="editor-section">
             <h3><span class="num">1</span> Banner</h3>
             <div class="upload-box">
@@ -4047,7 +4406,6 @@ const PageEditor = {
             </div>
           </div>
           
-          <!-- 2. Foto Profil -->
           <div class="editor-section">
             <h3><span class="num">2</span> Foto Profil</h3>
             <div class="profile-upload">
@@ -4059,7 +4417,6 @@ const PageEditor = {
             </div>
           </div>
           
-          <!-- 3. Nama & Bio -->
           <div class="editor-section">
             <h3><span class="num">3</span> Nama & Bio</h3>
             <div class="field">
@@ -4075,7 +4432,6 @@ const PageEditor = {
             </div>
           </div>
           
-          <!-- 4. URL Kustom (Pro+) -->
           ${canDo("customSlug")?`
           <div class="editor-section">
             <h3><span class="num">★</span> URL Kustom <span class="beta-only-badge">${STATE.plan.id.toUpperCase()}</span></h3>
@@ -4104,7 +4460,6 @@ const PageEditor = {
           </div>
           `:''}
           
-          <!-- 5. Logo Partner (Pro+) -->
           ${canDo("logos")?`
           <div class="editor-section">
             <h3><span class="num">5</span> Logo Partner</h3>
@@ -4115,7 +4470,6 @@ const PageEditor = {
             </div>
           </div>`:''}
           
-          <!-- 6. Tombol Link (Toggle) -->
           <div class="editor-section">
             <h3><span class="num">${canDo("logos")?"6":"5"}</span> Tombol Link</h3>
             <div id="links-list" class="links-list"></div>
@@ -4127,20 +4481,17 @@ const PageEditor = {
             `:''}
           </div>
           
-          <!-- 7. Tema -->
           <div class="editor-section">
             <h3><span class="num">${canDo("logos")?"7":"6"}</span> Tema</h3>
             <div class="theme-grid" id="theme-grid"></div>
           </div>
           
-          <!-- 8. Animasi (Ultimate) -->
           ${canDo("animations")?`
           <div class="editor-section">
             <h3><span class="num">${canDo("logos")?"8":"7"}</span> Animasi Tombol <span class="beta-only-badge">BETA</span></h3>
             <div class="opt-grid" id="anim-grid"></div>
           </div>`:''}
           
-          <!-- 9. Link Lock (Pro+) -->
           ${canDo("linkLock")?`
           <div class="editor-section">
             <h3><span class="num">★</span> ${ico('lock')} Link Lock</h3>
@@ -4150,7 +4501,6 @@ const PageEditor = {
             </div>
           </div>`:''}
           
-          <!-- 10. Explore Listing -->
           ${canDo("directoryListing")?`
           <div class="editor-section">
             <h3><span class="num">★</span> ${ico('compass')} Explore</h3>
@@ -4163,12 +4513,13 @@ const PageEditor = {
             </div>
           </div>`:''}
           
-          <!-- Watermark CTA (Free/Starter) -->
           ${!canDo("noWatermark")?`
-          <div class="watermark-cta">
-            <b>💧 Watermark Aktif</b>
-            <p>Bio kamu ada tulisan "Powered by Varlinkbio" di bawah. Upgrade ke <b>Pro</b> atau <b>Ultimate</b> untuk hilangkan watermark.</p>
-            <button class="btn btn-sm" id="btn-remove-watermark">🚫 Hapus Watermark — Upgrade</button>
+          <div style="background:linear-gradient(135deg,var(--yellow),var(--orange));
+            border:3px solid var(--ink);border-radius:12px;padding:14px;
+            box-shadow:5px 5px 0 var(--ink);margin-top:10px;text-align:center">
+            <b style="display:block;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">💧 Watermark Aktif</b>
+            <p style="font-size:12px;font-weight:600;margin-bottom:10px;line-height:1.5">Bio kamu ada tulisan "Powered by Varlinkbio" di bawah. Upgrade ke <b>Pro</b> atau <b>Ultimate</b> untuk hilangkan watermark.</p>
+            <button class="btn btn-sm" id="btn-remove-watermark" style="background:var(--ink);color:var(--yellow);border:2.5px solid var(--ink)">🚫 Hapus Watermark — Upgrade</button>
           </div>
           `:''}
           
@@ -4213,7 +4564,6 @@ const PageEditor = {
       downloadVCard(STATE.draft);
     });
     
-    // Foto profil
     const pInput = $("#p-input");
     if(pInput) pInput.addEventListener("change", async e=>{
       const f = e.target.files[0];
@@ -4230,7 +4580,6 @@ const PageEditor = {
       }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
     });
     
-    // Nama & Bio
     const fn = $("#f-name");
     if(fn) fn.addEventListener("input", e=>{
       STATE.draft.name = e.target.value;
@@ -4246,13 +4595,11 @@ const PageEditor = {
     const fl = $("#f-lock");
     if(fl) fl.addEventListener("input", e=>{ STATE.draft.lock = e.target.value; });
     
-    // Toggle directory
     const dirBox = $("#f-allow-dir");
     if(dirBox) dirBox.addEventListener("change", e=>{
       STATE.draft.allowDirectory = e.target.checked;
     });
     
-    // Custom slug handler
     const btnCheckSlug = $("#btn-check-slug");
     if(btnCheckSlug){
       btnCheckSlug.addEventListener("click", async ()=>{
@@ -4287,7 +4634,6 @@ const PageEditor = {
       });
     }
     
-    // Banner
     const bnInput = $("#bn-input");
     if(bnInput) bnInput.addEventListener("change", async e=>{
       const f = e.target.files[0];
@@ -4311,7 +4657,6 @@ const PageEditor = {
       this.render();
     });
     
-    // Add logo
     const addLogo = $("#add-logo");
     if(addLogo) addLogo.addEventListener("click", ()=>{
       STATE.draft.logos.push({ name:"Partner", url:"https://", img:"" });
@@ -4319,18 +4664,15 @@ const PageEditor = {
       this.updatePreview();
     });
     
-    // Add link
     const addLink = $("#add-link");
     if(addLink) addLink.addEventListener("click", ()=>this.openLinkTypePicker());
     
-    // View
     const btnView = $("#btn-view");
     if(btnView) btnView.addEventListener("click", ()=>{
       if(!STATE.draft.id){ toast("Simpan dulu","info"); return; }
       window.open(`${PUBLIC_BASE_URL}/#/u/${STATE.draft.slug||STATE.draft.id}`,"_blank");
     });
     
-    // Watermark CTA
     const wmBtn = $("#btn-remove-watermark");
     if(wmBtn) wmBtn.addEventListener("click", ()=>showUpgradeModal());
     
@@ -4558,7 +4900,6 @@ const PageEditor = {
       });
     });
     
-    // Toggle ON/OFF
     wrap.querySelectorAll("[data-toggle]").forEach(el=>{
       el.addEventListener("click", e=>{
         e.stopPropagation();
@@ -4665,7 +5006,7 @@ const PageEditor = {
 };
 
 /* =========================================================
-   PAGE: EXPLORE (Directory)
+   PAGE: EXPLORE
    ========================================================= */
 const PageExplore = {
   state: { filter:"all", search:"" },
@@ -4769,8 +5110,273 @@ const PageExplore = {
    </script>
    <script>
 /* =========================================================
-   PART 4 — DEV PANEL + PUBLIC BIO + BOOT
+   PART 4 — DEV + PUBLIC + TUTORIAL + BOOT (v23)
    ========================================================= */
+
+/* =========================================================
+   TUTORIAL — ONBOARDING TOUR 5 STEP
+   ========================================================= */
+const TUTORIAL_STEPS = [
+  {
+    id: "welcome",
+    icon: "🚀",
+    title: "Selamat Datang di Varlinkbio!",
+    desc: "Kamu baru aja gabung! Yuk, kita tour 30 detik biar kamu tahu cara bikin <b>link-in-bio keren</b> dalam hitungan detik.",
+    target: null,
+    position: "center"
+  },
+  {
+    id: "bikin-bio",
+    icon: "✨",
+    title: "Bikin Bio Pertama",
+    desc: "Klik tombol <b>Bikin Link-in-Bio Baru</b> buat mulai. Kamu bakal masuk ke editor.",
+    target: "#btn-bikin",
+    position: "bottom"
+  },
+  {
+    id: "kelola-bio",
+    icon: "📁",
+    title: "Kelola Semua Bio",
+    desc: "Di <b>Kelola Bio</b>, kamu bisa lihat, edit, dan hapus semua bio yang udah kamu buat.",
+    target: "#btn-manage",
+    position: "bottom"
+  },
+  {
+    id: "plan-info",
+    icon: "💎",
+    title: "Plan Kamu",
+    desc: "Di sini kamu bisa lihat plan aktif. <b>Upgrade kapan aja</b> untuk unlock fitur lebih banyak!",
+    target: "#btn-upgrade",
+    position: "bottom"
+  },
+  {
+    id: "finish",
+    icon: "🎉",
+    title: "Siap Ngoding!",
+    desc: "Kamu udah siap! Bikin bio pertama, dan share ke IG/WA kamu. <b>Selamat berkarya!</b> 🎨",
+    target: null,
+    position: "center",
+    celebration: true
+  }
+];
+
+const Tutorial = {
+  _stepIndex: 0,
+  _active: false,
+  _overlay: null,
+  _spotlight: null,
+  _popup: null,
+  _arrow: null,
+  _confetti: null,
+  
+  start(){
+    if(this._active) return;
+    this._active = true;
+    this._stepIndex = 0;
+    document.body.classList.add("tour-active");
+    
+    // Bikin overlay
+    this._overlay = document.createElement("div");
+    this._overlay.className = "onb-overlay";
+    this._overlay.innerHTML = `
+      <div class="onb-popup" id="onb-popup">
+        <div class="onb-progress" id="onb-progress"></div>
+        <div class="onb-icon" id="onb-icon"></div>
+        <div class="onb-step">
+          <span class="onb-step-num">Step <span id="onb-step-cur">1</span>/${TUTORIAL_STEPS.length}</span>
+        </div>
+        <div class="onb-title" id="onb-title"></div>
+        <div class="onb-desc" id="onb-desc"></div>
+        <div class="onb-actions">
+          <button class="onb-skip" id="onb-skip">Lewati</button>
+          <button class="btn btn-primary" id="onb-next">Lanjut →</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(this._overlay);
+    
+    // Bind
+    $("#onb-skip", this._overlay).addEventListener("click", ()=>this.skip());
+    $("#onb-next", this._overlay).addEventListener("click", ()=>this.next());
+    
+    // Delay biar dashboard render kelar
+    setTimeout(()=>{
+      this._overlay.classList.add("active");
+      this.render();
+    }, 300);
+  },
+  
+  render(){
+    const step = TUTORIAL_STEPS[this._stepIndex];
+    if(!step) return this.finish();
+    
+    // Update progress dots
+    const progress = $("#onb-progress");
+    if(progress){
+      progress.innerHTML = TUTORIAL_STEPS.map((_,i)=>{
+        let cls = "onb-progress-dot";
+        if(i < this._stepIndex) cls += " done";
+        else if(i === this._stepIndex) cls += " active";
+        return `<div class="${cls}"></div>`;
+      }).join("");
+    }
+    
+    // Update content
+    $("#onb-icon").textContent = step.icon;
+    $("#onb-step-cur").textContent = this._stepIndex + 1;
+    $("#onb-title").innerHTML = esc(step.title);
+    $("#onb-desc").innerHTML = step.desc;
+    
+    // Update button text
+    const nextBtn = $("#onb-next");
+    if(nextBtn){
+      if(this._stepIndex === TUTORIAL_STEPS.length - 1){
+        nextBtn.textContent = "Mulai Ngoding →";
+      } else {
+        nextBtn.textContent = "Lanjut →";
+      }
+    }
+    
+    // Sound
+    if(this._stepIndex > 0) Sound.ding();
+    
+    // Spotlight
+    if(step.target){
+      const el = document.querySelector(step.target);
+      if(el){
+        this.showSpotlight(el, step.position);
+        // Scroll ke element
+        try{ el.scrollIntoView({ behavior:"smooth", block:"center" }); }catch(e){}
+      } else {
+        this.hideSpotlight();
+      }
+    } else {
+      this.hideSpotlight();
+    }
+    
+    // Confetti di step terakhir
+    if(step.celebration){
+      this.showConfetti();
+      Sound.tada();
+    }
+  },
+  
+  showSpotlight(el, position){
+    const rect = el.getBoundingClientRect();
+    const pad = 12;
+    
+    // Hapus spotlight lama
+    this.hideSpotlight(true);
+    
+    // Bikin spotlight
+    this._spotlight = document.createElement("div");
+    this._spotlight.className = "onb-spotlight";
+    this._spotlight.style.top = (rect.top - pad) + "px";
+    this._spotlight.style.left = (rect.left - pad) + "px";
+    this._spotlight.style.width = (rect.width + pad*2) + "px";
+    this._spotlight.style.height = (rect.height + pad*2) + "px";
+    document.body.appendChild(this._spotlight);
+    
+    // Bikin arrow
+    this._arrow = document.createElement("div");
+    this._arrow.className = "onb-arrow";
+    
+    if(position === "bottom"){
+      // Arrow nunjuk ke atas (di bawah element)
+      this._arrow.style.left = (rect.left + rect.width/2 - 14) + "px";
+      this._arrow.style.top = (rect.bottom + pad + 6) + "px";
+      this._arrow.style.transform = "rotate(180deg)";
+    } else if(position === "top"){
+      this._arrow.style.left = (rect.left + rect.width/2 - 14) + "px";
+      this._arrow.style.top = (rect.top - pad - 26) + "px";
+    }
+    
+    document.body.appendChild(this._arrow);
+  },
+  
+  hideSpotlight(keepArrow){
+    if(this._spotlight){
+      this._spotlight.remove();
+      this._spotlight = null;
+    }
+    if(this._arrow && !keepArrow){
+      this._arrow.remove();
+      this._arrow = null;
+    }
+  },
+  
+  showConfetti(){
+    if(this._confetti) return;
+    this._confetti = document.createElement("div");
+    this._confetti.className = "onb-confetti";
+    const colors = ["#ff2a2a","#ffd700","#22c55e","#2563eb","#ff69b4","#a78bfa"];
+    let html = "";
+    for(let i=0; i<40; i++){
+      const color = colors[i % colors.length];
+      const left = Math.random() * 100;
+      const delay = Math.random() * 2;
+      const dur = 2.5 + Math.random() * 1.5;
+      const rot = Math.random() * 360;
+      html += `<div class="onb-confetti-piece" style="left:${left}%;background:${color};animation-duration:${dur}s;animation-delay:${delay}s;transform:rotate(${rot}deg);border-radius:${Math.random()>0.5?'50%':'2px'}"></div>`;
+    }
+    this._confetti.innerHTML = html;
+    document.body.appendChild(this._confetti);
+    
+    setTimeout(()=>{
+      if(this._confetti){ this._confetti.remove(); this._confetti = null; }
+    }, 6000);
+  },
+  
+  next(){
+    this._stepIndex++;
+    if(this._stepIndex >= TUTORIAL_STEPS.length){
+      this.finish();
+    } else {
+      this.render();
+    }
+  },
+  
+  skip(){
+    this.finish();
+  },
+  
+  async finish(){
+    // Cleanup
+    if(this._overlay){
+      this._overlay.classList.remove("active");
+      setTimeout(()=>{
+        if(this._overlay){ this._overlay.remove(); this._overlay = null; }
+      }, 300);
+    }
+    this.hideSpotlight();
+    if(this._confetti){ this._confetti.remove(); this._confetti = null; }
+    document.body.classList.remove("tour-active");
+    this._active = false;
+    
+    // Tandai di Firestore
+    await Auth.markTutorialDone();
+  },
+  
+  async maybeStart(){
+    if(!Auth.current) return;
+    if(this._active) return;
+    // Cuma jalan kalau tutorialShown === false
+    if(Auth.current.tutorialShown === true) return;
+    // Cuma jalan di dashboard
+    const hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/dashboard") return;
+    // Cek user baru (dibuat < 1 hari)
+    const created = STATE.planMeta?.createdAt || 0;
+    const isNew = (Date.now() - created) < 24*60*60*1000;
+    if(!isNew && STATE.planMeta?.tutorialShown !== false) {
+      // Kalau user lama & tutorialShown gak di-set ke false, skip
+    }
+    // Delay biar dashboard kelar render
+    setTimeout(()=>{
+      this.start();
+    }, 1200);
+  }
+};
 
 /* =========================================================
    PAGE: DEV PANEL
@@ -4912,11 +5518,14 @@ const PageDev = {
         const verifyBadge = u.emailVerified
           ? '<span style="color:var(--green);font-size:11px;margin-left:4px;font-weight:900">✓ verified</span>'
           : '<span style="color:var(--red);font-size:11px;margin-left:4px;font-weight:900">⚠ unverified</span>';
+        const tutBadge = u.tutorialShown === true
+          ? ''
+          : '<span style="color:var(--purple);font-size:10px;margin-left:4px;font-weight:900">🎓 tutorial pending</span>';
         return `
           <div class="dev-item">
             <div class="di-avatar">${initial}</div>
             <div class="di-info">
-              <b>${esc(u.name||"Tanpa nama")} <span class="dev-plan-pill ${plan}">${plan}</span>${verifyBadge}</b>
+              <b>${esc(u.name||"Tanpa nama")} <span class="dev-plan-pill ${plan}">${plan}</span>${verifyBadge}${tutBadge}</b>
               <span>${esc(u.email||"")} · ${bios} bio${u.planExpiry?` · exp: ${expiry}`:(plan==="ultimate"?` · ${expiry}`:"")}</span>
             </div>
             <div class="di-actions">
@@ -5285,6 +5894,7 @@ const PageDev = {
     if(!u) return;
     const curPlan = u.plan || "free";
     const expiry = u.planExpiry ? new Date(u.planExpiry).toISOString().slice(0,10) : "";
+    const tutorialShown = u.tutorialShown === true;
     const m = openModal(`
       <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
       <h3>Edit User</h3>
@@ -5310,6 +5920,14 @@ const PageDev = {
           ♾️ Plan ini <b>PERMANEN</b> — tidak butuh tanggal kadaluarsa.
         </div>
       </div>
+      <div class="field">
+        <label>Tutorial Onboarding</label>
+        <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--cream);border:2px solid var(--ink);border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer">
+          <input type="checkbox" id="dev-edit-tutorial-reset" style="width:auto;padding:0"/>
+          Reset tutorial (muncul lagi pas login berikutnya)
+        </label>
+        <div class="hint">Status: ${tutorialShown ? "✅ sudah lihat" : "🎓 belum lihat"}</div>
+      </div>
       <button class="btn btn-primary btn-block" id="dev-edit-save" style="margin-top:14px">${ico('save')} Simpan</button>
       <button class="btn btn-red btn-block" id="dev-edit-del" style="margin-top:8px">${ico('trash')} Hapus User + Bio</button>
     `);
@@ -5326,12 +5944,18 @@ const PageDev = {
       const isPerm = newPlan === "ultimate";
       const expiryVal = isPerm ? "" : $("#dev-edit-expiry",m).value;
       const expiryMs = expiryVal ? new Date(expiryVal).getTime() : null;
+      const resetTut = $("#dev-edit-tutorial-reset",m).checked;
       showLoading("Menyimpan...");
       try{
-        await FB.db.collection("users").doc(uid).update({
+        const updateData = {
           plan: newPlan,
           planExpiry: expiryMs
-        });
+        };
+        if(resetTut){
+          updateData.tutorialShown = false;
+          updateData.tutorialCompletedAt = null;
+        }
+        await FB.db.collection("users").doc(uid).update(updateData);
         hideLoading();
         toast("Berhasil diupdate!","success");
         m.remove();
@@ -5378,7 +6002,6 @@ const PagePublic = {
     const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
     const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
     
-    // Filter link yang aktif saja
     const activeLinks = (d.links||[]).filter(l => l.active !== false);
     
     const links = activeLinks.map((l, idx)=>{
@@ -5434,13 +6057,11 @@ const PagePublic = {
     const appFav = STATE.appSettings?.favicon || "";
     const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
     
-    // Watermark logic
     const showWatermark = d.showWatermark !== false;
     const watermarkHtml = showWatermark
       ? `<div class="bio-footer">Powered by <a href="${APP_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>`
       : `<div class="bio-footer" style="opacity:.6;font-size:10px">by Varoo</div>`;
     
-    // CTA Floating (kecuali preview & plan no-watermark)
     const showCTA = !preview && showWatermark;
     const ctaHtml = showCTA
       ? `<a class="bio-cta-float" href="${APP_BASE_URL}/#/register" target="_top">
@@ -5590,7 +6211,6 @@ img,video{max-width:100%;display:block}
 .bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--white);border:2px solid var(--ink);padding:6px 12px;border-radius:20px;box-shadow:2px 2px 0 var(--ink);display:inline-block}
 .bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
 .bio-cta-float{position:fixed;bottom:16px;right:16px;z-index:9990;display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--yellow);font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-decoration:none;padding:8px 14px;border-radius:999px;border:2.5px solid var(--yellow);box-shadow:3px 3px 0 var(--yellow);animation:ctaBounce 2.5s ease-in-out infinite}
-.bio-cta-float:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--yellow)}
 @keyframes ctaBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
 @keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}50%{transform:translate(-2px,-8px)}}
@@ -5604,16 +6224,12 @@ img,video{max-width:100%;display:block}
 .theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
 .theme-neo-dark .bio-bio{background:var(--blue);color:#fff;border-color:#fff}
 .theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-dark .bio-banner,.theme-neo-dark .bio-embed{border-color:#fff}
 .theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
-.theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
 .theme-neo-blue{background-color:#2563eb;color:#fff;background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
 .theme-neo-blue .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
 .theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
-.theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
 .theme-neo-pink{background-color:#ff69b4;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
 .theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
@@ -5629,7 +6245,6 @@ img,video{max-width:100%;display:block}
 .lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;display:grid;place-items:center;padding:18px}
 .lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;padding:28px;max-width:340px;width:100%;text-align:center;box-shadow:8px 8px 0 var(--red)}
 .lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
-.lock-card .li .ic{width:26px;height:26px}
 .lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;font-weight:900}
 .lock-card p{font-size:13px;margin-bottom:16px;font-weight:600}
 .lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--white);color:var(--ink);font-size:14px;outline:none;text-align:center;font-weight:700;font-family:inherit}
@@ -5638,7 +6253,6 @@ img,video{max-width:100%;display:block}
   },
   
   async render(idOrSlug){
-    // Kalau di app domain, redirect ke bio domain
     if(!IS_BIO_DOMAIN && !IS_LOCAL){
       const cleanSlug = String(idOrSlug||"").trim();
       location.replace(`${PUBLIC_BASE_URL}/#/u/${cleanSlug}`);
@@ -5679,7 +6293,7 @@ img,video{max-width:100%;display:block}
 };
 
 /* =========================================================
-   ANALYTICS LISTENER (dari iframe bio)
+   ANALYTICS LISTENER
    ========================================================= */
 window.addEventListener("message", async e=>{
   const d = e.data;
@@ -5711,7 +6325,7 @@ Router.on("/u/:id",     (id)=>PagePublic.render(id));
 Router.on("/404",       ()=>Router.navigate("/"));
 
 /* =========================================================
-   BOOT v22 — Login Fix Total
+   BOOT v23 — Login Fix + Tutorial Auto-Start
    ========================================================= */
 (async function boot(){
   showLoading("Memuat...");
@@ -5719,7 +6333,7 @@ Router.on("/404",       ()=>Router.navigate("/"));
   bindGlobalSound();
   await applyAppFavicon();
   
-  // === 1) Cek Action URL Firebase (oobCode dari email) ===
+  // === 1) Firebase Action URL ===
   const fullSearch = location.search.slice(1) || "";
   const fullParams = new URLSearchParams(fullSearch);
   if(fullParams.get("oobCode")){
@@ -5727,7 +6341,7 @@ Router.on("/404",       ()=>Router.navigate("/"));
     return;
   }
   
-  // === 2) Handle redirect result (Google sign-in fallback) ===
+  // === 2) Redirect result (Google) ===
   try{
     const redirectUser = await Auth.handleRedirectResult();
     if(redirectUser && redirectUser.__error){
@@ -5739,15 +6353,13 @@ Router.on("/404",       ()=>Router.navigate("/"));
   // === 3) Init Auth ===
   await Auth.init();
   
-  // === 4) Kalau habis redirect tapi Auth.current masih null → tunggu sync 3 detik ===
+  // === 4) Tunggu sync (kalau habis redirect) ===
   if(!Auth.current){
     await new Promise(resolve => {
       let done = false;
       const finish = ()=>{ if(!done){ done = true; resolve(); } };
       const unsub = FB.auth.onAuthStateChanged(async user => {
-        if(user){
-          await Auth._setCurrentFromUser(user);
-        }
+        if(user){ await Auth._setCurrentFromUser(user); }
         unsub();
         finish();
       });
@@ -5755,7 +6367,7 @@ Router.on("/404",       ()=>Router.navigate("/"));
     });
   }
   
-  // === 5) Kalau ada sinyal redirect, tunggu lagi 1 detik ===
+  // === 5) Sinyal redirect dari sessionStorage ===
   const wasRedirecting = sessionStorage.getItem("varlinkbio_redirect_from");
   if(wasRedirecting){
     try{ sessionStorage.removeItem("varlinkbio_redirect_from"); }catch(e){}
@@ -5777,37 +6389,56 @@ Router.on("/404",       ()=>Router.navigate("/"));
   if(Auth.current) await loadUserPlan();
   hideLoading();
   
-  // === 7) Redirect logic v22 — Anti-Stuck ===
+  // === 7) Redirect logic ===
   const hashPath = (location.hash.slice(1) || "/").split("?")[0];
   const isAuthPage = hashPath === "/login" || hashPath === "/register";
   
-  // Kalau di bio domain & bukan /u/ → redirect ke app
   if(IS_BIO_DOMAIN && !hashPath.startsWith("/u/")){
     location.replace(`${APP_BASE_URL}/#/`);
     return;
   }
   
   if(Auth.current){
-    // User udah login → auto ke dashboard
     if(isAuthPage || hashPath === "/"){
       location.replace(location.pathname + "#/dashboard");
       return;
     }
-    
-    // Kalau ada URL redirect tersimpan (bukan auth page), ke situ
     if(wasRedirecting && wasRedirecting !== "#/login" && wasRedirecting !== "#/register"){
       location.replace(location.pathname + wasRedirecting);
       return;
     }
   } else {
-    // User belum login
     if(!location.hash){
       location.hash = "#/";
     }
   }
   
   Router.start();
+  
+  // === 8) AUTO-START TUTORIAL (kalau user baru) ===
+  // Delay biar dashboard kelar render dulu
+  if(Auth.current && Auth.current.tutorialShown !== true){
+    setTimeout(()=>{
+      const hashNow = (location.hash.slice(1) || "/").split("?")[0];
+      if(hashNow === "/dashboard"){
+        Tutorial.start();
+      } else {
+        // Kalau user belum di dashboard, tunggu sampai pindah ke dashboard
+        const checkInterval = setInterval(()=>{
+          const h = (location.hash.slice(1) || "/").split("?")[0];
+          if(h === "/dashboard" && !Tutorial._active && Auth.current && Auth.current.tutorialShown !== true){
+            Tutorial.start();
+            clearInterval(checkInterval);
+          } else if(Auth.current && Auth.current.tutorialShown === true){
+            clearInterval(checkInterval);
+          }
+        }, 500);
+        // Auto-stop interval setelah 5 menit biar gak bocor
+        setTimeout(()=>clearInterval(checkInterval), 5*60*1000);
+      }
+    }, 1500);
+  }
 })();
 </script>
 </body>
-</html>
+   </html>

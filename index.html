@@ -1219,7 +1219,7 @@ textarea{resize:vertical;min-height:80px}
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
 /* =========================================================
-   v21 — JS CORE
+   v22 — JS CORE (LOGIN FIX TOTAL)
    Config · Icons · Sound · Firebase · Auth · Store · Router
    ========================================================= */
 
@@ -1276,7 +1276,7 @@ function ico(name, cls=""){
 }
 
 /* =========================================================
-   DOMAIN DETECTION — App vs Bio
+   DOMAIN DETECTION
    ========================================================= */
 const DOMAIN = {
   APP: "varlinkbio-site.vercel.app",
@@ -1286,14 +1286,13 @@ const IS_LOCAL = location.hostname === "localhost" || location.hostname === "127
 const IS_APP_DOMAIN = IS_LOCAL || location.hostname.includes("varlinkbio-site") || location.hostname.includes("varlinkbio");
 const IS_BIO_DOMAIN = !IS_LOCAL && (location.hostname.includes("vlink-bio") || location.hostname.includes("vlinkbio"));
 
-// URL publik untuk bio viewer (dipakai di QR, share, link bio)
 const PUBLIC_BASE_URL = IS_LOCAL ? location.origin : `https://${DOMAIN.BIO}`;
 const APP_BASE_URL = IS_LOCAL ? location.origin : `https://${DOMAIN.APP}`;
 
-console.log(`%c[Varlinkbio v21] Domain: ${IS_APP_DOMAIN?"APP":(IS_BIO_DOMAIN?"BIO":"UNKNOWN")}`,"color:#ffd700;font-weight:bold");
+console.log(`%c[Varlinkbio v22] Domain: ${IS_APP_DOMAIN?"APP":(IS_BIO_DOMAIN?"BIO":"UNKNOWN")}`,"color:#ffd700;font-weight:bold");
 
 /* =========================================================
-   SOUND EFFECT (Web Audio API)
+   SOUND EFFECT
    ========================================================= */
 const Sound = {
   _ctx: null,
@@ -1370,7 +1369,7 @@ const Sound = {
       osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
     }catch(e){}
   },
-  tick(){ // untuk toggle on/off
+  tick(){
     if(!this._enabled) return;
     const ctx = this._getCtx(); if(!ctx) return;
     try{
@@ -1383,7 +1382,7 @@ const Sound = {
       osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.035);
     }catch(e){}
   },
-  pop(){ // untuk copy link
+  pop(){
     if(!this._enabled) return;
     const ctx = this._getCtx(); if(!ctx) return;
     try{
@@ -1398,7 +1397,7 @@ const Sound = {
       osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
     }catch(e){}
   },
-  tada(){ // untuk QR ready / milestone
+  tada(){
     if(!this._enabled) return;
     const ctx = this._getCtx(); if(!ctx) return;
     try{
@@ -1427,7 +1426,7 @@ function bindGlobalSound(){
 }
 
 /* =========================================================
-   FIREBASE CONFIG
+   FIREBASE
    ========================================================= */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCzEZCtXJTLOLVK3xvcpcUQEgSmwcmPXuQ",
@@ -1443,15 +1442,14 @@ const FB = { app:null, db:null, auth:null, ready:false };
     FB.app = firebase.initializeApp(FIREBASE_CONFIG);
     FB.db = firebase.firestore();
     FB.auth = firebase.auth();
-    // Set persistence biar login tahan refresh
     FB.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
     FB.ready = true;
-    console.log("%c[Varlinkbio v21] Firebase siap ✓","color:#22c55e;font-weight:bold");
+    console.log("%c[Varlinkbio v22] Firebase siap ✓","color:#22c55e;font-weight:bold");
   }catch(e){ console.error("Firebase init error:", e); FB.ready=false; }
 })();
 
 /* =========================================================
-   KONFIGURASI GLOBAL
+   KONFIGURASI
    ========================================================= */
 const DEV_EMAILS = ["mynameisvaroo@gmail.com"];
 const ADMIN_WA = "6285823058292";
@@ -1467,7 +1465,7 @@ const RESERVED_SLUGS = [
 ];
 
 /* =========================================================
-   PLANS (4 PLAN + DEVELOPER)
+   PLANS
    ========================================================= */
 const PLANS = {
   free: {
@@ -1517,7 +1515,7 @@ const PLANS = {
       logos:true, animations:false,
       toggleLink:true, shareNative:true, vcard:true,
       customSlug:true, slugChangesPerMonth:3, slugMinLength:4,
-      qrCustom:false, noWatermark:true, // ← Pro juga no watermark sekarang!
+      qrCustom:false, noWatermark:true,
       directoryListing:true,
       betaAccess:false, badge:"PRO", permanent:false
     },
@@ -1576,7 +1574,6 @@ const STATE = {
   directory:[],
   dataLoaded:false,
   appSettings:null,
-  // Counter untuk auto-save tiap 10 pesan (dari request awal)
   msgCount:0
 };
 
@@ -1806,7 +1803,7 @@ function showShareModal(bioOrId){
       try{
         await navigator.share({ title: bio.name || "Varlinkbio", text: "Cek link-in-bio aku!", url });
         toast("Berhasil share!","success");
-      }catch(e){ /* user cancelled */ }
+      }catch(e){}
     });
   }
 }
@@ -1830,11 +1827,7 @@ async function generateQR(text, canvasEl, options={}){
   }catch(e){ console.error("QR error:", e); return false; }
 }
 
-/* =========================================================
-   QR CUSTOM — Warna + Logo
-   ========================================================= */
 async function generateQRCustom(text, opts={}){
-  // Generate QR ke canvas dulu
   const tmp = document.createElement("canvas");
   const color = opts.color || "#0a0a0a";
   const bg = opts.bg || "#ffffff";
@@ -1848,16 +1841,13 @@ async function generateQRCustom(text, opts={}){
     errorCorrectionLevel: "H"
   });
   
-  // Kalau gak ada logo, langsung return
   if(!logo) return tmp;
   
-  // Gambar ulang di canvas baru + logo di tengah
   const out = document.createElement("canvas");
   out.width = size; out.height = size;
   const ctx = out.getContext("2d");
   ctx.drawImage(tmp, 0, 0, size, size);
   
-  // Load logo
   return new Promise((resolve)=>{
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -1866,7 +1856,6 @@ async function generateQRCustom(text, opts={}){
       const x = (size - logoSize) / 2;
       const y = (size - logoSize) / 2;
       
-      // Background putih di belakang logo (opsional)
       const padding = 6;
       ctx.fillStyle = bg;
       ctx.beginPath();
@@ -1881,31 +1870,25 @@ async function generateQRCustom(text, opts={}){
       ctx.closePath();
       ctx.fill();
       
-      // Border logo
       ctx.strokeStyle = color;
       ctx.lineWidth = 3;
       ctx.stroke();
       
-      // Gambar logo
       ctx.drawImage(img, x, y, logoSize, logoSize);
       resolve(out);
     };
-    img.onerror = ()=>{
-      console.warn("Logo QR gagal load, pakai QR biasa");
-      resolve(tmp);
-    };
+    img.onerror = ()=>resolve(tmp);
     img.src = logo;
   });
 }
 
 /* =========================================================
-   vCARD — Save Contact
+   vCARD
    ========================================================= */
 function buildVCard(bio){
   const name = bio.name || "User";
   const url = `${PUBLIC_BASE_URL}/#/u/${bio.slug || bio.id}`;
   const bioText = bio.bio || "";
-  // Cari link WA / Instagram / Email
   const waLink = (bio.links || []).find(l => /wa\.me|whatsapp/i.test(l.url||""));
   const igLink = (bio.links || []).find(l => /instagram\.com/i.test(l.url||""));
   const mailLink = (bio.links || []).find(l => /^mailto:|@.*\./i.test(l.url||""));
@@ -1941,7 +1924,7 @@ function downloadVCard(bio){
 }
 
 /* =========================================================
-   AUTO SAVE (setiap 10 perubahan)
+   AUTO SAVE
    ========================================================= */
 const AutoSave = {
   _counter: 0,
@@ -1954,9 +1937,7 @@ const AutoSave = {
     }
   },
   async fire(){
-    // Kalau ada draft aktif & user login, auto-save ke Firestore
     if(!Auth.current || !STATE.draft || !STATE.draft.name) return;
-    // Skip kalau baru aja save (< 5 detik)
     if(Date.now() - this._lastSave < 5000) return;
     try{
       await Store.save({...STATE.draft, _autoSave:true});
@@ -1970,7 +1951,7 @@ const AutoSave = {
 };
 
 /* =========================================================
-   AUTH — v21 SMART
+   AUTH — v22 (LOGIN FIX TOTAL)
    ========================================================= */
 const Auth = {
   current: null,
@@ -1980,29 +1961,7 @@ const Auth = {
     return new Promise(resolve=>{
       FB.auth.onAuthStateChanged(async user=>{
         if(user){
-          let name = user.displayName || (user.email||"").split("@")[0];
-          try{
-            const doc = await FB.db.collection("users").doc(user.uid).get();
-            if(doc.exists && doc.data().name) name = doc.data().name;
-            const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
-            const effectiveVerified = user.emailVerified || isGoogleProvider;
-            await FB.db.collection("users").doc(user.uid).set({
-              emailVerified: effectiveVerified,
-              isGoogleUser: isGoogleProvider
-            }, { merge:true });
-            this.current = {
-              uid:user.uid, email:user.email, name,
-              photo:user.photoURL||"",
-              emailVerified: effectiveVerified,
-              isGoogle: isGoogleProvider
-            };
-          }catch(e){
-            this.current = {
-              uid:user.uid, email:user.email, name,
-              photo:user.photoURL||"",
-              emailVerified: user.emailVerified
-            };
-          }
+          await this._setCurrentFromUser(user);
         } else {
           this.current = null;
         }
@@ -2012,9 +1971,40 @@ const Auth = {
     });
   },
   
+  // Helper baru — set Auth.current dari user object
+  async _setCurrentFromUser(user){
+    if(!user) return null;
+    let name = user.displayName || (user.email||"").split("@")[0];
+    try{
+      const doc = await FB.db.collection("users").doc(user.uid).get();
+      if(doc.exists && doc.data().name) name = doc.data().name;
+      const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
+      const effectiveVerified = user.emailVerified || isGoogleProvider;
+      await FB.db.collection("users").doc(user.uid).set({
+        emailVerified: effectiveVerified,
+        isGoogleUser: isGoogleProvider
+      }, { merge:true });
+      this.current = {
+        uid: user.uid, email: user.email, name,
+        photo: user.photoURL || "",
+        emailVerified: effectiveVerified,
+        isGoogle: isGoogleProvider
+      };
+    }catch(e){
+      const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
+      this.current = {
+        uid: user.uid, email: user.email, name,
+        photo: user.photoURL || "",
+        emailVerified: user.emailVerified || isGoogleProvider,
+        isGoogle: isGoogleProvider
+      };
+    }
+    return this.current;
+  },
+  
   async register(email, password, name){
     const cred = await FB.auth.createUserWithEmailAndPassword(email, password);
-    try{ await cred.user.updateProfile({ displayName:name }); }catch(e){}
+    try{ await cred.user.updateProfile({ displayName: name }); }catch(e){}
     await FB.db.collection("users").doc(cred.user.uid).set({
       name, email, createdAt: Date.now(), plan:"free", emailVerified: false
     },{ merge:true });
@@ -2026,53 +2016,44 @@ const Auth = {
     return (await FB.auth.signInWithEmailAndPassword(email, password)).user;
   },
   
+  // ==========================================================
+  // v22 FIX — Popup DULU, redirect cuma kalau popup gagal
+  // ==========================================================
   async loginGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     
-    // Detect in-app browser dulu
     if(isInAppBrowser()){
       const err = new Error("in-app-browser");
       err.code = "app/in-app-browser";
       throw err;
     }
     
-    // Mobile pakai redirect, desktop pakai popup
-    const useRedirect = isMobile();
-    if(useRedirect){
-      // Simpan halaman tujuan sebelum redirect
-      try{ sessionStorage.setItem("varlinkbio_redirect_from", location.hash || "#/dashboard"); }catch(e){}
-      await FB.auth.signInWithRedirect(provider);
-      return null; // Akan di-resolve oleh handleRedirectResult
-    }
-    
-    // Desktop: popup
     try{
       const cred = await FB.auth.signInWithPopup(provider);
       await this._ensureUserDoc(cred.user);
-      let name = cred.user.displayName || (cred.user.email||"").split("@")[0];
-      try{
-        const doc = await FB.db.collection("users").doc(cred.user.uid).get();
-        if(doc.exists && doc.data().name) name = doc.data().name;
-      }catch(e){}
-      const isGoogleProvider = (cred.user.providerData||[]).some(p => p.providerId === "google.com");
-      this.current = {
-        uid: cred.user.uid,
-        email: cred.user.email,
-        name,
-        photo: cred.user.photoURL || "",
-        emailVerified: cred.user.emailVerified || isGoogleProvider,
-        isGoogle: isGoogleProvider
-      };
+      await this._setCurrentFromUser(cred.user);
       return cred.user;
     }catch(err){
-      const fallback = ["auth/popup-blocked","auth/popup-closed-by-user",
-        "auth/cancelled-popup-request","auth/operation-not-supported-in-this-environment"];
-      if(fallback.includes(err.code)){
-        try{ sessionStorage.setItem("varlinkbio_redirect_from", location.hash || "#/dashboard"); }catch(e){}
+      console.warn("[LoginGoogle] Popup gagal:", err.code);
+      
+      const fallbackCodes = [
+        "auth/popup-blocked",
+        "auth/popup-closed-by-user",
+        "auth/cancelled-popup-request",
+        "auth/operation-not-supported-in-this-environment",
+        "auth/web-storage-unsupported",
+        "auth/operation-not-allowed"
+      ];
+      
+      if(fallbackCodes.includes(err.code)){
+        try{
+          sessionStorage.setItem("varlinkbio_redirect_from", location.hash || "#/dashboard");
+        }catch(e){}
         await FB.auth.signInWithRedirect(provider);
         return null;
       }
+      
       throw err;
     }
   },
@@ -2098,20 +2079,7 @@ const Auth = {
       const result = await FB.auth.getRedirectResult();
       if(result && result.user){
         await this._ensureUserDoc(result.user);
-        let name = result.user.displayName || (result.user.email||"").split("@")[0];
-        try{
-          const doc = await FB.db.collection("users").doc(result.user.uid).get();
-          if(doc.exists && doc.data().name) name = doc.data().name;
-        }catch(e){}
-        const isGoogleProvider = (result.user.providerData||[]).some(p => p.providerId === "google.com");
-        this.current = {
-          uid: result.user.uid,
-          email: result.user.email,
-          name,
-          photo: result.user.photoURL || "",
-          emailVerified: result.user.emailVerified || isGoogleProvider,
-          isGoogle: isGoogleProvider
-        };
+        await this._setCurrentFromUser(result.user);
         return result.user;
       }
     }catch(err){
@@ -2170,6 +2138,7 @@ const Auth = {
       "auth/operation-not-allowed":"Provider belum aktif di Firebase",
       "auth/unauthorized-domain":"Domain belum di-whitelist di Firebase",
       "auth/redirect-cancelled-by-user":"Login dibatalkan",
+      "auth/web-storage-unsupported":"Browser gak support storage. Coba browser lain.",
       "permission-denied":"Akses Firestore ditolak. Cek Firestore Rules."
     };
     return map[code] || ("Error: " + (code||"tidak diketahui"));
@@ -2192,7 +2161,6 @@ async function loadUserPlan(){
     let planId = data.plan || "free";
     const planDef = PLANS[planId];
     
-    // Cek expiry (kecuali plan permanent)
     if(planDef && planDef.features.permanent){
       // Skip expiry
     } else if(planId !== "free" && data.planExpiry && data.planExpiry < Date.now()){
@@ -2220,7 +2188,7 @@ function planBadge(){ return STATE.plan?.features?.badge || null; }
 function isPermanentPlan(){ return !!(STATE.plan?.features?.permanent); }
 
 /* =========================================================
-   STORE (Firestore wrapper)
+   STORE
    ========================================================= */
 const Store = {
   async list(){
@@ -2250,22 +2218,16 @@ const Store = {
   },
   
   async save(bio){
-    // === SLUG LOGIC ===
     if(bio.slug && canDo("customSlug") && bio._slugManual){
-      // Custom slug dari user (Pro+)
       const v = validateSlug(bio.slug, STATE.plan);
       if(v.ok){
         const available = await checkSlugAvailable(v.slug, bio.id);
-        if(available){
-          bio.slug = v.slug;
-        } else {
-          bio.slug = await getUniqueSlug(generateSlug(bio.name), bio.id);
-        }
+        if(available){ bio.slug = v.slug; }
+        else { bio.slug = await getUniqueSlug(generateSlug(bio.name), bio.id); }
       } else {
         bio.slug = await getUniqueSlug(generateSlug(bio.name), bio.id);
       }
     } else if(!bio.slug){
-      // Baru pertama kali → auto-generate
       const baseSlug = generateSlug(bio.name);
       bio.slug = await getUniqueSlug(baseSlug, bio.id);
     }
@@ -2274,7 +2236,6 @@ const Store = {
     bio.ownerName = Auth.current.name;
     bio.ownerPlan = STATE.plan?.id || "free";
     bio.showWatermark = !(STATE.plan?.features?.noWatermark);
-    // Untuk directory: kalau user Ultimate/Pro/Dev, auto-listing (bisa di-override)
     bio.allowDirectory = bio.allowDirectory !== false && canDo("directoryListing");
     bio.updatedAt = Date.now();
     if(!bio.id) bio.id = uid(12);
@@ -2286,7 +2247,6 @@ const Store = {
     
     const { id, _slugManual, _autoSave, ...data } = bio;
     
-    // Cek ukuran
     const sizeKB = Math.round(JSON.stringify(data).length / 1024);
     if(sizeKB > 950) throw new Error(`Data terlalu besar (${sizeKB}KB). Kurangi gambar.`);
     
@@ -2298,7 +2258,6 @@ const Store = {
   
   async upload(file, prefix="media"){
     if(!file) return null;
-    // Video
     if(file.type.startsWith("video/")){
       const sizeKB = Math.round(file.size / 1024);
       if(sizeKB > 500) throw new Error(`Video terlalu besar (${sizeKB}KB). Max 500KB.`);
@@ -2309,7 +2268,6 @@ const Store = {
         r.readAsDataURL(file);
       });
     }
-    // Image — compress
     const compressed = await compressImage(file);
     return new Promise((resolve, reject)=>{
       const reader = new FileReader();
@@ -2400,16 +2358,13 @@ const Store = {
   
   async removeUpdate(id){ await FB.db.collection("updates").doc(id).delete(); },
   
-  // === DIRECTORY / EXPLORE ===
   async listDirectory(filter="all", search=""){
     try{
       const s = await FB.db.collection("bios").where("allowDirectory","==",true).limit(60).get();
       let arr = [];
       s.forEach(d=>{
         const data = d.data();
-        // Filter berdasarkan plan (untuk badge)
         if(filter !== "all" && data.ownerPlan !== filter) return;
-        // Filter search
         if(search){
           const q = search.toLowerCase();
           const hay = `${data.name||""} ${data.bio||""} ${data.slug||""}`.toLowerCase();
@@ -2417,7 +2372,6 @@ const Store = {
         }
         arr.push({ id:d.id, ...data });
       });
-      // Sort: Ultimate > Pro > Starter > Free, lalu by views
       const planOrder = { ultimate:0, developer:0, pro:1, starter:2, free:3 };
       arr.sort((a,b)=>{
         const pa = planOrder[a.ownerPlan] ?? 4;
@@ -2436,9 +2390,9 @@ const Store = {
 };
 
 /* =========================================================
-   ROUTER — v21 SMART
+   ROUTER — v22
    ========================================================= */
-const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help"];
+const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help","/explore"];
 const Router = {
   routes:{},
   on(p,h){ this.routes[p] = h; },
@@ -2447,13 +2401,12 @@ const Router = {
     else location.hash = p;
   },
   resolve(){
-    // Reset body state
     document.body.classList.remove("public-mode");
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.height = '';
     
-    // === STEP 1: Firebase Action URL (oobCode dari email) ===
+    // Firebase Action URL
     const fullSearch = location.search.slice(1);
     if(fullSearch){
       const p = new URLSearchParams(fullSearch);
@@ -2468,40 +2421,35 @@ const Router = {
       }
     }
     
-    // === STEP 2: Bio domain redirect ke app kalau bukan /u/ ===
     if(IS_BIO_DOMAIN){
       const raw = location.hash.slice(1) || "/";
       const path = raw.split("?")[0];
-      // Kalau di bio domain tapi bukan route /u/xxx → redirect ke app
       if(!path.startsWith("/u/")){
         location.replace(`${APP_BASE_URL}/#/`);
         return;
       }
     }
     
-    // === STEP 3: Normal hash routing ===
     const raw = location.hash.slice(1) || "/";
     const path = raw.split("?")[0];
     const query = raw.split("?")[1] || "";
     
     if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
     
-    // Kalau udah login tapi buka /login atau /register → auto ke dashboard
     if(Auth.current && (path === "/login" || path === "/register")){
       return this.navigate("/dashboard");
     }
     
     if(PROTECTED.includes(path) && !Auth.current){
-      // Tunggu 300ms — mungkin auth belum sync dari redirect
+      // v22: tunggu 500ms
       const self = this;
       setTimeout(()=>{
         if(Auth.current){ self.resolve(); }
         else { self.navigate("/login"); }
-      }, 300);
+      }, 500);
       return;
     }
     
-    // Cek verifikasi email untuk halaman protected
     if(PROTECTED.includes(path) && Auth.current && !isDev(Auth.current.email)){
       const user = FB.auth.currentUser;
       const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
@@ -2557,7 +2505,7 @@ const LinkTypes = {
 };
 
 /* =========================================================
-   CONTRAST TEXT COLOR
+   CONTRAST TEXT
    ========================================================= */
 function contrastText(hex){
   if(!hex) return "#0a0a0a";
@@ -2568,9 +2516,6 @@ function contrastText(hex){
   return lum > 0.6 ? "#0a0a0a" : "#ffffff";
 }
 
-/* =========================================================
-   BANNER HTML HELPER
-   ========================================================= */
 function renderBannerHTML(d){
   if(!d.banner) return "";
   if(d.bannerType === "video"){
@@ -2578,15 +2523,8 @@ function renderBannerHTML(d){
   }
   return `<div class="bio-banner"><img src="${esc(d.banner)}"/></div>`;
 }
-
-/* =========================================================
-   PLACEHOLDER — Pages ada di PART 3 & 4
-   ========================================================= */
-// PageDashboard, PageEditor, PageManage, PageStats, PageSettings, PageHelp,
-// PageDev, PagePublic, PageLanding, PageLogin, PageRegister, PageVerify,
-// PageExplore → akan didefinisikan di PART 3 & 4.
-  </script>
-  <script>
+   </script>
+   <script>
 /* =========================================================
    PART 3 — PAGES
    Landing · Login · Register · Verify · Dashboard
@@ -4828,952 +4766,9 @@ const PageExplore = {
     }
   }
 };
-  </script>
-  <script>
-/* =========================================================
-   PART 4 — DEV PANEL + PUBLIC BIO + BOOT
-   ========================================================= */
-
-/* =========================================================
-   PAGE: DEV PANEL
-   ========================================================= */
-const PageDev = {
-  state: { users:[], bios:[], partners:[], updates:[], filter:"all", search:"", tab:"users", settings:{} },
-  
-  async render(){
-    if(!Auth.current) return Router.navigate("/login");
-    if(!isDev(Auth.current.email)){ toast("Akses ditolak","error"); return Router.navigate("/dashboard"); }
-    
-    $("#app").innerHTML = `
-      ${renderTopbar()}
-      <div style="background:var(--cream);min-height:calc(100vh - 60px)">
-        <div class="dev-header">
-          <button class="back-btn" id="dev-back-btn">${ico('back')} Back</button>
-          <h1>${ico('zap')} Dev Panel</h1>
-          <p>Control semua user, bio, partner, update, & favicon</p>
-        </div>
-        <div class="dev-stats" id="dev-stats"></div>
-        <div class="dev-tabs">
-          <div class="dev-tab active" data-tab="users">👥 Users</div>
-          <div class="dev-tab" data-tab="bios">📁 Bios</div>
-          <div class="dev-tab" data-tab="partners">🤝 Partners</div>
-          <div class="dev-tab" data-tab="updates">📰 Updates</div>
-          <div class="dev-tab" data-tab="favicon">🎨 Favicon</div>
-        </div>
-        <div id="dev-content"></div>
-      </div>`;
-    
-    bindTopbar();
-    const backBtn = $("#dev-back-btn");
-    if(backBtn) backBtn.addEventListener("click", ()=>Router.navigate("/dashboard"));
-    
-    $$(".dev-tab").forEach(t=>{
-      t.addEventListener("click", ()=>{
-        $$(".dev-tab").forEach(x=>x.classList.remove("active"));
-        t.classList.add("active");
-        this.state.tab = t.dataset.tab;
-        this.renderTab();
-      });
-    });
-    
-    await this.loadData();
-  },
-  
-  async loadData(){
-    try{
-      const usersSnap = await FB.db.collection("users").get();
-      const biosSnap = await FB.db.collection("bios").get();
-      const users = []; usersSnap.forEach(d=>users.push({uid:d.id, ...d.data()}));
-      const bios = []; biosSnap.forEach(d=>bios.push({id:d.id, ...d.data()}));
-      users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-      bios.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
-      this.state.users = users;
-      this.state.bios = bios;
-      this.state.partners = await Store.listPartners();
-      this.state.updates = await Store.listUpdates();
-      this.state.settings = await Store.getSettings();
-      this.renderStats();
-      this.renderTab();
-    }catch(e){
-      console.error(e);
-      $("#dev-content").innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
-    }
-  },
-  
-  renderStats(){
-    const users = this.state.users.filter(u => !isDev(u.email));
-    const countBy = (p)=>users.filter(u => (u.plan||"free") === p).length;
-    $("#dev-stats").innerHTML = `
-      <div class="dev-stat"><div class="sv">${users.length}</div><div class="sl">Total User</div></div>
-      <div class="dev-stat dev-free"><div class="sv">${countBy("free")}</div><div class="sl">Free</div></div>
-      <div class="dev-stat dev-starter"><div class="sv">${countBy("starter")}</div><div class="sl">Starter</div></div>
-      <div class="dev-stat dev-pro"><div class="sv">${countBy("pro")}</div><div class="sl">Pro</div></div>
-      <div class="dev-stat dev-ultimate"><div class="sv">${countBy("ultimate")}</div><div class="sl">Ultimate</div></div>
-      <div class="dev-stat"><div class="sv">${this.state.bios.length}</div><div class="sl">Total Bio</div></div>`;
-  },
-  
-  renderTab(){
-    const tab = this.state.tab;
-    if(tab === "partners") return this.renderPartners();
-    if(tab === "updates") return this.renderUpdates();
-    if(tab === "favicon") return this.renderFavicon();
-    return this.renderList();
-  },
-  
-  renderList(){
-    const el = $("#dev-content");
-    const { tab, filter, search } = this.state;
-    el.innerHTML = `
-      <div class="dev-tools">
-        <input type="text" id="dev-search" placeholder="Cari..." value="${esc(search)}"/>
-        ${tab === "users" ? `
-        <select id="dev-filter">
-          <option value="all">Semua Plan</option>
-          <option value="free" ${filter==="free"?"selected":""}>Free</option>
-          <option value="starter" ${filter==="starter"?"selected":""}>Starter</option>
-          <option value="pro" ${filter==="pro"?"selected":""}>Pro</option>
-          <option value="ultimate" ${filter==="ultimate"?"selected":""}>Ultimate</option>
-        </select>` : ''}
-        <button class="btn btn-sm" id="dev-refresh">${ico('back')} Refresh</button>
-      </div>
-      <div class="dev-list" id="dev-list"></div>`;
-    
-    const searchEl = $("#dev-search");
-    if(searchEl){
-      searchEl.addEventListener("input", e=>{
-        this.state.search = e.target.value.toLowerCase();
-        clearTimeout(this._searchTO);
-        this._searchTO = setTimeout(()=>this.renderListContent(), 250);
-      });
-    }
-    const filterEl = $("#dev-filter");
-    if(filterEl) filterEl.addEventListener("change", e=>{ this.state.filter = e.target.value; this.renderListContent(); });
-    const refreshEl = $("#dev-refresh");
-    if(refreshEl) refreshEl.addEventListener("click", ()=>this.loadData());
-    this.renderListContent();
-  },
-  
-  renderListContent(){
-    const wrap = $("#dev-list");
-    if(!wrap) return;
-    const { tab, filter, search } = this.state;
-    const matchSearch = (s)=> !search || (s||"").toLowerCase().includes(search);
-    
-    if(tab === "users"){
-      let list = this.state.users.filter(u=>{
-        const plan = u.plan || "free";
-        if(filter !== "all" && plan !== filter) return false;
-        return matchSearch(u.email) || matchSearch(u.name);
-      });
-      if(!list.length){ wrap.innerHTML = `<div class="empty-state"><p>Tidak ada user.</p></div>`; return; }
-      wrap.innerHTML = list.map(u=>{
-        const plan = u.plan || "free";
-        const bios = this.state.bios.filter(b=>b.ownerUid === u.uid).length;
-        const expiry = u.planExpiry ? new Date(u.planExpiry).toLocaleDateString("id-ID") : (plan === "ultimate" ? "♾️ PERMANEN" : "—");
-        const initial = (u.name || u.email || "?")[0].toUpperCase();
-        const verifyBadge = u.emailVerified
-          ? '<span style="color:var(--green);font-size:11px;margin-left:4px;font-weight:900">✓ verified</span>'
-          : '<span style="color:var(--red);font-size:11px;margin-left:4px;font-weight:900">⚠ unverified</span>';
-        return `
-          <div class="dev-item">
-            <div class="di-avatar">${initial}</div>
-            <div class="di-info">
-              <b>${esc(u.name||"Tanpa nama")} <span class="dev-plan-pill ${plan}">${plan}</span>${verifyBadge}</b>
-              <span>${esc(u.email||"")} · ${bios} bio${u.planExpiry?` · exp: ${expiry}`:(plan==="ultimate"?` · ${expiry}`:"")}</span>
-            </div>
-            <div class="di-actions">
-              <button class="icon-btn" onclick="PageDev.openEdit('${u.uid}')">${ico('edit')}</button>
-              <button class="icon-btn danger" onclick="PageDev.deleteUser('${u.uid}')">${ico('trash')}</button>
-            </div>
-          </div>`;
-      }).join("");
-    } else {
-      let list = this.state.bios.filter(b => 
-        matchSearch(b.name) || matchSearch(b.ownerName) || matchSearch(b.ownerUid) || matchSearch(b.slug)
-      );
-      if(!list.length){ wrap.innerHTML = `<div class="empty-state"><p>Tidak ada bio.</p></div>`; return; }
-      wrap.innerHTML = list.map(b=>`
-        <div class="dev-item">
-          <div class="di-avatar">${b.profile?`<img src="${esc(b.profile)}">`:esc((b.name||"?")[0].toUpperCase())}</div>
-          <div class="di-info">
-            <b>${esc(b.name||"Tanpa nama")}</b>
-            <span>#${esc(b.slug||b.id)} · ${esc(b.ownerName||"—")} · ${b.stats?.views||0} views</span>
-          </div>
-          <div class="di-actions">
-            <button class="icon-btn" onclick="window.open('${PUBLIC_BASE_URL}/#/u/${b.slug||b.id}','_blank')">${ico('eye')}</button>
-            <button class="icon-btn danger" onclick="PageDev.deleteBio('${b.id}')">${ico('trash')}</button>
-          </div>
-        </div>`).join("");
-    }
-  },
-  
-  renderPartners(){
-    const el = $("#dev-content");
-    const list = this.state.partners || [];
-    el.innerHTML = `
-      <div class="dev-manager">
-        <div class="dev-manager-head">
-          <div class="mgr-title">Manager Partner (${list.length})</div>
-          <div style="display:flex;gap:6px">
-            <button class="btn btn-primary btn-sm" id="mgr-add-partner">${ico('plus')} Tambah Partner</button>
-            <button class="btn btn-sm" id="mgr-refresh-partner">${ico('back')} Refresh</button>
-          </div>
-        </div>
-        <div class="dev-manager-list" id="partner-list"></div>
-      </div>`;
-    
-    $("#mgr-add-partner").addEventListener("click", async ()=>{
-      showLoading("Menambah partner...");
-      try{
-        await Store.savePartner({ name:"Partner Baru", tag:"Partner", url:"https://", initial:"P", order:Date.now() });
-        this.state.partners = await Store.listPartners();
-        hideLoading();
-        toast("Partner ditambahkan ✓","success");
-        this.renderPartners();
-      }catch(err){
-        hideLoading();
-        console.error("Add partner:", err);
-        toast("Gagal: "+(err.message||err.code||"permission-denied"),"error");
-      }
-    });
-    $("#mgr-refresh-partner").addEventListener("click", async ()=>{
-      this.state.partners = await Store.listPartners();
-      this.renderPartners();
-    });
-    this.renderPartnerList();
-  },
-  
-  renderPartnerList(){
-    const wrap = $("#partner-list");
-    const list = this.state.partners || [];
-    if(!list.length){
-      wrap.innerHTML = `<div class="mgr-empty">Belum ada partner.</div>`;
-      return;
-    }
-    wrap.innerHTML = list.map(p=>`
-      <div class="mgr-card" data-pid="${p.id}">
-        <div class="mgr-row">
-          <div class="mgr-thumb" data-upload="${p.id}">
-            ${p.img?`<img src="${esc(p.img)}">`:esc(p.initial||(p.name||"?")[0].toUpperCase())}
-          </div>
-          <div class="mgr-fields">
-            <input type="text" data-pname="${p.id}" placeholder="Nama" value="${esc(p.name||"")}"/>
-            <input type="text" data-ptag="${p.id}" placeholder="Tag/Kategori" value="${esc(p.tag||"")}"/>
-            <input type="text" data-purl="${p.id}" placeholder="https://..." value="${esc(p.url||"")}"/>
-          </div>
-        </div>
-        <div class="mgr-actions">
-          <button class="btn btn-sm btn-primary" data-psave="${p.id}">${ico('save')} Simpan</button>
-          <button class="btn btn-sm btn-red" data-pdel="${p.id}">${ico('trash')} Hapus</button>
-        </div>
-      </div>`).join("");
-    
-    wrap.querySelectorAll("[data-upload]").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        const pid = b.dataset.upload;
-        const inp = document.createElement("input");
-        inp.type = "file"; inp.accept = "image/*";
-        inp.onchange = async ()=>{
-          const f = inp.files[0];
-          if(!f) return;
-          showLoading("Upload logo partner...");
-          try{
-            const url = await Store.upload(f, "partner");
-            const idx = this.state.partners.findIndex(x=>x.id === pid);
-            this.state.partners[idx].img = url;
-            await Store.savePartner(this.state.partners[idx]);
-            hideLoading();
-            toast("Logo partner diupdate","success");
-            this.renderPartners();
-          }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-        };
-        inp.click();
-      });
-    });
-    
-    wrap.querySelectorAll("[data-psave]").forEach(b=>{
-      b.addEventListener("click", async ()=>{
-        const pid = b.dataset.psave;
-        const name = wrap.querySelector(`[data-pname="${pid}"]`).value;
-        const tag = wrap.querySelector(`[data-ptag="${pid}"]`).value;
-        const url = wrap.querySelector(`[data-purl="${pid}"]`).value;
-        const idx = this.state.partners.findIndex(x=>x.id === pid);
-        const updated = { ...this.state.partners[idx], name, tag, url };
-        showLoading("Menyimpan...");
-        try{
-          await Store.savePartner(updated);
-          this.state.partners[idx] = updated;
-          hideLoading();
-          toast("Partner diupdate","success");
-        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-      });
-    });
-    
-    wrap.querySelectorAll("[data-pdel]").forEach(b=>{
-      b.addEventListener("click", async ()=>{
-        const pid = b.dataset.pdel;
-        if(!confirm("Hapus partner ini?")) return;
-        showLoading("Menghapus...");
-        try{
-          await Store.removePartner(pid);
-          this.state.partners = await Store.listPartners();
-          hideLoading();
-          toast("Partner dihapus","success");
-          this.renderPartners();
-        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-      });
-    });
-  },
-  
-  renderUpdates(){
-    const el = $("#dev-content");
-    const list = this.state.updates || [];
-    el.innerHTML = `
-      <div class="dev-manager">
-        <div class="dev-manager-head">
-          <div class="mgr-title">Manager Update (${list.length})</div>
-          <div style="display:flex;gap:6px">
-            <button class="btn btn-primary btn-sm" id="mgr-add-update">${ico('plus')} Tambah Update</button>
-            <button class="btn btn-sm" id="mgr-refresh-update">${ico('back')} Refresh</button>
-          </div>
-        </div>
-        <div class="dev-manager-list" id="update-list"></div>
-      </div>`;
-    
-    $("#mgr-add-update").addEventListener("click", async ()=>{
-      showLoading("Menambah update...");
-      try{
-        await Store.saveUpdate({
-          version:"v?.?", date:"Hari ini", title:"Update Baru",
-          changes:["Perubahan 1","Perubahan 2"], createdAt: Date.now()
-        });
-        this.state.updates = await Store.listUpdates();
-        STATE.updates = this.state.updates;
-        hideLoading();
-        toast("Update ditambahkan ✓","success");
-        this.renderUpdates();
-      }catch(err){
-        hideLoading();
-        console.error("Add update:", err);
-        toast("Gagal: "+(err.message||err.code||"permission-denied"),"error");
-      }
-    });
-    $("#mgr-refresh-update").addEventListener("click", async ()=>{
-      this.state.updates = await Store.listUpdates();
-      this.renderUpdates();
-    });
-    this.renderUpdateList();
-  },
-  
-  renderUpdateList(){
-    const wrap = $("#update-list");
-    const list = this.state.updates || [];
-    if(!list.length){
-      wrap.innerHTML = `<div class="mgr-empty">Belum ada update.</div>`;
-      return;
-    }
-    wrap.innerHTML = list.map(u=>`
-      <div class="mgr-card" data-uid="${u.id}">
-        <div class="mgr-row">
-          <div class="mgr-fields">
-            <input type="text" data-uv="${u.id}" placeholder="Versi (v1.2)" value="${esc(u.version||"")}"/>
-            <input type="text" data-ud="${u.id}" placeholder="Tanggal" value="${esc(u.date||"")}"/>
-            <input type="text" data-ut="${u.id}" placeholder="Judul" value="${esc(u.title||"")}"/>
-          </div>
-        </div>
-        <label style="font-size:11px;font-weight:800;text-transform:uppercase;
-          letter-spacing:.5px;color:var(--ink-soft);display:block;margin:8px 0 4px">Perubahan:</label>
-        <div class="mgr-changes-list" data-uchanges="${u.id}">
-          ${(u.changes||[]).map((c,i)=>`
-            <div class="change-row">
-              <input type="text" data-uchange="${u.id}-${i}" value="${esc(c)}"/>
-              <button class="chg-del" data-uchgdel="${u.id}-${i}">${ico('x')}</button>
-            </div>`).join("")}
-        </div>
-        <button class="btn btn-sm" data-uchgadd="${u.id}" style="margin-top:6px;font-size:11px">${ico('plus')} Tambah Baris</button>
-        <div class="mgr-actions">
-          <button class="btn btn-sm btn-primary" data-usave="${u.id}">${ico('save')} Simpan</button>
-          <button class="btn btn-sm btn-red" data-udel="${u.id}">${ico('trash')} Hapus</button>
-        </div>
-      </div>`).join("");
-    
-    wrap.querySelectorAll("[data-uchgdel]").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        const [uid_, iStr] = b.dataset.uchgdel.split("-");
-        const i = +iStr;
-        const idx = this.state.updates.findIndex(x=>x.id === uid_);
-        const card = wrap.querySelector(`[data-uid="${uid_}"]`);
-        const curChanges = [];
-        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>curChanges.push(inp.value));
-        this.state.updates[idx].changes = curChanges;
-        this.state.updates[idx].changes.splice(i,1);
-        this.renderUpdateList();
-      });
-    });
-    wrap.querySelectorAll("[data-uchgadd]").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        const u = b.dataset.uchgadd;
-        const idx = this.state.updates.findIndex(x=>x.id === u);
-        const card = wrap.querySelector(`[data-uid="${u}"]`);
-        const curChanges = [];
-        card.querySelectorAll(`[data-uchange^="${u}-"]`).forEach(inp=>curChanges.push(inp.value));
-        this.state.updates[idx].changes = curChanges;
-        this.state.updates[idx].changes.push("Perubahan baru");
-        this.renderUpdateList();
-      });
-    });
-    wrap.querySelectorAll("[data-usave]").forEach(b=>{
-      b.addEventListener("click", async ()=>{
-        const uid_ = b.dataset.usave;
-        const card = wrap.querySelector(`[data-uid="${uid_}"]`);
-        const version = card.querySelector(`[data-uv="${uid_}"]`).value;
-        const date = card.querySelector(`[data-ud="${uid_}"]`).value;
-        const title = card.querySelector(`[data-ut="${uid_}"]`).value;
-        const changes = [];
-        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>changes.push(inp.value));
-        const idx = this.state.updates.findIndex(x=>x.id === uid_);
-        const updated = { ...this.state.updates[idx], version, date, title, changes };
-        showLoading("Menyimpan...");
-        try{
-          await Store.saveUpdate(updated);
-          this.state.updates[idx] = updated;
-          STATE.updates = this.state.updates;
-          hideLoading();
-          toast("Update disimpan","success");
-        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-      });
-    });
-    wrap.querySelectorAll("[data-udel]").forEach(b=>{
-      b.addEventListener("click", async ()=>{
-        const uid_ = b.dataset.udel;
-        if(!confirm("Hapus update ini?")) return;
-        showLoading("Menghapus...");
-        try{
-          await Store.removeUpdate(uid_);
-          this.state.updates = await Store.listUpdates();
-          STATE.updates = this.state.updates;
-          hideLoading();
-          toast("Update dihapus","success");
-          this.renderUpdates();
-        }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-      });
-    });
-  },
-  
-  renderFavicon(){
-    const el = $("#dev-content");
-    const s = this.state.settings || {};
-    const fav = s.favicon || null;
-    el.innerHTML = `
-      <div class="favicon-panel">
-        <div class="fp-card">
-          <h3>${ico('image')} Favicon Situs Varlinkbio</h3>
-          <p class="fp-desc">
-            Ganti icon kecil yang muncul di <b>tab browser</b>.
-            Format: PNG / ICO / SVG ukuran kotak (rekomendasi 128×128).
-          </p>
-          <div class="favicon-preview-big">
-            <div class="fp-thumb" id="fp-thumb">
-              ${fav
-                ? `<img src="${esc(fav)}" alt="favicon"/>`
-                : `<div class="ph">Belum ada<br>favicon</div>`}
-            </div>
-            <div class="fp-arrow">→</div>
-            <div class="fp-tab-mock">
-              <span class="dot"></span>
-              <span class="icon">${fav?`<img src="${esc(fav)}" alt=""/>`:`🎨`}</span>
-              <span class="title">Varlinkbio — Link in Bio</span>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-            <button class="btn btn-primary" id="fp-upload">${ico('camera')} ${fav?'Ganti':'Upload'} Favicon</button>
-            ${fav?`<button class="btn btn-red" id="fp-clear">${ico('trash')} Hapus</button>`:''}
-          </div>
-          <div class="fp-note">
-            ⚡ <b>Preview langsung:</b> setelah upload, favicon di tab browser ini
-            langsung berubah (tanpa reload).
-          </div>
-        </div>
-      </div>`;
-    
-    const uploadFn = ()=>{
-      const inp = document.createElement("input");
-      inp.type = "file"; inp.accept = "image/*";
-      inp.onchange = async ()=>{
-        const f = inp.files[0];
-        if(!f) return;
-        showLoading("Upload favicon...");
-        try{
-          const url = await Store.upload(f, "favicon");
-          await Store.saveSettings({ favicon: url });
-          let links = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
-          if(!links.length){
-            const link = document.createElement("link");
-            link.rel = "icon";
-            document.head.appendChild(link);
-            links = [link];
-          }
-          links.forEach(l => l.href = url);
-          STATE.appSettings = { ...STATE.appSettings, favicon: url };
-          this.state.settings = { ...this.state.settings, favicon: url };
-          hideLoading();
-          toast("Favicon diupdate! Cek tab browser ✓","success");
-          this.renderFavicon();
-        }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
-      };
-      inp.click();
-    };
-    
-    $("#fp-thumb")?.addEventListener("click", uploadFn);
-    $("#fp-upload")?.addEventListener("click", uploadFn);
-    $("#fp-clear")?.addEventListener("click", async ()=>{
-      if(!confirm("Hapus favicon?")) return;
-      showLoading("Menghapus...");
-      try{
-        await Store.saveSettings({ favicon: "" });
-        const defaultFav = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><circle cx='50' cy='50' r='22' fill='%23ffd700' stroke='%23fff' stroke-width='4'/></svg>";
-        let links = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
-        links.forEach(l => l.href = defaultFav);
-        this.state.settings = { ...this.state.settings, favicon: "" };
-        hideLoading();
-        toast("Favicon dihapus","info");
-        this.renderFavicon();
-      }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-    });
-  },
-  
-  openEdit(uid){
-    const u = this.state.users.find(x=>x.uid === uid);
-    if(!u) return;
-    const curPlan = u.plan || "free";
-    const expiry = u.planExpiry ? new Date(u.planExpiry).toISOString().slice(0,10) : "";
-    const m = openModal(`
-      <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
-      <h3>Edit User</h3>
-      <p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:14px">
-        ${esc(u.name||"—")}<br>${esc(u.email||"")}
-      </p>
-      <div class="field">
-        <label>Plan</label>
-        <select id="dev-edit-plan" style="padding:12px;font-weight:800">
-          <option value="free" ${curPlan==="free"?"selected":""}>Free</option>
-          <option value="starter" ${curPlan==="starter"?"selected":""}>Starter</option>
-          <option value="pro" ${curPlan==="pro"?"selected":""}>Pro</option>
-          <option value="ultimate" ${curPlan==="ultimate"?"selected":""}>Ultimate ♾️ (Permanen)</option>
-        </select>
-      </div>
-      <div class="field" id="dev-expiry-field" style="${curPlan==="ultimate"?"display:none":""}">
-        <label>Tanggal Kadaluarsa (opsional)</label>
-        <input type="date" id="dev-edit-expiry" value="${expiry}"/>
-        <div class="hint">Kosongkan = tidak kadaluarsa</div>
-      </div>
-      <div class="field" id="dev-perm-info" style="${curPlan==="ultimate"?"":"display:none"}">
-        <div style="background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px 12px;font-size:12.5px;font-weight:700">
-          ♾️ Plan ini <b>PERMANEN</b> — tidak butuh tanggal kadaluarsa.
-        </div>
-      </div>
-      <button class="btn btn-primary btn-block" id="dev-edit-save" style="margin-top:14px">${ico('save')} Simpan</button>
-      <button class="btn btn-red btn-block" id="dev-edit-del" style="margin-top:8px">${ico('trash')} Hapus User + Bio</button>
-    `);
-    
-    $("#dev-edit-plan",m).addEventListener("change", (e)=>{
-      const v = e.target.value;
-      const isPerm = v === "ultimate";
-      $("#dev-expiry-field",m).style.display = isPerm ? "none" : "";
-      $("#dev-perm-info",m).style.display = isPerm ? "" : "none";
-    });
-    
-    $("#dev-edit-save",m).addEventListener("click", async ()=>{
-      const newPlan = $("#dev-edit-plan",m).value;
-      const isPerm = newPlan === "ultimate";
-      const expiryVal = isPerm ? "" : $("#dev-edit-expiry",m).value;
-      const expiryMs = expiryVal ? new Date(expiryVal).getTime() : null;
-      showLoading("Menyimpan...");
-      try{
-        await FB.db.collection("users").doc(uid).update({
-          plan: newPlan,
-          planExpiry: expiryMs
-        });
-        hideLoading();
-        toast("Berhasil diupdate!","success");
-        m.remove();
-        await this.loadData();
-      }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-    });
-    
-    $("#dev-edit-del",m).addEventListener("click", ()=>{ m.remove(); this.deleteUser(uid); });
-  },
-  
-  async deleteUser(uid){
-    if(!confirm("Hapus user ini + semua bio-nya?")) return;
-    showLoading("Menghapus...");
-    try{
-      const biosToDelete = this.state.bios.filter(b=>b.ownerUid === uid);
-      for(const b of biosToDelete){
-        try{ await FB.db.collection("bios").doc(b.id).delete(); }catch(e){}
-      }
-      await FB.db.collection("users").doc(uid).delete();
-      hideLoading();
-      toast("User & bio terhapus","success");
-      await this.loadData();
-    }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-  },
-  
-  async deleteBio(id){
-    if(!confirm("Hapus bio ini?")) return;
-    showLoading("Menghapus...");
-    try{
-      await FB.db.collection("bios").doc(id).delete();
-      hideLoading();
-      toast("Bio terhapus","success");
-      await this.loadData();
-    }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
-  }
-};
-
-/* =========================================================
-   PAGE: PUBLIC BIO VIEWER
-   ========================================================= */
-const PagePublic = {
-  buildHTML(d, opts={}){
-    const preview = !!(opts && opts.preview);
-    const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
-    const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
-    
-    // Filter link yang aktif saja
-    const activeLinks = (d.links||[]).filter(l => l.active !== false);
-    
-    const links = activeLinks.map((l, idx)=>{
-      const embed = LinkTypes.embed(l.url);
-      const type = LinkTypes.detect(l.url);
-      const autoColor = NEO_COLORS[idx % NEO_COLORS.length];
-      const bg = l.color || NEO_HEX[autoColor];
-      const fg = contrastText(bg);
-      
-      if(l.thumb){
-        return `<a class="bio-link bio-featured" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}">
-          <img class="feat-img" src="${esc(l.thumb)}" alt=""/>
-          <div class="feat-body"><b>${esc(l.label||"Link")}</b></div>
-        </a>`;
-      }
-      if(embed && ["youtube","spotify","vimeo","tiktok"].includes(type)){
-        return `<div class="bio-embed"><iframe src="${esc(embed)}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>`;
-      }
-      return `<a class="bio-link" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}"
-        style="background:${esc(bg)};color:${fg}">
-        <span class="licon">${ico(LinkTypes.icon(l.url))}</span>
-        <span class="ltext">${esc(l.label||"Link")}</span>
-      </a>`;
-    }).join("");
-    
-    const profileBlock = d.profile
-      ? `<img src="${esc(d.profile)}" alt=""/>`
-      : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
-    const bannerBlock = renderBannerHTML(d);
-    const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
-    
-    const badgeMap = { starter:"STARTER", pro:"PRO", ultimate:"ULTIMATE" };
-    const badge = badgeMap[d.ownerPlan] || "";
-    const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
-    
-    const logosHtml = (Array.isArray(d.logos) && d.logos.filter(lg=>lg.img).length)
-      ? `<div class="bio-logos">
-          ${d.logos.filter(lg=>lg.img).map(lg=>`
-            <a class="bio-logo-item" href="${esc(lg.url||"#")}" target="_blank" rel="noopener" title="${esc(lg.name||"")}">
-              <img src="${esc(lg.img)}" alt=""/>
-            </a>`).join("")}
-        </div>`
-      : "";
-    
-    const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
-    const bioId = d.id || "";
-    const slug = d.slug || bioId;
-    const isLocked = !!d.lock;
-    const themeClass = `theme-${d.theme||"neo-cream"}`;
-    const pageTitle = `VarlinkBio-${d.name||"User"}`;
-    const pageDesc = d.bio || `Cek link-in-bio ${d.name||"User"} di Varlinkbio`;
-    const pageImage = d.profile || d.banner || "";
-    const appFav = STATE.appSettings?.favicon || "";
-    const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
-    
-    // Watermark logic
-    const showWatermark = d.showWatermark !== false;
-    const watermarkHtml = showWatermark
-      ? `<div class="bio-footer">Powered by <a href="${APP_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>`
-      : `<div class="bio-footer" style="opacity:.6;font-size:10px">by Varoo</div>`;
-    
-    // CTA Floating (kecuali preview & plan no-watermark)
-    const showCTA = !preview && showWatermark;
-    const ctaHtml = showCTA
-      ? `<a class="bio-cta-float" href="${APP_BASE_URL}/#/register" target="_top">
-           ✨ Bikin bio kamu
-         </a>`
-      : "";
-    
-    return `<!DOCTYPE html>
-<html lang="id"><head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<title>${esc(pageTitle)}</title>
-<meta name="description" content="${esc(pageDesc)}"/>
-${faviconTag}
-<meta property="og:type" content="profile"/>
-<meta property="og:title" content="${esc(pageTitle)}"/>
-<meta property="og:description" content="${esc(pageDesc)}"/>
-<meta property="og:url" content="${PUBLIC_BASE_URL}/#/u/${slug}"/>
-${pageImage?`<meta property="og:image" content="${esc(pageImage)}"/>`:""}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>${PagePublic.css()}</style>
-</head><body class="bio-public">
-<div class="bio-deco d1"></div>
-<div class="bio-deco d2"></div>
-<div class="bio-deco d3"></div>
-<div class="bio-wrap ${themeClass} ${animCls}">
-  <div class="bio-inner">
-    ${bannerBlock}
-    <div class="bio-header">
-      <div class="bio-avatar">${profileBlock}</div>
-      <div class="bio-title-top">Bio Link</div>
-      <div class="bio-name">${esc(d.name||"Tanpa Nama")}</div>
-      ${bioText}
-      ${badgeHtml}
-    </div>
-    ${logosHtml}
-    <div class="bio-links">${links}</div>
-    <div style="text-align:center">${watermarkHtml}</div>
-  </div>
-</div>
-${ctaHtml}
-${isLocked ? `
-<div class="lock-overlay" id="lock-overlay">
-  <div class="lock-card">
-    <div class="li">${ico('lock')}</div>
-    <h3>Terkunci</h3>
-    <p>Masukkan password untuk membuka.</p>
-    <input type="password" id="lock-pass" placeholder="Password..." autocomplete="off"/>
-    <button id="lock-btn">Buka</button>
-  </div>
-</div>` : ""}
-<script>
-const BIO_ID = "${bioId}";
-const IS_PREVIEW = ${preview?"true":"false"};
-const LOCK_PASS = ${JSON.stringify(d.lock||"")};
-function trackView(){
-  if(IS_PREVIEW || !BIO_ID) return;
-  try{ window.parent.postMessage({type:"varlinkb:view", id:BIO_ID},"*"); }catch(e){}
-}
-function trackClick(idx){
-  if(IS_PREVIEW || !BIO_ID) return;
-  try{ window.parent.postMessage({type:"varlinkb:click", id:BIO_ID, idx:idx},"*"); }catch(e){}
-}
-document.querySelectorAll("[data-click]").forEach(el=>{
-  el.addEventListener("click",()=>trackClick(+el.dataset.click));
-});
-${isLocked ? `
-(function(){
-  const overlay = document.getElementById("lock-overlay");
-  const inp = document.getElementById("lock-pass");
-  const btn = document.getElementById("lock-btn");
-  function unlock(){
-    if(inp.value === LOCK_PASS){
-      overlay.style.display = "none";
-      sessionStorage.setItem("varlinkb_unlocked_" + BIO_ID, "1");
-    } else {
-      inp.style.borderColor = "#ff2a2a";
-      inp.value = "";
-      inp.placeholder = "Salah, coba lagi...";
-      setTimeout(()=>{
-        inp.style.borderColor = "";
-        inp.placeholder = "Password...";
-      }, 1400);
-    }
-  }
-  if(sessionStorage.getItem("varlinkb_unlocked_" + BIO_ID) === "1"){
-    overlay.style.display = "none";
-  }
-  btn.addEventListener("click", unlock);
-  inp.addEventListener("keydown", e=>{ if(e.key === "Enter") unlock(); });
-  inp.focus();
-})();` : ""}
-trackView();
-<\/script>
-</body></html>`;
-  },
-  
-  css(){
-    return `
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#f0ebe0;--ink:#0a0a0a;--ink-soft:#2a2a2a;--red:#ff2a2a;--yellow:#ffd700;--green:#22c55e;--blue:#2563eb;--pink:#ff69b4;--purple:#a78bfa;--white:#fff}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);min-height:100vh;background:var(--cream);overflow-x:hidden;font-weight:700}
-a{text-decoration:none;color:inherit}
-img,video{max-width:100%;display:block}
-.ic{width:18px;height:18px;display:inline-block;vertical-align:middle;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-@keyframes dotsFlow{from{background-position:0 0,10px 10px}to{background-position:400px -400px,410px -390px}}
-.bio-deco{position:fixed;pointer-events:none;z-index:1}
-.bio-deco.d1{width:60px;height:60px;top:8%;left:6%;background:var(--red);border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:5px 5px 0 var(--ink);animation:deco1 6s ease-in-out infinite}
-.bio-deco.d2{width:38px;height:38px;top:16%;right:8%;background:var(--blue);border:3px solid var(--ink);border-radius:50%;transform:rotate(20deg);box-shadow:4px 4px 0 var(--ink);animation:deco2 7s ease-in-out infinite}
-.bio-deco.d3{width:44px;height:44px;bottom:20%;right:6%;background:var(--yellow);border:3px solid var(--ink);transform:rotate(15deg);box-shadow:4px 4px 0 var(--ink);animation:deco3 8s ease-in-out infinite}
-@keyframes deco1{0%,100%{transform:rotate(-12deg) translate(0,0)}50%{transform:rotate(-12deg) translate(6px,-8px)}}
-@keyframes deco2{0%,100%{transform:rotate(20deg) translate(0,0)}50%{transform:rotate(20deg) translate(-6px,8px)}}
-@keyframes deco3{0%,100%{transform:rotate(15deg) translate(0,0)}50%{transform:rotate(15deg) translate(4px,-6px)}}
-.bio-wrap{min-height:100vh;width:100%;position:relative;overflow-x:hidden;padding:34px 18px 60px;display:flex;flex-direction:column;align-items:center;z-index:2}
-.bio-inner{width:100%;max-width:420px;position:relative;z-index:2}
-.bio-banner{width:100%;max-width:100%;margin:0 auto 16px;height:110px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white);position:relative}
-.bio-banner img,.bio-banner video{width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:480px){.bio-banner{height:95px;margin-bottom:14px}}
-.bio-avatar{width:110px;height:110px;border-radius:50%;border:4px solid var(--ink);overflow:hidden;background:var(--white);margin:0 auto;box-shadow:6px 6px 0 var(--ink);transition:transform .15s, box-shadow .15s}
-.bio-avatar img{width:100%;height:100%;object-fit:cover}
-.bio-avatar:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-.bio-header{display:flex;flex-direction:column;align-items:center;margin-bottom:14px;position:relative}
-.bio-title-top{display:inline-block;padding:5px 14px;background:var(--white);color:var(--ink);font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;border:3px solid var(--ink);transform:rotate(-4deg);margin-top:12px;box-shadow:3px 3px 0 var(--ink);z-index:3}
-.bio-name{display:inline-block;padding:7px 18px;background:var(--yellow);color:var(--ink);font-size:21px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(2deg);margin-top:-4px;box-shadow:5px 5px 0 var(--ink);text-align:center;max-width:100%;word-break:break-word;z-index:2}
-.bio-bio{display:inline-block;padding:6px 14px;background:var(--red);color:var(--white);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;border:3px solid var(--ink);transform:rotate(-2deg);margin-top:-2px;box-shadow:4px 4px 0 var(--ink);text-align:center;max-width:100%;word-break:break-word;z-index:1}
-.bio-plan-badge{display:inline-block;padding:3px 12px;background:var(--ink);color:var(--yellow);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;border:2px solid var(--yellow);border-radius:999px;margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
-.bio-plan-badge.starter{background:var(--green);color:#fff;border-color:var(--ink)}
-.bio-plan-badge.pro{background:var(--blue);color:#fff;border-color:var(--ink)}
-.bio-plan-badge.ultimate{background:var(--ink);color:var(--yellow);border-color:var(--yellow)}
-.bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
-.bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);background:var(--white);overflow:hidden;display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
-.bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
-.bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-.bio-links{display:flex;flex-direction:column;gap:14px}
-.bio-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;border:3px solid var(--ink);border-radius:12px;font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;position:relative;transition:transform .12s, box-shadow .12s;box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
-@keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.bio-link:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
-.bio-link:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
-.bio-link .licon{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0}
-.bio-link .ltext{flex:1;text-align:center}
-.bio-link.bio-featured{flex-direction:column;align-items:stretch;padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
-.bio-link.bio-featured .feat-img{width:100%;height:130px;object-fit:cover;border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
-.bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
-.bio-link.bio-featured .feat-body b{font-size:14.5px;font-weight:900;text-transform:uppercase}
-.bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white)}
-.bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
-.bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--white);border:2px solid var(--ink);padding:6px 12px;border-radius:20px;box-shadow:2px 2px 0 var(--ink);display:inline-block}
-.bio-footer a{color:var(--ink);font-weight:900;text-decoration:underline}
-.bio-cta-float{position:fixed;bottom:16px;right:16px;z-index:9990;display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--yellow);font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-decoration:none;padding:8px 14px;border-radius:999px;border:2.5px solid var(--yellow);box-shadow:3px 3px 0 var(--yellow);animation:ctaBounce 2.5s ease-in-out infinite}
-.bio-cta-float:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--yellow)}
-@keyframes ctaBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.bio-wrap.anim-bounce .bio-link:hover{animation:linkBounce .4s ease}
-@keyframes linkBounce{0%,100%{transform:translate(-2px,-2px)}50%{transform:translate(-2px,-8px)}}
-.bio-wrap.anim-shake .bio-link:active{animation:linkShake .3s ease}
-@keyframes linkShake{0%,100%{transform:translate(4px,4px)}25%{transform:translate(0px,4px)}75%{transform:translate(8px,4px)}}
-.bio-wrap.anim-glow .bio-link:hover{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--yellow)}
-.theme-neo-cream{background-color:#f0ebe0;background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
-.theme-neo-dark{background-color:#0a0a0a;color:#fff;background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
-.theme-neo-dark .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-dark .bio-title-top{background:var(--yellow);color:var(--ink);border-color:#fff}
-.theme-neo-dark .bio-name{background:var(--red);color:#fff;border-color:#fff;box-shadow:5px 5px 0 var(--yellow)}
-.theme-neo-dark .bio-bio{background:var(--blue);color:#fff;border-color:#fff}
-.theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-dark .bio-banner,.theme-neo-dark .bio-embed{border-color:#fff}
-.theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
-.theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
-.theme-neo-blue{background-color:#2563eb;color:#fff;background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),radial-gradient(circle,#fff 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
-.theme-neo-blue .bio-avatar{border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-blue .bio-title-top{background:var(--white);color:var(--ink);border-color:var(--ink)}
-.theme-neo-blue .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
-.theme-neo-blue .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
-.theme-neo-blue .bio-link{background:var(--white);color:var(--ink);border-color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
-.theme-neo-blue .bio-footer{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:2px 2px 0 var(--pink)}
-.theme-neo-pink{background-color:#ff69b4;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
-.theme-neo-pink .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-pink .bio-name{background:var(--white);color:var(--ink);border-color:var(--ink)}
-.theme-neo-pink .bio-bio{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
-.theme-neo-green{background-color:#22c55e;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
-.theme-neo-green .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--yellow)}
-.theme-neo-green .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
-.theme-neo-green .bio-bio{background:var(--ink);color:#fff;border-color:var(--ink)}
-.theme-neo-purple{background-color:#a78bfa;color:var(--ink);background-image:radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);background-size:20px 20px,20px 20px;background-position:0 0,10px 10px;animation:dotsFlow 24s linear infinite}
-.theme-neo-purple .bio-avatar{border-color:var(--ink);box-shadow:6px 6px 0 var(--pink)}
-.theme-neo-purple .bio-name{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
-.theme-neo-purple .bio-bio{background:var(--pink);color:var(--ink);border-color:var(--ink)}
-.lock-overlay{position:fixed;inset:0;background:rgba(240,235,224,.96);z-index:9998;display:grid;place-items:center;padding:18px}
-.lock-card{background:var(--white);border:3px solid var(--ink);border-radius:14px;padding:28px;max-width:340px;width:100%;text-align:center;box-shadow:8px 8px 0 var(--red)}
-.lock-card .li{width:56px;height:56px;background:var(--ink);color:var(--yellow);border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
-.lock-card .li .ic{width:26px;height:26px}
-.lock-card h3{margin-bottom:6px;font-size:16px;text-transform:uppercase;font-weight:900}
-.lock-card p{font-size:13px;margin-bottom:16px;font-weight:600}
-.lock-card input{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--white);color:var(--ink);font-size:14px;outline:none;text-align:center;font-weight:700;font-family:inherit}
-.lock-card button{width:100%;padding:12px;border-radius:10px;border:2.5px solid var(--ink);background:var(--ink);color:var(--white);font-weight:900;cursor:pointer;margin-top:10px;font-size:13.5px;text-transform:uppercase;box-shadow:3px 3px 0 var(--red);font-family:inherit}
-`;
-  },
-  
-  async render(idOrSlug){
-    // Kalau di app domain, redirect ke bio domain
-    if(!IS_BIO_DOMAIN && !IS_LOCAL){
-      const cleanSlug = String(idOrSlug||"").trim();
-      location.replace(`${PUBLIC_BASE_URL}/#/u/${cleanSlug}`);
-      return;
-    }
-    
-    showLoading("Memuat...");
-    if(!STATE.appSettings){
-      try{ STATE.appSettings = await Store.getSettings(); }catch(e){ STATE.appSettings = {}; }
-    }
-    
-    let data = null;
-    try{ data = await Store.get(idOrSlug); }catch(e){ console.error(e); }
-    hideLoading();
-    
-    if(!data){
-      $("#app").innerHTML = `
-        <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 18px;text-align:center">
-          <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;margin-bottom:16px;box-shadow:5px 5px 0 var(--red);color:var(--ink)">${ico('x')}</div>
-          <h2 style="margin-bottom:8px;font-size:20px;text-transform:uppercase;font-weight:900">Tidak ditemukan</h2>
-          <p style="font-size:13.5px;max-width:320px;margin-bottom:18px;font-weight:600">Mungkin sudah dihapus, atau link salah.</p>
-          <a href="${APP_BASE_URL}" class="btn btn-primary">${ico('back')} Kembali ke Varlinkbio</a>
-        </div>`;
-      return;
-    }
-    
-    document.title = `VarlinkBio-${data.name||"User"}`;
-    document.body.classList.add("public-mode");
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-    document.body.style.height = '100vh';
-    document.body.style.height = '100dvh';
-    
-    $("#app").innerHTML = `<iframe id="bio-full" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;border:0;background:#f0ebe0;z-index:50;display:block" title="Link-in-Bio"></iframe>`;
-    const frame = document.getElementById("bio-full");
-    frame.srcdoc = this.buildHTML(data, { preview:false });
-  }
-};
-
-/* =========================================================
-   ANALYTICS LISTENER (dari iframe bio)
-   ========================================================= */
-window.addEventListener("message", async e=>{
-  const d = e.data;
-  if(!d || !d.type) return;
-  if(d.type === "varlinkb:view" && d.id){
-    await Store.trackView(d.id).catch(()=>{});
-  }
-  if(d.type === "varlinkb:click" && d.id != null){
-    await Store.trackClick(d.id, d.idx).catch(()=>{});
-  }
-});
-
-/* =========================================================
-   ROUTER REGISTER
-   ========================================================= */
-Router.on("/",          ()=>PageLanding.render());
-Router.on("/login",     ()=>PageLogin.render());
-Router.on("/register",  ()=>PageRegister.render());
-Router.on("/verify",    ()=>PageVerify.render());
-Router.on("/dashboard", (q)=>PageDashboard.render(q));
-Router.on("/editor",    ()=>PageEditor.render());
-Router.on("/manage",    ()=>PageManage.render());
-Router.on("/stats",     ()=>PageStats.render());
-Router.on("/settings",  ()=>PageSettings.render());
-Router.on("/help",      ()=>PageHelp.render());
-Router.on("/explore",   ()=>PageExplore.render());
-Router.on("/dev",       ()=>PageDev.render());
-Router.on("/u/:id",     (id)=>PagePublic.render(id));
-Router.on("/404",       ()=>Router.navigate("/"));
-
-/* =========================================================
-   BOOT v21
+   </script>
+   /* =========================================================
+   BOOT v22 — Login Fix Total
    ========================================================= */
 (async function boot(){
   showLoading("Memuat...");
@@ -5789,7 +4784,7 @@ Router.on("/404",       ()=>Router.navigate("/"));
     return;
   }
   
-  // === 2) Handle redirect result (Google sign-in mobile) ===
+  // === 2) Handle redirect result (Google sign-in fallback) ===
   try{
     const redirectUser = await Auth.handleRedirectResult();
     if(redirectUser && redirectUser.__error){
@@ -5801,40 +4796,45 @@ Router.on("/404",       ()=>Router.navigate("/"));
   // === 3) Init Auth ===
   await Auth.init();
   
-  // === 4) Kalau habis redirect tapi Auth.current masih null → tunggu sync (max 2.5 detik) ===
+  // === 4) Kalau habis redirect tapi Auth.current masih null → tunggu sync 3 detik ===
   if(!Auth.current){
     await new Promise(resolve => {
       let done = false;
       const finish = ()=>{ if(!done){ done = true; resolve(); } };
       const unsub = FB.auth.onAuthStateChanged(async user => {
         if(user){
-          try{
-            let name = user.displayName || (user.email||"").split("@")[0];
-            try{
-              const doc = await FB.db.collection("users").doc(user.uid).get();
-              if(doc.exists && doc.data().name) name = doc.data().name;
-            }catch(e){}
-            const isGoogleProvider = (user.providerData||[]).some(p => p.providerId === "google.com");
-            Auth.current = {
-              uid: user.uid, email: user.email, name,
-              photo: user.photoURL || "",
-              emailVerified: user.emailVerified || isGoogleProvider,
-              isGoogle: isGoogleProvider
-            };
-          }catch(e){ console.warn("post-redirect user:", e); }
+          await Auth._setCurrentFromUser(user);
         }
         unsub();
         finish();
       });
-      setTimeout(finish, 2500);
+      setTimeout(finish, 3000);
     });
   }
   
-  // === 5) Load plan ===
+  // === 5) Kalau ada sinyal redirect, tunggu lagi 1 detik ===
+  const wasRedirecting = sessionStorage.getItem("varlinkbio_redirect_from");
+  if(wasRedirecting){
+    try{ sessionStorage.removeItem("varlinkbio_redirect_from"); }catch(e){}
+    if(!Auth.current){
+      await new Promise(resolve => {
+        let done = false;
+        const finish = ()=>{ if(!done){ done = true; resolve(); } };
+        const unsub = FB.auth.onAuthStateChanged(async user => {
+          if(user){ await Auth._setCurrentFromUser(user); }
+          unsub();
+          finish();
+        });
+        setTimeout(finish, 1500);
+      });
+    }
+  }
+  
+  // === 6) Load plan ===
   if(Auth.current) await loadUserPlan();
   hideLoading();
   
-  // === 6) Redirect logic v21 SMART ===
+  // === 7) Redirect logic v22 — Anti-Stuck ===
   const hashPath = (location.hash.slice(1) || "/").split("?")[0];
   const isAuthPage = hashPath === "/login" || hashPath === "/register";
   
@@ -5845,9 +4845,15 @@ Router.on("/404",       ()=>Router.navigate("/"));
   }
   
   if(Auth.current){
-    // User udah login → auto ke dashboard kalau lagi di auth page atau root
+    // User udah login → auto ke dashboard
     if(isAuthPage || hashPath === "/"){
       location.replace(location.pathname + "#/dashboard");
+      return;
+    }
+    
+    // Kalau ada URL redirect tersimpan (bukan auth page), ke situ
+    if(wasRedirecting && wasRedirecting !== "#/login" && wasRedirecting !== "#/register"){
+      location.replace(location.pathname + wasRedirecting);
       return;
     }
   } else {
@@ -5861,4 +4867,4 @@ Router.on("/404",       ()=>Router.navigate("/"));
 })();
 </script>
 </body>
-  </html>
+</html>

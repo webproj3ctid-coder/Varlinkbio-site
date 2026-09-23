@@ -94,6 +94,17 @@ textarea{resize:vertical;min-height:80px}
   border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* GLOBAL ERROR HANDLER UI */
+#global-error{
+  position:fixed;bottom:10px;left:10px;right:10px;z-index:99999;
+  background:var(--red);color:#fff;border:3px solid var(--ink);
+  border-radius:10px;padding:12px 14px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  box-shadow:5px 5px 0 var(--ink);word-break:break-all;
+  max-height:120px;overflow:auto;display:none
+}
+#global-error.show{display:block}
+
 .container{max-width:960px;margin:0 auto;padding:0 18px}
 
 /* =========================================================
@@ -221,9 +232,6 @@ textarea{resize:vertical;min-height:80px}
 .footer-tag{margin-top:28px;color:var(--ink);font-size:12px;font-weight:700;
   background:var(--white);border:var(--border);padding:5px 12px;border-radius:20px}
 
-/* =========================================================
-   UPDATE + PARTNER + PRICING
-   ========================================================= */
 .update-section{padding:40px 18px 50px;background:var(--white);
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .update-header{text-align:center;margin-bottom:24px}
@@ -457,7 +465,7 @@ textarea{resize:vertical;min-height:80px}
 .empty-state p{margin-bottom:16px;font-weight:700}
 
 /* =========================================================
-   CHECKLIST (Dashboard)
+   CHECKLIST
    ========================================================= */
 .onb-checklist{
   background:linear-gradient(135deg,var(--ink),#2a2a2a);
@@ -551,154 +559,238 @@ textarea{resize:vertical;min-height:80px}
 }
 
 /* =========================================================
-   ONBOARDING TOUR
+   🎓 TUTORIAL DIALOG (v24 — Center Modal)
    ========================================================= */
-.onb-overlay{
+.tut-overlay{
   position:fixed;inset:0;z-index:99000;
-  background:rgba(10,10,10,.75);
-  opacity:0;pointer-events:none;
-  transition:opacity .3s ease;
+  background:rgba(10,10,10,.78);
   display:flex;align-items:center;justify-content:center;
   padding:18px;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
 }
-.onb-overlay.active{opacity:1;pointer-events:auto}
+.tut-overlay.active{opacity:1;pointer-events:auto}
 
-.onb-spotlight{
-  position:fixed;z-index:99001;pointer-events:none;
-  border:3px solid var(--yellow);
-  border-radius:12px;
-  box-shadow:0 0 0 9999px rgba(10,10,10,.75),
-             0 0 0 6px var(--ink),
-             0 0 30px 4px var(--yellow);
-  transition:all .35s cubic-bezier(.4,0,.2,1);
-  background:transparent;
-}
-
-.onb-popup{
-  position:relative;z-index:99010;
+.tut-dialog{
+  position:relative;
   background:var(--white);
   border:3px solid var(--ink);
-  border-radius:16px;
-  box-shadow:8px 8px 0 var(--ink);
-  max-width:400px;width:100%;
-  padding:20px;
-  animation:onbPop .4s cubic-bezier(.34,1.56,.64,1);
+  border-radius:18px;
+  box-shadow:10px 10px 0 var(--yellow);
+  max-width:440px;width:100%;
+  max-height:92vh;overflow-y:auto;
+  padding:0;
+  transform:translateY(30px) scale(.95);
+  opacity:0;
+  transition:all .45s cubic-bezier(.34,1.56,.64,1);
 }
-@keyframes onbPop{
-  from{opacity:0;transform:scale(.85) translateY(20px)}
-  to{opacity:1;transform:scale(1) translateY(0)}
+.tut-overlay.active .tut-dialog{
+  transform:translateY(0) scale(1);
+  opacity:1;
 }
 
-.onb-progress{
-  display:flex;gap:4px;margin-bottom:14px;
+/* Step Bar */
+.tut-steps-bar{
+  display:flex;gap:3px;
+  padding:14px 16px 0;
 }
-.onb-progress-dot{
-  flex:1;height:6px;
+.tut-step-dot{
+  flex:1;height:5px;
   background:var(--cream-2);
   border-radius:3px;
   transition:background .3s;
 }
-.onb-progress-dot.done{background:var(--green)}
-.onb-progress-dot.active{
+.tut-step-dot.done{background:var(--green)}
+.tut-step-dot.active{
   background:var(--yellow);
-  animation:onbPulse 1.5s ease-in-out infinite;
+  box-shadow:0 0 8px var(--yellow);
+  animation:tutPulse 1.5s ease-in-out infinite;
 }
-@keyframes onbPulse{
+@keyframes tutPulse{
   0%,100%{opacity:1}
   50%{opacity:.6}
 }
 
-.onb-icon{
-  width:60px;height:60px;
+/* Header */
+.tut-header{
+  padding:16px 20px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.tut-counter{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--ink);color:var(--yellow);
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:999px;letter-spacing:.5px;
+}
+.tut-time{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--cream);color:var(--ink-soft);
+  font-size:10.5px;font-weight:800;
+  padding:4px 10px;border-radius:999px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.tut-close{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--white);color:var(--ink);
+  border:2.5px solid var(--ink);
+  display:grid;place-items:center;cursor:pointer;
+  transition:transform .1s, box-shadow .1s;
+  box-shadow:2px 2px 0 var(--ink);
+  flex-shrink:0;
+}
+.tut-close:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);background:var(--red);color:#fff}
+.tut-close:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+
+/* Body */
+.tut-body{
+  padding:20px;
+  display:flex;flex-direction:column;gap:0;
+}
+.tut-icon{
+  width:72px;height:72px;
   background:var(--yellow);
   border:3px solid var(--ink);
   border-radius:50%;
   display:grid;place-items:center;
-  margin-bottom:12px;
-  box-shadow:3px 3px 0 var(--red);
-  font-size:28px;
-  transform:rotate(-5deg);
-  animation:onbIconFloat 2.5s ease-in-out infinite;
+  margin:0 auto 16px;
+  box-shadow:5px 5px 0 var(--red);
+  font-size:34px;
+  transform:rotate(-4deg);
+  animation:tutIconFloat 2.5s ease-in-out infinite;
 }
-@keyframes onbIconFloat{
-  0%,100%{transform:rotate(-5deg) translateY(0)}
-  50%{transform:rotate(-5deg) translateY(-6px)}
-}
-
-.onb-step{
-  font-size:11px;font-weight:900;
-  text-transform:uppercase;letter-spacing:1.5px;
-  color:var(--ink-soft);margin-bottom:6px;
-  display:flex;align-items:center;gap:6px;
-}
-.onb-step-num{
-  background:var(--ink);color:var(--yellow);
-  padding:2px 8px;border-radius:6px;
-  font-family:var(--mono);font-size:10.5px;
+.tut-icon.blue{background:var(--blue);box-shadow:5px 5px 0 var(--ink)}
+.tut-icon.green{background:var(--green);box-shadow:5px 5px 0 var(--ink)}
+.tut-icon.purple{background:var(--purple);box-shadow:5px 5px 0 var(--red)}
+.tut-icon.orange{background:var(--orange);box-shadow:5px 5px 0 var(--ink)}
+.tut-icon.pink{background:var(--pink);box-shadow:5px 5px 0 var(--ink)}
+@keyframes tutIconFloat{
+  0%,100%{transform:rotate(-4deg) translateY(0)}
+  50%{transform:rotate(-4deg) translateY(-6px)}
 }
 
-.onb-title{
+.tut-title{
   font-size:20px;font-weight:900;
   text-transform:uppercase;letter-spacing:-.3px;
-  margin-bottom:8px;line-height:1.15;
+  margin-bottom:10px;line-height:1.15;
+  text-align:center;
 }
-.onb-desc{
+.tut-subtitle{
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:1px;
+  color:var(--ink-soft);text-align:center;
+  margin-bottom:14px;
+}
+.tut-desc{
   font-size:13.5px;font-weight:600;
-  color:var(--ink-soft);line-height:1.55;
-  margin-bottom:18px;
+  color:var(--ink-soft);line-height:1.65;
+  margin-bottom:16px;text-align:left;
 }
-.onb-desc b{color:var(--ink);font-weight:900}
+.tut-desc b{color:var(--ink);font-weight:900}
+.tut-desc code{
+  background:var(--ink);color:var(--yellow);
+  padding:1px 6px;border-radius:4px;
+  font-family:var(--mono);font-size:11.5px;font-weight:700;
+}
 
-.onb-actions{
+/* Info Box */
+.tut-info-box{
+  background:var(--cream);
+  border:2px solid var(--ink);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:14px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.tut-info-item{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:12px;font-weight:700;
+  color:var(--ink);line-height:1.45;
+}
+.tut-info-item .bullet{
+  width:20px;height:20px;border-radius:6px;
+  background:var(--yellow);border:2px solid var(--ink);
+  display:grid;place-items:center;flex-shrink:0;
+  font-size:11px;font-weight:900;
+  margin-top:1px;
+}
+.tut-info-item .txt{flex:1}
+.tut-info-item .txt b{font-weight:900;text-transform:uppercase;letter-spacing:.2px}
+
+/* Highlight box */
+.tut-highlight{
+  background:linear-gradient(135deg,var(--yellow),var(--orange));
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:14px;
+  font-size:12.5px;font-weight:700;
+  line-height:1.55;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.tut-highlight b{font-weight:900}
+.tut-highlight code{
+  background:var(--ink);color:var(--yellow);
+  padding:1px 6px;border-radius:4px;
+  font-family:var(--mono);font-size:11px;
+}
+
+/* Success box */
+.tut-success{
+  background:var(--green);color:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:14px;
+  font-size:12.5px;font-weight:700;
+  line-height:1.55;
+  box-shadow:3px 3px 0 var(--ink);
+}
+
+/* Footer */
+.tut-footer{
+  padding:14px 20px 20px;
+  border-top:2px solid var(--cream-2);
   display:flex;gap:8px;align-items:center;
+  background:var(--white);
+  position:sticky;bottom:0;
 }
-.onb-actions .btn{flex:1;padding:12px;font-size:13px}
-.onb-skip{
-  background:transparent;border:none;
-  color:var(--ink-soft);font-size:11.5px;
-  font-weight:800;text-transform:uppercase;
-  letter-spacing:.5px;cursor:pointer;
-  padding:8px;text-decoration:underline;
+.tut-footer .tut-btn{
+  flex:1;padding:12px 16px;
+  font-size:13px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+}
+.tut-footer .tut-btn-secondary{
+  background:var(--cream);
   flex:0 0 auto;
-}
-.onb-skip:hover{color:var(--ink)}
-
-.onb-arrow{
-  position:fixed;z-index:99005;
-  width:0;height:0;
-  border-left:14px solid transparent;
-  border-right:14px solid transparent;
-  border-top:20px solid var(--yellow);
-  filter:drop-shadow(0 2px 0 var(--ink));
-  animation:onbArrowBounce 1s ease-in-out infinite;
-  pointer-events:none;
-}
-@keyframes onbArrowBounce{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(8px)}
+  padding:12px 14px;
+  font-size:12px;
 }
 
-.onb-confetti{
+/* Confetti */
+.tut-confetti{
   position:fixed;inset:0;z-index:99004;
   pointer-events:none;overflow:hidden;
 }
-.onb-confetti-piece{
+.tut-confetti-piece{
   position:absolute;top:-20px;
   width:10px;height:14px;
-  animation:onbFall 3s linear infinite;
+  animation:tutFall 3s linear infinite;
 }
-@keyframes onbFall{
+@keyframes tutFall{
   0%{transform:translateY(0) rotate(0);opacity:1}
   100%{transform:translateY(110vh) rotate(720deg);opacity:.3}
 }
 
 @media(max-width:640px){
-  .onb-popup{padding:16px;max-width:calc(100% - 24px)}
-  .onb-icon{width:50px;height:50px;font-size:22px}
-  .onb-title{font-size:17px}
-  .onb-desc{font-size:12.5px}
-  .onb-actions{flex-direction:column-reverse}
-  .onb-skip{width:100%;text-align:center;order:3}
+  .tut-dialog{max-height:88vh}
+  .tut-icon{width:60px;height:60px;font-size:28px}
+  .tut-title{font-size:17px}
+  .tut-desc{font-size:12.5px}
+  .tut-footer{flex-direction:column-reverse;gap:6px}
+  .tut-footer .tut-btn{width:100%}
+  .tut-footer .tut-btn-secondary{width:100%}
+  .tut-info-item{font-size:11.5px}
+  .tut-highlight{font-size:11.5px}
 }
 
 /* =========================================================
@@ -930,8 +1022,7 @@ textarea{resize:vertical;min-height:80px}
 .settings-hero .avatar-big{width:88px;height:88px;border-radius:50%;
   background:var(--yellow);border:3px solid var(--ink);display:grid;
   place-items:center;margin:0 auto 12px;font-size:32px;font-weight:900;
-  color:var(--ink);box-shadow:5px 5px 0 var(--red);overflow:hidden;
-  transform:rotate(-3deg)}
+  color:var(--ink);box-shadow:5px 5px 0 var(--red);overflow:hidden;transform:rotate(-3deg)}
 .settings-hero .avatar-big img{width:100%;height:100%;object-fit:cover}
 .settings-hero h1{font-size:22px;text-transform:uppercase;font-weight:900;letter-spacing:-.3px}
 .settings-hero p{font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-top:4px}
@@ -956,6 +1047,11 @@ textarea{resize:vertical;min-height:80px}
   font-weight:500;line-height:1.5}
 .settings-section.danger{border-color:var(--red)}
 .settings-section.danger h3{background:var(--red)}
+.settings-section.tutor-section{
+  background:linear-gradient(135deg,#fff9e6,#ffe9b3);
+  border-color:var(--orange);
+}
+.settings-section.tutor-section h3{background:var(--orange)}
 
 .help-page{max-width:720px;margin:0 auto;padding:20px 18px 80px}
 .help-hero{text-align:center;padding:24px 0 20px}
@@ -1093,7 +1189,6 @@ textarea{resize:vertical;min-height:80px}
 .dev-plan-pill.starter{background:var(--green);color:#fff}
 .dev-plan-pill.pro{background:var(--blue);color:#fff}
 .dev-plan-pill.ultimate{background:var(--ink);color:var(--yellow)}
-
 .dev-manager{padding:0 18px 60px}
 .dev-manager-head{display:flex;justify-content:space-between;align-items:center;
   gap:10px;flex-wrap:wrap;margin-bottom:14px}
@@ -1320,6 +1415,7 @@ textarea{resize:vertical;min-height:80px}
 .theme-neo-dark .bio-bio{background:var(--blue);color:#fff;border-color:#fff}
 .theme-neo-dark .bio-link{background:var(--white);color:var(--ink);border-color:#fff;box-shadow:6px 6px 0 var(--yellow)}
 .theme-neo-dark .bio-footer{background:var(--yellow);color:var(--ink);border-color:#fff;box-shadow:2px 2px 0 var(--red)}
+.theme-neo-dark .bio-logo-item{border-color:#fff;box-shadow:3px 3px 0 var(--yellow)}
 .theme-neo-blue{background-color:#2563eb;color:#fff;
   background-image:radial-gradient(circle,#fff 1.4px,transparent 1.4px),
     radial-gradient(circle,#fff 1.4px,transparent 1.4px);
@@ -1389,6 +1485,7 @@ textarea{resize:vertical;min-height:80px}
   <div class="loader"></div>
   <p id="loading-text">Memuat...</p>
 </div>
+<div id="global-error"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -1396,9 +1493,35 @@ textarea{resize:vertical;min-height:80px}
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
 /* =========================================================
-   v23 — JS CORE
-   Icons · Sound · Firebase · Auth v22 · Store · Router
+   v24 — JS CORE
+   Global Error Handler · Icons · Sound · Firebase
+   Auth v22 · Store · Router · Safe Wrappers
    ========================================================= */
+
+/* =========================================================
+   GLOBAL ERROR HANDLER — Biar error keliatan
+   ========================================================= */
+window.addEventListener("error", (e)=>{
+  console.error("🔴 JS Error:", e.message, "at line", e.lineno);
+  try{
+    const errBox = document.getElementById("global-error");
+    if(errBox){
+      errBox.textContent = "ERROR: " + e.message + " (line " + e.lineno + ")";
+      errBox.classList.add("show");
+    }
+  }catch(err){}
+});
+
+window.addEventListener("unhandledrejection", (e)=>{
+  console.error("🔴 Promise Error:", e.reason);
+  try{
+    const errBox = document.getElementById("global-error");
+    if(errBox){
+      errBox.textContent = "PROMISE: " + (e.reason?.message || String(e.reason));
+      errBox.classList.add("show");
+    }
+  }catch(err){}
+});
 
 /* =========================================================
    SVG ICON LIBRARY
@@ -1424,6 +1547,7 @@ const ICONS = {
   instagram:'<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>',
   whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
   tiktok:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>',
+  twitter:'<path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>',
   lock:'<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
   sparkle:'<path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>',
   check:'<polyline points="20 6 9 17 4 12"/>',
@@ -1445,7 +1569,11 @@ const ICONS = {
   vcard:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M19 8v6M16 11h6"/>',
   share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',
   compass:'<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
-  fire:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'
+  fire:'<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  arrowRight:'<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  arrowLeft:'<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'
 };
 function ico(name, cls=""){
   const d = ICONS[name] || ICONS.link;
@@ -1466,10 +1594,10 @@ const IS_BIO_DOMAIN = !IS_LOCAL && (location.hostname.includes("vlink-bio") || l
 const PUBLIC_BASE_URL = IS_LOCAL ? location.origin : `https://${DOMAIN.BIO}`;
 const APP_BASE_URL = IS_LOCAL ? location.origin : `https://${DOMAIN.APP}`;
 
-console.log(`%c[Varlinkbio v23] Domain: ${IS_APP_DOMAIN?"APP":(IS_BIO_DOMAIN?"BIO":"UNKNOWN")}`,"color:#ffd700;font-weight:bold");
+console.log(`%c[Varlinkbio v24] Domain: ${IS_APP_DOMAIN?"APP":(IS_BIO_DOMAIN?"BIO":"UNKNOWN")}`,"color:#ffd700;font-weight:bold");
 
 /* =========================================================
-   SOUND EFFECT
+   SOUND — Safe Wrapper (try-catch semua)
    ========================================================= */
 const Sound = {
   _ctx: null,
@@ -1481,39 +1609,46 @@ const Sound = {
     }catch(e){ this._enabled = true; }
   },
   toggle(){
-    this._enabled = !this._enabled;
-    try{ localStorage.setItem("varlinkbio_sound", this._enabled ? "on" : "off"); }catch(e){}
+    try{
+      this._enabled = !this._enabled;
+      localStorage.setItem("varlinkbio_sound", this._enabled ? "on" : "off");
+    }catch(e){}
     if(this._enabled) this.click();
     return this._enabled;
   },
   isEnabled(){ return this._enabled; },
   _getCtx(){
-    if(!this._ctx){
-      try{
+    try{
+      if(!this._ctx){
         const AC = window.AudioContext || window.webkitAudioContext;
+        if(!AC) return null;
         this._ctx = new AC();
-      }catch(e){ return null; }
-    }
-    if(this._ctx && this._ctx.state === "suspended"){
-      this._ctx.resume().catch(()=>{});
-    }
-    return this._ctx;
+      }
+      if(this._ctx && this._ctx.state === "suspended"){
+        this._ctx.resume().catch(()=>{});
+      }
+      return this._ctx;
+    }catch(e){ return null; }
   },
-  click(){
+  _play(osc1Freq, osc2Freq, dur, type, vol){
     if(!this._enabled) return;
-    const ctx = this._getCtx(); if(!ctx) return;
+    const ctx = this._getCtx();
+    if(!ctx) return;
     try{
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.05);
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.06);
+      osc.type = type || "sine";
+      osc.frequency.setValueAtTime(osc1Freq, ctx.currentTime);
+      if(osc2Freq) osc.frequency.exponentialRampToValueAtTime(osc2Freq, ctx.currentTime + dur*0.8);
+      gain.gain.setValueAtTime(vol || 0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + dur);
     }catch(e){}
   },
+  click(){ this._play(800, 600, 0.06, "sine", 0.06); },
   success(){
     if(!this._enabled) return;
     const ctx = this._getCtx(); if(!ctx) return;
@@ -1531,49 +1666,9 @@ const Sound = {
       });
     }catch(e){}
   },
-  error(){
-    if(!this._enabled) return;
-    const ctx = this._getCtx(); if(!ctx) return;
-    try{
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(400, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.15);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
-    }catch(e){}
-  },
-  tick(){
-    if(!this._enabled) return;
-    const ctx = this._getCtx(); if(!ctx) return;
-    try{
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "square"; osc.frequency.value = 1400;
-      gain.gain.setValueAtTime(0.04, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.035);
-    }catch(e){}
-  },
-  pop(){
-    if(!this._enabled) return;
-    const ctx = this._getCtx(); if(!ctx) return;
-    try{
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(600, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.07, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
-    }catch(e){}
-  },
+  error(){ this._play(400, 150, 0.15, "sawtooth", 0.05); },
+  tick(){ this._play(1400, 0, 0.035, "square", 0.04); },
+  pop(){ this._play(600, 1200, 0.1, "sine", 0.07); },
   tada(){
     if(!this._enabled) return;
     const ctx = this._getCtx(); if(!ctx) return;
@@ -1591,7 +1686,6 @@ const Sound = {
       });
     }catch(e){}
   },
-  // Tutorial: bunyi khusus saat pindah step
   ding(){
     if(!this._enabled) return;
     const ctx = this._getCtx(); if(!ctx) return;
@@ -1609,14 +1703,17 @@ const Sound = {
     }catch(e){}
   }
 };
+
 function bindGlobalSound(){
-  document.addEventListener("click", e=>{
-    const target = e.target.closest("button, .btn, .menu-item, .icon-btn, .help-cat, .dev-tab, .lt-menu-btn, .lt-badge, .link-type, .theme-item, .opt-item, .qr-color-opt, .explore-filter, .onb-skip");
-    if(target && !target.disabled){
-      if(target.id === "sound-toggle-btn") return;
-      Sound.click();
-    }
-  }, true);
+  try{
+    document.addEventListener("click", e=>{
+      const target = e.target.closest("button, .btn, .menu-item, .icon-btn, .help-cat, .dev-tab, .lt-menu-btn, .lt-badge, .link-type, .theme-item, .opt-item, .qr-color-opt, .explore-filter, .tut-btn-secondary");
+      if(target && !target.disabled){
+        if(target.id === "sound-toggle-btn") return;
+        Sound.click();
+      }
+    }, true);
+  }catch(e){ console.warn("bindGlobalSound:", e); }
 }
 
 /* =========================================================
@@ -1638,7 +1735,7 @@ const FB = { app:null, db:null, auth:null, ready:false };
     FB.auth = firebase.auth();
     FB.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
     FB.ready = true;
-    console.log("%c[Varlinkbio v23] Firebase siap ✓","color:#22c55e;font-weight:bold");
+    console.log("%c[Varlinkbio v24] Firebase siap ✓","color:#22c55e;font-weight:bold");
   }catch(e){ console.error("Firebase init error:", e); FB.ready=false; }
 })();
 
@@ -1774,40 +1871,55 @@ const STATE = {
 /* =========================================================
    UTILS
    ========================================================= */
-const $  = (s,r=document)=>r.querySelector(s);
-const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const $  = (s,r=document)=>{
+  try{ return r.querySelector(s); }catch(e){ return null; }
+};
+const $$ = (s,r=document)=>{
+  try{ return [...r.querySelectorAll(s)]; }catch(e){ return []; }
+};
 const uid = (n=10)=>Math.random().toString(36).slice(2,2+n);
 const esc = (s="")=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const isUnlimited = n => n === -1;
 const isDev = email => DEV_EMAILS.map(e=>e.toLowerCase()).includes((email||"").toLowerCase());
 
 function toast(msg, type="info"){
-  const el = document.createElement("div");
-  el.className = `toast ${type}`;
-  el.textContent = msg;
-  $("#toast-container").appendChild(el);
-  if(type === "success") Sound.success();
-  else if(type === "error") Sound.error();
-  setTimeout(()=>{
-    el.style.opacity = "0";
-    el.style.transform = "translateY(-8px)";
-    setTimeout(()=>el.remove(), 220);
-  }, 2800);
+  try{
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.textContent = msg;
+    const cont = $("#toast-container");
+    if(cont) cont.appendChild(el);
+    if(type === "success") Sound.success();
+    else if(type === "error") Sound.error();
+    setTimeout(()=>{
+      try{
+        el.style.opacity = "0";
+        el.style.transform = "translateY(-8px)";
+        setTimeout(()=>el.remove(), 220);
+      }catch(e){}
+    }, 2800);
+  }catch(e){ console.warn("toast error:", e); }
 }
 function showLoading(t="Memuat..."){
-  const txt = $("#loading-text"); if(txt) txt.textContent = t;
-  const ov = $("#loading-overlay"); if(ov) ov.classList.remove("hidden");
+  try{
+    const txt = $("#loading-text"); if(txt) txt.textContent = t;
+    const ov = $("#loading-overlay"); if(ov) ov.classList.remove("hidden");
+  }catch(e){}
 }
 function hideLoading(){
-  const ov = $("#loading-overlay"); if(ov) ov.classList.add("hidden");
+  try{
+    const ov = $("#loading-overlay"); if(ov) ov.classList.add("hidden");
+  }catch(e){}
 }
 function openModal(html){
-  const b = document.createElement("div");
-  b.className = "modal-back";
-  b.innerHTML = `<div class="modal">${html}</div>`;
-  b.addEventListener("click", e=>{ if(e.target === b) b.remove(); });
-  document.body.appendChild(b);
-  return b;
+  try{
+    const b = document.createElement("div");
+    b.className = "modal-back";
+    b.innerHTML = `<div class="modal">${html}</div>`;
+    b.addEventListener("click", e=>{ if(e.target === b) b.remove(); });
+    document.body.appendChild(b);
+    return b;
+  }catch(e){ console.error("openModal:", e); return null; }
 }
 
 /* =========================================================
@@ -1845,11 +1957,16 @@ async function getUniqueSlug(baseSlug, currentBioId=null){
   let slug = baseSlug || `user-${Math.random().toString(36).slice(2,7)}`;
   let isUnique = false, counter = 1, finalSlug = slug;
   while(!isUnique){
-    const q = await FB.db.collection("bios").where("slug","==",finalSlug).get();
-    let isTaken = false;
-    q.forEach(doc => { if(doc.id !== currentBioId) isTaken = true; });
-    if(!isTaken) isUnique = true;
-    else { counter++; finalSlug = `${slug}-${counter}`; }
+    try{
+      const q = await FB.db.collection("bios").where("slug","==",finalSlug).get();
+      let isTaken = false;
+      q.forEach(doc => { if(doc.id !== currentBioId) isTaken = true; });
+      if(!isTaken) isUnique = true;
+      else { counter++; finalSlug = `${slug}-${counter}`; }
+      if(counter > 20) { finalSlug = `${slug}-${Date.now().toString(36)}`; break; }
+    }catch(e){
+      isUnique = true;
+    }
   }
   return finalSlug;
 }
@@ -1863,22 +1980,24 @@ function compressImage(file, maxSize=900, quality=0.72){
     const img = new Image();
     const url = URL.createObjectURL(file);
     img.onload = ()=>{
-      URL.revokeObjectURL(url);
-      let { width, height } = img;
-      if(width > maxSize || height > maxSize){
-        const ratio = Math.min(maxSize/width, maxSize/height);
-        width = Math.round(width*ratio);
-        height = Math.round(height*ratio);
-      }
-      const canvas = document.createElement("canvas");
-      canvas.width = width; canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, width, height);
-      canvas.toBlob(blob=>{
-        if(!blob){ reject(new Error("Compress gagal")); return; }
-        const compressed = new File([blob], file.name.replace(/\.[^.]+$/,".jpg"), { type:"image/jpeg" });
-        resolve(compressed);
-      }, "image/jpeg", quality);
+      try{
+        URL.revokeObjectURL(url);
+        let { width, height } = img;
+        if(width > maxSize || height > maxSize){
+          const ratio = Math.min(maxSize/width, maxSize/height);
+          width = Math.round(width*ratio);
+          height = Math.round(height*ratio);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(blob=>{
+          if(!blob){ reject(new Error("Compress gagal")); return; }
+          const compressed = new File([blob], file.name.replace(/\.[^.]+$/,".jpg"), { type:"image/jpeg" });
+          resolve(compressed);
+        }, "image/jpeg", quality);
+      }catch(e){ reject(e); }
     };
     img.onerror = ()=>reject(new Error("Gagal baca gambar"));
     img.src = url;
@@ -1917,9 +2036,11 @@ function showInAppBrowserModal(){
       style="text-align:center;font-family:monospace;font-size:11px;padding:10px;margin-bottom:10px"/>
     <button class="btn btn-primary btn-block" id="iap-copy">${ico('copy')} Copy Link</button>
   `);
-  $("#iap-copy",m).addEventListener("click", async ()=>{
+  if(!m) return;
+  const btn = $("#iap-copy",m);
+  if(btn) btn.addEventListener("click", async ()=>{
     try{ await navigator.clipboard.writeText(url); toast("Link disalin! Paste di browser luar.","success"); }
-    catch(e){ const inp=$("#iap-url",m); inp.select(); document.execCommand("copy"); toast("Link disalin!","success"); }
+    catch(e){ const inp=$("#iap-url",m); if(inp){ inp.select(); document.execCommand("copy"); toast("Link disalin!","success"); } }
   });
 }
 
@@ -1929,8 +2050,8 @@ function showInAppBrowserModal(){
 async function applyAppFavicon(){
   try{
     const s = await Store.getSettings();
-    STATE.appSettings = s;
-    const fav = s.favicon || null;
+    STATE.appSettings = s || {};
+    const fav = s?.favicon || null;
     if(fav){
       let links = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
       if(!links.length){
@@ -1948,58 +2069,61 @@ async function applyAppFavicon(){
    COPY + SHARE
    ========================================================= */
 async function copyLink(bioOrId){
-  const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
-  const identifier = bio.slug || bio.id;
-  const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
   try{
-    await navigator.clipboard.writeText(url);
-    Sound.pop();
-    toast("Link disalin!","success");
-  }catch(e){
-    const ta = document.createElement("textarea");
-    ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
-    document.body.appendChild(ta); ta.select();
-    try{ document.execCommand("copy"); Sound.pop(); toast("Link disalin!","success"); }
-    catch(err){ toast("Gagal copy: "+url,"error"); }
-    ta.remove();
-  }
+    const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
+    const identifier = bio.slug || bio.id;
+    const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
+    try{
+      await navigator.clipboard.writeText(url);
+      Sound.pop();
+      toast("Link disalin!","success");
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand("copy"); Sound.pop(); toast("Link disalin!","success"); }
+      catch(err){ toast("Gagal copy: "+url,"error"); }
+      ta.remove();
+    }
+  }catch(e){ console.warn("copyLink:", e); }
 }
 function showShareModal(bioOrId){
-  const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
-  const identifier = bio.slug || bio.id;
-  const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
-  const canNative = !!navigator.share;
-  const m = openModal(`
-    <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
-    <h3>🔗 Bio Tersimpan!</h3>
-    <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan link ini:</p>
-    <input id="share-url" value="${url}" readonly onclick="this.select()"
-      style="text-align:center;font-family:monospace;font-size:12px;padding:12px"/>
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <button class="btn btn-primary btn-block" id="share-copy">${ico('copy')} Copy</button>
-      <button class="btn btn-block" id="share-open">${ico('eye')} Buka</button>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:6px">
-      <button class="btn btn-block btn-sm" id="share-qr">${ico('qr')} QR</button>
-      <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WA</button>
-      ${canNative?`<button class="btn btn-purple btn-block btn-sm" id="share-native">${ico('share')} Share</button>`:''}
-    </div>`);
-  $("#share-copy",m).addEventListener("click",()=>copyLink(bio));
-  $("#share-open",m).addEventListener("click",()=>window.open(url,"_blank"));
-  $("#share-wa",m).addEventListener("click",()=>{
-    const text = encodeURIComponent(`Cek link-in-bio aku: ${url}`);
-    window.open(`https://wa.me/?text=${text}`,"_blank");
-  });
-  $("#share-qr",m).addEventListener("click",()=>{ m.remove(); PageDashboard.qr(bio.id); });
-  const nativeBtn = $("#share-native",m);
-  if(nativeBtn){
-    nativeBtn.addEventListener("click", async ()=>{
+  try{
+    const bio = typeof bioOrId === "object" ? bioOrId : { id: bioOrId };
+    const identifier = bio.slug || bio.id;
+    const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
+    const canNative = !!navigator.share;
+    const m = openModal(`
+      <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+      <h3>🔗 Bio Tersimpan!</h3>
+      <p style="font-size:13px;margin-bottom:12px;font-weight:600">Bagikan link ini:</p>
+      <input id="share-url" value="${url}" readonly onclick="this.select()"
+        style="text-align:center;font-family:monospace;font-size:12px;padding:12px"/>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-primary btn-block" id="share-copy">${ico('copy')} Copy</button>
+        <button class="btn btn-block" id="share-open">${ico('eye')} Buka</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button class="btn btn-block btn-sm" id="share-qr">${ico('qr')} QR</button>
+        <button class="btn btn-green btn-block btn-sm" id="share-wa">${ico('whatsapp')} WA</button>
+        ${canNative?`<button class="btn btn-purple btn-block btn-sm" id="share-native">${ico('share')} Share</button>`:''}
+      </div>`);
+    if(!m) return;
+    const sc = $("#share-copy",m); if(sc) sc.addEventListener("click",()=>copyLink(bio));
+    const so = $("#share-open",m); if(so) so.addEventListener("click",()=>window.open(url,"_blank"));
+    const sw = $("#share-wa",m); if(sw) sw.addEventListener("click",()=>{
+      const text = encodeURIComponent(`Cek link-in-bio aku: ${url}`);
+      window.open(`https://wa.me/?text=${text}`,"_blank");
+    });
+    const sq = $("#share-qr",m); if(sq) sq.addEventListener("click",()=>{ m.remove(); PageDashboard.qr(bio.id); });
+    const sn = $("#share-native",m);
+    if(sn) sn.addEventListener("click", async ()=>{
       try{
         await navigator.share({ title: bio.name || "Varlinkbio", text: "Cek link-in-bio aku!", url });
         toast("Berhasil share!","success");
       }catch(e){}
     });
-  }
+  }catch(e){ console.warn("showShareModal:", e); }
 }
 
 /* =========================================================
@@ -2022,58 +2146,59 @@ async function generateQR(text, canvasEl, options={}){
 }
 
 async function generateQRCustom(text, opts={}){
-  const tmp = document.createElement("canvas");
-  const color = opts.color || "#0a0a0a";
-  const bg = opts.bg || "#ffffff";
-  const logo = opts.logo || null;
-  const size = opts.size || 512;
-  
-  await QRCode.toCanvas(tmp, text, {
-    width: size,
-    margin: 2,
-    color: { dark: color, light: bg },
-    errorCorrectionLevel: "H"
-  });
-  
-  if(!logo) return tmp;
-  
-  const out = document.createElement("canvas");
-  out.width = size; out.height = size;
-  const ctx = out.getContext("2d");
-  ctx.drawImage(tmp, 0, 0, size, size);
-  
-  return new Promise((resolve)=>{
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = ()=>{
-      const logoSize = size * 0.22;
-      const x = (size - logoSize) / 2;
-      const y = (size - logoSize) / 2;
-      
-      const padding = 6;
-      ctx.fillStyle = bg;
-      ctx.beginPath();
-      const rx = x - padding, ry = y - padding;
-      const rw = logoSize + padding * 2, rh = logoSize + padding * 2;
-      const radius = 12;
-      ctx.moveTo(rx + radius, ry);
-      ctx.arcTo(rx + rw, ry, rx + rw, ry + rh, radius);
-      ctx.arcTo(rx + rw, ry + rh, rx, ry + rh, radius);
-      ctx.arcTo(rx, ry + rh, rx, ry, radius);
-      ctx.arcTo(rx, ry, rx + rw, ry, radius);
-      ctx.closePath();
-      ctx.fill();
-      
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
-      ctx.stroke();
-      
-      ctx.drawImage(img, x, y, logoSize, logoSize);
-      resolve(out);
-    };
-    img.onerror = ()=>resolve(tmp);
-    img.src = logo;
-  });
+  try{
+    const tmp = document.createElement("canvas");
+    const color = opts.color || "#0a0a0a";
+    const bg = opts.bg || "#ffffff";
+    const logo = opts.logo || null;
+    const size = opts.size || 512;
+    
+    await QRCode.toCanvas(tmp, text, {
+      width: size,
+      margin: 2,
+      color: { dark: color, light: bg },
+      errorCorrectionLevel: "H"
+    });
+    
+    if(!logo) return tmp;
+    
+    const out = document.createElement("canvas");
+    out.width = size; out.height = size;
+    const ctx = out.getContext("2d");
+    ctx.drawImage(tmp, 0, 0, size, size);
+    
+    return new Promise((resolve)=>{
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = ()=>{
+        try{
+          const logoSize = size * 0.22;
+          const x = (size - logoSize) / 2;
+          const y = (size - logoSize) / 2;
+          const padding = 6;
+          ctx.fillStyle = bg;
+          ctx.beginPath();
+          const rx = x - padding, ry = y - padding;
+          const rw = logoSize + padding * 2, rh = logoSize + padding * 2;
+          const radius = 12;
+          ctx.moveTo(rx + radius, ry);
+          ctx.arcTo(rx + rw, ry, rx + rw, ry + rh, radius);
+          ctx.arcTo(rx + rw, ry + rh, rx, ry + rh, radius);
+          ctx.arcTo(rx, ry + rh, rx, ry, radius);
+          ctx.arcTo(rx, ry, rx + rw, ry, radius);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 3;
+          ctx.stroke();
+          ctx.drawImage(img, x, y, logoSize, logoSize);
+          resolve(out);
+        }catch(e){ resolve(tmp); }
+      };
+      img.onerror = ()=>resolve(tmp);
+      img.src = logo;
+    });
+  }catch(e){ console.error("generateQRCustom:", e); throw e; }
 }
 
 /* =========================================================
@@ -2103,18 +2228,20 @@ function buildVCard(bio){
   return v;
 }
 function downloadVCard(bio){
-  const v = buildVCard(bio);
-  const blob = new Blob([v], { type:"text/vcard;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${(bio.name||"kontak").replace(/\s+/g,"_")}.vcf`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  Sound.success();
-  toast("Kontak didownload! 📇","success");
+  try{
+    const v = buildVCard(bio);
+    const blob = new Blob([v], { type:"text/vcard;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${(bio.name||"kontak").replace(/\s+/g,"_")}.vcf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    Sound.success();
+    toast("Kontak didownload! 📇","success");
+  }catch(e){ console.warn("downloadVCard:", e); }
 }
 
 /* =========================================================
@@ -2131,9 +2258,9 @@ const AutoSave = {
     }
   },
   async fire(){
-    if(!Auth.current || !STATE.draft || !STATE.draft.name) return;
-    if(Date.now() - this._lastSave < 5000) return;
     try{
+      if(!Auth.current || !STATE.draft || !STATE.draft.name) return;
+      if(Date.now() - this._lastSave < 5000) return;
       await Store.save({...STATE.draft, _autoSave:true});
       this._lastSave = Date.now();
       console.log("%c💾 Auto-save berhasil","color:#22c55e");
@@ -2145,7 +2272,7 @@ const AutoSave = {
 };
 
 /* =========================================================
-   AUTH — v22/v23 (LOGIN FIX + TUTORIAL SUPPORT)
+   AUTH — v24 (safe wrappers)
    ========================================================= */
 const Auth = {
   current: null,
@@ -2153,15 +2280,24 @@ const Auth = {
   
   async init(){
     return new Promise(resolve=>{
-      FB.auth.onAuthStateChanged(async user=>{
-        if(user){
-          await this._setCurrentFromUser(user);
-        } else {
-          this.current = null;
-        }
-        this._initialized = true;
-        resolve(this.current);
-      });
+      try{
+        FB.auth.onAuthStateChanged(async user=>{
+          try{
+            if(user){
+              await this._setCurrentFromUser(user);
+            } else {
+              this.current = null;
+            }
+          }catch(e){
+            console.warn("onAuthStateChanged error:", e);
+          }
+          this._initialized = true;
+          resolve(this.current);
+        });
+      }catch(e){
+        console.error("Auth.init:", e);
+        resolve(null);
+      }
     });
   },
   
@@ -2210,7 +2346,7 @@ const Auth = {
       createdAt: Date.now(),
       plan: "free",
       emailVerified: false,
-      tutorialShown: false // ← Akan muncul tutorial
+      tutorialShown: false
     },{ merge:true });
     try{ await cred.user.sendEmailVerification(); }catch(e){}
     return cred.user;
@@ -2292,7 +2428,7 @@ const Auth = {
   },
   
   async logout(){
-    await FB.auth.signOut();
+    try{ await FB.auth.signOut(); }catch(e){}
     this.current = null;
   },
   
@@ -2324,16 +2460,13 @@ const Auth = {
     return true;
   },
   
-  // ==========================================================
-  // TUTORIAL
-  // ==========================================================
   async markTutorialDone(){
     if(!this.current) return;
     try{
       await FB.db.collection("users").doc(this.current.uid).update({
         tutorialShown: true,
         tutorialCompletedAt: Date.now(),
-        tutorialVersion: "v1"
+        tutorialVersion: "v24"
       });
       this.current.tutorialShown = true;
     }catch(e){ console.warn("markTutorialDone:", e); }
@@ -2377,13 +2510,13 @@ const Auth = {
    LOAD USER PLAN
    ========================================================= */
 async function loadUserPlan(){
-  if(!Auth.current){ STATE.plan = PLANS.free; return PLANS.free; }
-  if(isDev(Auth.current.email)){
-    STATE.plan = PLANS.developer;
-    STATE.planMeta = null;
-    return PLANS.developer;
-  }
   try{
+    if(!Auth.current){ STATE.plan = PLANS.free; return PLANS.free; }
+    if(isDev(Auth.current.email)){
+      STATE.plan = PLANS.developer;
+      STATE.planMeta = null;
+      return PLANS.developer;
+    }
     const doc = await FB.db.collection("users").doc(Auth.current.uid).get();
     const data = doc.exists ? doc.data() : {};
     let planId = data.plan || "free";
@@ -2405,6 +2538,7 @@ async function loadUserPlan(){
     STATE.plan = PLANS[planId] || PLANS.free;
     return STATE.plan;
   }catch(e){
+    console.warn("loadUserPlan:", e);
     STATE.plan = PLANS.free;
     return PLANS.free;
   }
@@ -2416,15 +2550,17 @@ function planBadge(){ return STATE.plan?.features?.badge || null; }
 function isPermanentPlan(){ return !!(STATE.plan?.features?.permanent); }
 
 /* =========================================================
-   STORE
+   STORE — Firestore wrapper
    ========================================================= */
 const Store = {
   async list(){
-    const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
-    const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
-    a.sort((x,y)=>(y.updatedAt||0)-(x.updatedAt||0));
-    STATE.cache = a;
-    return a;
+    try{
+      const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
+      const a=[]; s.forEach(d=>a.push({id:d.id, ...d.data()}));
+      a.sort((x,y)=>(y.updatedAt||0)-(x.updatedAt||0));
+      STATE.cache = a;
+      return a;
+    }catch(e){ console.warn("Store.list:", e); return []; }
   },
   
   async get(idOrSlug){
@@ -2432,17 +2568,21 @@ const Store = {
       let d = await FB.db.collection("bios").doc(idOrSlug).get();
       if(d.exists) return { id:d.id, ...d.data() };
     }catch(e){}
-    const q = await FB.db.collection("bios").where("slug","==",idOrSlug).limit(1).get();
-    if(!q.empty){
-      const doc = q.docs[0];
-      return { id:doc.id, ...doc.data() };
-    }
+    try{
+      const q = await FB.db.collection("bios").where("slug","==",idOrSlug).limit(1).get();
+      if(!q.empty){
+        const doc = q.docs[0];
+        return { id:doc.id, ...doc.data() };
+      }
+    }catch(e){}
     return null;
   },
   
   async count(){
-    const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
-    return s.size;
+    try{
+      const s = await FB.db.collection("bios").where("ownerUid","==",Auth.current.uid).get();
+      return s.size;
+    }catch(e){ return 0; }
   },
   
   async save(bio){
@@ -2538,8 +2678,10 @@ const Store = {
   },
   
   async saveSettings(data){
-    await FB.db.collection("settings").doc("app").set(data, { merge:true });
-    return data;
+    try{
+      await FB.db.collection("settings").doc("app").set(data, { merge:true });
+      return data;
+    }catch(e){ console.warn("saveSettings:", e); throw e; }
   },
   
   async listPartners(){
@@ -2618,7 +2760,7 @@ const Store = {
 };
 
 /* =========================================================
-   ROUTER — v23
+   ROUTER — v24
    ========================================================= */
 const PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help","/explore"];
 const Router = {
@@ -2629,67 +2771,73 @@ const Router = {
     else location.hash = p;
   },
   resolve(){
-    document.body.classList.remove("public-mode");
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    document.body.style.height = '';
-    
-    // Firebase Action URL
-    const fullSearch = location.search.slice(1);
-    if(fullSearch){
-      const p = new URLSearchParams(fullSearch);
-      const oobCode = p.get("oobCode");
-      const mode = p.get("mode");
-      if(oobCode && (mode === "verifyEmail" || mode === "resetPassword" || mode === "recoverEmail")){
-        const targetHash = `#/verify?${fullSearch}`;
-        if(location.hash !== targetHash){
-          location.replace(location.pathname + targetHash);
+    try{
+      document.body.classList.remove("public-mode");
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+      
+      // Firebase Action URL
+      const fullSearch = location.search.slice(1);
+      if(fullSearch){
+        const p = new URLSearchParams(fullSearch);
+        const oobCode = p.get("oobCode");
+        const mode = p.get("mode");
+        if(oobCode && (mode === "verifyEmail" || mode === "resetPassword" || mode === "recoverEmail")){
+          const targetHash = `#/verify?${fullSearch}`;
+          if(location.hash !== targetHash){
+            location.replace(location.pathname + targetHash);
+            return;
+          }
+        }
+      }
+      
+      if(IS_BIO_DOMAIN){
+        const raw = location.hash.slice(1) || "/";
+        const path = raw.split("?")[0];
+        if(!path.startsWith("/u/")){
+          location.replace(`${APP_BASE_URL}/#/`);
           return;
         }
       }
-    }
-    
-    if(IS_BIO_DOMAIN){
+      
       const raw = location.hash.slice(1) || "/";
       const path = raw.split("?")[0];
-      if(!path.startsWith("/u/")){
-        location.replace(`${APP_BASE_URL}/#/`);
+      const query = raw.split("?")[1] || "";
+      
+      if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
+      
+      if(Auth.current && (path === "/login" || path === "/register")){
+        return this.navigate("/dashboard");
+      }
+      
+      if(PROTECTED.includes(path) && !Auth.current){
+        const self = this;
+        setTimeout(()=>{
+          try{
+            if(Auth.current){ self.resolve(); }
+            else { self.navigate("/login"); }
+          }catch(e){ console.warn("Router timeout:", e); }
+        }, 500);
         return;
       }
-    }
-    
-    const raw = location.hash.slice(1) || "/";
-    const path = raw.split("?")[0];
-    const query = raw.split("?")[1] || "";
-    
-    if(path.startsWith("/u/")) return (this.routes["/u/:id"]||(()=>{}))(path.slice(3));
-    
-    if(Auth.current && (path === "/login" || path === "/register")){
-      return this.navigate("/dashboard");
-    }
-    
-    if(PROTECTED.includes(path) && !Auth.current){
-      const self = this;
-      setTimeout(()=>{
-        if(Auth.current){ self.resolve(); }
-        else { self.navigate("/login"); }
-      }, 500);
-      return;
-    }
-    
-    if(PROTECTED.includes(path) && Auth.current && !isDev(Auth.current.email)){
-      const user = FB.auth.currentUser;
-      const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
-      const allowedUnverified = ["/help", "/verify", "/settings"];
-      if(user && !user.emailVerified && !isGoogle && !allowedUnverified.includes(path)){
-        return this.navigate("/verify");
+      
+      if(PROTECTED.includes(path) && Auth.current && !isDev(Auth.current.email)){
+        const user = FB.auth.currentUser;
+        const isGoogle = (user?.providerData||[]).some(p => p.providerId === "google.com");
+        const allowedUnverified = ["/help", "/verify", "/settings"];
+        if(user && !user.emailVerified && !isGoogle && !allowedUnverified.includes(path)){
+          return this.navigate("/verify");
+        }
       }
+      
+      (this.routes[path] || this.routes["/404"] || (()=>{}))(query);
+    }catch(e){
+      console.error("Router.resolve:", e);
     }
-    
-    (this.routes[path] || this.routes["/404"] || (()=>{}))(query);
   },
   start(){
-    window.addEventListener("hashchange", ()=>this.resolve());
+    window.addEventListener("hashchange", ()=>{ try{ this.resolve(); }catch(e){ console.error(e); } });
     this.resolve();
   }
 };
@@ -2726,7 +2874,7 @@ const LinkTypes = {
     const t = this.detect(url);
     return {
       youtube:"youtube", spotify:"music", tiktok:"video", vimeo:"video",
-      instagram:"instagram", twitter:"message", whatsapp:"whatsapp", classic:"link"
+      instagram:"instagram", twitter:"twitter", whatsapp:"whatsapp", classic:"link"
     }[t] || "link";
   }
 };
@@ -2753,252 +2901,258 @@ function renderBannerHTML(d){
    </script>
    <script>
 /* =========================================================
-   PART 3 — PAGES v23
+   PART 3 — PAGES v24
    Landing · Login · Register · Verify · Dashboard (+Checklist)
-   Editor · Manage · Stats · Settings · Help · Explore
-   + Tombol Back di topbar
+   Editor · Manage · Stats · Settings (+Tutorial) · Help · Explore
    ========================================================= */
 
 /* =========================================================
-   COMPONENT: UPDATE & PARTNER SECTIONS
+   COMPONENT: UPDATE & PARTNER
    ========================================================= */
 function renderUpdateSection(){
-  const list = STATE.updates || [];
-  if(!list.length){
+  try{
+    const list = STATE.updates || [];
+    if(!list.length){
+      return `
+        <div class="update-section">
+          <div class="update-header">
+            <h2>${ico('news','ic-lg')} Update Terbaru</h2>
+            <p>Apa yang baru di Varlinkbio?</p>
+          </div>
+          <div class="update-empty">Belum ada update yang dipublikasikan.</div>
+        </div>`;
+    }
     return `
       <div class="update-section">
         <div class="update-header">
           <h2>${ico('news','ic-lg')} Update Terbaru</h2>
           <p>Apa yang baru di Varlinkbio?</p>
         </div>
-        <div class="update-empty">Belum ada update yang dipublikasikan.</div>
+        <div class="update-list">
+          ${list.map((u,idx)=>`
+            <div class="update-item ${idx===0?"new":""}">
+              <div class="u-head">
+                <span class="u-version">${esc(u.version||"v?.?")}</span>
+                <span class="u-date">${esc(u.date||"—")}</span>
+              </div>
+              <div class="u-title">${esc(u.title||"")}</div>
+              <ul class="u-changes">
+                ${(u.changes||[]).map(c=>`<li>${esc(c)}</li>`).join("")}
+              </ul>
+            </div>`).join("")}
+        </div>
       </div>`;
-  }
-  return `
-    <div class="update-section">
-      <div class="update-header">
-        <h2>${ico('news','ic-lg')} Update Terbaru</h2>
-        <p>Apa yang baru di Varlinkbio?</p>
-      </div>
-      <div class="update-list">
-        ${list.map((u,idx)=>`
-          <div class="update-item ${idx===0?"new":""}">
-            <div class="u-head">
-              <span class="u-version">${esc(u.version||"v?.?")}</span>
-              <span class="u-date">${esc(u.date||"—")}</span>
-            </div>
-            <div class="u-title">${esc(u.title||"")}</div>
-            <ul class="u-changes">
-              ${(u.changes||[]).map(c=>`<li>${esc(c)}</li>`).join("")}
-            </ul>
-          </div>`).join("")}
-      </div>
-    </div>`;
+  }catch(e){ console.warn("renderUpdateSection:", e); return ""; }
 }
 
 function renderPartnerSection(){
-  const list = STATE.partners || [];
-  return `
-    <div class="partner-section">
-      <div class="partner-header">
-        <h2>${ico('handshake','ic-lg')} Kolaborasi</h2>
-        <p>Berkolaborasi dengan perusahaan digital & kreator lain</p>
-      </div>
-      <div class="partner-grid">
-        ${list.length ? list.map(p=>`
-          <div class="partner-card" ${p.url?`data-url="${esc(p.url)}"`:''}>
-            <div class="p-logo" style="${p.color?`background:${esc(p.color)};color:#fff`:''}">
-              ${p.img?`<img src="${esc(p.img)}" alt=""/>`:esc(p.initial||(p.name||"?")[0].toUpperCase())}
+  try{
+    const list = STATE.partners || [];
+    return `
+      <div class="partner-section">
+        <div class="partner-header">
+          <h2>${ico('handshake','ic-lg')} Kolaborasi</h2>
+          <p>Berkolaborasi dengan perusahaan digital & kreator lain</p>
+        </div>
+        <div class="partner-grid">
+          ${list.length ? list.map(p=>`
+            <div class="partner-card" ${p.url?`data-url="${esc(p.url)}"`:''}>
+              <div class="p-logo" style="${p.color?`background:${esc(p.color)};color:#fff`:''}">
+                ${p.img?`<img src="${esc(p.img)}" alt=""/>`:esc(p.initial||(p.name||"?")[0].toUpperCase())}
+              </div>
+              <div class="p-name">${esc(p.name||"Partner")}</div>
+              <div class="p-tag">${esc(p.tag||"Partner")}</div>
+            </div>`).join("") : `
+            <div class="partner-card collab-cta" data-collab="1">
+              <div class="p-logo">+</div>
+              <div class="p-name">Slot Kosong</div>
+              <div class="p-tag">Kolaborasi</div>
             </div>
-            <div class="p-name">${esc(p.name||"Partner")}</div>
-            <div class="p-tag">${esc(p.tag||"Partner")}</div>
-          </div>`).join("") : `
-          <div class="partner-card collab-cta" data-collab="1">
-            <div class="p-logo">+</div>
-            <div class="p-name">Slot Kosong</div>
-            <div class="p-tag">Kolaborasi</div>
-          </div>
-          <div class="partner-card collab-cta" data-collab="1">
-            <div class="p-logo">+</div>
-            <div class="p-name">Gabung</div>
-            <div class="p-tag">Hubungi Admin</div>
-          </div>`}
-      </div>
-    </div>`;
+            <div class="partner-card collab-cta" data-collab="1">
+              <div class="p-logo">+</div>
+              <div class="p-name">Gabung</div>
+              <div class="p-tag">Hubungi Admin</div>
+            </div>`}
+        </div>
+      </div>`;
+  }catch(e){ console.warn("renderPartnerSection:", e); return ""; }
 }
 
 /* =========================================================
-   TOPBAR + DRAWER (v23 — Tombol Back)
+   TOPBAR + DRAWER
    ========================================================= */
 function renderTopbar(){
-  const user = Auth.current || { name:"Guest", email:"" };
-  const badge = planBadge();
-  const badgeCls = STATE.plan?.id || "free";
-  const devMode = isDev(user.email);
-  const badgeIcon = STATE.plan?.id === "developer" ? "zap"
-    : STATE.plan?.id === "ultimate" ? "crown"
-    : STATE.plan?.id === "pro" ? "star"
-    : STATE.plan?.id === "starter" ? "sparkle" : "";
-  
-  // Halaman yang BUTUH tombol back ke Dashboard
-  const BACK_PAGES = ["/editor", "/manage", "/stats", "/settings", "/help"];
-  const hashPath = (location.hash.slice(1) || "/").split("?")[0];
-  const showBack = Auth.current && BACK_PAGES.includes(hashPath);
-  
-  return `
-    <div class="lt-topbar">
-      <div class="lt-brand">
-        ${showBack ? `
-          <button class="lt-back-btn" id="btn-back-dashboard" title="Kembali ke Dashboard">
-            ${ico('back','ic-lg')}
+  try{
+    const user = Auth.current || { name:"Guest", email:"" };
+    const badge = planBadge();
+    const badgeCls = STATE.plan?.id || "free";
+    const devMode = isDev(user.email);
+    const badgeIcon = STATE.plan?.id === "developer" ? "zap"
+      : STATE.plan?.id === "ultimate" ? "crown"
+      : STATE.plan?.id === "pro" ? "star"
+      : STATE.plan?.id === "starter" ? "sparkle" : "";
+    
+    const BACK_PAGES = ["/editor", "/manage", "/stats", "/settings", "/help"];
+    const hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    const showBack = Auth.current && BACK_PAGES.includes(hashPath);
+    
+    return `
+      <div class="lt-topbar">
+        <div class="lt-brand">
+          ${showBack ? `
+            <button class="lt-back-btn" id="btn-back-dashboard" title="Kembali ke Dashboard">
+              ${ico('back','ic-lg')}
+            </button>
+          ` : `
+            <div class="lt-logo">${ico('link')}</div>
+          `}
+          <span>Varlinkbio</span>
+        </div>
+        <div class="lt-actions">
+          <button class="lt-badge sound" id="sound-toggle-btn" title="Toggle Sound">
+            ${Sound.isEnabled() ? '🔊' : '🔇'}
           </button>
-        ` : `
-          <div class="lt-logo">${ico('link')}</div>
-        `}
-        <span>Varlinkbio</span>
-      </div>
-      <div class="lt-actions">
-        <button class="lt-badge sound" id="sound-toggle-btn" title="Toggle Sound">
-          ${Sound.isEnabled() ? '🔊' : '🔇'}
-        </button>
-        ${devMode?`<button class="lt-badge dev" id="btn-dev-top">${ico('zap','ic-sm')} DEV</button>`:''}
-        ${badge && !devMode?`<button class="lt-badge ${badgeCls}" id="btn-plan-top">${ico(badgeIcon,'ic-sm')} ${badge}</button>`:''}
-        <button class="lt-menu-btn" id="btn-drawer-open">
-          ${ico('menu','ic-lg')}<span class="label">Menu</span>
-        </button>
-      </div>
-    </div>
-    <div class="lt-drawer" id="lt-drawer">
-      <div class="lt-drawer-panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <h4>Menu</h4>
-          <button class="icon-btn" id="btn-drawer-close">${ico('x')}</button>
-        </div>
-        <div class="user-box">
-          <b>${esc(user.name)}</b>
-          <span>${esc(user.email)}</span>
-          <div class="plan-badge ${badgeCls}">${badge || 'FREE'}</div>
-        </div>
-        <div class="menu-item" data-nav="/dashboard">${ico('grid')} Dashboard</div>
-        <div class="menu-item" data-nav="/manage">${ico('folder')} Kelola Bio</div>
-        <div class="menu-item" data-nav="/stats">${ico('stats')} Statistik</div>
-        <div class="menu-item" data-nav="/explore">${ico('compass')} Explore Bio</div>
-        <div class="menu-item" data-nav="/settings">${ico('settings')} Settings Account</div>
-        <div class="menu-item" data-nav="/help">${ico('help')} Bantuan</div>
-        ${devMode?`<div class="menu-item" data-nav="/dev" style="background:var(--red);color:#fff">
-          ${ico('zap')} Dev Panel
-        </div>`:''}
-        <div class="menu-item" id="drawer-upgrade" style="background:var(--yellow)">
-          ${ico('crown')} Upgrade Plan
-        </div>
-        <div class="menu-item" id="drawer-back-home" style="background:var(--cream)">
-          ${ico('back')} Halaman Utama
+          ${devMode?`<button class="lt-badge dev" id="btn-dev-top">${ico('zap','ic-sm')} DEV</button>`:''}
+          ${badge && !devMode?`<button class="lt-badge ${badgeCls}" id="btn-plan-top">${ico(badgeIcon,'ic-sm')} ${badge}</button>`:''}
+          <button class="lt-menu-btn" id="btn-drawer-open">
+            ${ico('menu','ic-lg')}<span class="label">Menu</span>
+          </button>
         </div>
       </div>
-    </div>`;
+      <div class="lt-drawer" id="lt-drawer">
+        <div class="lt-drawer-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <h4>Menu</h4>
+            <button class="icon-btn" id="btn-drawer-close">${ico('x')}</button>
+          </div>
+          <div class="user-box">
+            <b>${esc(user.name)}</b>
+            <span>${esc(user.email)}</span>
+            <div class="plan-badge ${badgeCls}">${badge || 'FREE'}</div>
+          </div>
+          <div class="menu-item" data-nav="/dashboard">${ico('grid')} Dashboard</div>
+          <div class="menu-item" data-nav="/manage">${ico('folder')} Kelola Bio</div>
+          <div class="menu-item" data-nav="/stats">${ico('stats')} Statistik</div>
+          <div class="menu-item" data-nav="/explore">${ico('compass')} Explore Bio</div>
+          <div class="menu-item" data-nav="/settings">${ico('settings')} Settings Account</div>
+          <div class="menu-item" data-nav="/help">${ico('help')} Bantuan</div>
+          ${devMode?`<div class="menu-item" data-nav="/dev" style="background:var(--red);color:#fff">
+            ${ico('zap')} Dev Panel
+          </div>`:''}
+          <div class="menu-item" id="drawer-upgrade" style="background:var(--yellow)">
+            ${ico('crown')} Upgrade Plan
+          </div>
+          <div class="menu-item" id="drawer-back-home" style="background:var(--cream)">
+            ${ico('back')} Halaman Utama
+          </div>
+        </div>
+      </div>`;
+  }catch(e){ console.warn("renderTopbar:", e); return ""; }
 }
 
 function bindTopbar(){
-  // === Tombol Back ke Dashboard ===
-  const backBtn = $("#btn-back-dashboard");
-  if(backBtn){
-    backBtn.addEventListener("click", ()=>{
-      // Kalau di editor & ada draft belum save → tanya dulu
-      if(location.hash.includes("/editor") && STATE.draft && STATE.draft.name){
-        const saved = STATE.draft.id && STATE.draft.updatedAt;
-        if(!saved){
-          if(!confirm("Keluar dari editor?\n\nPerubahan belum disimpan.")) return;
+  try{
+    const backBtn = $("#btn-back-dashboard");
+    if(backBtn){
+      backBtn.addEventListener("click", ()=>{
+        if(location.hash.includes("/editor") && STATE.draft && STATE.draft.name){
+          const saved = STATE.draft.id && STATE.draft.updatedAt;
+          if(!saved){
+            if(!confirm("Keluar dari editor?\n\nPerubahan belum disimpan.")) return;
+          }
         }
-      }
-      Router.navigate("/dashboard");
+        Router.navigate("/dashboard");
+      });
+    }
+    
+    const open = $("#btn-drawer-open");
+    const drawer = $("#lt-drawer");
+    if(open && drawer) open.addEventListener("click", ()=>drawer.classList.add("open"));
+    const close = $("#btn-drawer-close");
+    if(close && drawer) close.addEventListener("click", ()=>drawer.classList.remove("open"));
+    if(drawer) drawer.addEventListener("click", e=>{ if(e.target === drawer) drawer.classList.remove("open"); });
+    
+    $$("[data-nav]").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        if(drawer) drawer.classList.remove("open");
+        Router.navigate(el.dataset.nav);
+      });
     });
-  }
-  
-  const open = $("#btn-drawer-open");
-  const drawer = $("#lt-drawer");
-  if(open && drawer) open.addEventListener("click", ()=>drawer.classList.add("open"));
-  const close = $("#btn-drawer-close");
-  if(close && drawer) close.addEventListener("click", ()=>drawer.classList.remove("open"));
-  if(drawer) drawer.addEventListener("click", e=>{ if(e.target === drawer) drawer.classList.remove("open"); });
-  
-  $$("[data-nav]").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      drawer.classList.remove("open");
-      Router.navigate(el.dataset.nav);
-    });
-  });
-  
-  const homeBtn = $("#drawer-back-home");
-  if(homeBtn) homeBtn.addEventListener("click", ()=>{ drawer.classList.remove("open"); Router.navigate("/"); });
-  
-  const upgradeBtn = $("#drawer-upgrade");
-  if(upgradeBtn) upgradeBtn.addEventListener("click", ()=>{ drawer.classList.remove("open"); showUpgradeModal(); });
-  
-  const planBtn = $("#btn-plan-top");
-  if(planBtn) planBtn.addEventListener("click", ()=>showUpgradeModal());
-  
-  const devBtn = $("#btn-dev-top");
-  if(devBtn) devBtn.addEventListener("click", ()=>Router.navigate("/dev"));
-  
-  const soundBtn = $("#sound-toggle-btn");
-  if(soundBtn){
-    soundBtn.addEventListener("click", ()=>{
-      const enabled = Sound.toggle();
-      soundBtn.textContent = enabled ? '🔊' : '🔇';
-      toast(enabled ? "Sound ON 🔊" : "Sound OFF 🔇", "info");
-    });
-  }
+    
+    const homeBtn = $("#drawer-back-home");
+    if(homeBtn) homeBtn.addEventListener("click", ()=>{ if(drawer) drawer.classList.remove("open"); Router.navigate("/"); });
+    
+    const upgradeBtn = $("#drawer-upgrade");
+    if(upgradeBtn) upgradeBtn.addEventListener("click", ()=>{ if(drawer) drawer.classList.remove("open"); showUpgradeModal(); });
+    
+    const planBtn = $("#btn-plan-top");
+    if(planBtn) planBtn.addEventListener("click", ()=>showUpgradeModal());
+    
+    const devBtn = $("#btn-dev-top");
+    if(devBtn) devBtn.addEventListener("click", ()=>Router.navigate("/dev"));
+    
+    const soundBtn = $("#sound-toggle-btn");
+    if(soundBtn){
+      soundBtn.addEventListener("click", ()=>{
+        const enabled = Sound.toggle();
+        soundBtn.textContent = enabled ? '🔊' : '🔇';
+        toast(enabled ? "Sound ON 🔊" : "Sound OFF 🔇", "info");
+      });
+    }
+  }catch(e){ console.warn("bindTopbar:", e); }
 }
 
 /* =========================================================
    UPGRADE MODAL
    ========================================================= */
 function showUpgradeModal(){
-  const cur = STATE.plan?.id || "free";
-  openModal(`
-    <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
-    <div class="upgrade-box">
-      <div class="plan-title">Upgrade Plan</div>
-      <p style="font-size:13px;font-weight:600;margin-bottom:16px">Pilih plan yang cocok buat kamu</p>
-      <div style="margin-bottom:18px">
-        ${['starter','pro','ultimate'].map(id=>{
-          const p = PLANS[id];
-          const active = cur === id;
-          const isPerm = p.features.permanent;
-          return `
-            <div class="plan-option ${active?'active':''}" data-plan="${id}">
-              <div>
-                <b>${p.name}${isPerm?' ♾️':''}</b>
-                <div class="po-desc">${p.tagline}</div>
-              </div>
-              <div class="po-price">
-                ${p.priceLabel}
-                <small>${isPerm?'sekali':`/${p.period||'bln'}`}</small>
-              </div>
-            </div>`;
-        }).join("")}
-      </div>
-      <div class="steps">
-        <b style="display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-size:11px">Cara Upgrade:</b>
-        <ol>
-          <li>Klik tombol Tako di bawah</li>
-          <li>Donate nominal plan pilihanmu</li>
-          <li>Setelah donasi, kirim bukti ke WA admin</li>
-          <li>Plan aktif dalam 1x24 jam</li>
-        </ol>
-        <div style="background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;font-weight:700">
-          💎 <b>Ultimate</b> = bayar Rp 50.000 sekali, akses selamanya. Gak ada renewal!
+  try{
+    const cur = STATE.plan?.id || "free";
+    openModal(`
+      <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+      <div class="upgrade-box">
+        <div class="plan-title">Upgrade Plan</div>
+        <p style="font-size:13px;font-weight:600;margin-bottom:16px">Pilih plan yang cocok buat kamu</p>
+        <div style="margin-bottom:18px">
+          ${['starter','pro','ultimate'].map(id=>{
+            const p = PLANS[id];
+            const active = cur === id;
+            const isPerm = p.features.permanent;
+            return `
+              <div class="plan-option ${active?'active':''}" data-plan="${id}">
+                <div>
+                  <b>${p.name}${isPerm?' ♾️':''}</b>
+                  <div class="po-desc">${p.tagline}</div>
+                </div>
+                <div class="po-price">
+                  ${p.priceLabel}
+                  <small>${isPerm?'sekali':`/${p.period||'bln'}`}</small>
+                </div>
+              </div>`;
+          }).join("")}
         </div>
-      </div>
-      <a href="${TAKO_URL}" target="_blank" class="tako-link">${ico('crown')} Donate di Tako</a>
-      <div style="height:8px"></div>
-      <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau upgrade Varlinkbio. Email: '+(Auth.current?.email||''))}"
-         target="_blank" class="btn btn-green btn-block btn-lg">${ico('whatsapp')} Chat Admin</a>
-    </div>`);
+        <div class="steps">
+          <b style="display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-size:11px">Cara Upgrade:</b>
+          <ol>
+            <li>Klik tombol Tako di bawah</li>
+            <li>Donate nominal plan pilihanmu</li>
+            <li>Setelah donasi, kirim bukti ke WA admin</li>
+            <li>Plan aktif dalam 1x24 jam</li>
+          </ol>
+          <div style="background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;font-weight:700">
+            💎 <b>Ultimate</b> = bayar Rp 50.000 sekali, akses selamanya. Gak ada renewal!
+          </div>
+        </div>
+        <a href="${TAKO_URL}" target="_blank" class="tako-link">${ico('crown')} Donate di Tako</a>
+        <div style="height:8px"></div>
+        <a href="https://wa.me/${ADMIN_WA}?text=${encodeURIComponent('Halo, saya mau upgrade Varlinkbio. Email: '+(Auth.current?.email||''))}"
+           target="_blank" class="btn btn-green btn-block btn-lg">${ico('whatsapp')} Chat Admin</a>
+      </div>`);
+  }catch(e){ console.warn("showUpgradeModal:", e); }
 }
 
 /* =========================================================
-   CHECKLIST COMPONENT
+   CHECKLIST COMPONENT — SAFE
    ========================================================= */
 const Checklist = {
   ITEMS: [
@@ -3010,31 +3164,47 @@ const Checklist = {
   ],
   
   _data: null,
+  _loaded: false,
   
   async load(){
-    if(!Auth.current) return;
+    this._data = {};
+    this._loaded = false;
+    
+    if(!Auth.current || !Auth.current.uid){
+      return;
+    }
+    
     try{
       const doc = await FB.db.collection("users").doc(Auth.current.uid).get();
       const d = doc.exists ? doc.data() : {};
       this._data = d.checklistProgress || {};
-    }catch(e){ this._data = {}; }
-    // Cek kondisi aktual
+    }catch(e){
+      console.warn("Checklist.read:", e);
+      this._data = {};
+    }
+    
     try{
       const list = await Store.list();
-      this._bioCount = list.length;
-      this._linkCount = list.reduce((s,b)=>s + ((b.links||[]).filter(l=>l.active!==false).length), 0);
+      const bioCount = list.length;
+      const linkCount = list.reduce((s,b)=>s + ((b.links||[]).filter(l=>l.active!==false).length), 0);
       
-      if(this._bioCount > 0) this._data.createBio = true;
+      if(bioCount > 0) this._data.createBio = true;
       if(list.some(b => b.name && b.profile)) this._data.fillProfile = true;
-      if(this._linkCount >= 3) this._data.add3Links = true;
+      if(linkCount >= 3) this._data.add3Links = true;
       if(list.some(b => b.theme && b.theme !== "neo-cream")) this._data.pickTheme = true;
       if(list.some(b => b.id && b.updatedAt)) this._data.saveBio = true;
       
-      // Save progress ke Firestore
-      await FB.db.collection("users").doc(Auth.current.uid).set({
-        checklistProgress: this._data
-      }, { merge:true });
-    }catch(e){ console.warn("Checklist load:", e); }
+      try{
+        await FB.db.collection("users").doc(Auth.current.uid).set({
+          checklistProgress: this._data
+        }, { merge:true });
+      }catch(e){ /* silent */ }
+      
+      this._loaded = true;
+    }catch(e){
+      console.warn("Checklist.load:", e);
+      this._loaded = true;
+    }
   },
   
   isComplete(){
@@ -3048,32 +3218,33 @@ const Checklist = {
   },
   
   render(){
-    if(!this._data) return "";
-    const done = this.count();
-    const total = this.ITEMS.length;
-    const pct = Math.round((done/total)*100);
-    
-    // Kalau semua udah selesai → gak muncul lagi
-    if(done === total) return "";
-    
-    return `
-      <div class="onb-checklist" id="dash-checklist">
-        <div class="onb-checklist-head">
-          <b>🎯 Selesaikan Setup</b>
-          <div class="onb-checklist-progress">${done}/${total}</div>
-        </div>
-        <div class="onb-checklist-bar">
-          <div class="onb-checklist-bar-fill" style="width:${pct}%"></div>
-        </div>
-        <ul class="onb-checklist-list">
-          ${this.ITEMS.map(it=>`
-            <li class="onb-check-item ${this._data[it.key]?'done':''}">
-              <span class="onb-check-box">${ico('check')}</span>
-              <span class="onb-check-text">${it.label}</span>
-              <span class="onb-check-hint">${it.hint}</span>
-            </li>`).join("")}
-        </ul>
-      </div>`;
+    try{
+      if(!this._data) return "";
+      const done = this.count();
+      const total = this.ITEMS.length;
+      const pct = Math.round((done/total)*100);
+      
+      if(done === total) return "";
+      
+      return `
+        <div class="onb-checklist" id="dash-checklist">
+          <div class="onb-checklist-head">
+            <b>🎯 Selesaikan Setup</b>
+            <div class="onb-checklist-progress">${done}/${total}</div>
+          </div>
+          <div class="onb-checklist-bar">
+            <div class="onb-checklist-bar-fill" style="width:${pct}%"></div>
+          </div>
+          <ul class="onb-checklist-list">
+            ${this.ITEMS.map(it=>`
+              <li class="onb-check-item ${this._data[it.key]?'done':''}">
+                <span class="onb-check-box">${ico('check')}</span>
+                <span class="onb-check-text">${it.label}</span>
+                <span class="onb-check-hint">${it.hint}</span>
+              </li>`).join("")}
+          </ul>
+        </div>`;
+    }catch(e){ console.warn("Checklist.render:", e); return ""; }
   }
 };
 
@@ -3083,7 +3254,10 @@ const Checklist = {
 const PageLanding = {
   async render(){
     if(Auth.current) return Router.navigate("/dashboard");
-    await Promise.all([ Store.listPartners(), Store.listUpdates() ]);
+    try{
+      await Promise.all([ Store.listPartners(), Store.listUpdates() ]);
+    }catch(e){ console.warn("Landing data:", e); }
+    
     $("#app").innerHTML = `
       <div class="landing">
         <div class="landing-hero">
@@ -3125,9 +3299,9 @@ const PageLanding = {
         <div class="help-fab" id="landing-help" title="Bantuan">${ico('help')}</div>
       </div>`;
     
-    $("#btn-daftar").addEventListener("click", ()=>Router.navigate("/register"));
-    $("#btn-login").addEventListener("click", ()=>Router.navigate("/login"));
-    $("#btn-explore").addEventListener("click", ()=>Router.navigate("/explore"));
+    const bd = $("#btn-daftar"); if(bd) bd.addEventListener("click", ()=>Router.navigate("/register"));
+    const bl = $("#btn-login"); if(bl) bl.addEventListener("click", ()=>Router.navigate("/login"));
+    const be = $("#btn-explore"); if(be) be.addEventListener("click", ()=>Router.navigate("/explore"));
     $$(".pricing-card .btn").forEach(b=>{ b.addEventListener("click", ()=>Router.navigate("/register")); });
     $$(".partner-card[data-url]").forEach(el=>{ el.addEventListener("click", ()=>window.open(el.dataset.url,"_blank")); });
     $$(".partner-card[data-collab]").forEach(el=>{
@@ -3135,11 +3309,13 @@ const PageLanding = {
         window.open(`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent("Halo, saya mau collab dengan Varlinkbio")}`,"_blank");
       });
     });
-    $("#landing-help")?.addEventListener("click", ()=>{
+    const lh = $("#landing-help");
+    if(lh) lh.addEventListener("click", ()=>{
       if(Auth.current) Router.navigate("/help");
       else { toast("Login dulu untuk akses halaman bantuan","info"); Router.navigate("/login"); }
     });
-    $("#btn-starter-banner")?.addEventListener("click", ()=>this.showStarterModal());
+    const sb = $("#btn-starter-banner");
+    if(sb) sb.addEventListener("click", ()=>this.showStarterModal());
   },
   
   renderPricingCard(plan, extraClass){
@@ -3160,7 +3336,6 @@ const PageLanding = {
   },
   
   showStarterModal(){
-    const p = PLANS.starter;
     const m = openModal(`
       <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
       <h3>🚀 Plan Starter</h3>
@@ -3197,10 +3372,9 @@ const PageLanding = {
         Daftar Sekarang →
       </button>
     `);
-    $("#starter-cta",m).addEventListener("click", ()=>{
-      m.remove();
-      Router.navigate("/register");
-    });
+    if(!m) return;
+    const sc = $("#starter-cta",m);
+    if(sc) sc.addEventListener("click", ()=>{ m.remove(); Router.navigate("/register"); });
   }
 };
 
@@ -3232,12 +3406,13 @@ const PageLogin = {
         </div>
       </div>`;
     
-    const showErr = msg => $("#err-slot").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+    const showErr = msg => { const s = $("#err-slot"); if(s) s.innerHTML = `<div class="err-box">${esc(msg)}</div>`; };
     
-    $("#login-form").addEventListener("submit", async e=>{
+    const form = $("#login-form");
+    if(form) form.addEventListener("submit", async e=>{
       e.preventDefault();
-      const email = $("#l-email").value.trim();
-      const pass = $("#l-pass").value;
+      const email = $("#l-email")?.value.trim();
+      const pass = $("#l-pass")?.value;
       if(!email || !pass){ showErr("Isi email & password"); return; }
       showLoading("Login...");
       try{
@@ -3252,7 +3427,8 @@ const PageLogin = {
       }
     });
     
-    $("#l-google").addEventListener("click", async ()=>{
+    const gBtn = $("#l-google");
+    if(gBtn) gBtn.addEventListener("click", async ()=>{
       if(isInAppBrowser()){ showInAppBrowserModal(); return; }
       showLoading("Login Google...");
       try{
@@ -3302,14 +3478,15 @@ const PageRegister = {
         </div>
       </div>`;
     
-    const showErr = msg => $("#err-slot").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+    const showErr = msg => { const s = $("#err-slot"); if(s) s.innerHTML = `<div class="err-box">${esc(msg)}</div>`; };
     
-    $("#reg-form").addEventListener("submit", async e=>{
+    const form = $("#reg-form");
+    if(form) form.addEventListener("submit", async e=>{
       e.preventDefault();
-      const name = $("#r-name").value.trim();
-      const email = $("#r-email").value.trim();
-      const pass = $("#r-pass").value;
-      const pass2 = $("#r-pass2").value;
+      const name = $("#r-name")?.value.trim();
+      const email = $("#r-email")?.value.trim();
+      const pass = $("#r-pass")?.value;
+      const pass2 = $("#r-pass2")?.value;
       if(!name || name.length < 2){ showErr("Nama minimal 2 karakter"); return; }
       if(!email){ showErr("Email wajib diisi"); return; }
       if(pass.length < 6){ showErr("Password minimal 6 karakter"); return; }
@@ -3327,7 +3504,8 @@ const PageRegister = {
       }
     });
     
-    $("#r-google").addEventListener("click", async ()=>{
+    const gBtn = $("#r-google");
+    if(gBtn) gBtn.addEventListener("click", async ()=>{
       if(isInAppBrowser()){ showInAppBrowserModal(); return; }
       showLoading("Daftar Google...");
       try{
@@ -3395,9 +3573,8 @@ const PageVerify = {
               <button class="btn btn-primary btn-block" id="vf-retry">${ico('back')} Ke Halaman Verifikasi</button>
             </div>
           </div>`;
-        $("#vf-retry").addEventListener("click", ()=>{
-          location.replace(location.pathname + "#/verify");
-        });
+        const r = $("#vf-retry");
+        if(r) r.addEventListener("click", ()=>{ location.replace(location.pathname + "#/verify"); });
         return;
       }
     }
@@ -3425,10 +3602,12 @@ const PageVerify = {
     
     const showMsg = (msg, type="error") => {
       const bg = type === "success" ? "var(--green)" : "var(--red)";
-      $("#err-slot").innerHTML = `<div class="err-box" style="background:${bg}">${esc(msg)}</div>`;
+      const s = $("#err-slot");
+      if(s) s.innerHTML = `<div class="err-box" style="background:${bg}">${esc(msg)}</div>`;
     };
     
-    $("#v-check").addEventListener("click", async ()=>{
+    const vc = $("#v-check");
+    if(vc) vc.addEventListener("click", async ()=>{
       showLoading("Cek status...");
       try{
         await user.reload();
@@ -3445,7 +3624,8 @@ const PageVerify = {
       }catch(e){ hideLoading(); showMsg("Gagal cek: "+e.message); }
     });
     
-    $("#v-resend").addEventListener("click", async ()=>{
+    const vr = $("#v-resend");
+    if(vr) vr.addEventListener("click", async ()=>{
       showLoading("Mengirim...");
       try{
         await user.sendEmailVerification();
@@ -3455,9 +3635,12 @@ const PageVerify = {
       }catch(e){ hideLoading(); showMsg("Gagal kirim: "+e.message); }
     });
     
-    $("#v-settings").addEventListener("click", ()=>Router.navigate("/settings"));
-    $("#v-back-dash").addEventListener("click", ()=>Router.navigate("/dashboard"));
-    $("#v-logout").addEventListener("click", async ()=>{
+    const vs = $("#v-settings");
+    if(vs) vs.addEventListener("click", ()=>Router.navigate("/settings"));
+    const vd = $("#v-back-dash");
+    if(vd) vd.addEventListener("click", ()=>Router.navigate("/dashboard"));
+    const vl = $("#v-logout");
+    if(vl) vl.addEventListener("click", async ()=>{
       await Auth.logout();
       toast("Logout","info");
       Router.navigate("/");
@@ -3466,22 +3649,21 @@ const PageVerify = {
 };
 
 /* =========================================================
-   PAGE: DASHBOARD (dengan Checklist)
+   PAGE: DASHBOARD
    ========================================================= */
 const PageDashboard = {
   async render(query){
     if(!Auth.current) return Router.navigate("/login");
     if(!STATE.plan) await loadUserPlan();
     if(!STATE.dataLoaded){
-      await Promise.all([ Store.listUpdates(), Store.listPartners() ]);
+      try{ await Promise.all([ Store.listUpdates(), Store.listPartners() ]); }catch(e){}
       STATE.dataLoaded = true;
     }
     if(query && query.includes("paid=1")){
       setTimeout(()=>toast("Terima kasih! Admin akan konfirmasi donasimu 1x24 jam.","info"),600);
     }
     
-    // Load checklist
-    await Checklist.load();
+    try{ await Checklist.load(); }catch(e){ console.warn("Checklist load:", e); }
     
     const plan = STATE.plan;
     let bioCount = 0;
@@ -3553,10 +3735,11 @@ const PageDashboard = {
       </div>`;
     
     bindTopbar();
-    $("#btn-upgrade").addEventListener("click", ()=>showUpgradeModal());
-    $("#btn-manage").addEventListener("click", ()=>Router.navigate("/manage"));
-    $("#btn-explore").addEventListener("click", ()=>Router.navigate("/explore"));
-    $("#btn-bikin").addEventListener("click", async ()=>{
+    const bu = $("#btn-upgrade"); if(bu) bu.addEventListener("click", ()=>showUpgradeModal());
+    const bm = $("#btn-manage"); if(bm) bm.addEventListener("click", ()=>Router.navigate("/manage"));
+    const be = $("#btn-explore"); if(be) be.addEventListener("click", ()=>Router.navigate("/explore"));
+    const bb = $("#btn-bikin");
+    if(bb) bb.addEventListener("click", async ()=>{
       const count = await Store.count();
       if(!isUnlimited(plan.features.maxBios) && count >= plan.features.maxBios){
         toast(`Plan ${plan.name} max ${plan.features.maxBios} bio. Upgrade dulu!`,"error");
@@ -3571,8 +3754,9 @@ const PageDashboard = {
   },
   
   async loadRecent(){
-    const wrap = $("#recent-list");
     try{
+      const wrap = $("#recent-list");
+      if(!wrap) return;
       const list = await Store.list();
       if(!list.length){
         wrap.innerHTML = `<div class="empty-state">
@@ -3605,8 +3789,7 @@ const PageDashboard = {
         </div>`;
       }).join("");
     }catch(e){
-      console.error(e);
-      wrap.innerHTML = `<div class="empty-state"><p>Gagal memuat.</p></div>`;
+      console.warn("loadRecent:", e);
     }
   },
   
@@ -3620,118 +3803,124 @@ const PageDashboard = {
   async remove(id){
     if(!confirm("Yakin mau hapus?")) return;
     showLoading("Menghapus...");
-    await Store.remove(id);
-    hideLoading();
-    toast("Terhapus","success");
-    this.loadRecent();
+    try{
+      await Store.remove(id);
+      hideLoading();
+      toast("Terhapus","success");
+      this.loadRecent();
+    }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
   },
   
   async qr(id){
-    const bio = await Store.get(id);
-    const identifier = bio?.slug || id;
-    const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
-    await showQRModal(bio || {id, name:"Bio"}, url);
+    try{
+      const bio = await Store.get(id);
+      const identifier = bio?.slug || id;
+      const url = `${PUBLIC_BASE_URL}/#/u/${identifier}`;
+      await showQRModal(bio || {id, name:"Bio"}, url);
+    }catch(e){ console.warn("qr:", e); }
   }
 };
 
 /* =========================================================
-   QR MODAL (v23 — QR Custom)
+   QR MODAL
    ========================================================= */
 async function showQRModal(bio, url){
-  const canCustom = canDo("qrCustom");
-  const colors = [
-    { name:"Hitam", hex:"#0a0a0a" },
-    { name:"Biru", hex:"#2563eb" },
-    { name:"Merah", hex:"#ff2a2a" },
-    { name:"Hijau", hex:"#22c55e" },
-    { name:"Pink", hex:"#ff69b4" },
-    { name:"Ungu", hex:"#a78bfa" },
-    { name:"Oranye", hex:"#ff8c00" }
-  ];
-  const useLogo = bio.profile && canCustom;
-  
-  const m = openModal(`
-    <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
-    <h3>${ico('qr')} QR Code</h3>
-    <p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka bio kamu</p>
-    <div style="text-align:center">
-      <div class="qr-box" style="padding:16px;background:#fff">
-        <img id="qr-img" src="" alt="QR" style="width:220px;height:220px;display:block;margin:0 auto;image-rendering:pixelated"/>
-      </div>
-      <div class="qr-url">${esc(url)}</div>
-    </div>
-    ${canCustom ? `
-      <div style="margin-top:14px">
-        <label style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);display:block;margin-bottom:8px">🎨 Warna QR</label>
-        <div class="qr-custom-grid">
-          ${colors.map((c,i)=>`
-            <div class="qr-color-opt ${i===0?'active':''}" data-color="${c.hex}" data-name="${c.name}" 
-              style="background:${c.hex}" title="${c.name}"></div>
-          `).join("")}
+  try{
+    const canCustom = canDo("qrCustom");
+    const colors = [
+      { name:"Hitam", hex:"#0a0a0a" },
+      { name:"Biru", hex:"#2563eb" },
+      { name:"Merah", hex:"#ff2a2a" },
+      { name:"Hijau", hex:"#22c55e" },
+      { name:"Pink", hex:"#ff69b4" },
+      { name:"Ungu", hex:"#a78bfa" },
+      { name:"Oranye", hex:"#ff8c00" }
+    ];
+    const useLogo = bio.profile && canCustom;
+    
+    const m = openModal(`
+      <button class="close-x" onclick="this.closest('.modal-back').remove()">×</button>
+      <h3>${ico('qr')} QR Code</h3>
+      <p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka bio kamu</p>
+      <div style="text-align:center">
+        <div class="qr-box" style="padding:16px;background:#fff">
+          <img id="qr-img" src="" alt="QR" style="width:220px;height:220px;display:block;margin:0 auto;image-rendering:pixelated"/>
         </div>
-        <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;font-weight:700;cursor:pointer">
-          <input type="checkbox" id="qr-use-logo" ${useLogo?"checked":""} style="width:auto;padding:0"/>
-          Tambahkan logo (avatar) di tengah QR
-        </label>
+        <div class="qr-url">${esc(url)}</div>
       </div>
-    ` : `
-      <div style="margin-top:14px;background:var(--cream);border:2px dashed var(--ink);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;text-align:center">
-        🔒 <b>QR Custom</b> (warna + logo) cuma untuk plan <b>Ultimate</b>.
-        <button class="btn btn-sm btn-yellow" id="qr-upgrade" style="margin-top:8px">Upgrade →</button>
-      </div>
-    `}
-    <button class="btn btn-primary btn-block" id="qr-dl" style="margin-top:14px">${ico('save')} Download PNG</button>
-  `);
-  
-  const qrState = {
-    color: "#0a0a0a",
-    useLogo: !!useLogo
-  };
-  
-  async function refreshQR(){
-    try{
-      const canvas = await generateQRCustom(url, {
-        color: qrState.color,
-        bg: "#ffffff",
-        size: 512,
-        logo: qrState.useLogo && bio.profile ? bio.profile : null
-      });
-      $("#qr-img", m).src = canvas.toDataURL("image/png");
-    }catch(e){
-      console.error("QR generate error:", e);
+      ${canCustom ? `
+        <div style="margin-top:14px">
+          <label style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);display:block;margin-bottom:8px">🎨 Warna QR</label>
+          <div class="qr-custom-grid">
+            ${colors.map((c,i)=>`
+              <div class="qr-color-opt ${i===0?'active':''}" data-color="${c.hex}" data-name="${c.name}" 
+                style="background:${c.hex}" title="${c.name}"></div>
+            `).join("")}
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;font-weight:700;cursor:pointer">
+            <input type="checkbox" id="qr-use-logo" ${useLogo?"checked":""} style="width:auto;padding:0"/>
+            Tambahkan logo (avatar) di tengah QR
+          </label>
+        </div>
+      ` : `
+        <div style="margin-top:14px;background:var(--cream);border:2px dashed var(--ink);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;text-align:center">
+          🔒 <b>QR Custom</b> (warna + logo) cuma untuk plan <b>Ultimate</b>.
+          <button class="btn btn-sm btn-yellow" id="qr-upgrade" style="margin-top:8px">Upgrade →</button>
+        </div>
+      `}
+      <button class="btn btn-primary btn-block" id="qr-dl" style="margin-top:14px">${ico('save')} Download PNG</button>
+    `);
+    
+    if(!m) return;
+    
+    const qrState = { color: "#0a0a0a", useLogo: !!useLogo };
+    
+    async function refreshQR(){
+      try{
+        const canvas = await generateQRCustom(url, {
+          color: qrState.color,
+          bg: "#ffffff",
+          size: 512,
+          logo: qrState.useLogo && bio.profile ? bio.profile : null
+        });
+        const img = $("#qr-img", m);
+        if(img) img.src = canvas.toDataURL("image/png");
+      }catch(e){ console.warn("refreshQR:", e); }
     }
-  }
-  
-  await refreshQR();
-  Sound.tada();
-  
-  if(canCustom){
-    m.querySelectorAll(".qr-color-opt").forEach(el=>{
-      el.addEventListener("click", async ()=>{
-        m.querySelectorAll(".qr-color-opt").forEach(x=>x.classList.remove("active"));
-        el.classList.add("active");
-        qrState.color = el.dataset.color;
+    
+    await refreshQR();
+    Sound.tada();
+    
+    if(canCustom){
+      m.querySelectorAll(".qr-color-opt").forEach(el=>{
+        el.addEventListener("click", async ()=>{
+          m.querySelectorAll(".qr-color-opt").forEach(x=>x.classList.remove("active"));
+          el.classList.add("active");
+          qrState.color = el.dataset.color;
+          await refreshQR();
+        });
+      });
+      const lc = $("#qr-use-logo", m);
+      if(lc) lc.addEventListener("change", async e=>{
+        qrState.useLogo = e.target.checked;
         await refreshQR();
       });
+    } else {
+      const ub = $("#qr-upgrade", m);
+      if(ub) ub.addEventListener("click", ()=>{ m.remove(); showUpgradeModal(); });
+    }
+    
+    const dl = $("#qr-dl", m);
+    if(dl) dl.addEventListener("click", ()=>{
+      const img = $("#qr-img", m);
+      if(!img) return;
+      const a = document.createElement("a");
+      a.download = `varlinkbio-qr-${bio.slug||bio.id}.png`;
+      a.href = img.src;
+      a.click();
+      toast("QR didownload!","success");
     });
-    const logoCheck = $("#qr-use-logo", m);
-    if(logoCheck) logoCheck.addEventListener("change", async e=>{
-      qrState.useLogo = e.target.checked;
-      await refreshQR();
-    });
-  } else {
-    const upBtn = $("#qr-upgrade", m);
-    if(upBtn) upBtn.addEventListener("click", ()=>{ m.remove(); showUpgradeModal(); });
-  }
-  
-  $("#qr-dl", m).addEventListener("click", ()=>{
-    const img = $("#qr-img", m);
-    const a = document.createElement("a");
-    a.download = `varlinkbio-qr-${bio.slug||bio.id}.png`;
-    a.href = img.src;
-    a.click();
-    toast("QR didownload!","success");
-  });
+  }catch(e){ console.warn("showQRModal:", e); }
 }
 
 /* =========================================================
@@ -3751,7 +3940,8 @@ const PageManage = {
         <div id="list" class="recent-list"></div>
       </div>`;
     bindTopbar();
-    $("#btn-new").addEventListener("click", async ()=>{
+    const bn = $("#btn-new");
+    if(bn) bn.addEventListener("click", async ()=>{
       const count = await Store.count();
       if(!isUnlimited(STATE.plan.features.maxBios) && count >= STATE.plan.features.maxBios){
         toast(`Plan ${STATE.plan.name} max ${STATE.plan.features.maxBios} bio. Upgrade dulu!`,"error");
@@ -3766,8 +3956,9 @@ const PageManage = {
   },
   
   async load(){
-    const wrap = $("#list");
     try{
+      const wrap = $("#list");
+      if(!wrap) return;
       const list = await Store.list();
       if(!list.length){
         wrap.innerHTML = `<div class="empty-state"><div class="ei">${ico('folder')}</div><p>Belum ada.</p></div>`;
@@ -3793,10 +3984,7 @@ const PageManage = {
           </div>
         </div>`;
       }).join("");
-    }catch(e){
-      console.error(e);
-      wrap.innerHTML = `<div class="empty-state"><p>Gagal memuat.</p></div>`;
-    }
+    }catch(e){ console.warn("Manage.load:", e); }
   },
   
   async edit(id){
@@ -3809,10 +3997,12 @@ const PageManage = {
   async remove(id){
     if(!confirm("Hapus link-in-bio ini?")) return;
     showLoading("Menghapus...");
-    await Store.remove(id);
-    hideLoading();
-    toast("Terhapus","success");
-    this.load();
+    try{
+      await Store.remove(id);
+      hideLoading();
+      toast("Terhapus","success");
+      this.load();
+    }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
   }
 };
 
@@ -3835,7 +4025,8 @@ const PageStats = {
           </div>
         </div>`;
       bindTopbar();
-      $("#btn-up").addEventListener("click", ()=>showUpgradeModal());
+      const b = $("#btn-up");
+      if(b) b.addEventListener("click", ()=>showUpgradeModal());
       return;
     }
     
@@ -3846,7 +4037,6 @@ const PageStats = {
       return s+Object.values(c).reduce((x,y)=>x+y,0);
     },0);
     
-    // Daily aggregate
     const dailyAgg = {};
     const today = new Date();
     for(let i=6; i>=0; i--){
@@ -3877,7 +4067,6 @@ const PageStats = {
         </div>`;
     }).join("");
     
-    // Top links (Pro+)
     let topLinksHTML = "";
     if(canDo("topLinks")){
       const allLinks = [];
@@ -3945,6 +4134,7 @@ const PageStats = {
     
     bindTopbar();
     const wrap = $("#stats-list");
+    if(!wrap) return;
     if(!list.length){
       wrap.innerHTML = `<div class="empty-state"><p>Belum ada data.</p></div>`;
       return;
@@ -3980,7 +4170,7 @@ const PageStats = {
 };
 
 /* =========================================================
-   PAGE: SETTINGS (+ Reset Tutorial)
+   PAGE: SETTINGS
    ========================================================= */
 const PageSettings = {
   async render(){
@@ -4055,13 +4245,25 @@ const PageSettings = {
         </div>
         ` : ""}
         
-        <div class="settings-section">
-          <h3>${ico('help')} Bantuan & Tutorial</h3>
-          <p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);line-height:1.5;margin-bottom:12px">
-            Mau lihat lagi tutorial onboarding Varlinkbio?
+        <div class="settings-section tutor-section">
+          <h3>${ico('book')} Tutorial Onboarding</h3>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);line-height:1.6;margin-bottom:12px">
+            Mau lihat lagi <b>tutorial lengkap</b> Varlinkbio?
+            Tutorial bakal nunjukin semua fitur + kegunaan masing-masing.
           </p>
+          <div style="background:#fff;border:2px solid var(--ink);border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;font-weight:600;line-height:1.6">
+            📖 <b>Isi Tutorial:</b><br>
+            • Dashboard & fungsinya<br>
+            • Cara bikin bio dari 0<br>
+            • Editor & semua fiturnya<br>
+            • Tema warna<br>
+            • Tipe-tipe link (Classic, Embed, Featured)<br>
+            • Plan & harga<br>
+            • Stats & Explore<br>
+            • Tips & tricks
+          </div>
           <button class="btn btn-yellow btn-block" id="btn-replay-tutorial">
-            ${ico('sparkle')} Ulangi Tutorial Onboarding
+            ${ico('sparkle')} Ulangi Tutorial
           </button>
         </div>
         
@@ -4076,22 +4278,24 @@ const PageSettings = {
     
     bindTopbar();
     
-    const btnVerify = $("#btn-verify-email");
-    if(btnVerify) btnVerify.addEventListener("click", async ()=>{
+    const v1 = $("#btn-verify-email");
+    if(v1) v1.addEventListener("click", async ()=>{
       showLoading("Mengirim email...");
       try{
         await user.sendEmailVerification();
         hideLoading();
-        $("#verify-msg").innerHTML = `<div class="ok-box">✅ Email terkirim! Cek inbox <b>${esc(u.email||"")}</b></div>`;
+        const vm = $("#verify-msg");
+        if(vm) vm.innerHTML = `<div class="ok-box">✅ Email terkirim! Cek inbox <b>${esc(u.email||"")}</b></div>`;
         toast("Email verifikasi terkirim!","success");
       }catch(e){
         hideLoading();
-        $("#verify-msg").innerHTML = `<div class="err-box">${esc(e.message||e.code)}</div>`;
+        const vm = $("#verify-msg");
+        if(vm) vm.innerHTML = `<div class="err-box">${esc(e.message||e.code)}</div>`;
       }
     });
     
-    const btnCheck = $("#btn-check-verify");
-    if(btnCheck) btnCheck.addEventListener("click", async ()=>{
+    const v2 = $("#btn-check-verify");
+    if(v2) v2.addEventListener("click", async ()=>{
       showLoading("Cek status...");
       try{
         await user.reload();
@@ -4103,15 +4307,22 @@ const PageSettings = {
           this.render();
         }else{
           hideLoading();
-          $("#verify-msg").innerHTML = `<div class="err-box">Email belum terverifikasi.</div>`;
+          const vm = $("#verify-msg");
+          if(vm) vm.innerHTML = `<div class="err-box">Email belum terverifikasi.</div>`;
         }
-      }catch(e){ hideLoading(); $("#verify-msg").innerHTML = `<div class="err-box">Gagal cek: ${esc(e.message)}</div>`; }
+      }catch(e){
+        hideLoading();
+        const vm = $("#verify-msg");
+        if(vm) vm.innerHTML = `<div class="err-box">Gagal cek: ${esc(e.message)}</div>`;
+      }
     });
     
-    $("#btn-save-name").addEventListener("click", async ()=>{
-      const newName = $("#set-name").value.trim();
-      if(!newName || newName.length < 2){ $("#name-msg").innerHTML = `<div class="err-box">Nama minimal 2 karakter</div>`; return; }
-      if(newName === u.name){ $("#name-msg").innerHTML = `<div class="err-box">Nama sama</div>`; return; }
+    const sn = $("#btn-save-name");
+    if(sn) sn.addEventListener("click", async ()=>{
+      const newName = $("#set-name")?.value.trim();
+      const nm = $("#name-msg");
+      if(!newName || newName.length < 2){ if(nm) nm.innerHTML = `<div class="err-box">Nama minimal 2 karakter</div>`; return; }
+      if(newName === u.name){ if(nm) nm.innerHTML = `<div class="err-box">Nama sama</div>`; return; }
       showLoading("Menyimpan...");
       try{
         await Auth.updateName(newName);
@@ -4119,34 +4330,37 @@ const PageSettings = {
         hideLoading();
         toast("Nama diubah!","success");
         this.render();
-      }catch(e){ hideLoading(); $("#name-msg").innerHTML = `<div class="err-box">Gagal: ${esc(e.message)}</div>`; }
+      }catch(e){ hideLoading(); if(nm) nm.innerHTML = `<div class="err-box">Gagal: ${esc(e.message)}</div>`; }
     });
     
-    const btnPass = $("#btn-save-pass");
-    if(btnPass) btnPass.addEventListener("click", async ()=>{
-      const oldPass = $("#set-oldpass").value;
-      const newPass = $("#set-newpass").value;
-      const newPass2 = $("#set-newpass2").value;
-      if(!oldPass || !newPass || !newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Isi semua field</div>`; return; }
-      if(newPass.length < 6){ $("#pass-msg").innerHTML = `<div class="err-box">Password baru minimal 6 karakter</div>`; return; }
-      if(newPass !== newPass2){ $("#pass-msg").innerHTML = `<div class="err-box">Konfirmasi tidak sama</div>`; return; }
+    const sp = $("#btn-save-pass");
+    if(sp) sp.addEventListener("click", async ()=>{
+      const oldPass = $("#set-oldpass")?.value;
+      const newPass = $("#set-newpass")?.value;
+      const newPass2 = $("#set-newpass2")?.value;
+      const pm = $("#pass-msg");
+      if(!oldPass || !newPass || !newPass2){ if(pm) pm.innerHTML = `<div class="err-box">Isi semua field</div>`; return; }
+      if(newPass.length < 6){ if(pm) pm.innerHTML = `<div class="err-box">Password baru minimal 6 karakter</div>`; return; }
+      if(newPass !== newPass2){ if(pm) pm.innerHTML = `<div class="err-box">Konfirmasi tidak sama</div>`; return; }
       showLoading("Verifikasi...");
       try{
         await Auth.updatePassword(oldPass, newPass);
         hideLoading();
-        $("#set-oldpass").value = ""; $("#set-newpass").value = ""; $("#set-newpass2").value = "";
-        $("#pass-msg").innerHTML = `<div class="ok-box">✅ Password diubah!</div>`;
+        if($("#set-oldpass")) $("#set-oldpass").value = "";
+        if($("#set-newpass")) $("#set-newpass").value = "";
+        if($("#set-newpass2")) $("#set-newpass2").value = "";
+        if(pm) pm.innerHTML = `<div class="ok-box">✅ Password diubah!</div>`;
         toast("Password diubah","success");
       }catch(e){
         hideLoading();
         let msg = e.message || e.code || "Gagal";
         if(e.code === "auth/wrong-password" || e.code === "auth/invalid-credential") msg = "Password lama salah";
-        $("#pass-msg").innerHTML = `<div class="err-box">${esc(msg)}</div>`;
+        if(pm) pm.innerHTML = `<div class="err-box">${esc(msg)}</div>`;
       }
     });
     
-    // Replay tutorial
-    $("#btn-replay-tutorial").addEventListener("click", async ()=>{
+    const rt = $("#btn-replay-tutorial");
+    if(rt) rt.addEventListener("click", async ()=>{
       if(!confirm("Ulangi tutorial onboarding?\n\nTutorial akan muncul sebentar lagi.")) return;
       showLoading("Menyiapkan tutorial...");
       try{
@@ -4154,12 +4368,15 @@ const PageSettings = {
         hideLoading();
         toast("Tutorial akan muncul...","info");
         setTimeout(()=>{
-          if(typeof Tutorial !== "undefined") Tutorial.start();
+          try{
+            if(typeof Tutorial !== "undefined") Tutorial.start();
+          }catch(e){ console.warn("Tutorial.start:", e); }
         }, 500);
       }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
     });
     
-    $("#btn-logout-here").addEventListener("click", async ()=>{
+    const lo = $("#btn-logout-here");
+    if(lo) lo.addEventListener("click", async ()=>{
       if(!confirm("Logout dari device ini?")) return;
       await Auth.logout();
       toast("Logout berhasil","info");
@@ -4169,7 +4386,7 @@ const PageSettings = {
 };
 
 /* =========================================================
-   PAGE: HELP (FAQ)
+   PAGE: HELP
    ========================================================= */
 const FAQ_DATA = [
   { cat:"akun", q:"Bagaimana cara daftar akun?",
@@ -4202,44 +4419,38 @@ const FAQ_DATA = [
         <li><b>Pro</b>: 20 bio</li><li><b>Ultimate</b>: unlimited ♾️</li></ul>` },
   { cat:"bio", q:"Apa itu Toggle Link?",
     a:`<p><b>Toggle Link</b> = saklar on/off per tombol link.</p>
-       <p>Contoh: link promo selesai → tinggal matiin, gak usah hapus. Datanya tetap tersimpan.</p>
+       <p>Contoh: link promo selesai → tinggal matiin, gak usah hapus.</p>
        <p>✅ Tersedia untuk Starter+.</p>` },
   { cat:"bio", q:"Apa itu vCard Download?",
     a:`<p><b>vCard</b> = tombol "Simpan Kontak" di bio kamu.</p>
-       <p>Orang yang buka bio bisa langsung save info kamu (nama, WA, IG, email) ke kontak HP mereka.</p>
+       <p>Orang yang buka bio bisa langsung save info kamu ke kontak HP mereka.</p>
        <p>✅ Tersedia untuk Pro+.</p>` },
   { cat:"plan", q:"Apa saja plan yang tersedia?",
     a:`<ul>
         <li><b>Free</b> — Rp 0, 5 bio, 1 tema</li>
-        <li><b>Starter</b> — Rp 5.000/bln, 5 bio, unlimited tombol, 3 tema, analytics basic, toggle link</li>
+        <li><b>Starter</b> — Rp 5.000/bln, 5 bio, unlimited tombol, 3 tema, analytics basic</li>
         <li><b>Pro</b> — Rp 15.000/bln, 20 bio, 6 tema, URL kustom, embed, chart analytics, vCard, no watermark</li>
         <li><b>Ultimate</b> — Rp 50.000 <b>SEKALI BAYAR</b> ♾️, unlimited, QR custom, animasi</li>
        </ul>` },
   { cat:"plan", q:"Ultimate itu permanen? Beneran?",
     a:`<p><b>Iya, permanen!</b> Bayar Rp 50.000 sekali, akses selamanya.</p>
        <ul><li>✅ Gak ada renewal</li><li>✅ Gak expired</li>
-           <li>✅ Unlimited bio</li><li>✅ No watermark</li><li>✅ QR custom warna+logo</li></ul>` },
+           <li>✅ Unlimited bio</li><li>✅ No watermark</li><li>✅ QR custom</li></ul>` },
   { cat:"plan", q:"Bagaimana cara upgrade?",
     a:`<ol><li>Klik tombol <b>Upgrade</b></li><li>Klik <b>Donate di Tako</b></li>
         <li>Bayar</li><li>Kirim bukti ke WhatsApp admin</li>
         <li>Plan aktif dalam <b>1x24 jam</b></li></ol>` },
-  { cat:"plan", q:"Apakah plan Pro/Starter bisa kadaluarsa?",
-    a:`<p>Ya, Starter & Pro berlaku <b>30 hari</b>. Setelah kadaluarsa → turun ke Free.</p>
-       <p>Kalau pilih <b>Ultimate</b>, gak ada kadaluarsa. 💎</p>` },
   { cat:"tutor", q:"Ada tutorial untuk user baru?",
-    a:`<p><b>Iya!</b> Pas pertama kali login, bakal muncul <b>tutorial 5 step</b>:</p>
-       <ol><li>Selamat datang</li><li>Bikin bio pertama</li>
-           <li>Kelola bio</li><li>Info plan</li><li>Siap ngoding</li></ol>
-       <p>Kalau mau lihat lagi → <b>Settings</b> → <b>Ulangi Tutorial Onboarding</b>.</p>` },
-  { cat:"tutor", q:"Apa itu Checklist Setup?",
-    a:`<p><b>Checklist Setup</b> = daftar tugas kecil yang muncul di dashboard buat ngebantu kamu bikin bio pertama.</p>
-       <p>Kalau semua ✅, checklist otomatis hilang.</p>` },
+    a:`<p><b>Iya!</b> Pas pertama kali login, bakal muncul <b>tutorial 10 step</b> lengkap:</p>
+       <ol><li>Selamat datang</li><li>Dashboard</li><li>Bikin bio pertama</li>
+           <li>Editor & fitur</li><li>Tema</li><li>Tipe link</li>
+           <li>Plan & harga</li><li>Stats</li><li>Explore</li><li>Tips</li></ol>
+       <p>Kalau mau lihat lagi → <b>Settings</b> → <b>Ulangi Tutorial</b>.</p>` },
   { cat:"explore", q:"Apa itu Explore Bio?",
     a:`<p><b>Explore Bio</b> = galeri bio publik dari user Varlinkbio lain.</p>
-       <ul><li>Muncul otomatis untuk semua user Starter+</li>
+       <ul><li>Muncul otomatis untuk Starter+</li>
            <li>Bio diurutkan: Ultimate & Pro di atas</li>
-           <li>Bisa filter & search</li></ul>
-       <p>💡 Kamu bisa opt-out dari Explore lewat editor bio.</p>` },
+           <li>Bisa filter & search</li></ul>` },
   { cat:"dev", q:"Kenapa login Google gagal di WhatsApp / Instagram?",
     a:`<p>Karena link dibuka di <b>in-app browser</b>. Google blokir login di situ.</p>
        <p><b>Solusi:</b></p>
@@ -4286,7 +4497,8 @@ const PageHelp = {
         </div>
       </div>`;
     bindTopbar();
-    $("#help-cats").innerHTML = FAQ_CATS.map(c=>`
+    const cats = $("#help-cats");
+    if(cats) cats.innerHTML = FAQ_CATS.map(c=>`
       <div class="help-cat ${this.state.cat===c.id?"active":""}" data-cat="${c.id}">
         ${c.icon} ${c.label}
       </div>`).join("");
@@ -4297,7 +4509,8 @@ const PageHelp = {
         this.renderList();
       });
     });
-    $("#help-search").addEventListener("input", e=>{
+    const se = $("#help-search");
+    if(se) se.addEventListener("input", e=>{
       this.state.search = e.target.value.toLowerCase().trim();
       this.renderList();
     });
@@ -4305,6 +4518,7 @@ const PageHelp = {
   },
   renderList(){
     const el = $("#help-list");
+    if(!el) return;
     let list = FAQ_DATA;
     if(this.state.cat !== "all") list = list.filter(f => f.cat === this.state.cat);
     if(this.state.search){
@@ -4330,15 +4544,14 @@ const PageHelp = {
         <div class="help-a">${f.a}</div>
       </div>`).join("");
     $$("#help-list .help-item").forEach(item=>{
-      item.querySelector(".help-q").addEventListener("click", ()=>{
-        item.classList.toggle("open");
-      });
+      const q = item.querySelector(".help-q");
+      if(q) q.addEventListener("click", ()=>item.classList.toggle("open"));
     });
   }
 };
 
 /* =========================================================
-   PAGE: EDITOR v23
+   PAGE: EDITOR
    ========================================================= */
 const PageEditor = {
   newDraft(){
@@ -4545,8 +4758,8 @@ const PageEditor = {
   },
   
   bindAll(){
-    $("#btn-save").addEventListener("click", ()=>this.save());
-    $("#btn-save2").addEventListener("click", ()=>this.save());
+    const bs1 = $("#btn-save"); if(bs1) bs1.addEventListener("click", ()=>this.save());
+    const bs2 = $("#btn-save2"); if(bs2) bs2.addEventListener("click", ()=>this.save());
     
     const qrBtn = $("#btn-qr");
     if(qrBtn) qrBtn.addEventListener("click", ()=>{
@@ -4572,7 +4785,8 @@ const PageEditor = {
       try{
         const url = await Store.upload(f, "profile");
         STATE.draft.profile = url;
-        $("#pbox").innerHTML = `<img src="${esc(url)}"/><div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*"/>`;
+        const box = $("#pbox");
+        if(box) box.innerHTML = `<img src="${esc(url)}"/><div class="overlay">${ico('camera')}</div><input type="file" id="p-input" accept="image/*"/>`;
         this.bindAll();
         hideLoading();
         toast("Profil diupdate","success");
@@ -4580,57 +4794,43 @@ const PageEditor = {
       }catch(err){ hideLoading(); toast("Gagal: "+err.message,"error"); }
     });
     
-    const fn = $("#f-name");
-    if(fn) fn.addEventListener("input", e=>{
-      STATE.draft.name = e.target.value;
-      AutoSave.tick();
-      this.updatePreview();
-    });
-    const fb = $("#f-bio");
-    if(fb) fb.addEventListener("input", e=>{
-      STATE.draft.bio = e.target.value;
-      AutoSave.tick();
-      this.updatePreview();
-    });
-    const fl = $("#f-lock");
-    if(fl) fl.addEventListener("input", e=>{ STATE.draft.lock = e.target.value; });
+    const fn = $("#f-name"); if(fn) fn.addEventListener("input", e=>{ STATE.draft.name = e.target.value; AutoSave.tick(); this.updatePreview(); });
+    const fb = $("#f-bio"); if(fb) fb.addEventListener("input", e=>{ STATE.draft.bio = e.target.value; AutoSave.tick(); this.updatePreview(); });
+    const fl = $("#f-lock"); if(fl) fl.addEventListener("input", e=>{ STATE.draft.lock = e.target.value; });
     
     const dirBox = $("#f-allow-dir");
-    if(dirBox) dirBox.addEventListener("change", e=>{
-      STATE.draft.allowDirectory = e.target.checked;
-    });
+    if(dirBox) dirBox.addEventListener("change", e=>{ STATE.draft.allowDirectory = e.target.checked; });
     
     const btnCheckSlug = $("#btn-check-slug");
     if(btnCheckSlug){
       btnCheckSlug.addEventListener("click", async ()=>{
-        const raw = $("#f-slug").value;
+        const raw = $("#f-slug")?.value;
         const plan = STATE.plan;
         const v = validateSlug(raw, plan);
         const msgEl = $("#slug-msg");
         if(!v.ok){
-          msgEl.innerHTML = `<div style="background:var(--red);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">❌ ${esc(v.msg)}</div>`;
+          if(msgEl) msgEl.innerHTML = `<div style="background:var(--red);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">❌ ${esc(v.msg)}</div>`;
           return;
         }
         showLoading("Cek ketersediaan...");
         const available = await checkSlugAvailable(v.slug, STATE.draft.id);
         hideLoading();
         if(!available){
-          msgEl.innerHTML = `<div style="background:var(--red);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">❌ URL "${esc(v.slug)}" sudah dipakai</div>`;
+          if(msgEl) msgEl.innerHTML = `<div style="background:var(--red);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">❌ URL "${esc(v.slug)}" sudah dipakai</div>`;
           return;
         }
-        msgEl.innerHTML = `<div style="background:var(--green);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">✅ URL "${esc(v.slug)}" tersedia! Klik Simpan untuk apply.</div>`;
+        if(msgEl) msgEl.innerHTML = `<div style="background:var(--green);color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700">✅ URL "${esc(v.slug)}" tersedia! Klik Simpan untuk apply.</div>`;
         STATE.draft.slug = v.slug;
         STATE.draft._slugManual = true;
         STATE.draft.slugChangedAt = Date.now();
-        $("#slug-display").textContent = v.slug;
+        const sd = $("#slug-display"); if(sd) sd.textContent = v.slug;
       });
     }
     
     const fSlug = $("#f-slug");
     if(fSlug){
       fSlug.addEventListener("input", e=>{
-        const cleaned = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
-        e.target.value = cleaned;
+        e.target.value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
       });
     }
     
@@ -4803,6 +5003,7 @@ const PageEditor = {
         </div>
       </div>`);
     
+    if(!m) return;
     m.querySelectorAll(".link-type").forEach(el=>{
       el.addEventListener("click", ()=>{
         const t = el.dataset.t;
@@ -4818,6 +5019,7 @@ const PageEditor = {
   
   renderLinks(){
     const wrap = $("#links-list");
+    if(!wrap) return;
     const links = STATE.draft.links || [];
     const canFeatured = canDo("featuredLink");
     const canToggle = canDo("toggleLink");
@@ -4842,9 +5044,7 @@ const PageEditor = {
           <input type="text" placeholder="https://..." value="${esc(l.url)}" data-field="url" data-i="${i}"/>
           ${canFeatured?`<button class="thumb-btn" data-thumb="${i}">${ico('image')} ${l.thumb?'Ganti':'Upload'} Gambar</button>`:''}
         </div>
-        ${canToggle?`
-          <div class="toggle-switch ${!isOff?'on':''}" data-toggle="${i}" title="${isOff?'OFF':'ON'}"></div>
-        `:''}
+        ${canToggle?`<div class="toggle-switch ${!isOff?'on':''}" data-toggle="${i}" title="${isOff?'OFF':'ON'}"></div>`:''}
         <input type="color" class="link-color-pick" data-color="${i}" value="${curColor}"/>
         <button class="del" data-del="${i}">${ico('x')}</button>
       </div>`;
@@ -4911,7 +5111,6 @@ const PageEditor = {
       });
     });
     
-    // Drag & drop reorder
     let dragIdx = null;
     wrap.querySelectorAll(".link-row").forEach(row=>{
       row.addEventListener("dragstart", e=>{
@@ -4949,7 +5148,9 @@ const PageEditor = {
       { id:"neo-purple", label:"Purple", css:"#a78bfa" }
     ];
     const cur = STATE.draft.theme;
-    $("#theme-grid").innerHTML = themes.map(t=>{
+    const grid = $("#theme-grid");
+    if(!grid) return;
+    grid.innerHTML = themes.map(t=>{
       const allowed = themeAllowed(t.id);
       return `
       <div class="theme-item ${cur===t.id?"active":""} ${allowed?"":"locked"}" data-t="${t.id}" style="background:${t.css}">
@@ -4974,9 +5175,7 @@ const PageEditor = {
     if(!frame) return;
     try{
       frame.srcdoc = PagePublic.buildHTML(STATE.draft, { preview:true });
-    }catch(e){
-      console.warn("Preview error:", e);
-    }
+    }catch(e){ console.warn("updatePreview:", e); }
   },
   
   async save(){
@@ -5110,52 +5309,209 @@ const PageExplore = {
    </script>
    <script>
 /* =========================================================
-   PART 4 — DEV + PUBLIC + TUTORIAL + BOOT (v23)
+   PART 4 — TUTORIAL DIALOG + DEV + PUBLIC + BOOT (v24)
    ========================================================= */
 
 /* =========================================================
-   TUTORIAL — ONBOARDING TOUR 5 STEP
+   🎓 TUTORIAL DIALOG — 10 STEP LENGKAP
    ========================================================= */
 const TUTORIAL_STEPS = [
   {
     id: "welcome",
     icon: "🚀",
+    iconColor: "yellow",
     title: "Selamat Datang di Varlinkbio!",
-    desc: "Kamu baru aja gabung! Yuk, kita tour 30 detik biar kamu tahu cara bikin <b>link-in-bio keren</b> dalam hitungan detik.",
-    target: null,
-    position: "center"
+    subtitle: "Link in Bio Generator",
+    desc: `Ini adalah <b>Varlinkbio</b> — platform bikin link-in-bio keren dengan design <b>Neo-Brutalism</b> khas Indonesia.<br><br>Tutorial ini bakal nunjukin <b>semua fitur</b> dalam 10 step singkat. Bisa di-skip kapan aja kok! 😉`,
+    info: [
+      { b:"⏱️ Durasi", t:"~2-3 menit baca santai" },
+      { b:"📖 Step", t:"10 halaman lengkap" },
+      { b:"💡 Tips", t:"Bisa dibuka lagi di Settings" }
+    ],
+    highlight: `Tutorial ini <b>cuma muncul sekali</b>. Setelah selesai atau skip, gak akan muncul lagi otomatis — kecuali kamu mau ulang dari Settings.`,
+    time: "30 detik"
   },
   {
-    id: "bikin-bio",
+    id: "dashboard",
+    icon: "📊",
+    iconColor: "blue",
+    title: "Dashboard Kamu",
+    subtitle: "Home Base",
+    desc: `Ini <b>Dashboard</b> — halaman utama kamu. Di sini ada:<br><br>
+    • <b>Plan card</b> — lihat plan aktif & jumlah bio<br>
+    • <b>Action buttons</b> — Bikin Bio, Kelola Bio, Explore<br>
+    • <b>Fitur grid</b> — info fitur yang available<br>
+    • <b>Update log</b> — apa yang baru di Varlinkbio<br>
+    • <b>Recent bio</b> — bio terakhir kamu edit`,
+    info: [
+      { b:"🎯 Fungsi", t:"Pusat kontrol semua aktivitas" },
+      { b:"📱 Menu", t:"Akses dari icon ☰ di kanan atas" },
+      { b:"🔊 Sound", t:"Klik tombol 🔊 buat matiin" }
+    ],
+    highlight: `Menu <b>☰ di pojok kanan atas</b> = shortcut ke semua halaman: Kelola Bio, Stats, Explore, Settings, Help.`,
+    time: "25 detik"
+  },
+  {
+    id: "create-bio",
     icon: "✨",
+    iconColor: "green",
     title: "Bikin Bio Pertama",
-    desc: "Klik tombol <b>Bikin Link-in-Bio Baru</b> buat mulai. Kamu bakal masuk ke editor.",
-    target: "#btn-bikin",
-    position: "bottom"
+    subtitle: "Langkah Awal",
+    desc: `Klik tombol <b>"✨ Bikin Link-in-Bio Baru"</b> buat mulai.<br><br>
+    Kamu bakal masuk ke <b>Editor</b> — tempat kamu ngatur semua tampilan bio:
+    <br><br>• Foto profil & banner<br>
+    • Nama & bio<br>
+    • Tombol link (IG, WA, YouTube, dll.)<br>
+    • Tema warna<br>
+    • URL publik kamu`,
+    info: [
+      { b:"⏱️ Waktu", t:"~2 menit buat bio pertama" },
+      { b:"💾 Auto-save", t:"Otomatis tersimpan tiap 10 perubahan" },
+      { b:"👁️ Preview", t:"Lihat hasil real-time di HP mockup" }
+    ],
+    highlight: `Gak perlu takut salah! Semua bisa <b>diedit kapan aja</b>. Bio kamu cuma bisa dilihat orang lain setelah kamu <b>klik Simpan</b>.`,
+    time: "35 detik"
   },
   {
-    id: "kelola-bio",
-    icon: "📁",
-    title: "Kelola Semua Bio",
-    desc: "Di <b>Kelola Bio</b>, kamu bisa lihat, edit, dan hapus semua bio yang udah kamu buat.",
-    target: "#btn-manage",
-    position: "bottom"
+    id: "editor",
+    icon: "✏️",
+    iconColor: "purple",
+    title: "Editor & Fitur Lengkap",
+    subtitle: "Semua yang bisa kamu atur",
+    desc: `Di <b>Editor</b> ada 9 section utama:<br><br>
+    <b>1.</b> Banner — foto/video header<br>
+    <b>2.</b> Foto Profil — avatar bulat<br>
+    <b>3.</b> Nama & Bio — info utama<br>
+    <b>4.</b> URL Kustom — ganti slug (Pro+)<br>
+    <b>5.</b> Logo Partner — logo kolaborasi (Pro+)<br>
+    <b>6.</b> Tombol Link — tombol-tombol kamu<br>
+    <b>7.</b> Tema — 6 pilihan warna<br>
+    <b>8.</b> Animasi — efek tombol (Ultimate)<br>
+    <b>9.</b> Link Lock — password bio (Pro+)`,
+    info: [
+      { b:"📐 Layout", t:"Kiri = editor, Kanan = preview" },
+      { b:"🔘 Toggle", t:"Saklar ON/OFF link (Starter+)" },
+      { b:"📇 vCard", t:"Tombol save contact (Pro+)" }
+    ],
+    highlight: `Preview di kanan <b>live update</b> — setiap kali kamu ngetik atau upload, preview langsung berubah tanpa refresh!`,
+    time: "45 detik"
   },
   {
-    id: "plan-info",
+    id: "themes",
+    icon: "🎨",
+    iconColor: "orange",
+    title: "6 Tema Neo-Brutalism",
+    subtitle: "Bikin bio kamu standout",
+    desc: `Varlinkbio punya <b>6 varian tema</b> Neo-Brutalism:<br><br>
+    🥛 <b>Cream</b> — klasik, terang (gratis)<br>
+    🖤 <b>Dark</b> — gelap elegan (Starter+)<br>
+    💙 <b>Blue</b> — fresh & profesional (Starter+)<br>
+    💗 <b>Pink</b> — playful & cute (Pro+)<br>
+    💚 <b>Green</b> — natural & calm (Pro+)<br>
+    💜 <b>Purple</b> — bold & artistic (Pro+)`,
+    info: [
+      { b:"🔄 Ganti", t:"Bisa ganti kapan aja, gak ada limit" },
+      { b:"🔒 Lock", t:"Tema Pro+ bakal ada icon 🔒 di Free" },
+      { b:"⚡ Instant", t:"Preview langsung berubah" }
+    ],
+    highlight: `Tema <b>Neo-Brutalism</b> = border tebal, warna bold, shadow keras. Beda dari Linktree yang generic!</br>Karakter kuat = <b>gampang diingat</b>.`,
+    time: "30 detik"
+  },
+  {
+    id: "link-types",
+    icon: "🔗",
+    iconColor: "blue",
+    title: "3 Tipe Link",
+    subtitle: "Classic · Featured · Embed",
+    desc: `<b>1. Classic</b> — tombol biasa dengan icon otomatis (IG, WA, TikTok, dll.)<br><br>
+    <b>2. Featured</b> — tombol dengan gambar thumbnail di atas (Pro+)<br>
+    Cocok buat promo produk atau link penting.<br><br>
+    <b>3. Embed</b> — konten langsung muncul tanpa keluar dari bio (Pro+)<br>
+    Support: YouTube, Spotify, Vimeo, TikTok.`,
+    info: [
+      { b:"🖱️ Drag", t:"Tahan & geser icon ⠿ buat reorder" },
+      { b:"🎨 Warna", t:"Pilih warna tombol sendiri" },
+      { b:"🔘 Toggle", t:"Saklar ON/OFF (Starter+)" }
+    ],
+    highlight: `Tombol <b>Classic</b> auto-detect icon: paste URL Instagram → muncul icon IG, paste YouTube → icon YT. <b>Otomatis!</b>`,
+    time: "40 detik"
+  },
+  {
+    id: "plans",
     icon: "💎",
-    title: "Plan Kamu",
-    desc: "Di sini kamu bisa lihat plan aktif. <b>Upgrade kapan aja</b> untuk unlock fitur lebih banyak!",
-    target: "#btn-upgrade",
-    position: "bottom"
+    iconColor: "green",
+    title: "4 Plan Varlinkbio",
+    subtitle: "Free · Starter · Pro · Ultimate",
+    desc: `🆓 <b>Free</b> — Rp 0 · 5 bio · 1 tema<br><br>
+    🚀 <b>Starter</b> — Rp 5.000/bln · unlimited tombol · 3 tema · analytics<br><br>
+    💎 <b>Pro</b> — Rp 15.000/bln · 20 bio · 6 tema · <b>NO watermark</b> · URL kustom · embed · chart<br><br>
+    👑 <b>Ultimate</b> — Rp 50.000 <b>SEKALI BAYAR ♾️</b> · unlimited · QR custom · animasi`,
+    info: [
+      { b:"💎 Pembeda", t:"Pro & Ultimate = no watermark" },
+      { b:"♾️ Ultimate", t:"Bayar sekali, pakai selamanya" },
+      { b:"💰 Upgrade", t:"Via Tako → bukti ke WA admin" }
+    ],
+    highlight: `<b>Ultimate = worth it!</b> Bayar Rp 50.000 sekali aja, <b>gak ada renewal</b>. Setara dengan 3 bulan Pro. 💰`,
+    time: "35 detik"
+  },
+  {
+    id: "stats",
+    icon: "📈",
+    iconColor: "purple",
+    title: "Statistik & Analytics",
+    subtitle: "Lacak performa bio kamu",
+    desc: `Di halaman <b>Statistik</b> kamu bisa lihat:<br><br>
+    • <b>Total bio</b>, <b>views</b>, <b>klik</b>, <b>CTR</b><br>
+    • <b>Chart 7 hari</b> — grafik views harian (Pro+)<br>
+    • <b>Top 5 Link</b> — link paling sering diklik (Pro+)<br>
+    • <b>Detail per bio</b> — breakdown tiap bio kamu`,
+    info: [
+      { b:"👁️ Views", t:"Setiap orang buka bio = +1 view" },
+      { b:"🔘 Klik", t:"Setiap tombol dipencet = +1 klik" },
+      { b:"🔥 Hot", t:"Badge 🔥 muncul kalau link ≥10 klik" }
+    ],
+    highlight: `Analytics basic (total views & klik) tersedia buat <b>Starter+</b>. Chart 7 hari & Top Links khusus <b>Pro+</b>.`,
+    time: "30 detik"
+  },
+  {
+    id: "explore",
+    icon: "🧭",
+    iconColor: "pink",
+    title: "Explore Bio",
+    subtitle: "Galeri bio komunitas",
+    desc: `Halaman <b>Explore</b> = galeri bio publik dari user Varlinkbio lain.<br><br>
+    • Bio diurut: <b>Ultimate → Pro → Starter → Free</b><br>
+    • Bisa <b>filter</b> by plan<br>
+    • Bisa <b>search</b> by nama/bio<br>
+    • Klik card = buka bio di tab baru`,
+    info: [
+      { b:"📂 Opt-in", t:"Cuma muncul kalau user enable" },
+      { b:"🔒 Privacy", t:"Kamu bisa matiin di Editor" },
+      { b:"👀 Discovery", t:"Bisa lihat bio keren dari orang lain" }
+    ],
+    highlight: `Bio kamu <b>otomatis muncul</b> di Explore kalau plan <b>Starter+</b>. Bisa dimatiin dari <b>Editor → section Explore</b>.`,
+    time: "25 detik"
   },
   {
     id: "finish",
     icon: "🎉",
+    iconColor: "green",
     title: "Siap Ngoding!",
-    desc: "Kamu udah siap! Bikin bio pertama, dan share ke IG/WA kamu. <b>Selamat berkarya!</b> 🎨",
-    target: null,
-    position: "center",
+    subtitle: "Selamat berkarya!",
+    desc: `Kamu udah <b>selesai</b> tutorial! 🎊<br><br>
+    <b>Langkah selanjutnya:</b><br>
+    1. Bikin bio pertama<br>
+    2. Tambah link kamu (IG, WA, YouTube, dll.)<br>
+    3. Pilih tema favorit<br>
+    4. Simpan & copy link<br>
+    5. Share ke IG/WA/TikTok!`,
+    info: [
+      { b:"🔄 Replay", t:"Settings → Ulangi Tutorial" },
+      { b:"❓ Bantuan", t:"Menu ☰ → Help" },
+      { b:"💬 Support", t:"WA admin kalau ada masalah" }
+    ],
+    highlight: `Terakhir — <b>kamu bisa lihat tutorial ini kapan aja</b> di:<br>Menu ☰ → Settings → <b>Ulangi Tutorial</b>.<br><br><b>Selamat berkarya! 🚀</b>`,
+    time: "20 detik",
     celebration: true
   }
 ];
@@ -5164,45 +5520,76 @@ const Tutorial = {
   _stepIndex: 0,
   _active: false,
   _overlay: null,
-  _spotlight: null,
-  _popup: null,
-  _arrow: null,
   _confetti: null,
   
   start(){
-    if(this._active) return;
+    if(this._active){ console.log("Tutorial already active"); return; }
+    if(!Auth.current){ console.log("No user, skip tutorial"); return; }
+    
     this._active = true;
     this._stepIndex = 0;
     document.body.classList.add("tour-active");
     
     // Bikin overlay
-    this._overlay = document.createElement("div");
-    this._overlay.className = "onb-overlay";
-    this._overlay.innerHTML = `
-      <div class="onb-popup" id="onb-popup">
-        <div class="onb-progress" id="onb-progress"></div>
-        <div class="onb-icon" id="onb-icon"></div>
-        <div class="onb-step">
-          <span class="onb-step-num">Step <span id="onb-step-cur">1</span>/${TUTORIAL_STEPS.length}</span>
+    try{
+      this._overlay = document.createElement("div");
+      this._overlay.className = "tut-overlay";
+      this._overlay.innerHTML = `
+        <div class="tut-dialog" id="tut-dialog">
+          <div class="tut-steps-bar" id="tut-steps-bar"></div>
+          
+          <div class="tut-header">
+            <span class="tut-counter" id="tut-counter">Step 1/10</span>
+            <span class="tut-time" id="tut-time">${ico('clock')} 30 detik</span>
+            <button class="tut-close" id="tut-close-btn" title="Tutup">${ico('x')}</button>
+          </div>
+          
+          <div class="tut-body">
+            <div class="tut-icon" id="tut-icon">🚀</div>
+            <div class="tut-subtitle" id="tut-subtitle">Subtitle</div>
+            <div class="tut-title" id="tut-title">Title</div>
+            <div class="tut-desc" id="tut-desc">Desc</div>
+            
+            <div class="tut-info-box" id="tut-info-box"></div>
+            <div class="tut-highlight" id="tut-highlight"></div>
+          </div>
+          
+          <div class="tut-footer">
+            <button class="btn tut-btn-secondary" id="tut-back-btn" style="display:none">${ico('arrowLeft')} Sebelumnya</button>
+            <button class="btn tut-btn-secondary" id="tut-skip-btn">Lewati</button>
+            <button class="btn btn-primary tut-btn" id="tut-next-btn">Lanjut ${ico('arrowRight')}</button>
+          </div>
         </div>
-        <div class="onb-title" id="onb-title"></div>
-        <div class="onb-desc" id="onb-desc"></div>
-        <div class="onb-actions">
-          <button class="onb-skip" id="onb-skip">Lewati</button>
-          <button class="btn btn-primary" id="onb-next">Lanjut →</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(this._overlay);
+      `;
+      document.body.appendChild(this._overlay);
+    }catch(e){
+      console.error("Tutorial overlay error:", e);
+      this._active = false;
+      document.body.classList.remove("tour-active");
+      return;
+    }
     
-    // Bind
-    $("#onb-skip", this._overlay).addEventListener("click", ()=>this.skip());
-    $("#onb-next", this._overlay).addEventListener("click", ()=>this.next());
+    // Bind buttons
+    const closeBtn = document.getElementById("tut-close-btn");
+    const skipBtn = document.getElementById("tut-skip-btn");
+    const backBtn = document.getElementById("tut-back-btn");
+    const nextBtn = document.getElementById("tut-next-btn");
     
-    // Delay biar dashboard render kelar
+    if(closeBtn) closeBtn.addEventListener("click", ()=>this.finish());
+    if(skipBtn) skipBtn.addEventListener("click", ()=>{
+      if(confirm("Lewati tutorial?\n\nKamu bisa buka lagi di Settings → Ulangi Tutorial.")){
+        this.finish();
+      }
+    });
+    if(backBtn) backBtn.addEventListener("click", ()=>this.prev());
+    if(nextBtn) nextBtn.addEventListener("click", ()=>this.next());
+    
+    // Show
     setTimeout(()=>{
-      this._overlay.classList.add("active");
-      this.render();
+      try{
+        if(this._overlay) this._overlay.classList.add("active");
+        this.render();
+      }catch(e){ console.error("Tutorial show:", e); }
     }, 300);
   },
   
@@ -5210,121 +5597,123 @@ const Tutorial = {
     const step = TUTORIAL_STEPS[this._stepIndex];
     if(!step) return this.finish();
     
-    // Update progress dots
-    const progress = $("#onb-progress");
-    if(progress){
-      progress.innerHTML = TUTORIAL_STEPS.map((_,i)=>{
-        let cls = "onb-progress-dot";
-        if(i < this._stepIndex) cls += " done";
-        else if(i === this._stepIndex) cls += " active";
-        return `<div class="${cls}"></div>`;
-      }).join("");
-    }
-    
-    // Update content
-    $("#onb-icon").textContent = step.icon;
-    $("#onb-step-cur").textContent = this._stepIndex + 1;
-    $("#onb-title").innerHTML = esc(step.title);
-    $("#onb-desc").innerHTML = step.desc;
-    
-    // Update button text
-    const nextBtn = $("#onb-next");
-    if(nextBtn){
-      if(this._stepIndex === TUTORIAL_STEPS.length - 1){
-        nextBtn.textContent = "Mulai Ngoding →";
-      } else {
-        nextBtn.textContent = "Lanjut →";
+    try{
+      // Steps bar
+      const bar = document.getElementById("tut-steps-bar");
+      if(bar){
+        bar.innerHTML = TUTORIAL_STEPS.map((_,i)=>{
+          let cls = "tut-step-dot";
+          if(i < this._stepIndex) cls += " done";
+          else if(i === this._stepIndex) cls += " active";
+          return `<div class="${cls}"></div>`;
+        }).join("");
       }
-    }
-    
-    // Sound
-    if(this._stepIndex > 0) Sound.ding();
-    
-    // Spotlight
-    if(step.target){
-      const el = document.querySelector(step.target);
-      if(el){
-        this.showSpotlight(el, step.position);
-        // Scroll ke element
-        try{ el.scrollIntoView({ behavior:"smooth", block:"center" }); }catch(e){}
-      } else {
-        this.hideSpotlight();
+      
+      // Counter
+      const counter = document.getElementById("tut-counter");
+      if(counter) counter.textContent = `Step ${this._stepIndex + 1}/${TUTORIAL_STEPS.length}`;
+      
+      // Time
+      const timeEl = document.getElementById("tut-time");
+      if(timeEl) timeEl.innerHTML = `${ico('clock')} ${step.time}`;
+      
+      // Icon
+      const iconEl = document.getElementById("tut-icon");
+      if(iconEl){
+        iconEl.textContent = step.icon;
+        iconEl.className = "tut-icon " + (step.iconColor || "");
       }
-    } else {
-      this.hideSpotlight();
-    }
-    
-    // Confetti di step terakhir
-    if(step.celebration){
-      this.showConfetti();
-      Sound.tada();
-    }
-  },
-  
-  showSpotlight(el, position){
-    const rect = el.getBoundingClientRect();
-    const pad = 12;
-    
-    // Hapus spotlight lama
-    this.hideSpotlight(true);
-    
-    // Bikin spotlight
-    this._spotlight = document.createElement("div");
-    this._spotlight.className = "onb-spotlight";
-    this._spotlight.style.top = (rect.top - pad) + "px";
-    this._spotlight.style.left = (rect.left - pad) + "px";
-    this._spotlight.style.width = (rect.width + pad*2) + "px";
-    this._spotlight.style.height = (rect.height + pad*2) + "px";
-    document.body.appendChild(this._spotlight);
-    
-    // Bikin arrow
-    this._arrow = document.createElement("div");
-    this._arrow.className = "onb-arrow";
-    
-    if(position === "bottom"){
-      // Arrow nunjuk ke atas (di bawah element)
-      this._arrow.style.left = (rect.left + rect.width/2 - 14) + "px";
-      this._arrow.style.top = (rect.bottom + pad + 6) + "px";
-      this._arrow.style.transform = "rotate(180deg)";
-    } else if(position === "top"){
-      this._arrow.style.left = (rect.left + rect.width/2 - 14) + "px";
-      this._arrow.style.top = (rect.top - pad - 26) + "px";
-    }
-    
-    document.body.appendChild(this._arrow);
-  },
-  
-  hideSpotlight(keepArrow){
-    if(this._spotlight){
-      this._spotlight.remove();
-      this._spotlight = null;
-    }
-    if(this._arrow && !keepArrow){
-      this._arrow.remove();
-      this._arrow = null;
-    }
+      
+      // Subtitle
+      const sub = document.getElementById("tut-subtitle");
+      if(sub) sub.textContent = step.subtitle || "";
+      
+      // Title
+      const title = document.getElementById("tut-title");
+      if(title) title.textContent = step.title;
+      
+      // Desc
+      const desc = document.getElementById("tut-desc");
+      if(desc) desc.innerHTML = step.desc;
+      
+      // Info box
+      const infoBox = document.getElementById("tut-info-box");
+      if(infoBox){
+        if(step.info && step.info.length){
+          infoBox.innerHTML = step.info.map(item => `
+            <div class="tut-info-item">
+              <span class="bullet">${ico('check','ic-sm')}</span>
+              <span class="txt"><b>${item.b}:</b> ${item.t}</span>
+            </div>
+          `).join("");
+          infoBox.style.display = "block";
+        } else {
+          infoBox.style.display = "none";
+        }
+      }
+      
+      // Highlight
+      const highlight = document.getElementById("tut-highlight");
+      if(highlight){
+        if(step.highlight){
+          highlight.innerHTML = step.highlight;
+          highlight.style.display = "block";
+        } else {
+          highlight.style.display = "none";
+        }
+      }
+      
+      // Buttons
+      const backBtn = document.getElementById("tut-back-btn");
+      const nextBtn = document.getElementById("tut-next-btn");
+      const skipBtn = document.getElementById("tut-skip-btn");
+      
+      if(backBtn) backBtn.style.display = this._stepIndex === 0 ? "none" : "inline-flex";
+      
+      if(nextBtn){
+        if(this._stepIndex === TUTORIAL_STEPS.length - 1){
+          nextBtn.innerHTML = "Mulai Ngoding ${ico('sparkle')}";
+        } else {
+          nextBtn.innerHTML = `Lanjut ${ico('arrowRight')}`;
+        }
+      }
+      
+      if(skipBtn) skipBtn.style.display = this._stepIndex === TUTORIAL_STEPS.length - 1 ? "none" : "inline-flex";
+      
+      // Sound
+      try{ if(this._stepIndex > 0) Sound.ding(); }catch(e){}
+      
+      // Confetti di step terakhir
+      if(step.celebration){
+        this.showConfetti();
+        try{ Sound.tada(); }catch(e){}
+      }
+    }catch(e){ console.error("Tutorial render:", e); }
   },
   
   showConfetti(){
-    if(this._confetti) return;
-    this._confetti = document.createElement("div");
-    this._confetti.className = "onb-confetti";
-    const colors = ["#ff2a2a","#ffd700","#22c55e","#2563eb","#ff69b4","#a78bfa"];
-    let html = "";
-    for(let i=0; i<40; i++){
-      const color = colors[i % colors.length];
-      const left = Math.random() * 100;
-      const delay = Math.random() * 2;
-      const dur = 2.5 + Math.random() * 1.5;
-      const rot = Math.random() * 360;
-      html += `<div class="onb-confetti-piece" style="left:${left}%;background:${color};animation-duration:${dur}s;animation-delay:${delay}s;transform:rotate(${rot}deg);border-radius:${Math.random()>0.5?'50%':'2px'}"></div>`;
-    }
-    this._confetti.innerHTML = html;
-    document.body.appendChild(this._confetti);
-    
-    setTimeout(()=>{
-      if(this._confetti){ this._confetti.remove(); this._confetti = null; }
-    }, 6000);
+    try{
+      if(this._confetti) return;
+      this._confetti = document.createElement("div");
+      this._confetti.className = "tut-confetti";
+      const colors = ["#ff2a2a","#ffd700","#22c55e","#2563eb","#ff69b4","#a78bfa"];
+      let html = "";
+      for(let i=0; i<50; i++){
+        const color = colors[i % colors.length];
+        const left = Math.random() * 100;
+        const delay = Math.random() * 2;
+        const dur = 2.5 + Math.random() * 1.5;
+        const rot = Math.random() * 360;
+        const borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        html += `<div class="tut-confetti-piece" style="left:${left}%;background:${color};animation-duration:${dur}s;animation-delay:${delay}s;transform:rotate(${rot}deg);border-radius:${borderRadius}"></div>`;
+      }
+      this._confetti.innerHTML = html;
+      document.body.appendChild(this._confetti);
+      
+      setTimeout(()=>{
+        if(this._confetti){ this._confetti.remove(); this._confetti = null; }
+      }, 6000);
+    }catch(e){ console.warn("showConfetti:", e); }
   },
   
   next(){
@@ -5333,6 +5722,22 @@ const Tutorial = {
       this.finish();
     } else {
       this.render();
+      // Scroll dialog ke atas
+      try{
+        const dialog = document.getElementById("tut-dialog");
+        if(dialog) dialog.scrollTop = 0;
+      }catch(e){}
+    }
+  },
+  
+  prev(){
+    if(this._stepIndex > 0){
+      this._stepIndex--;
+      this.render();
+      try{
+        const dialog = document.getElementById("tut-dialog");
+        if(dialog) dialog.scrollTop = 0;
+      }catch(e){}
     }
   },
   
@@ -5341,40 +5746,27 @@ const Tutorial = {
   },
   
   async finish(){
-    // Cleanup
-    if(this._overlay){
-      this._overlay.classList.remove("active");
+    try{
+      if(this._overlay){
+        this._overlay.classList.remove("active");
+        setTimeout(()=>{
+          if(this._overlay){ this._overlay.remove(); this._overlay = null; }
+        }, 400);
+      }
+      if(this._confetti){ this._confetti.remove(); this._confetti = null; }
+      document.body.classList.remove("tour-active");
+      this._active = false;
+      
+      // Tandai di Firestore
+      try{ await Auth.markTutorialDone(); }catch(e){}
+      
+      // Toast
       setTimeout(()=>{
-        if(this._overlay){ this._overlay.remove(); this._overlay = null; }
+        toast("Tutorial selesai! 🎉 Bikin bio kamu sekarang.","success");
       }, 300);
+    }catch(e){
+      console.error("Tutorial.finish:", e);
     }
-    this.hideSpotlight();
-    if(this._confetti){ this._confetti.remove(); this._confetti = null; }
-    document.body.classList.remove("tour-active");
-    this._active = false;
-    
-    // Tandai di Firestore
-    await Auth.markTutorialDone();
-  },
-  
-  async maybeStart(){
-    if(!Auth.current) return;
-    if(this._active) return;
-    // Cuma jalan kalau tutorialShown === false
-    if(Auth.current.tutorialShown === true) return;
-    // Cuma jalan di dashboard
-    const hashPath = (location.hash.slice(1) || "/").split("?")[0];
-    if(hashPath !== "/dashboard") return;
-    // Cek user baru (dibuat < 1 hari)
-    const created = STATE.planMeta?.createdAt || 0;
-    const isNew = (Date.now() - created) < 24*60*60*1000;
-    if(!isNew && STATE.planMeta?.tutorialShown !== false) {
-      // Kalau user lama & tutorialShown gak di-set ke false, skip
-    }
-    // Delay biar dashboard kelar render
-    setTimeout(()=>{
-      this.start();
-    }, 1200);
   }
 };
 
@@ -5433,21 +5825,24 @@ const PageDev = {
       bios.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
       this.state.users = users;
       this.state.bios = bios;
-      this.state.partners = await Store.listPartners();
-      this.state.updates = await Store.listUpdates();
-      this.state.settings = await Store.getSettings();
+      try{ this.state.partners = await Store.listPartners(); }catch(e){ this.state.partners = []; }
+      try{ this.state.updates = await Store.listUpdates(); }catch(e){ this.state.updates = []; }
+      try{ this.state.settings = await Store.getSettings(); }catch(e){ this.state.settings = {}; }
       this.renderStats();
       this.renderTab();
     }catch(e){
       console.error(e);
-      $("#dev-content").innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
+      const dc = $("#dev-content");
+      if(dc) dc.innerHTML = `<div class="empty-state"><p>Gagal load: ${esc(e.message)}</p></div>`;
     }
   },
   
   renderStats(){
+    const stats = $("#dev-stats");
+    if(!stats) return;
     const users = this.state.users.filter(u => !isDev(u.email));
     const countBy = (p)=>users.filter(u => (u.plan||"free") === p).length;
-    $("#dev-stats").innerHTML = `
+    stats.innerHTML = `
       <div class="dev-stat"><div class="sv">${users.length}</div><div class="sl">Total User</div></div>
       <div class="dev-stat dev-free"><div class="sv">${countBy("free")}</div><div class="sl">Free</div></div>
       <div class="dev-stat dev-starter"><div class="sv">${countBy("starter")}</div><div class="sl">Starter</div></div>
@@ -5466,6 +5861,7 @@ const PageDev = {
   
   renderList(){
     const el = $("#dev-content");
+    if(!el) return;
     const { tab, filter, search } = this.state;
     el.innerHTML = `
       <div class="dev-tools">
@@ -5556,6 +5952,7 @@ const PageDev = {
   
   renderPartners(){
     const el = $("#dev-content");
+    if(!el) return;
     const list = this.state.partners || [];
     el.innerHTML = `
       <div class="dev-manager">
@@ -5569,7 +5966,8 @@ const PageDev = {
         <div class="dev-manager-list" id="partner-list"></div>
       </div>`;
     
-    $("#mgr-add-partner").addEventListener("click", async ()=>{
+    const ap = $("#mgr-add-partner");
+    if(ap) ap.addEventListener("click", async ()=>{
       showLoading("Menambah partner...");
       try{
         await Store.savePartner({ name:"Partner Baru", tag:"Partner", url:"https://", initial:"P", order:Date.now() });
@@ -5583,7 +5981,8 @@ const PageDev = {
         toast("Gagal: "+(err.message||err.code||"permission-denied"),"error");
       }
     });
-    $("#mgr-refresh-partner").addEventListener("click", async ()=>{
+    const rp = $("#mgr-refresh-partner");
+    if(rp) rp.addEventListener("click", async ()=>{
       this.state.partners = await Store.listPartners();
       this.renderPartners();
     });
@@ -5592,6 +5991,7 @@ const PageDev = {
   
   renderPartnerList(){
     const wrap = $("#partner-list");
+    if(!wrap) return;
     const list = this.state.partners || [];
     if(!list.length){
       wrap.innerHTML = `<div class="mgr-empty">Belum ada partner.</div>`;
@@ -5641,9 +6041,9 @@ const PageDev = {
     wrap.querySelectorAll("[data-psave]").forEach(b=>{
       b.addEventListener("click", async ()=>{
         const pid = b.dataset.psave;
-        const name = wrap.querySelector(`[data-pname="${pid}"]`).value;
-        const tag = wrap.querySelector(`[data-ptag="${pid}"]`).value;
-        const url = wrap.querySelector(`[data-purl="${pid}"]`).value;
+        const name = wrap.querySelector(`[data-pname="${pid}"]`)?.value || "";
+        const tag = wrap.querySelector(`[data-ptag="${pid}"]`)?.value || "";
+        const url = wrap.querySelector(`[data-purl="${pid}"]`)?.value || "";
         const idx = this.state.partners.findIndex(x=>x.id === pid);
         const updated = { ...this.state.partners[idx], name, tag, url };
         showLoading("Menyimpan...");
@@ -5674,6 +6074,7 @@ const PageDev = {
   
   renderUpdates(){
     const el = $("#dev-content");
+    if(!el) return;
     const list = this.state.updates || [];
     el.innerHTML = `
       <div class="dev-manager">
@@ -5687,7 +6088,8 @@ const PageDev = {
         <div class="dev-manager-list" id="update-list"></div>
       </div>`;
     
-    $("#mgr-add-update").addEventListener("click", async ()=>{
+    const au = $("#mgr-add-update");
+    if(au) au.addEventListener("click", async ()=>{
       showLoading("Menambah update...");
       try{
         await Store.saveUpdate({
@@ -5705,7 +6107,8 @@ const PageDev = {
         toast("Gagal: "+(err.message||err.code||"permission-denied"),"error");
       }
     });
-    $("#mgr-refresh-update").addEventListener("click", async ()=>{
+    const ru = $("#mgr-refresh-update");
+    if(ru) ru.addEventListener("click", async ()=>{
       this.state.updates = await Store.listUpdates();
       this.renderUpdates();
     });
@@ -5714,6 +6117,7 @@ const PageDev = {
   
   renderUpdateList(){
     const wrap = $("#update-list");
+    if(!wrap) return;
     const list = this.state.updates || [];
     if(!list.length){
       wrap.innerHTML = `<div class="mgr-empty">Belum ada update.</div>`;
@@ -5751,7 +6155,7 @@ const PageDev = {
         const idx = this.state.updates.findIndex(x=>x.id === uid_);
         const card = wrap.querySelector(`[data-uid="${uid_}"]`);
         const curChanges = [];
-        card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>curChanges.push(inp.value));
+        if(card) card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>curChanges.push(inp.value));
         this.state.updates[idx].changes = curChanges;
         this.state.updates[idx].changes.splice(i,1);
         this.renderUpdateList();
@@ -5763,7 +6167,7 @@ const PageDev = {
         const idx = this.state.updates.findIndex(x=>x.id === u);
         const card = wrap.querySelector(`[data-uid="${u}"]`);
         const curChanges = [];
-        card.querySelectorAll(`[data-uchange^="${u}-"]`).forEach(inp=>curChanges.push(inp.value));
+        if(card) card.querySelectorAll(`[data-uchange^="${u}-"]`).forEach(inp=>curChanges.push(inp.value));
         this.state.updates[idx].changes = curChanges;
         this.state.updates[idx].changes.push("Perubahan baru");
         this.renderUpdateList();
@@ -5773,9 +6177,10 @@ const PageDev = {
       b.addEventListener("click", async ()=>{
         const uid_ = b.dataset.usave;
         const card = wrap.querySelector(`[data-uid="${uid_}"]`);
-        const version = card.querySelector(`[data-uv="${uid_}"]`).value;
-        const date = card.querySelector(`[data-ud="${uid_}"]`).value;
-        const title = card.querySelector(`[data-ut="${uid_}"]`).value;
+        if(!card) return;
+        const version = card.querySelector(`[data-uv="${uid_}"]`)?.value || "";
+        const date = card.querySelector(`[data-ud="${uid_}"]`)?.value || "";
+        const title = card.querySelector(`[data-ut="${uid_}"]`)?.value || "";
         const changes = [];
         card.querySelectorAll(`[data-uchange^="${uid_}-"]`).forEach(inp=>changes.push(inp.value));
         const idx = this.state.updates.findIndex(x=>x.id === uid_);
@@ -5809,6 +6214,7 @@ const PageDev = {
   
   renderFavicon(){
     const el = $("#dev-content");
+    if(!el) return;
     const s = this.state.settings || {};
     const fav = s.favicon || null;
     el.innerHTML = `
@@ -5871,9 +6277,10 @@ const PageDev = {
       inp.click();
     };
     
-    $("#fp-thumb")?.addEventListener("click", uploadFn);
-    $("#fp-upload")?.addEventListener("click", uploadFn);
-    $("#fp-clear")?.addEventListener("click", async ()=>{
+    const ft = $("#fp-thumb"); if(ft) ft.addEventListener("click", uploadFn);
+    const fu = $("#fp-upload"); if(fu) fu.addEventListener("click", uploadFn);
+    const fc = $("#fp-clear");
+    if(fc) fc.addEventListener("click", async ()=>{
       if(!confirm("Hapus favicon?")) return;
       showLoading("Menghapus...");
       try{
@@ -5931,26 +6338,26 @@ const PageDev = {
       <button class="btn btn-primary btn-block" id="dev-edit-save" style="margin-top:14px">${ico('save')} Simpan</button>
       <button class="btn btn-red btn-block" id="dev-edit-del" style="margin-top:8px">${ico('trash')} Hapus User + Bio</button>
     `);
+    if(!m) return;
     
-    $("#dev-edit-plan",m).addEventListener("change", (e)=>{
+    const planSel = $("#dev-edit-plan",m);
+    if(planSel) planSel.addEventListener("change", (e)=>{
       const v = e.target.value;
       const isPerm = v === "ultimate";
-      $("#dev-expiry-field",m).style.display = isPerm ? "none" : "";
-      $("#dev-perm-info",m).style.display = isPerm ? "" : "none";
+      const ef = $("#dev-expiry-field",m); if(ef) ef.style.display = isPerm ? "none" : "";
+      const pi = $("#dev-perm-info",m); if(pi) pi.style.display = isPerm ? "" : "none";
     });
     
-    $("#dev-edit-save",m).addEventListener("click", async ()=>{
-      const newPlan = $("#dev-edit-plan",m).value;
+    const saveBtn = $("#dev-edit-save",m);
+    if(saveBtn) saveBtn.addEventListener("click", async ()=>{
+      const newPlan = $("#dev-edit-plan",m)?.value;
       const isPerm = newPlan === "ultimate";
-      const expiryVal = isPerm ? "" : $("#dev-edit-expiry",m).value;
+      const expiryVal = isPerm ? "" : ($("#dev-edit-expiry",m)?.value || "");
       const expiryMs = expiryVal ? new Date(expiryVal).getTime() : null;
-      const resetTut = $("#dev-edit-tutorial-reset",m).checked;
+      const resetTut = $("#dev-edit-tutorial-reset",m)?.checked;
       showLoading("Menyimpan...");
       try{
-        const updateData = {
-          plan: newPlan,
-          planExpiry: expiryMs
-        };
+        const updateData = { plan: newPlan, planExpiry: expiryMs };
         if(resetTut){
           updateData.tutorialShown = false;
           updateData.tutorialCompletedAt = null;
@@ -5963,7 +6370,8 @@ const PageDev = {
       }catch(e){ hideLoading(); toast("Gagal: "+e.message,"error"); }
     });
     
-    $("#dev-edit-del",m).addEventListener("click", ()=>{ m.remove(); this.deleteUser(uid); });
+    const delBtn = $("#dev-edit-del",m);
+    if(delBtn) delBtn.addEventListener("click", ()=>{ m.remove(); this.deleteUser(uid); });
   },
   
   async deleteUser(uid){
@@ -5998,78 +6406,79 @@ const PageDev = {
    ========================================================= */
 const PagePublic = {
   buildHTML(d, opts={}){
-    const preview = !!(opts && opts.preview);
-    const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
-    const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
-    
-    const activeLinks = (d.links||[]).filter(l => l.active !== false);
-    
-    const links = activeLinks.map((l, idx)=>{
-      const embed = LinkTypes.embed(l.url);
-      const type = LinkTypes.detect(l.url);
-      const autoColor = NEO_COLORS[idx % NEO_COLORS.length];
-      const bg = l.color || NEO_HEX[autoColor];
-      const fg = contrastText(bg);
+    try{
+      const preview = !!(opts && opts.preview);
+      const NEO_COLORS = ["red","yellow","green","blue","pink","purple","white"];
+      const NEO_HEX = { red:"#ff2a2a", yellow:"#ffd700", green:"#22c55e", blue:"#2563eb", pink:"#ff69b4", purple:"#a78bfa", white:"#ffffff" };
       
-      if(l.thumb){
-        return `<a class="bio-link bio-featured" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}">
-          <img class="feat-img" src="${esc(l.thumb)}" alt=""/>
-          <div class="feat-body"><b>${esc(l.label||"Link")}</b></div>
+      const activeLinks = (d.links||[]).filter(l => l.active !== false);
+      
+      const links = activeLinks.map((l, idx)=>{
+        const embed = LinkTypes.embed(l.url);
+        const type = LinkTypes.detect(l.url);
+        const autoColor = NEO_COLORS[idx % NEO_COLORS.length];
+        const bg = l.color || NEO_HEX[autoColor];
+        const fg = contrastText(bg);
+        
+        if(l.thumb){
+          return `<a class="bio-link bio-featured" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}">
+            <img class="feat-img" src="${esc(l.thumb)}" alt=""/>
+            <div class="feat-body"><b>${esc(l.label||"Link")}</b></div>
+          </a>`;
+        }
+        if(embed && ["youtube","spotify","vimeo","tiktok"].includes(type)){
+          return `<div class="bio-embed"><iframe src="${esc(embed)}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>`;
+        }
+        return `<a class="bio-link" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}"
+          style="background:${esc(bg)};color:${fg}">
+          <span class="licon">${ico(LinkTypes.icon(l.url))}</span>
+          <span class="ltext">${esc(l.label||"Link")}</span>
         </a>`;
-      }
-      if(embed && ["youtube","spotify","vimeo","tiktok"].includes(type)){
-        return `<div class="bio-embed"><iframe src="${esc(embed)}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>`;
-      }
-      return `<a class="bio-link" href="${esc(l.url)}" target="_blank" rel="noopener" data-click="${idx}"
-        style="background:${esc(bg)};color:${fg}">
-        <span class="licon">${ico(LinkTypes.icon(l.url))}</span>
-        <span class="ltext">${esc(l.label||"Link")}</span>
-      </a>`;
-    }).join("");
-    
-    const profileBlock = d.profile
-      ? `<img src="${esc(d.profile)}" alt=""/>`
-      : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
-    const bannerBlock = renderBannerHTML(d);
-    const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
-    
-    const badgeMap = { starter:"STARTER", pro:"PRO", ultimate:"ULTIMATE" };
-    const badge = badgeMap[d.ownerPlan] || "";
-    const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
-    
-    const logosHtml = (Array.isArray(d.logos) && d.logos.filter(lg=>lg.img).length)
-      ? `<div class="bio-logos">
-          ${d.logos.filter(lg=>lg.img).map(lg=>`
-            <a class="bio-logo-item" href="${esc(lg.url||"#")}" target="_blank" rel="noopener" title="${esc(lg.name||"")}">
-              <img src="${esc(lg.img)}" alt=""/>
-            </a>`).join("")}
-        </div>`
-      : "";
-    
-    const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
-    const bioId = d.id || "";
-    const slug = d.slug || bioId;
-    const isLocked = !!d.lock;
-    const themeClass = `theme-${d.theme||"neo-cream"}`;
-    const pageTitle = `VarlinkBio-${d.name||"User"}`;
-    const pageDesc = d.bio || `Cek link-in-bio ${d.name||"User"} di Varlinkbio`;
-    const pageImage = d.profile || d.banner || "";
-    const appFav = STATE.appSettings?.favicon || "";
-    const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
-    
-    const showWatermark = d.showWatermark !== false;
-    const watermarkHtml = showWatermark
-      ? `<div class="bio-footer">Powered by <a href="${APP_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>`
-      : `<div class="bio-footer" style="opacity:.6;font-size:10px">by Varoo</div>`;
-    
-    const showCTA = !preview && showWatermark;
-    const ctaHtml = showCTA
-      ? `<a class="bio-cta-float" href="${APP_BASE_URL}/#/register" target="_top">
-           ✨ Bikin bio kamu
-         </a>`
-      : "";
-    
-    return `<!DOCTYPE html>
+      }).join("");
+      
+      const profileBlock = d.profile
+        ? `<img src="${esc(d.profile)}" alt=""/>`
+        : `<div style="width:100%;height:100%;display:grid;place-items:center;color:var(--ink)">${ico('user')}</div>`;
+      const bannerBlock = renderBannerHTML(d);
+      const bioText = d.bio ? `<div class="bio-bio">${esc(d.bio)}</div>` : "";
+      
+      const badgeMap = { starter:"STARTER", pro:"PRO", ultimate:"ULTIMATE" };
+      const badge = badgeMap[d.ownerPlan] || "";
+      const badgeHtml = badge ? `<div class="bio-plan-badge ${d.ownerPlan}">${badge}</div>` : "";
+      
+      const logosHtml = (Array.isArray(d.logos) && d.logos.filter(lg=>lg.img).length)
+        ? `<div class="bio-logos">
+            ${d.logos.filter(lg=>lg.img).map(lg=>`
+              <a class="bio-logo-item" href="${esc(lg.url||"#")}" target="_blank" rel="noopener" title="${esc(lg.name||"")}">
+                <img src="${esc(lg.img)}" alt=""/>
+              </a>`).join("")}
+          </div>`
+        : "";
+      
+      const animCls = d.animation && d.animation !== "none" ? `anim-${d.animation}` : "";
+      const bioId = d.id || "";
+      const slug = d.slug || bioId;
+      const isLocked = !!d.lock;
+      const themeClass = `theme-${d.theme||"neo-cream"}`;
+      const pageTitle = `VarlinkBio-${d.name||"User"}`;
+      const pageDesc = d.bio || `Cek link-in-bio ${d.name||"User"} di Varlinkbio`;
+      const pageImage = d.profile || d.banner || "";
+      const appFav = STATE.appSettings?.favicon || "";
+      const faviconTag = appFav ? `<link rel="icon" href="${esc(appFav)}"/>` : "";
+      
+      const showWatermark = d.showWatermark !== false;
+      const watermarkHtml = showWatermark
+        ? `<div class="bio-footer">Powered by <a href="${APP_BASE_URL}" target="_top">Varlinkbio</a> · by Varoo</div>`
+        : `<div class="bio-footer" style="opacity:.6;font-size:10px">by Varoo</div>`;
+      
+      const showCTA = !preview && showWatermark;
+      const ctaHtml = showCTA
+        ? `<a class="bio-cta-float" href="${APP_BASE_URL}/#/register" target="_top">
+             ✨ Bikin bio kamu
+           </a>`
+        : "";
+      
+      return `<!DOCTYPE html>
 <html lang="id"><head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
@@ -6157,6 +6566,10 @@ ${isLocked ? `
 trackView();
 <\/script>
 </body></html>`;
+    }catch(e){
+      console.error("buildHTML:", e);
+      return `<!DOCTYPE html><html><body><h1>Error generating bio</h1><p>${esc(e.message)}</p></body></html>`;
+    }
   },
   
   css(){
@@ -6194,7 +6607,6 @@ img,video{max-width:100%;display:block}
 .bio-logos{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;margin-top:4px}
 .bio-logo-item{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--ink);background:var(--white);overflow:hidden;display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink);transition:transform .15s, box-shadow .15s}
 .bio-logo-item img{width:100%;height:100%;object-fit:contain;padding:4px}
-.bio-logo-item:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 .bio-links{display:flex;flex-direction:column;gap:14px}
 .bio-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;border:3px solid var(--ink);border-radius:12px;font-weight:900;font-size:14.5px;text-transform:uppercase;letter-spacing:.5px;position:relative;transition:transform .12s, box-shadow .12s;box-shadow:6px 6px 0 var(--ink);cursor:pointer;min-height:56px;background:var(--white);color:var(--ink);animation:linkFadeIn .4s ease both}
 @keyframes linkFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -6205,7 +6617,6 @@ img,video{max-width:100%;display:block}
 .bio-link.bio-featured{flex-direction:column;align-items:stretch;padding:0;overflow:hidden;gap:0;background:var(--white);color:var(--ink);min-height:0}
 .bio-link.bio-featured .feat-img{width:100%;height:130px;object-fit:cover;border-bottom:3px solid var(--ink);display:block;background:var(--yellow)}
 .bio-link.bio-featured .feat-body{padding:12px 14px;text-align:center}
-.bio-link.bio-featured .feat-body b{font-size:14.5px;font-weight:900;text-transform:uppercase}
 .bio-embed{border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);background:var(--white)}
 .bio-embed iframe{width:100%;display:block;border:none;aspect-ratio:16/9}
 .bio-footer{margin-top:28px;font-size:11px;color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:1px;background:var(--white);border:2px solid var(--ink);padding:6px 12px;border-radius:20px;box-shadow:2px 2px 0 var(--ink);display:inline-block}
@@ -6253,42 +6664,46 @@ img,video{max-width:100%;display:block}
   },
   
   async render(idOrSlug){
-    if(!IS_BIO_DOMAIN && !IS_LOCAL){
-      const cleanSlug = String(idOrSlug||"").trim();
-      location.replace(`${PUBLIC_BASE_URL}/#/u/${cleanSlug}`);
-      return;
+    try{
+      if(!IS_BIO_DOMAIN && !IS_LOCAL){
+        const cleanSlug = String(idOrSlug||"").trim();
+        location.replace(`${PUBLIC_BASE_URL}/#/u/${cleanSlug}`);
+        return;
+      }
+      
+      showLoading("Memuat...");
+      if(!STATE.appSettings){
+        try{ STATE.appSettings = await Store.getSettings(); }catch(e){ STATE.appSettings = {}; }
+      }
+      
+      let data = null;
+      try{ data = await Store.get(idOrSlug); }catch(e){ console.error(e); }
+      hideLoading();
+      
+      if(!data){
+        $("#app").innerHTML = `
+          <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 18px;text-align:center">
+            <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;margin-bottom:16px;box-shadow:5px 5px 0 var(--red);color:var(--ink)">${ico('x')}</div>
+            <h2 style="margin-bottom:8px;font-size:20px;text-transform:uppercase;font-weight:900">Tidak ditemukan</h2>
+            <p style="font-size:13.5px;max-width:320px;margin-bottom:18px;font-weight:600">Mungkin sudah dihapus, atau link salah.</p>
+            <a href="${APP_BASE_URL}" class="btn btn-primary">${ico('back')} Kembali ke Varlinkbio</a>
+          </div>`;
+        return;
+      }
+      
+      document.title = `VarlinkBio-${data.name||"User"}`;
+      document.body.classList.add("public-mode");
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+      document.body.style.height = '100dvh';
+      
+      $("#app").innerHTML = `<iframe id="bio-full" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;border:0;background:#f0ebe0;z-index:50;display:block" title="Link-in-Bio"></iframe>`;
+      const frame = document.getElementById("bio-full");
+      if(frame) frame.srcdoc = this.buildHTML(data, { preview:false });
+    }catch(e){
+      console.error("PagePublic.render:", e);
     }
-    
-    showLoading("Memuat...");
-    if(!STATE.appSettings){
-      try{ STATE.appSettings = await Store.getSettings(); }catch(e){ STATE.appSettings = {}; }
-    }
-    
-    let data = null;
-    try{ data = await Store.get(idOrSlug); }catch(e){ console.error(e); }
-    hideLoading();
-    
-    if(!data){
-      $("#app").innerHTML = `
-        <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 18px;text-align:center">
-          <div style="width:70px;height:70px;background:var(--yellow);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;margin-bottom:16px;box-shadow:5px 5px 0 var(--red);color:var(--ink)">${ico('x')}</div>
-          <h2 style="margin-bottom:8px;font-size:20px;text-transform:uppercase;font-weight:900">Tidak ditemukan</h2>
-          <p style="font-size:13.5px;max-width:320px;margin-bottom:18px;font-weight:600">Mungkin sudah dihapus, atau link salah.</p>
-          <a href="${APP_BASE_URL}" class="btn btn-primary">${ico('back')} Kembali ke Varlinkbio</a>
-        </div>`;
-      return;
-    }
-    
-    document.title = `VarlinkBio-${data.name||"User"}`;
-    document.body.classList.add("public-mode");
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-    document.body.style.height = '100vh';
-    document.body.style.height = '100dvh';
-    
-    $("#app").innerHTML = `<iframe id="bio-full" style="position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;border:0;background:#f0ebe0;z-index:50;display:block" title="Link-in-Bio"></iframe>`;
-    const frame = document.getElementById("bio-full");
-    frame.srcdoc = this.buildHTML(data, { preview:false });
   }
 };
 
@@ -6296,14 +6711,16 @@ img,video{max-width:100%;display:block}
    ANALYTICS LISTENER
    ========================================================= */
 window.addEventListener("message", async e=>{
-  const d = e.data;
-  if(!d || !d.type) return;
-  if(d.type === "varlinkb:view" && d.id){
-    await Store.trackView(d.id).catch(()=>{});
-  }
-  if(d.type === "varlinkb:click" && d.id != null){
-    await Store.trackClick(d.id, d.idx).catch(()=>{});
-  }
+  try{
+    const d = e.data;
+    if(!d || !d.type) return;
+    if(d.type === "varlinkb:view" && d.id){
+      await Store.trackView(d.id).catch(()=>{});
+    }
+    if(d.type === "varlinkb:click" && d.id != null){
+      await Store.trackClick(d.id, d.idx).catch(()=>{});
+    }
+  }catch(err){}
 });
 
 /* =========================================================
@@ -6325,118 +6742,137 @@ Router.on("/u/:id",     (id)=>PagePublic.render(id));
 Router.on("/404",       ()=>Router.navigate("/"));
 
 /* =========================================================
-   BOOT v23 — Login Fix + Tutorial Auto-Start
+   BOOT v24 — Login Fix + Tutorial Auto-Start (SAFE)
    ========================================================= */
 (async function boot(){
-  showLoading("Memuat...");
-  Sound.init();
-  bindGlobalSound();
-  await applyAppFavicon();
-  
-  // === 1) Firebase Action URL ===
-  const fullSearch = location.search.slice(1) || "";
-  const fullParams = new URLSearchParams(fullSearch);
-  if(fullParams.get("oobCode")){
-    location.replace(location.pathname + `#/verify?${fullSearch}`);
-    return;
-  }
-  
-  // === 2) Redirect result (Google) ===
   try{
-    const redirectUser = await Auth.handleRedirectResult();
-    if(redirectUser && redirectUser.__error){
-      const err = redirectUser.__error;
-      console.warn("Redirect error:", err.code, err.message);
+    showLoading("Memuat...");
+    Sound.init();
+    bindGlobalSound();
+    await applyAppFavicon();
+    
+    // === 1) Firebase Action URL ===
+    const fullSearch = location.search.slice(1) || "";
+    const fullParams = new URLSearchParams(fullSearch);
+    if(fullParams.get("oobCode")){
+      location.replace(location.pathname + `#/verify?${fullSearch}`);
+      return;
     }
-  }catch(e){ console.warn("boot redirect:", e); }
-  
-  // === 3) Init Auth ===
-  await Auth.init();
-  
-  // === 4) Tunggu sync (kalau habis redirect) ===
-  if(!Auth.current){
-    await new Promise(resolve => {
-      let done = false;
-      const finish = ()=>{ if(!done){ done = true; resolve(); } };
-      const unsub = FB.auth.onAuthStateChanged(async user => {
-        if(user){ await Auth._setCurrentFromUser(user); }
-        unsub();
-        finish();
-      });
-      setTimeout(finish, 3000);
-    });
-  }
-  
-  // === 5) Sinyal redirect dari sessionStorage ===
-  const wasRedirecting = sessionStorage.getItem("varlinkbio_redirect_from");
-  if(wasRedirecting){
-    try{ sessionStorage.removeItem("varlinkbio_redirect_from"); }catch(e){}
+    
+    // === 2) Redirect result ===
+    try{
+      const redirectUser = await Auth.handleRedirectResult();
+      if(redirectUser && redirectUser.__error){
+        const err = redirectUser.__error;
+        console.warn("Redirect error:", err.code, err.message);
+      }
+    }catch(e){ console.warn("boot redirect:", e); }
+    
+    // === 3) Init Auth ===
+    await Auth.init();
+    
+    // === 4) Tunggu sync kalau habis redirect ===
     if(!Auth.current){
       await new Promise(resolve => {
         let done = false;
         const finish = ()=>{ if(!done){ done = true; resolve(); } };
-        const unsub = FB.auth.onAuthStateChanged(async user => {
-          if(user){ await Auth._setCurrentFromUser(user); }
-          unsub();
-          finish();
-        });
-        setTimeout(finish, 1500);
+        try{
+          const unsub = FB.auth.onAuthStateChanged(async user => {
+            if(user){ await Auth._setCurrentFromUser(user); }
+            unsub();
+            finish();
+          });
+          setTimeout(finish, 3000);
+        }catch(e){ finish(); }
       });
     }
-  }
-  
-  // === 6) Load plan ===
-  if(Auth.current) await loadUserPlan();
-  hideLoading();
-  
-  // === 7) Redirect logic ===
-  const hashPath = (location.hash.slice(1) || "/").split("?")[0];
-  const isAuthPage = hashPath === "/login" || hashPath === "/register";
-  
-  if(IS_BIO_DOMAIN && !hashPath.startsWith("/u/")){
-    location.replace(`${APP_BASE_URL}/#/`);
-    return;
-  }
-  
-  if(Auth.current){
-    if(isAuthPage || hashPath === "/"){
-      location.replace(location.pathname + "#/dashboard");
-      return;
-    }
-    if(wasRedirecting && wasRedirecting !== "#/login" && wasRedirecting !== "#/register"){
-      location.replace(location.pathname + wasRedirecting);
-      return;
-    }
-  } else {
-    if(!location.hash){
-      location.hash = "#/";
-    }
-  }
-  
-  Router.start();
-  
-  // === 8) AUTO-START TUTORIAL (kalau user baru) ===
-  // Delay biar dashboard kelar render dulu
-  if(Auth.current && Auth.current.tutorialShown !== true){
-    setTimeout(()=>{
-      const hashNow = (location.hash.slice(1) || "/").split("?")[0];
-      if(hashNow === "/dashboard"){
-        Tutorial.start();
-      } else {
-        // Kalau user belum di dashboard, tunggu sampai pindah ke dashboard
-        const checkInterval = setInterval(()=>{
-          const h = (location.hash.slice(1) || "/").split("?")[0];
-          if(h === "/dashboard" && !Tutorial._active && Auth.current && Auth.current.tutorialShown !== true){
-            Tutorial.start();
-            clearInterval(checkInterval);
-          } else if(Auth.current && Auth.current.tutorialShown === true){
-            clearInterval(checkInterval);
-          }
-        }, 500);
-        // Auto-stop interval setelah 5 menit biar gak bocor
-        setTimeout(()=>clearInterval(checkInterval), 5*60*1000);
+    
+    // === 5) Sinyal redirect ===
+    const wasRedirecting = sessionStorage.getItem("varlinkbio_redirect_from");
+    if(wasRedirecting){
+      try{ sessionStorage.removeItem("varlinkbio_redirect_from"); }catch(e){}
+      if(!Auth.current){
+        await new Promise(resolve => {
+          let done = false;
+          const finish = ()=>{ if(!done){ done = true; resolve(); } };
+          try{
+            const unsub = FB.auth.onAuthStateChanged(async user => {
+              if(user){ await Auth._setCurrentFromUser(user); }
+              unsub();
+              finish();
+            });
+            setTimeout(finish, 1500);
+          }catch(e){ finish(); }
+        });
       }
-    }, 1500);
+    }
+    
+    // === 6) Load plan ===
+    if(Auth.current) await loadUserPlan();
+    hideLoading();
+    
+    // === 7) Redirect logic ===
+    const hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    const isAuthPage = hashPath === "/login" || hashPath === "/register";
+    
+    if(IS_BIO_DOMAIN && !hashPath.startsWith("/u/")){
+      location.replace(`${APP_BASE_URL}/#/`);
+      return;
+    }
+    
+    if(Auth.current){
+      if(isAuthPage || hashPath === "/"){
+        location.replace(location.pathname + "#/dashboard");
+        return;
+      }
+      if(wasRedirecting && wasRedirecting !== "#/login" && wasRedirecting !== "#/register"){
+        location.replace(location.pathname + wasRedirecting);
+        return;
+      }
+    } else {
+      if(!location.hash){
+        location.hash = "#/";
+      }
+    }
+    
+    Router.start();
+    
+    // === 8) AUTO-START TUTORIAL (v24) ===
+    if(Auth.current && Auth.current.tutorialShown !== true){
+      setTimeout(()=>{
+        try{
+          const hashNow = (location.hash.slice(1) || "/").split("?")[0];
+          if(hashNow === "/dashboard"){
+            Tutorial.start();
+          } else {
+            const checkInterval = setInterval(()=>{
+              try{
+                const h = (location.hash.slice(1) || "/").split("?")[0];
+                if(h === "/dashboard" && !Tutorial._active && Auth.current && Auth.current.tutorialShown !== true){
+                  Tutorial.start();
+                  clearInterval(checkInterval);
+                } else if(Auth.current && Auth.current.tutorialShown === true){
+                  clearInterval(checkInterval);
+                }
+              }catch(e){ clearInterval(checkInterval); }
+            }, 500);
+            setTimeout(()=>clearInterval(checkInterval), 5*60*1000);
+          }
+        }catch(e){
+          console.warn("Tutorial auto-start error:", e);
+        }
+      }, 1500);
+    }
+  }catch(e){
+    console.error("BOOT ERROR:", e);
+    hideLoading();
+    try{
+      const errBox = document.getElementById("global-error");
+      if(errBox){
+        errBox.textContent = "BOOT ERROR: " + e.message;
+        errBox.classList.add("show");
+      }
+    }catch(err){}
   }
 })();
 </script>

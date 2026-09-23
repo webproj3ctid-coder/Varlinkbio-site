@@ -9824,341 +9824,345 @@ if(document.readyState === "loading"){
    Varlinkbio v26 — by Varoo
    ========================================================= */
 </script>
-   <!-- ═══════════════════════════════════════════════════════════
-     VARSMILE v27 NUKE PATCH — Hapus lama, inject baru
+<!-- ═══════════════════════════════════════════════════════════
+     VARSMILE v28 — FINAL
+     Cycle 1.5 menit · Sound Realistis · Jalan Kanan→Tengah→Kiri
      Tempel di paling bawah sebelum </body>
      ═══════════════════════════════════════════════════════════ -->
-<script>
+<style id="v28-css">
+/* ═══════════════════════════════════════════════════════════
+   TOMBOL GERAK — Tambahan (semua tombol wajib gerak)
+   ═══════════════════════════════════════════════════════════ */
+.toggle-switch:active{transform:scale(.9)!important;box-shadow:0 0 0 var(--ink)!important}
+.toggle-switch:hover{transform:scale(1.05)!important}
+.drag:hover{transform:translateY(-2px)!important;cursor:grab!important}
+.drag:active{transform:translateY(2px) scale(.95)!important;cursor:grabbing!important}
+.del:hover,.lg-del:hover,.lg-up:hover{transform:translate(-1px,-1px)!important;box-shadow:3px 3px 0 var(--ink)!important}
+.del:active,.lg-del:active,.lg-up:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.upload-box:hover{transform:translate(-2px,-2px)!important;box-shadow:5px 5px 0 var(--ink)!important}
+.upload-box:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.link-type:hover{transform:translate(-2px,-2px)!important;box-shadow:4px 4px 0 var(--ink)!important}
+.link-type:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.qr-color-opt:hover{transform:translate(-2px,-2px) scale(1.05)!important;box-shadow:5px 5px 0 var(--ink)!important}
+.qr-color-opt:active{transform:translate(2px,2px) scale(.95)!important;box-shadow:0 0 0 var(--ink)!important}
+.feat-ratio-btn:hover,.opt-item:hover,.help-cat:hover{transform:translate(-1px,-1px)!important;box-shadow:3px 3px 0 var(--ink)!important}
+.feat-ratio-btn:active,.opt-item:active,.help-cat:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.template-cat:hover{transform:translate(-2px,-2px)!important;box-shadow:5px 5px 0 var(--ink)!important}
+.template-cat:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.logo-item:hover,.owned-item:hover,.dev-item:hover{transform:translate(-1px,-1px)!important;box-shadow:4px 4px 0 var(--ink)!important}
+.logo-item:active{transform:translate(1px,1px)!important;box-shadow:0 0 0 var(--ink)!important}
+.store-tab:hover,.dev-tab:hover,.explore-filter:hover,.maint-duration-btn:hover{transform:translate(-1px,-1px)!important;box-shadow:3px 3px 0 var(--ink)!important}
+.store-tab:active,.dev-tab:active,.explore-filter:active,.maint-duration-btn:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.tut-close:hover{transform:translate(-1px,-1px)!important;background:var(--red)!important;color:#fff!important}
+.tut-close:active{transform:translate(2px,2px)!important}
+.close-x:hover{transform:scale(1.15) rotate(90deg)!important}
+.close-x:active{transform:scale(.95) rotate(90deg)!important}
+.back-link:hover{transform:translateX(-3px)!important}
+.feature-card:hover,.store-card:hover,.topup-card:hover{transform:translate(-2px,-2px)!important;box-shadow:5px 5px 0 var(--ink)!important}
+.feature-card:active,.store-card:active,.topup-card:active{transform:translate(2px,2px)!important;box-shadow:0 0 0 var(--ink)!important}
+.explore-card:hover{transform:translate(-2px,-2px)!important;box-shadow:6px 6px 0 var(--ink)!important}
+.style-item:hover,.warna-item:hover,.theme-item:hover{transform:translate(-1px,-1px)!important;box-shadow:4px 4px 0 var(--ink)!important}
+
+/* ═══════════════════════════════════════════════════════════
+   VARSMILE v28
+   ═══════════════════════════════════════════════════════════ */
+#varsmile-char{
+  position:fixed!important;
+  z-index:9997!important;
+  pointer-events:none!important;
+  width:72px!important;
+  height:88px!important;
+  image-rendering:pixelated!important;
+  transform-origin:center bottom!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:-68px!important;
+  left:calc(100% + 80px)!important;
+  transition:bottom 1.2s cubic-bezier(.4,0,.6,1),opacity .3s,left 1s linear!important;
+  margin:0!important;padding:0!important;
+  display:block!important;
+}
+#varsmile-char.hide-bottom{bottom:-68px!important;opacity:.85!important}
+#varsmile-char.peek-bottom{bottom:8px!important;opacity:1!important}
+#varsmile-char.on-road{bottom:44px!important;opacity:1!important}
+#varsmile-char.facing-right .varsmile-svg{transform:scaleX(1)!important}
+#varsmile-char.facing-left .varsmile-svg{transform:scaleX(-1)!important}
+#varsmile-char.waiting-mode{
+  bottom:20px!important;left:50%!important;
+  transform:translateX(-50%)!important;
+  width:80px!important;height:96px!important;opacity:1!important;
+}
+#varsmile-char.run-away-3d{animation:vsRunAway3D_v28 2.5s cubic-bezier(.4,0,.6,1) forwards!important;z-index:99999!important}
+#varsmile-char .varsmile-svg{width:100%!important;height:100%!important;display:block!important;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.4))!important}
+
+/* Jalanan */
+#varsmile-road-new{
+  position:fixed!important;bottom:0!important;left:0!important;right:0!important;top:auto!important;
+  height:44px!important;width:100vw!important;
+  background:#1a1a1a!important;
+  border-top:4px solid #0a0a0a!important;
+  border-bottom:4px solid #0a0a0a!important;
+  z-index:9996!important;opacity:0!important;
+  transform:translateY(100%)!important;
+  transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.6,1)!important;
+  pointer-events:none!important;overflow:hidden!important;
+  margin:0!important;padding:0!important;
+}
+#varsmile-road-new.active{opacity:1!important;transform:translateY(0)!important}
+#varsmile-road-new::before{
+  content:''!important;position:absolute!important;
+  top:50%!important;left:0!important;right:0!important;height:4px!important;
+  transform:translateY(-50%)!important;
+  background:repeating-linear-gradient(90deg,#ffd700 0,#ffd700 24px,transparent 24px,transparent 48px)!important;
+  animation:roadDash_v28 1s linear infinite!important;
+}
+body > .varsmile-road:not(#varsmile-road-new){display:none!important}
+
+/* Animasi */
+@keyframes roadDash_v28{from{background-position:0 0}to{background-position:-48px 0}}
+@keyframes vsRunAway3D_v28{0%{transform:scale(1) translateY(0);opacity:1;filter:blur(0)}50%{transform:scale(.5) translateY(-40px);opacity:.8;filter:blur(.5px)}100%{transform:scale(.05) translateY(-100px);opacity:0;filter:blur(3px)}}
+@keyframes vsWalkBob_v28{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+#varsmile-char.walking .varsmile-svg{animation:vsWalkBob_v28 .35s linear infinite!important}
+@keyframes vsBreathe_v28{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+#varsmile-char.idle .varsmile-svg{animation:vsBreathe_v28 1.6s ease-in-out infinite!important}
+@keyframes vsTired_v28{0%,100%{transform:scaleY(1) translateY(0)}50%{transform:scaleY(.92) translateY(2px)}}
+#varsmile-char.tired .varsmile-svg{animation:vsTired_v28 .5s ease-in-out infinite!important}
+@keyframes vsTalkHead_v28{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+#varsmile-char.talking .varsmile-svg{animation:vsTalkHead_v28 .6s ease-in-out infinite!important}
+@keyframes vsLegL_v28{0%,100%{transform:rotate(-18deg) translate(0,0)}50%{transform:rotate(18deg) translate(0,-2px)}}
+@keyframes vsLegR_v28{0%,100%{transform:rotate(18deg) translate(0,0)}50%{transform:rotate(-18deg) translate(0,-2px)}}
+#varsmile-char.walking .vs-leg-left{animation:vsLegL_v28 .35s linear infinite!important;transform-origin:50% 0%!important}
+#varsmile-char.walking .vs-leg-right{animation:vsLegR_v28 .35s linear infinite!important;transform-origin:50% 0%!important}
+@keyframes vsWaitIdle_v28{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-4px) rotate(-2deg)}75%{transform:translateY(-4px) rotate(2deg)}}
+#varsmile-char.waiting-mode .varsmile-svg{animation:vsWaitIdle_v28 3s ease-in-out infinite!important}
+
+/* Bubble */
+.varsmile-bubble{
+  position:fixed!important;z-index:9999!important;
+  background:#fff!important;border:3px solid #0a0a0a!important;border-radius:12px!important;
+  padding:10px 14px!important;
+  font-family:'VT323','Inter',monospace!important;
+  font-size:16px!important;font-weight:700!important;color:#0a0a0a!important;
+  box-shadow:4px 4px 0 #0a0a0a!important;max-width:240px!important;
+  line-height:1.35!important;pointer-events:auto!important;cursor:pointer!important;
+  animation:bubbleIn_v28 .3s cubic-bezier(.34,1.56,.64,1)!important;
+}
+.varsmile-bubble::after{content:''!important;position:absolute!important;top:-12px!important;left:50%!important;transform:translateX(-50%)!important;width:0!important;height:0!important;border-left:10px solid transparent!important;border-right:10px solid transparent!important;border-bottom:12px solid #0a0a0a!important}
+.varsmile-bubble::before{content:''!important;position:absolute!important;top:-7px!important;left:50%!important;transform:translateX(-50%)!important;width:0!important;height:0!important;border-left:8px solid transparent!important;border-right:8px solid transparent!important;border-bottom:9px solid #fff!important;z-index:1!important}
+@keyframes bubbleIn_v28{0%{opacity:0;transform:scale(.7) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes bubbleOut_v28{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.7) translateY(10px)}}
+.varsmile-bubble.dismissing{animation:bubbleOut_v28 .3s ease forwards!important}
+
+/* Debu */
+.varsmile-dust{position:fixed!important;width:8px!important;height:8px!important;background:#888!important;z-index:9995!important;pointer-events:none!important;animation:vsDust_v28 .9s ease-out forwards!important}
+@keyframes vsDust_v28{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(-40px,-20px) scale(.2)}}
+.varsmile-flash{position:fixed!important;inset:0!important;background:#fff!important;z-index:99999!important;opacity:0!important;pointer-events:none!important;transition:opacity .25s!important}
+.varsmile-flash.active{opacity:1!important}
+</style>
+
+<script id="v28-js">
+/* ═══════════════════════════════════════════════════════════
+   VARSMILE v28 — FINAL
+   Cycle 1.5 menit · Sound Realistis · Kanan→Tengah→Kiri
+   ═══════════════════════════════════════════════════════════ */
 (function(){
   "use strict";
+  console.log("🎬 Varsmile v28 loading...");
   
-  console.log("🔨 Varsmile v27 NUKE dimulai...");
-  
-  /* ═══════════════════════════════════════════════════════════
-     STEP 1 — HAPUS SEMUA CSS VARSMILE LAMA
-     ═══════════════════════════════════════════════════════════ */
-  function nukeOldCSS(){
+  /* ─── NUKE CSS & DOM LAMA ─── */
+  function nukeOld(){
     try{
-      var styles = document.querySelectorAll("style");
-      var removed = 0;
-      styles.forEach(function(styleEl){
-        var css = styleEl.textContent || "";
-        // Kalau style ini ngandung selector varsmile, hapus blok-nya
-        if(css.indexOf(".varsmile-wrap") !== -1 || css.indexOf(".varsmile-road") !== -1){
-          // Regex hapus blok CSS Varsmile
+      document.querySelectorAll("style").forEach(function(s){
+        if(s.id === "v28-css") return;
+        var css = s.textContent || "";
+        if(css.indexOf(".varsmile-") !== -1){
           var cleaned = css
-            // Hapus komentar header Varsmile
-            .replace(/\/\*\s*=+\s*\n\s*VARSMILE[^*]*\*\/[\s\S]*?(?=\/\*\s*=+\s*\n\s*(?!VARSMILE|VARMILE)|$)/gi, "")
-            // Fallback: hapus baris-baris Varsmile per selector
-            .replace(/\.varsmile-[^{]*\{[^}]*\}/g, "")
-            .replace(/@keyframes\s+vs[A-Za-z]+\s*\{[\s\S]*?\}\s*\}/g, "")
-            .replace(/@keyframes\s+vs[A-Za-z]+\s*\{[^}]*\}/g, "")
-            .replace(/@keyframes\s+animBounce[^{]*\{[^}]*\}/g, "")
-            .replace(/@keyframes\s+roadDash[^{]*\{[^}]*\}/g, "")
-            .replace(/@keyframes\s+bubbleIn[^{]*\{[^}]*\}/g, "")
-            .replace(/@keyframes\s+bubbleOut[^{]*\{[^}]*\}/g, "")
-            .replace(/@keyframes\s+vsRunAway3D[^{]*\{[^}]*\}/g, "");
-          if(cleaned !== css){
-            styleEl.textContent = cleaned;
-            removed++;
-          }
+            .replace(/\/\*[\s\S]*?VARSMILE[\s\S]*?\*\//gi,"")
+            .replace(/\.varsmile-[^{}]*\{[^{}]*\}/g,"")
+            .replace(/@keyframes\s+vs[A-Za-z0-9_]+\s*\{(?:[^{}]|\{[^{}]*\})*\}/g,"")
+            .replace(/@keyframes\s+roadDash[A-Za-z0-9_]*\s*\{(?:[^{}]|\{[^{}]*\})*\}/g,"")
+            .replace(/@keyframes\s+bubble(In|Out)[A-Za-z0-9_]*\s*\{(?:[^{}]|\{[^{}]*\})*\}/g,"");
+          if(cleaned !== css) s.textContent = cleaned;
         }
       });
-      console.log("✅ CSS Varsmile lama dibersihkan: " + removed + " style block");
-    }catch(e){ console.warn("nukeOldCSS:", e); }
-  }
-  
-  /* ═══════════════════════════════════════════════════════════
-     STEP 2 — HAPUS SEMUA DOM VARSMILE LAMA
-     ═══════════════════════════════════════════════════════════ */
-  function nukeOldDOM(){
-    try{
-      var ids = ["varsmile-char","varsmile-road"];
-      ids.forEach(function(id){
-        var el = document.getElementById(id);
-        if(el) el.remove();
+      ["varsmile-char","varsmile-road"].forEach(function(id){
+        var el = document.getElementById(id); if(el) el.remove();
       });
-      // Hapus bubble & dust
-      document.querySelectorAll(".varsmile-bubble, .varsmile-dust, .varsmile-house, .varsmile-flash").forEach(function(el){
-        el.remove();
-      });
-      console.log("✅ DOM Varsmile lama dibersihkan");
-    }catch(e){ console.warn("nukeOldDOM:", e); }
+      document.querySelectorAll(".varsmile-bubble,.varsmile-dust,.varsmile-house,.varsmile-flash").forEach(function(el){el.remove()});
+      console.log("🗑️ CSS+DOM Varsmile lama dibersihkan");
+    }catch(e){ console.warn("nuke:", e); }
   }
   
   /* ═══════════════════════════════════════════════════════════
-     STEP 3 — INJECT CSS V27 BERSIH
+     SOUND ENGINE REALISTIS — Langkah kaki 8-bit
      ═══════════════════════════════════════════════════════════ */
-  function injectCSS(){
-    try{
-      var existing = document.getElementById("varsmile-v27-css");
-      if(existing) existing.remove();
-      
-      var style = document.createElement("style");
-      style.id = "varsmile-v27-css";
-      style.textContent = `
-/* VARSMILE v27 — NUKED VERSION */
-.varsmile-wrap{
-  position:fixed !important;
-  z-index:9997 !important;
-  pointer-events:none !important;
-  width:72px !important;
-  height:88px !important;
-  image-rendering:pixelated !important;
-  transition:bottom 1.2s cubic-bezier(.4,0,.6,1), opacity .3s !important;
-  transform-origin:center bottom !important;
-  bottom:-68px !important;
-  left:calc(100% + 80px) !important;
-  top:auto !important;
-  right:auto !important;
-}
-.varsmile-wrap.hide-bottom{
-  bottom:-68px !important;
-  opacity:.85 !important;
-}
-.varsmile-wrap.peek-bottom{
-  bottom:8px !important;
-  opacity:1 !important;
-}
-.varsmile-wrap.on-road{
-  bottom:44px !important;
-  opacity:1 !important;
-}
-.varsmile-wrap.facing-right .varsmile-svg{
-  transform:scaleX(1) !important;
-}
-.varsmile-wrap.facing-left .varsmile-svg{
-  transform:scaleX(-1) !important;
-}
-.varsmile-wrap.waiting-mode{
-  bottom:20px !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  width:80px !important;
-  height:96px !important;
-  opacity:1 !important;
-}
-.varsmile-wrap.run-away-3d{
-  animation:vsRunAway3D 2.5s cubic-bezier(.4,0,.6,1) forwards !important;
-  z-index:99999 !important;
-}
-
-.varsmile-svg{
-  width:100% !important;
-  height:100% !important;
-  display:block !important;
-  filter:drop-shadow(3px 3px 0 rgba(0,0,0,.4)) !important;
-}
-
-/* ── JALANAN ── */
-.varsmile-road{
-  position:fixed !important;
-  bottom:0 !important;
-  left:0 !important;
-  right:0 !important;
-  top:auto !important;
-  height:44px !important;
-  width:100vw !important;
-  background:#1a1a1a !important;
-  border-top:4px solid #0a0a0a !important;
-  border-bottom:4px solid #0a0a0a !important;
-  z-index:9996 !important;
-  opacity:0 !important;
-  transform:translateY(100%) !important;
-  transition:opacity .6s ease, transform .6s cubic-bezier(.4,0,.6,1) !important;
-  pointer-events:none !important;
-  overflow:hidden !important;
-  margin:0 !important;
-  padding:0 !important;
-}
-.varsmile-road.active{
-  opacity:1 !important;
-  transform:translateY(0) !important;
-}
-.varsmile-road::before{
-  content:'' !important;
-  position:absolute !important;
-  top:50% !important;
-  left:0 !important;
-  right:0 !important;
-  height:4px !important;
-  transform:translateY(-50%) !important;
-  background:repeating-linear-gradient(90deg,#ffd700 0,#ffd700 24px,transparent 24px,transparent 48px) !important;
-  animation:roadDash 1s linear infinite !important;
-}
-
-/* ── ANIMASI ── */
-@keyframes roadDash{
-  from{background-position:0 0}
-  to{background-position:-48px 0}
-}
-@keyframes vsWalkBob{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-3px)}
-}
-.varsmile-wrap.walking .varsmile-svg{
-  animation:vsWalkBob .35s linear infinite !important;
-}
-@keyframes vsBreathe{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-2px)}
-}
-.varsmile-wrap.idle .varsmile-svg{
-  animation:vsBreathe 1.6s ease-in-out infinite !important;
-}
-@keyframes vsTired{
-  0%,100%{transform:scaleY(1) translateY(0)}
-  50%{transform:scaleY(.92) translateY(2px)}
-}
-.varsmile-wrap.tired .varsmile-svg{
-  animation:vsTired .5s ease-in-out infinite !important;
-}
-@keyframes vsTalkHead{
-  0%,100%{transform:rotate(-2deg)}
-  50%{transform:rotate(2deg)}
-}
-.varsmile-wrap.talking .varsmile-svg{
-  animation:vsTalkHead .6s ease-in-out infinite !important;
-}
-@keyframes vsLegL{
-  0%,100%{transform:rotate(-18deg) translate(0,0)}
-  50%{transform:rotate(18deg) translate(0,-2px)}
-}
-@keyframes vsLegR{
-  0%,100%{transform:rotate(18deg) translate(0,0)}
-  50%{transform:rotate(-18deg) translate(0,-2px)}
-}
-.varsmile-wrap.walking .vs-leg-left{
-  animation:vsLegL .35s linear infinite !important;
-  transform-origin:50% 0% !important;
-}
-.varsmile-wrap.walking .vs-leg-right{
-  animation:vsLegR .35s linear infinite !important;
-  transform-origin:50% 0% !important;
-}
-@keyframes vsWaitIdle{
-  0%,100%{transform:translateY(0) rotate(0)}
-  25%{transform:translateY(-4px) rotate(-2deg)}
-  75%{transform:translateY(-4px) rotate(2deg)}
-}
-.varsmile-wrap.waiting-mode .varsmile-svg{
-  animation:vsWaitIdle 3s ease-in-out infinite !important;
-}
-@keyframes vsRunAway3D{
-  0%{transform:scale(1) translateY(0);opacity:1;filter:blur(0)}
-  50%{transform:scale(.5) translateY(-40px);opacity:.8;filter:blur(.5px)}
-  100%{transform:scale(.05) translateY(-100px);opacity:0;filter:blur(3px)}
-}
-@keyframes vsDust{
-  0%{opacity:1;transform:translate(0,0) scale(1)}
-  100%{opacity:0;transform:translate(-40px,-20px) scale(.2)}
-}
-
-/* ── BUBBLE ── */
-.varsmile-bubble{
-  position:fixed !important;
-  z-index:9999 !important;
-  background:#fff !important;
-  border:3px solid #0a0a0a !important;
-  border-radius:12px !important;
-  padding:10px 14px !important;
-  font-family:'VT323','Inter',monospace !important;
-  font-size:16px !important;
-  font-weight:700 !important;
-  color:#0a0a0a !important;
-  box-shadow:4px 4px 0 #0a0a0a !important;
-  max-width:240px !important;
-  line-height:1.35 !important;
-  pointer-events:auto !important;
-  cursor:pointer !important;
-  animation:bubbleIn .3s cubic-bezier(.34,1.56,.64,1) !important;
-}
-.varsmile-bubble::after{
-  content:'' !important;
-  position:absolute !important;
-  top:-12px !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  width:0 !important;
-  height:0 !important;
-  border-left:10px solid transparent !important;
-  border-right:10px solid transparent !important;
-  border-bottom:12px solid #0a0a0a !important;
-}
-.varsmile-bubble::before{
-  content:'' !important;
-  position:absolute !important;
-  top:-7px !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  width:0 !important;
-  height:0 !important;
-  border-left:8px solid transparent !important;
-  border-right:8px solid transparent !important;
-  border-bottom:9px solid #fff !important;
-  z-index:1 !important;
-}
-@keyframes bubbleIn{
-  0%{opacity:0;transform:scale(.7) translateY(10px)}
-  100%{opacity:1;transform:scale(1) translateY(0)}
-}
-@keyframes bubbleOut{
-  0%{opacity:1;transform:scale(1)}
-  100%{opacity:0;transform:scale(.7) translateY(10px)}
-}
-.varsmile-bubble.dismissing{
-  animation:bubbleOut .3s ease forwards !important;
-}
-
-/* ── DEBU ── */
-.varsmile-dust{
-  position:fixed !important;
-  width:8px !important;
-  height:8px !important;
-  background:#888 !important;
-  z-index:9995 !important;
-  pointer-events:none !important;
-  animation:vsDust .9s ease-out forwards !important;
-}
-
-/* ── FLASH ── */
-.varsmile-flash{
-  position:fixed !important;
-  inset:0 !important;
-  background:#fff !important;
-  z-index:99999 !important;
-  opacity:0 !important;
-  pointer-events:none !important;
-  transition:opacity .25s !important;
-}
-.varsmile-flash.active{opacity:1 !important}
-
-/* HIDE OLD VARMILE ROAD kalau masih ada */
-body > .varsmile-road:not(#varsmile-road-new){
-  display:none !important;
-}
-      `;
-      document.head.appendChild(style);
-      console.log("✅ CSS v27 di-inject");
-    }catch(e){ console.warn("injectCSS:", e); }
-  }
+  const StepsSound = {
+    _ctx:null,
+    _enabled:true,
+    _stepTimer:null,
+    
+    init(){
+      try{
+        this._enabled = localStorage.getItem("varlinkbio_sound") !== "off";
+      }catch(e){ this._enabled = true; }
+    },
+    
+    _getCtx(){
+      try{
+        if(!this._ctx){
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if(!AC) return null;
+          this._ctx = new AC();
+        }
+        if(this._ctx && this._ctx.state === "suspended") this._ctx.resume().catch(function(){});
+        return this._ctx;
+      }catch(e){ return null; }
+    },
+    
+    /* Satu langkah kaki 8-bit — pendek & realistis */
+    _oneStep(volume){
+      if(!this._enabled) return;
+      var ctx = this._getCtx(); if(!ctx) return;
+      try{
+        var t = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var noise = ctx.createBufferSource();
+        var noiseGain = ctx.createGain();
+        var filter = ctx.createBiquadFilter();
+        
+        // Oscillator rendah (bunyi tap)
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(120 + Math.random()*40, t);
+        osc.frequency.exponentialRampToValueAtTime(60, t + 0.06);
+        
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(volume || 0.06, t + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.1);
+        
+        // Noise (tekstur langkah di aspal)
+        var buffer = ctx.createBuffer(1, 1024, ctx.sampleRate);
+        var data = buffer.getChannelData(0);
+        for(var i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * 0.3;
+        noise.buffer = buffer;
+        
+        filter.type = "bandpass";
+        filter.frequency.value = 800 + Math.random()*400;
+        filter.Q.value = 2;
+        
+        noiseGain.gain.setValueAtTime(0, t);
+        noiseGain.gain.linearRampToValueAtTime((volume || 0.06) * 0.5, t + 0.005);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+        
+        noise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+        noise.start(t);
+        noise.stop(t + 0.08);
+      }catch(e){}
+    },
+    
+    /* Mulai footsteps loop pas Varsmile jalan */
+    startWalking(){
+      if(!this._enabled) return;
+      this.stopWalking();
+      var self = this;
+      // Langkah tiap 380ms (realistis)
+      this._oneStep(0.055);
+      this._stepTimer = setInterval(function(){
+        if(self._enabled) self._oneStep(0.045 + Math.random()*0.02);
+      }, 380);
+    },
+    
+    stopWalking(){
+      if(this._stepTimer){ clearInterval(this._stepTimer); this._stepTimer = null; }
+    },
+    
+    /* Capek (napas) */
+    tired(){
+      if(!this._enabled) return;
+      var ctx = this._getCtx(); if(!ctx) return;
+      try{
+        var self = this;
+        [0, 300, 600].forEach(function(delay){
+          setTimeout(function(){
+            var t = ctx.currentTime;
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(280, t);
+            osc.frequency.exponentialRampToValueAtTime(180, t + 0.35);
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(0.035, t + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(t); osc.stop(t + 0.42);
+          }, delay);
+        });
+      }catch(e){}
+    },
+    
+    /* Bubble chat muncul */
+    bubble(){
+      if(!this._enabled) return;
+      var ctx = this._getCtx(); if(!ctx) return;
+      try{
+        var t = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = "square";
+        osc.frequency.setValueAtTime(680, t);
+        osc.frequency.exponentialRampToValueAtTime(920, t + 0.05);
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.04, t + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(t); osc.stop(t + 0.1);
+      }catch(e){}
+    },
+    
+    /* Peek (kepala muncul) */
+    peek(){
+      if(!this._enabled) return;
+      var ctx = this._getCtx(); if(!ctx) return;
+      try{
+        var t = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(420, t);
+        osc.frequency.exponentialRampToValueAtTime(620, t + 0.15);
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.03, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(t); osc.stop(t + 0.22);
+      }catch(e){}
+    }
+  };
   
   /* ═══════════════════════════════════════════════════════════
-     STEP 4 — BUILD VARSMILE v27 OBJECT
+     VARSMILE v28 OBJECT
      ═══════════════════════════════════════════════════════════ */
   function buildVarsmile(){
     return {
       _el:null, _bubbleEl:null, _roadEl:null,
-      _tipTimer:null,
-      _active:false, _mode:"hidden",
+      _tipTimer:null, _active:false, _mode:"hidden",
       
       CONFIG:{
-        HIDE_DURATION: 60 * 1000,
-        PEEK_BEFORE_COMEUP: 3 * 1000,
-        WALK_IN_DURATION: 5 * 1000,
-        TIRED_DURATION: 1500,
-        TALK_DURATION: 8 * 1000,
-        WALK_OUT_DURATION: 5 * 1000,
+        HIDE_DURATION: 90 * 1000,        // 1.5 menit sembunyi (dari sembunyi ke muncul)
+        PEEK_DURATION: 3000,             // 3 detik ngintip
+        WALK_TO_CENTER: 5000,            // 5 detik dari kanan ke tengah
+        TIRED_DURATION: 1500,            // 1.5 detik capek
+        TALK_DURATION: 8000,             // 8 detik ngomong
+        WALK_TO_LEFT: 8000,              // 8 detik dari tengah ke ujung kiri
+        GO_DOWN_DURATION: 1200,          // 1.2 detik sembunyi
         WAITING_TIP_INTERVAL: 8000
       },
       
@@ -10194,58 +10198,47 @@ body > .varsmile-road:not(#varsmile-road-new){
       ],
       
       TIPS_CONTEXT:{
-        "/dashboard":[
-          "📺 Nonton iklan dapet kredit gratis!",
-          "🎁 Buka Fitur Store buat beli fitur!",
-          "📊 Cek statistik bio kamu!",
-          "🧭 Explore bio user lain yuk!"
-        ],
-        "/editor":[
-          "💾 Klik Simpan biar tersimpan!",
-          "⠿ Drag link buat atur urutan!",
-          "📸 Upload foto profil biar keren!",
-          "🎨 Coba tema warna baru!"
-        ],
-        "/store":[
-          "💰 Kredit gak cukup? Nonton iklan aja!",
-          "🔒 Fitur yang dibeli PERMANENT lho!"
-        ]
+        "/dashboard":["📺 Nonton iklan dapet kredit gratis!","🎁 Buka Fitur Store buat beli fitur!","📊 Cek statistik bio kamu!","🧭 Explore bio user lain yuk!"],
+        "/editor":["💾 Klik Simpan biar tersimpan!","⠿ Drag link buat atur urutan!","📸 Upload foto profil biar keren!","🎨 Coba tema warna baru!"],
+        "/store":["💰 Kredit gak cukup? Nonton iklan aja!","🔒 Fitur yang dibeli PERMANENT lho!"]
       },
       
       SVG: '<svg viewBox="0 0 16 17" class="varsmile-svg" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="1" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="2" width="12" height="1" fill="#0a0a0a"/><rect x="1" y="3" width="14" height="7" fill="#0a0a0a"/><rect x="2" y="10" width="12" height="1" fill="#0a0a0a"/><rect x="3" y="11" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="4" y="5" width="1" height="1" fill="#ffffff"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="1" height="1" fill="#ffffff"/><rect x="3" y="7" width="1" height="1" fill="#ff69b4"/><rect x="12" y="7" width="1" height="1" fill="#ff69b4"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="7" width="1" height="1" fill="#0a0a0a"/><rect x="10" y="7" width="1" height="1" fill="#0a0a0a"/><rect x="5" y="12" width="6" height="1" fill="#0a0a0a"/><rect x="4" y="13" width="8" height="3" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/><rect x="3" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="3" y="14" width="1" height="1" fill="#ffd700"/><rect x="12" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="12" y="14" width="1" height="1" fill="#ffd700"/><rect x="6" y="16" width="1" height="1" fill="#0a0a0a" class="vs-leg-left"/><rect x="9" y="16" width="1" height="1" fill="#0a0a0a" class="vs-leg-right"/></svg>',
       
       init:function(){
-        var self = this;
         var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-        if(hashPath.startsWith("/u/")){ this.hide(); return; }
-        if(!window.Auth || !Auth.current || !window.STATE || !STATE.varsmileEnabled){ this.hide(); return; }
+        if(hashPath.startsWith("/u/")) return;
+        if(!window.Auth || !window.Auth.current){ console.log("⏸️ Varsmile: user belum login"); return; }
+        if(!window.STATE || STATE.varsmileEnabled === false){ console.log("⏸️ Varsmile: dinonaktifkan"); return; }
+        
         if(this._el && document.body.contains(this._el)){
           if(!this._active) this.startLoop();
           return;
         }
         
         try{
-          nukeOldDOM();
+          ["varsmile-char","varsmile-road"].forEach(function(id){
+            var el = document.getElementById(id); if(el) el.remove();
+          });
           
           this._el = document.createElement("div");
-          this._el.className = "varsmile-wrap hide-bottom facing-right";
           this._el.id = "varsmile-char";
+          this._el.className = "hide-bottom facing-right";
           this._el.innerHTML = this.SVG;
           this._el.style.pointerEvents = "auto";
           this._el.style.cursor = "pointer";
           document.body.appendChild(this._el);
           
           this._roadEl = document.createElement("div");
-          this._roadEl.className = "varsmile-road";
           this._roadEl.id = "varsmile-road-new";
+          this._roadEl.className = "varsmile-road";
           document.body.appendChild(this._roadEl);
           
           this._bindInteraction();
           this._active = true;
           this.startLoop();
-          
-          console.log("✅ Varsmile v27 NUKE aktif");
-        }catch(e){ console.warn("Varsmile v27 init:", e); }
+          console.log("✅ Varsmile v28 aktif");
+        }catch(e){ console.warn("Varsmile.init:", e); }
       },
       
       _bindInteraction:function(){
@@ -10263,7 +10256,7 @@ body > .varsmile-road:not(#varsmile-road-new){
       showBubble:function(text, duration){
         duration = duration || 3000;
         if(!this._el) return;
-        if(this._bubbleEl){ this._bubbleEl.remove(); this._bubbleEl = null; }
+        if(this._bubbleEl){ try{ this._bubbleEl.remove(); }catch(e){} this._bubbleEl = null; }
         try{
           var rect = this._el.getBoundingClientRect();
           var bubble = document.createElement("div");
@@ -10275,12 +10268,14 @@ body > .varsmile-road:not(#varsmile-road-new){
           document.body.appendChild(bubble);
           this._bubbleEl = bubble;
           
+          StepsSound.bubble();
+          
           var self = this;
           setTimeout(function(){
             if(self._bubbleEl === bubble){
               bubble.classList.add("dismissing");
               setTimeout(function(){
-                bubble.remove();
+                try{ bubble.remove(); }catch(e){}
                 if(self._bubbleEl === bubble) self._bubbleEl = null;
               }, 300);
             }
@@ -10289,7 +10284,7 @@ body > .varsmile-road:not(#varsmile-road-new){
           bubble.addEventListener("click", function(){
             bubble.classList.add("dismissing");
             setTimeout(function(){
-              bubble.remove();
+              try{ bubble.remove(); }catch(e){}
               if(self._bubbleEl === bubble) self._bubbleEl = null;
             }, 300);
           });
@@ -10299,14 +10294,14 @@ body > .varsmile-road:not(#varsmile-road-new){
       _setMode:function(mode){
         if(!this._el) return;
         this._mode = mode;
-        var cls = "varsmile-wrap facing-right";
-        if(mode === "hide") cls += " hide-bottom";
-        else if(mode === "peek") cls += " peek-bottom idle";
-        else if(mode === "walking") cls += " on-road walking";
-        else if(mode === "tired") cls += " on-road tired";
-        else if(mode === "talking") cls += " on-road talking";
-        else if(mode === "waiting") cls += " waiting-mode idle";
-        else if(mode === "runAway") cls += " run-away-3d";
+        var cls = "hide-bottom facing-right";
+        if(mode === "hide") cls = "hide-bottom facing-right";
+        else if(mode === "peek") cls = "peek-bottom idle facing-right";
+        else if(mode === "walking") cls = "on-road walking facing-right";
+        else if(mode === "tired") cls = "on-road tired facing-right";
+        else if(mode === "talking") cls = "on-road talking facing-right";
+        else if(mode === "waiting") cls = "waiting-mode idle";
+        else if(mode === "runAway") cls = "run-away-3d facing-right";
         this._el.className = cls;
       },
       
@@ -10319,14 +10314,14 @@ body > .varsmile-road:not(#varsmile-road-new){
           dust.style.left = (rect.left + rect.width/2) + "px";
           dust.style.top = (rect.bottom - 6) + "px";
           document.body.appendChild(dust);
-          setTimeout(function(){ dust.remove(); }, 900);
+          setTimeout(function(){ try{ dust.remove(); }catch(e){} }, 900);
         }catch(e){}
       },
       
       _dustBurst:function(){
         var self = this;
-        for(var i=0;i<5;i++){
-          setTimeout(function(){ self._spawnDust(); }, i*350);
+        for(var i=0;i<6;i++){
+          setTimeout(function(){ self._spawnDust(); }, i*300);
         }
       },
       
@@ -10338,7 +10333,7 @@ body > .varsmile-road:not(#varsmile-road-new){
           setTimeout(function(){ flash.classList.add("active"); }, 10);
           setTimeout(function(){
             flash.classList.remove("active");
-            setTimeout(function(){ flash.remove(); }, 300);
+            setTimeout(function(){ try{ flash.remove(); }catch(e){} }, 300);
           }, 250);
         }catch(e){}
       },
@@ -10349,97 +10344,113 @@ body > .varsmile-road:not(#varsmile-road-new){
         this._cycle();
       },
       
+      /* ═══════════════════════════════════════════════════
+         CYCLE UTAMA v28
+         1. Sembunyi 1.5 menit
+         2. Ngintip 3 detik
+         3. Naik, siap di ujung KANAN (off-screen)
+         4. Jalan ke TENGAH (5 detik) + sound footsteps
+         5. Capek (1.5 detik) + sound napas
+         6. Ngomong tips (8 detik)
+         7. Jalan lagi ke UJUNG KIRI (8 detik) + sound footsteps
+         8. Sembunyi ke bawah
+         9. Loop
+         ═══════════════════════════════════════════════════ */
       _cycle:function(){
         var self = this;
         var C = this.CONFIG;
         if(!this._active) return;
         
-        // STEP 1 — Hide 1 menit
+        // STEP 1 — Sembunyi 1.5 menit
         this._setMode("hide");
         if(this._roadEl) this._roadEl.classList.remove("active");
+        StepsSound.stopWalking();
         
         setTimeout(function(){
           if(!self._active) return;
-          self._cycleStep2();
+          self._stepPeek();
         }, C.HIDE_DURATION);
       },
       
-      _cycleStep2:function(){
+      _stepPeek:function(){
         var self = this;
         var C = this.CONFIG;
         if(!this._active) return;
         
-        // STEP 2 — Peek 3 detik
+        // STEP 2 — Ngintip
         this._setMode("peek");
+        StepsSound.peek();
         
         setTimeout(function(){
           if(!self._active) return;
-          self._cycleStep3();
-        }, C.PEEK_BEFORE_COMEUP);
+          self._stepRoadOn();
+        }, C.PEEK_DURATION);
       },
       
-      _cycleStep3:function(){
+      _stepRoadOn:function(){
         var self = this;
-        var C = this.CONFIG;
         if(!this._active) return;
         
-        // STEP 3 — Jalanan muncul
+        // STEP 3 — Jalanan muncul (fade-in)
         if(this._roadEl) this._roadEl.classList.add("active");
         
         setTimeout(function(){
           if(!self._active) return;
-          self._cycleStep4();
+          self._stepStart();
         }, 700);
       },
       
-      _cycleStep4:function(){
+      _stepStart:function(){
         var self = this;
         var C = this.CONFIG;
         if(!self._active || !self._el) return;
         
-        // STEP 4 — Posisi start (kanan luar)
+        // STEP 4 — Posisi awal: di LUAR kanan layar
         self._el.style.transition = "none";
-        self._el.style.left = "calc(100% + 20px)";
+        self._el.style.left = "calc(100% + 80px)";
         self._el.style.transform = "translateX(0)";
+        self._setMode("walking");
         
-        // STEP 5 — Jalan ke kiri
+        // STEP 5 — Jalan ke TENGAH
         setTimeout(function(){
           if(!self._active) return;
-          self._setMode("walking");
-          self._el.style.transition = "left " + (C.WALK_IN_DURATION/1000) + "s linear";
+          self._el.style.transition = "left " + (C.WALK_TO_CENTER/1000) + "s linear";
           self._el.style.left = "50%";
           self._el.style.transform = "translateX(-50%)";
+          
+          // Sound footsteps mulai
+          StepsSound.startWalking();
           self._dustBurst();
-          if(window.Sound && Sound.vRun) Sound.vRun();
           
           setTimeout(function(){
             if(!self._active) return;
-            self._cycleStep5();
-          }, C.WALK_IN_DURATION);
+            StepsSound.stopWalking();
+            self._stepTired();
+          }, C.WALK_TO_CENTER);
         }, 100);
       },
       
-      _cycleStep5:function(){
+      _stepTired:function(){
         var self = this;
         var C = this.CONFIG;
         if(!this._active) return;
         
-        // STEP 6 — Capek
+        // STEP 6 — Capek di TENGAH
         this._setMode("tired");
-        if(window.Sound && Sound.vTired) Sound.vTired();
+        StepsSound.tired();
         
         setTimeout(function(){
           if(!self._active) return;
-          self._cycleStep6();
+          self._stepTalk();
         }, C.TIRED_DURATION);
       },
       
-      _cycleStep6:function(){
+      _stepTalk:function(){
         var self = this;
         var C = this.CONFIG;
         if(!this._active) return;
         
-        // STEP 7 — Talking + tips 8 detik
+        // STEP 7 — Ngomong tips (8 detik)
         this._setMode("talking");
         
         var hashPath = (location.hash.slice(1) || "/").split("?")[0];
@@ -10449,43 +10460,49 @@ body > .varsmile-road:not(#varsmile-road-new){
         }
         var tip = tips[Math.floor(Math.random()*tips.length)];
         this.showBubble(tip, C.TALK_DURATION - 500);
-        if(window.Sound && Sound.bip) Sound.bip();
         
         setTimeout(function(){
           if(!self._active) return;
-          self._cycleStep7();
+          self._stepWalkLeft();
         }, C.TALK_DURATION);
       },
       
-      _cycleStep7:function(){
+      _stepWalkLeft:function(){
         var self = this;
         var C = this.CONFIG;
         if(!self._active || !self._el) return;
         
-        // STEP 8 — Jalan lagi ke kiri, keluar layar
-        this._setMode("walking");
-        self._el.style.transition = "left " + (C.WALK_OUT_DURATION/1000) + "s linear";
+        // STEP 8 — Lanjut jalan ke UJUNG KIRI
+        self._setMode("walking");
+        // Balik arah: hadap kiri
+        self._el.classList.remove("facing-right");
+        self._el.classList.add("facing-left");
+        self._el.style.transition = "left " + (C.WALK_TO_LEFT/1000) + "s linear";
         self._el.style.left = "calc(-20% - 80px)";
         self._el.style.transform = "translateX(0)";
+        
+        StepsSound.startWalking();
         self._dustBurst();
-        if(window.Sound && Sound.vRun) Sound.vRun();
         
         setTimeout(function(){
           if(!self._active) return;
-          self._cycleStep8();
-        }, C.WALK_OUT_DURATION);
+          StepsSound.stopWalking();
+          self._stepHide();
+        }, C.WALK_TO_LEFT);
       },
       
-      _cycleStep8:function(){
+      _stepHide:function(){
         var self = this;
+        var C = this.CONFIG;
         if(!this._active) return;
         
-        // STEP 9 — Sembunyi
+        // STEP 9 — Sembunyi di bawah
         this._setMode("hide");
         if(this._roadEl) this._roadEl.classList.remove("active");
         
         setTimeout(function(){
           if(!self._active || !self._el) return;
+          // Reset posisi ke kanan buat cycle berikutnya
           self._el.style.transition = "none";
           self._el.style.left = "calc(100% + 80px)";
           self._el.style.transform = "translateX(0)";
@@ -10493,17 +10510,22 @@ body > .varsmile-road:not(#varsmile-road-new){
           // Loop lagi
           setTimeout(function(){
             if(self._active) self._cycle();
-          }, 500);
-        }, 1000);
+          }, 800);
+        }, C.GO_DOWN_DURATION);
       },
       
+      /* ═══════════════════════════════════════════════════
+         LOGIN WAITING MODE
+         ═══════════════════════════════════════════════════ */
       startLoginMode:function(){
         var self = this;
         if(!this._el){
-          nukeOldDOM();
+          ["varsmile-char","varsmile-road"].forEach(function(id){
+            var el = document.getElementById(id); if(el) el.remove();
+          });
           this._el = document.createElement("div");
-          this._el.className = "varsmile-wrap waiting-mode";
           this._el.id = "varsmile-char";
+          this._el.className = "waiting-mode idle";
           this._el.innerHTML = this.SVG;
           this._el.style.pointerEvents = "auto";
           this._el.style.cursor = "pointer";
@@ -10516,7 +10538,6 @@ body > .varsmile-road:not(#varsmile-road-new){
           if(self._mode !== "waiting") return;
           var tip = self.TIPS_LOGIN[Math.floor(Math.random()*self.TIPS_LOGIN.length)];
           self.showBubble(tip, 4000);
-          if(window.Sound && Sound.vPeek) Sound.vPeek();
         }, this.CONFIG.WAITING_TIP_INTERVAL);
       },
       
@@ -10524,12 +10545,14 @@ body > .varsmile-road:not(#varsmile-road-new){
         var self = this;
         if(!this._el) return Promise.resolve();
         if(this._tipTimer){ clearInterval(this._tipTimer); this._tipTimer = null; }
+        StepsSound.stopWalking();
         
         this.showBubble("AYOOO MARI KITA MENUJU RUMAH! 🏠", 2500);
-        if(window.Sound && Sound.vRun) Sound.vRun();
+        StepsSound.startWalking();
         this._dustBurst();
         this._setMode("runAway");
         
+        setTimeout(function(){ StepsSound.stopWalking(); }, 1500);
         setTimeout(function(){ self._flashScreen(); }, 2300);
         
         return new Promise(function(resolve){
@@ -10540,57 +10563,48 @@ body > .varsmile-road:not(#varsmile-road-new){
       hide:function(){
         this._active = false;
         if(this._tipTimer){ clearInterval(this._tipTimer); this._tipTimer = null; }
+        StepsSound.stopWalking();
         if(this._el){ try{ this._el.remove(); }catch(e){} this._el = null; }
         if(this._bubbleEl){ try{ this._bubbleEl.remove(); }catch(e){} this._bubbleEl = null; }
         if(this._roadEl){ try{ this._roadEl.remove(); }catch(e){} this._roadEl = null; }
         this._mode = "hidden";
       },
       
-      /* ─── TEST MODE — Langsung muncul (gak nunggu 1 menit) ─── */
+      /* ═══════════════════════════════════════════════════
+         TEST MODE — Muncul dalam 3 detik (buat debug)
+         ═══════════════════════════════════════════════════ */
       testShow:function(){
-        console.log("🧪 Test mode — Varsmile muncul dalam 2 detik");
+        console.log("🧪 Test mode — Varsmile muncul 3 detik");
         var self = this;
+        if(this._tipTimer){ clearInterval(this._tipTimer); this._tipTimer = null; }
         setTimeout(function(){
-          if(self._roadEl) self._roadEl.classList.add("active");
-          setTimeout(function(){ self._cycleStep4(); }, 700);
-        }, 2000);
+          if(!self._active) return;
+          self._stepPeek();
+        }, 3000);
       }
     };
   }
   
   /* ═══════════════════════════════════════════════════════════
-     STEP 5 — APPLY SEMUA
+     APPLY
      ═══════════════════════════════════════════════════════════ */
   function applyAll(){
-    nukeOldCSS();
-    nukeOldDOM();
-    injectCSS();
-    
-    // Replace Varsmile
+    nukeOld();
+    StepsSound.init();
+    window.StepsSound = StepsSound;
     window.Varsmile = buildVarsmile();
-    console.log("✅ Varsmile v27 NUKE selesai");
+    console.log("✅ Varsmile v28 applied");
     
-    // Auto re-init kalau user login & di halaman valid
     try{
       if(window.Auth && Auth.current && window.STATE && STATE.varsmileEnabled){
         var hashPath = (location.hash.slice(1) || "/").split("?")[0];
         if(!hashPath.startsWith("/u/")){
           setTimeout(function(){ window.Varsmile.init(); }, 500);
-          
-          // 🔥 TEST: Muncul dalam 3 detik (biar kamu gak nunggu 1 menit)
-          setTimeout(function(){ 
-            if(window.Varsmile && window.Varsmile.testShow){
-              window.Varsmile.testShow();
-            }
-          }, 1000);
         }
       }
-    }catch(e){ console.warn("Varsmile v27 auto-init:", e); }
+    }catch(e){ console.warn("auto-init:", e); }
   }
   
-  /* ═══════════════════════════════════════════════════════════
-     STEP 6 — RUN saat DOM ready
-     ═══════════════════════════════════════════════════════════ */
   function whenReady(fn){
     if(document.readyState === "complete" || document.readyState === "interactive"){
       setTimeout(fn, 500);
@@ -10600,19 +10614,18 @@ body > .varsmile-road:not(#varsmile-road-new){
   }
   
   whenReady(function(){
-    // Tunggu Varsmile & Auth siap
     var attempts = 0;
     var check = setInterval(function(){
       attempts++;
       if(attempts > 30){
         clearInterval(check);
-        console.warn("⏱️ Timeout nunggu Auth/Varsmile");
+        console.warn("⏱️ Timeout — apply paksa");
         applyAll();
         return;
       }
       if(typeof window.Auth !== "undefined" && typeof window.STATE !== "undefined"){
         clearInterval(check);
-        console.log("🎬 Auth & STATE siap — apply patch...");
+        console.log("🎬 Auth & STATE siap");
         applyAll();
       }
     }, 200);
@@ -10620,6 +10633,6 @@ body > .varsmile-road:not(#varsmile-road-new){
   
 })();
 </script>
-<!-- ═══ END VARSMILE v27 NUKE ═══ -->
+<!-- ═══ END VARSMILE v28 ═══ -->
 </body>
    </html>

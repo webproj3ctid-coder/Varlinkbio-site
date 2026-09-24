@@ -14975,5 +14975,447 @@ small .svg-emoji,
 })();
 </script>
 <!-- ═══ END PATCH 4/4 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH FIX — Fix bugs dari Patch 1-4
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="patch-fix-css">
+/* ═══════════════════════════════════════════════════════════
+   BUG FIX #1 — Tombol besar & SVG overflow
+   ═══════════════════════════════════════════════════════════ */
+
+/* Batasi ukuran semua SVG emoji di dalam button */
+.btn .svg-emoji,
+.btn svg.svg-emoji,
+button .svg-emoji,
+.pli-remove .svg-emoji,
+.mpi-add .svg-emoji,
+.pli-handle .svg-emoji{
+  width:16px !important;
+  height:16px !important;
+  max-width:16px !important;
+  max-height:16px !important;
+  flex-shrink:0 !important;
+}
+.btn .svg-emoji svg,
+.btn svg.svg-emoji svg,
+button .svg-emoji svg,
+.pli-remove .svg-emoji svg,
+.mpi-add .svg-emoji svg{
+  width:100% !important;
+  height:100% !important;
+  max-width:16px !important;
+  max-height:16px !important;
+}
+
+/* Fix tombol HAPUS SEMUA PLAYLIST */
+#pl-clear,
+#pl-clear.btn{
+  width:auto !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+  padding:10px 16px !important;
+  font-size:12px !important;
+  min-height:0 !important;
+  height:auto !important;
+  flex:0 0 auto !important;
+  align-self:center !important;
+  max-width:200px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+#pl-clear svg{
+  width:14px !important;
+  height:14px !important;
+  max-width:14px !important;
+  max-height:14px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUG FIX #3 — Music picker item spacing
+   ═══════════════════════════════════════════════════════════ */
+.music-picker-item{
+  gap:10px !important;
+}
+.music-picker-item .mpi-add{
+  margin-left:auto !important;
+  flex-shrink:0 !important;
+  min-width:auto !important;
+  white-space:nowrap !important;
+}
+.music-picker-item .mpi-add svg{
+  width:12px !important;
+  height:12px !important;
+  max-width:12px !important;
+  max-height:12px !important;
+}
+.music-picker-item .mpi-play svg{
+  width:20px !important;
+  height:20px !important;
+  max-width:20px !important;
+  max-height:20px !important;
+}
+.music-picker-item .mpi-info{
+  flex:1 !important;
+  min-width:0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUG FIX #4 — Dev panel bulatan hitam
+   ═══════════════════════════════════════════════════════════ */
+.music-picker-empty svg,
+.mgr-empty svg,
+.empty-state svg:not(.svg-emoji){
+  width:48px !important;
+  height:48px !important;
+  max-width:48px !important;
+  max-height:48px !important;
+  opacity:.5 !important;
+  margin:0 auto 10px !important;
+  display:block !important;
+  flex-shrink:0 !important;
+}
+
+/* Search input di dev panel — prevent HTML leak */
+.dev-tools input,
+#dev-search{
+  font-family:'Inter',sans-serif !important;
+  text-overflow:ellipsis !important;
+  overflow:hidden !important;
+}
+
+/* Fix section title icons */
+.music-picker-hero h1 svg,
+.plp-title svg{
+  width:20px !important;
+  height:20px !important;
+  max-width:20px !important;
+  max-height:20px !important;
+  flex-shrink:0 !important;
+  display:inline-block !important;
+  vertical-align:middle !important;
+  margin-right:6px !important;
+}
+
+/* Playlist panel item handle */
+.pli-handle svg,
+.pli-handle .svg-emoji svg{
+  width:16px !important;
+  height:16px !important;
+  max-width:16px !important;
+  max-height:16px !important;
+}
+
+/* Playlist panel mode btn icons */
+.playlist-mode-btn svg,
+.playlist-mode-btn .svg-emoji svg{
+  width:20px !important;
+  height:20px !important;
+  max-width:20px !important;
+  max-height:20px !important;
+}
+
+/* Fix svg-emoji global max */
+.svg-emoji{
+  max-width:1.4em !important;
+  max-height:1.4em !important;
+  overflow:hidden !important;
+}
+.svg-emoji svg{
+  width:100% !important;
+  height:100% !important;
+  max-width:1.4em !important;
+  max-height:1.4em !important;
+}
+
+/* Fix music float button */
+.music-float-btn svg{
+  width:26px !important;
+  height:26px !important;
+  max-width:26px !important;
+  max-height:26px !important;
+}
+
+/* Fix sound toggle */
+#sound-toggle-btn svg{
+  width:18px !important;
+  height:18px !important;
+  max-width:18px !important;
+  max-height:18px !important;
+}
+</style>
+
+<script id="patch-fix-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH FIX — Fix bugs dari Patch 1-4
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  "use strict";
+  console.log("%c🔧 Patch Fix loading — repair bugs...","color:#22c55e;font-weight:bold");
+
+  /* ═══════════════════════════════════════════════════════════
+     FIX #1 — showModeBadge: Jangan throw kalau element null
+     ═══════════════════════════════════════════════════════════ */
+  if(window.PlaylistManager && window.PlaylistManager.showModeBadge){
+    var _origShowModeBadge = window.PlaylistManager.showModeBadge;
+    window.PlaylistManager.showModeBadge = function(mode){
+      try{
+        // Cek dulu apakah elemen ada sebelum set
+        var existing = document.querySelector(".music-mode-badge");
+        if(existing && existing.parentNode){
+          try{ existing.remove(); }catch(e){}
+        }
+        
+        var labels = { sequential: "Sequential", shuffle: "Shuffle", loop: "Loop 1 Lagu" };
+        var iconName = mode === "shuffle" ? "shuffle" : (mode === "loop" ? "loop" : "sequential");
+        
+        var badge = document.createElement("div");
+        badge.className = "music-mode-badge";
+        
+        // Safe innerHTML
+        var iconHtml = "";
+        try{
+          if(window.__iconSvg) iconHtml = window.__iconSvg(iconName) || "";
+        }catch(e){}
+        
+        badge.innerHTML = iconHtml + ' <span>' + (labels[mode] || mode) + '</span>';
+        
+        if(document.body){
+          document.body.appendChild(badge);
+        }
+        
+        setTimeout(function(){
+          try{
+            if(badge && badge.parentNode){
+              badge.classList.add("hide");
+              setTimeout(function(){
+                try{
+                  if(badge.parentNode) badge.remove();
+                }catch(e){}
+              }, 400);
+            }
+          }catch(e){}
+        }, 2000);
+      }catch(e){ console.warn("showModeBadge safe:", e); }
+    };
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FIX #2 — Hook textContent defensive (prevent null error)
+     ═══════════════════════════════════════════════════════════ */
+  try{
+    var _tcDesc = Object.getOwnPropertyDescriptor(Node.prototype, "textContent");
+    var _origTCGet = _tcDesc.get;
+    var _origTCSet = _tcDesc.set;
+    
+    Object.defineProperty(Node.prototype, "textContent", {
+      set: function(text){
+        try{
+          // Skip kalau null element atau bukan element node
+          if(!this || this.nodeType !== 1){
+            return _origTCSet.call(this, text);
+          }
+          
+          if(text == null){
+            return _origTCSet.call(this, text);
+          }
+          
+          var str = String(text);
+          
+          // Skip conversion kalau text gak ada emoji
+          var hasEmoji = /[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]/u.test(str);
+          if(!hasEmoji){
+            return _origTCSet.call(this, text);
+          }
+          
+          // Convert via emojiToSvg
+          if(window.__emojiToSvg){
+            try{
+              var converted = window.__emojiToSvg(str);
+              if(converted !== str){
+                var _iDesc = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML");
+                return _iDesc.set.call(this, converted);
+              }
+            }catch(e){}
+          }
+          
+          return _origTCSet.call(this, text);
+        }catch(e){
+          try{ _origTCSet.call(this, text); }catch(err){}
+        }
+      },
+      get: _origTCGet,
+      configurable: true
+    });
+    
+    console.log("✅ textContent hook patched (defensive)");
+  }catch(e){
+    console.warn("Hook patch error:", e);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FIX #3 — Music Picker render: fix tampilan
+     ═══════════════════════════════════════════════════════════ */
+  function fixMusicPickerLayout(){
+    // Fix playlist panel
+    var plPanel = document.querySelector(".playlist-panel");
+    if(plPanel){
+      // Fix btn HAPUS SEMUA PLAYLIST
+      var clearBtn = document.getElementById("pl-clear");
+      if(clearBtn){
+        clearBtn.style.width = "auto";
+        clearBtn.style.display = "inline-flex";
+        clearBtn.style.padding = "8px 16px";
+        clearBtn.style.fontSize = "12px";
+        clearBtn.style.minHeight = "0";
+        clearBtn.style.height = "auto";
+        clearBtn.style.marginLeft = "auto";
+        clearBtn.style.marginRight = "auto";
+        clearBtn.style.maxWidth = "200px";
+      }
+      
+      // Fix playlist items
+      plPanel.querySelectorAll(".playlist-item").forEach(function(item){
+        item.style.gap = "8px";
+      });
+    }
+    
+    // Fix music picker items
+    document.querySelectorAll(".music-picker-item").forEach(function(item){
+      var addBtn = item.querySelector(".mpi-add");
+      if(addBtn){
+        addBtn.style.marginLeft = "auto";
+        addBtn.style.flexShrink = "0";
+      }
+      var info = item.querySelector(".mpi-info");
+      if(info){
+        info.style.flex = "1";
+        info.style.minWidth = "0";
+      }
+    });
+    
+    // Fix dev panel bulatan hitam
+    var devContent = document.getElementById("dev-content");
+    if(devContent){
+      // Hapus SVG yang gede tanpa constraint
+      devContent.querySelectorAll("svg").forEach(function(svg){
+        var parent = svg.parentElement;
+        // Kalau bukan dalam .svg-emoji & bukan icon kecil
+        if(parent && !parent.classList.contains("svg-emoji") && !svg.classList.contains("ic")){
+          var w = svg.getBoundingClientRect().width;
+          if(w > 60){
+            svg.style.width = "48px";
+            svg.style.height = "48px";
+            svg.style.maxWidth = "48px";
+            svg.style.maxHeight = "48px";
+          }
+        }
+      });
+    }
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FIX #4 — Dev search input HTML leak
+     ═══════════════════════════════════════════════════════════ */
+  function fixDevSearchInput(){
+    var inputs = document.querySelectorAll("#dev-search, .dev-tools input");
+    inputs.forEach(function(inp){
+      var val = inp.value || "";
+      // Kalau ada HTML tag di value → clear
+      if(val.indexOf("<span") === 0 || val.indexOf("<") === 0){
+        inp.value = "";
+      }
+      // Fix placeholder
+      var ph = inp.getAttribute("placeholder") || "";
+      if(ph.indexOf("<span") !== -1 || ph.indexOf("class=") !== -1){
+        inp.setAttribute("placeholder", "🔍 Cari...");
+      }
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FIX #5 — Music mode badge & toast safe
+     ═══════════════════════════════════════════════════════════ */
+  function fixAllBadges(){
+    document.querySelectorAll(".music-mode-badge").forEach(function(b){
+      if(!b.parentNode) return;
+      // Kalau udah >3 detik → hapus
+      b.setAttribute("data-shown", "1");
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     PERIODIC CLEANUP
+     ═══════════════════════════════════════════════════════════ */
+  var _fixInterval = null;
+  
+  function startCleanup(){
+    if(_fixInterval) return;
+    _fixInterval = setInterval(function(){
+      try{
+        fixMusicPickerLayout();
+        fixDevSearchInput();
+      }catch(e){}
+    }, 1500);
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     WATCH DOM CHANGES — biar langsung fix saat render
+     ═══════════════════════════════════════════════════════════ */
+  function initObserver(){
+    try{
+      var obs = new MutationObserver(function(mutations){
+        var needFix = false;
+        mutations.forEach(function(m){
+          if(m.addedNodes && m.addedNodes.length){
+            m.addedNodes.forEach(function(node){
+              if(node.nodeType === 1){
+                if(node.id === "music-list-wrap" ||
+                   node.classList && (
+                     node.classList.contains("playlist-panel") ||
+                     node.classList.contains("music-picker-page") ||
+                     node.classList.contains("music-picker-item")
+                   )){
+                  needFix = true;
+                }
+              }
+            });
+          }
+        });
+        
+        if(needFix){
+          setTimeout(fixMusicPickerLayout, 50);
+        }
+      });
+      
+      obs.observe(document.body, { childList: true, subtree: true });
+      console.log("✅ Music picker observer active");
+    }catch(e){}
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════ */
+  function init(){
+    startCleanup();
+    initObserver();
+    fixMusicPickerLayout();
+    fixDevSearchInput();
+    
+    console.log("✅ Patch Fix selesai — semua bug difix");
+  }
+  
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){ setTimeout(init, 1500); });
+  } else {
+    setTimeout(init, 1500);
+  }
+
+})();
+</script>
+<!-- ═══ END PATCH FIX ═══ -->
 </body>
    </html>

@@ -13035,5 +13035,1945 @@ body[data-warna="neo-gold"] .user-box{
   border-color:#d4af37 !important;
 }
 </style>
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH 1/4 — SOUND & MUSIC ICON + PLAYLIST AUTO-NEXT
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="patch-1-icon-music-css">
+/* ═══════════════════════════════════════════════════════════
+   SOUND TOGGLE ICON (Topbar)
+   ═══════════════════════════════════════════════════════════ */
+#sound-toggle-btn{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:6px 10px !important;
+  min-width:36px !important;
+  gap:0 !important;
+}
+#sound-toggle-btn svg{
+  width:18px !important;
+  height:18px !important;
+  display:block !important;
+  stroke:currentColor !important;
+  fill:none !important;
+  stroke-width:2.5 !important;
+  stroke-linecap:round !important;
+  stroke-linejoin:round !important;
+}
+#sound-toggle-btn .snd-icon-on{
+  color:#22c55e !important;
+}
+#sound-toggle-btn .snd-icon-off{
+  color:#888 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MUSIC FLOAT BUTTON ICON (Pojok kanan atas)
+   ═══════════════════════════════════════════════════════════ */
+.music-float-btn{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.music-float-btn svg{
+  width:26px !important;
+  height:26px !important;
+  display:block !important;
+  fill:none !important;
+  stroke-width:2.5 !important;
+  stroke-linecap:round !important;
+  stroke-linejoin:round !important;
+  transition:transform .2s, stroke .2s !important;
+}
+
+/* Music icon — note with waves (playing) */
+.music-float-btn .mus-icon-note{
+  stroke:var(--yellow,#ffd700) !important;
+}
+.music-float-btn.playing .mus-icon-note{
+  animation:musNoteFloat .8s ease-in-out infinite !important;
+}
+@keyframes musNoteFloat{
+  0%,100%{transform:translateY(0) rotate(-5deg)}
+  50%{transform:translateY(-3px) rotate(5deg)}
+}
+
+/* Music waves (animated bar) */
+.music-float-btn .mus-wave{
+  opacity:0;
+  transition:opacity .3s;
+  stroke:var(--yellow,#ffd700) !important;
+}
+.music-float-btn.playing .mus-wave{
+  opacity:1;
+  animation:musWavePulse .6s ease-in-out infinite alternate;
+}
+.music-float-btn.playing .mus-wave-1{animation-delay:0s}
+.music-float-btn.playing .mus-wave-2{animation-delay:.15s}
+.music-float-btn.playing .mus-wave-3{animation-delay:.3s}
+@keyframes musWavePulse{
+  0%{transform:scaleY(0.5);transform-origin:bottom}
+  100%{transform:scaleY(1.2);transform-origin:bottom}
+}
+
+/* Muted state — slash icon */
+.music-float-btn .mus-slash{
+  opacity:0;
+  transition:opacity .2s;
+  stroke:#ff6b6b !important;
+}
+.music-float-btn:not(.playing) .mus-slash{
+  opacity:1;
+}
+.music-float-btn:not(.playing) .mus-wave{
+  opacity:0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PLAYLIST UI (Music Picker)
+   ═══════════════════════════════════════════════════════════ */
+.playlist-panel{
+  background:linear-gradient(135deg,#e0f2fe,#bae6fd);
+  border:2.5px solid var(--ink);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:4px 4px 0 var(--ink);
+}
+.playlist-panel .plp-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.playlist-panel .plp-title{
+  font-size:14px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.playlist-panel .plp-count{
+  background:var(--ink);
+  color:var(--yellow);
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:900;
+  padding:3px 10px;
+  border-radius:999px;
+}
+.playlist-mode-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-bottom:12px;
+}
+.playlist-mode-btn{
+  padding:10px 6px;
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  background:var(--white);
+  font-weight:900;
+  font-size:11px;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+}
+.playlist-mode-btn:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.playlist-mode-btn.active{
+  background:var(--ink);
+  color:var(--yellow);
+}
+.playlist-mode-btn svg{
+  width:20px;height:20px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.playlist-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  background:var(--white);
+  border:2px solid var(--ink);
+  border-radius:10px;
+  margin-bottom:6px;
+  font-size:12.5px;
+  font-weight:700;
+}
+.playlist-item .pli-handle{
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  color:var(--ink-soft);
+  cursor:grab;
+  flex-shrink:0;
+}
+.playlist-item .pli-handle:active{cursor:grabbing}
+.playlist-item .pli-num{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:var(--ink);
+  color:var(--yellow);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:11px;
+  flex-shrink:0;
+}
+.playlist-item .pli-info{
+  flex:1;
+  min-width:0;
+}
+.playlist-item .pli-title{
+  font-weight:900;
+  text-transform:uppercase;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.playlist-item .pli-artist{
+  font-size:10.5px;
+  color:var(--ink-soft);
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.playlist-item .pli-remove{
+  width:26px;height:26px;
+  border-radius:7px;
+  background:var(--red);
+  color:#fff;
+  border:2px solid var(--ink);
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow:2px 2px 0 var(--ink);
+  flex-shrink:0;
+  transition:transform .1s;
+}
+.playlist-item .pli-remove:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.playlist-item .pli-remove svg{
+  width:14px;height:14px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:3;
+}
+.playlist-empty{
+  text-align:center;
+  padding:16px 12px;
+  font-size:12px;
+  font-weight:600;
+  color:var(--ink-soft);
+  background:var(--cream);
+  border:2px dashed var(--ink-soft);
+  border-radius:10px;
+}
+
+/* Music Picker item — plus button */
+.music-picker-item .mpi-add{
+  padding:6px 10px;
+  border:2.5px solid var(--ink);
+  border-radius:8px;
+  background:var(--green);
+  color:#fff;
+  font-weight:900;
+  font-size:11px;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:2px 2px 0 var(--ink);
+  flex-shrink:0;
+  transition:transform .1s, box-shadow .1s;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+.music-picker-item .mpi-add:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.music-picker-item .mpi-add svg{
+  width:14px;height:14px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:3;
+}
+.music-picker-item.in-playlist .mpi-add{
+  background:var(--ink);
+  color:var(--yellow);
+}
+
+/* Music mode toast */
+.music-mode-badge{
+  position:fixed;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:9994;
+  background:var(--ink);
+  color:var(--yellow);
+  border:2.5px solid var(--yellow);
+  border-radius:999px;
+  padding:8px 16px;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  box-shadow:3px 3px 0 var(--yellow);
+  display:flex;
+  align-items:center;
+  gap:6px;
+  animation:musicModeBadge .3s ease;
+}
+@keyframes musicModeBadge{
+  from{opacity:0;transform:translate(-50%,20px)}
+  to{opacity:1;transform:translate(-50%,0)}
+}
+.music-mode-badge.hide{
+  animation:musicModeBadgeOut .3s ease forwards;
+}
+@keyframes musicModeBadgeOut{
+  to{opacity:0;transform:translate(-50%,20px)}
+}
+.music-mode-badge svg{
+  width:14px;height:14px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2.5;
+}
+</style>
+
+<script id="patch-1-icon-music-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH 1/4 — SOUND & MUSIC ICON + PLAYLIST AUTO-NEXT
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  "use strict";
+  console.log("%c🎨 Patch 1/4 loading — Sound & Music Icon + Playlist...","color:#ffd700;font-weight:bold");
+
+  /* ═══════════════════════════════════════════════════════════
+     SVG ICON LIBRARY — Sound & Music
+     ═══════════════════════════════════════════════════════════ */
+  var ICON_SVG = {
+    // Speaker ON
+    speakerOn: '<svg viewBox="0 0 24 24" class="snd-icon-on" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+    // Speaker OFF
+    speakerOff: '<svg viewBox="0 0 24 24" class="snd-icon-off" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="currentColor"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+    // Music Note (playing state)
+    musicNote: '<path class="mus-icon-note" d="M9 18V5l12-2v13"/><circle class="mus-icon-note" cx="6" cy="18" r="3"/><circle class="mus-icon-note" cx="18" cy="16" r="3"/>',
+    // Music waves (animated) — overlay di note
+    musicWaves: '<g class="mus-wave-group"><line class="mus-wave mus-wave-1" x1="20" y1="14" x2="20" y2="18"/><line class="mus-wave mus-wave-2" x1="22" y1="12" x2="22" y2="20"/><line class="mus-wave mus-wave-3" x1="24" y1="10" x2="24" y2="22"/></g>',
+    // Slash (muted)
+    musicSlash: '<line class="mus-slash" x1="3" y1="3" x2="21" y2="21" stroke-width="2.5"/>',
+    // Plus
+    plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+    // X (close)
+    x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+    // Sequential
+    sequential: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/>',
+    // Shuffle
+    shuffle: '<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
+    // Loop
+    loop: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+    // Grip
+    grip: '<circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/>',
+    // Music big
+    musicBig: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+    // List
+    list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>'
+  };
+  
+  function svgIcon(name, cls){
+    var d = ICON_SVG[name] || "";
+    if(!d) return "";
+    if(d.indexOf("<svg") === 0){
+      return d;  // udah full svg
+    }
+    return '<svg class="' + (cls||"") + '" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + d + '</svg>';
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     STEP 1 — GANTI SOUND TOGGLE ICON (Topbar)
+     ═══════════════════════════════════════════════════════════ */
+  function patchSoundToggle(){
+    var btn = document.getElementById("sound-toggle-btn");
+    if(!btn) return;
+    
+    // Ganti isi tombol dengan SVG
+    function updateIcon(){
+      var enabled = (window.Sound && window.Sound.isEnabled) ? window.Sound.isEnabled() : true;
+      btn.innerHTML = enabled ? ICON_SVG.speakerOn : ICON_SVG.speakerOff;
+    }
+    
+    updateIcon();
+    
+    // Re-patch klik (biar update icon setelah toggle)
+    var origClick = btn.onclick;
+    // Override listener lama — pakai capture
+    btn.addEventListener("click", function(){
+      // Tunggu sebentar biar Sound.toggle() selesai
+      setTimeout(updateIcon, 10);
+    }, false);
+    
+    // Watch kalau tombol di-render ulang
+    var observer = new MutationObserver(function(){
+      if(btn && btn.textContent.trim() === "🔊"){ updateIcon(); }
+      if(btn && btn.textContent.trim() === "🔇"){ updateIcon(); }
+    });
+    observer.observe(btn, { childList: true, subtree: true, characterData: true });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     STEP 2 — GANTI MUSIC FLOAT BUTTON ICON
+     ═══════════════════════════════════════════════════════════ */
+  function patchMusicFloat(){
+    var btn = document.getElementById("music-float-btn");
+    if(!btn) return;
+    
+    // Bikin SVG music note + waves + slash
+    var fullSvg = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + 
+      ICON_SVG.musicNote + 
+      ICON_SVG.musicSlash + 
+      '</svg>';
+    
+    btn.innerHTML = fullSvg;
+  }
+  
+  // Patch button saat di-render
+  function patchMusicButtonWhenExists(){
+    var btn = document.getElementById("music-float-btn");
+    if(btn && btn.querySelector("svg") === null){
+      patchMusicFloat();
+    }
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     STEP 3 — PLAYLIST MANAGER
+     ═══════════════════════════════════════════════════════════ */
+  var PlaylistManager = {
+    _mode: "sequential",  // sequential | shuffle | loop
+    _queue: [],           // array musicId
+    _currentIdx: 0,
+    _shuffleHistory: [],
+    
+    /* ─── STORAGE ─── */
+    _storageKey: "varlinkbio_playlist_pref",
+    
+    getPref(){
+      try{
+        var raw = localStorage.getItem(this._storageKey);
+        if(raw){
+          var p = JSON.parse(raw);
+          if(p && Array.isArray(p.queue)) return p;
+        }
+      }catch(e){}
+      return { queue: [], mode: "sequential" };
+    },
+    
+    setPref(pref){
+      try{
+        localStorage.setItem(this._storageKey, JSON.stringify(pref));
+      }catch(e){}
+    },
+    
+    /* ─── QUEUE MANAGEMENT ─── */
+    getQueue(){
+      var p = this.getPref();
+      return p.queue || [];
+    },
+    
+    getMode(){
+      var p = this.getPref();
+      return p.mode || "sequential";
+    },
+    
+    setMode(mode){
+      var p = this.getPref();
+      p.mode = mode;
+      this.setPref(p);
+      this._mode = mode;
+      this.showModeBadge(mode);
+    },
+    
+    addToQueue(musicId){
+      var p = this.getPref();
+      if(!p.queue) p.queue = [];
+      if(p.queue.indexOf(musicId) !== -1) return false;  // sudah ada
+      p.queue.push(musicId);
+      this.setPref(p);
+      return true;
+    },
+    
+    removeFromQueue(musicId){
+      var p = this.getPref();
+      if(!p.queue) p.queue = [];
+      var idx = p.queue.indexOf(musicId);
+      if(idx === -1) return false;
+      p.queue.splice(idx, 1);
+      this.setPref(p);
+      return true;
+    },
+    
+    isInQueue(musicId){
+      var p = this.getPref();
+      return (p.queue||[]).indexOf(musicId) !== -1;
+    },
+    
+    clearQueue(){
+      var p = this.getPref();
+      p.queue = [];
+      this.setPref(p);
+    },
+    
+    /* ─── NEXT TRACK ─── */
+    async getNextTrack(currentId){
+      var queue = this.getQueue();
+      var mode = this.getMode();
+      
+      if(!queue.length) return null;
+      
+      var self = this;
+      
+      // Sequential
+      if(mode === "sequential"){
+        if(!currentId) return await this._getMusicById(queue[0]);
+        var curIdx = queue.indexOf(currentId);
+        if(curIdx === -1) return await this._getMusicById(queue[0]);
+        var nextIdx = (curIdx + 1) % queue.length;
+        return await this._getMusicById(queue[nextIdx]);
+      }
+      
+      // Loop
+      if(mode === "loop"){
+        if(!currentId) return await this._getMusicById(queue[0]);
+        return await this._getMusicById(currentId);
+      }
+      
+      // Shuffle
+      if(mode === "shuffle"){
+        var list = queue.slice();
+        // Kalau ada currentId, exclude
+        if(currentId){
+          list = list.filter(function(id){ return id !== currentId; });
+        }
+        if(!list.length) return await this._getMusicById(currentId);
+        var pick = list[Math.floor(Math.random() * list.length)];
+        return await this._getMusicById(pick);
+      }
+      
+      return null;
+    },
+    
+    async _getMusicById(id){
+      try{
+        if(window.MusicLibrary && window.MusicLibrary.getById){
+          return await window.MusicLibrary.getById(id);
+        }
+        if(window.FB){
+          var doc = await window.FB.db.collection("music_library").doc(id).get();
+          if(doc.exists) return Object.assign({ id: doc.id }, doc.data());
+        }
+      }catch(e){ console.warn("_getMusicById:", e); }
+      return null;
+    },
+    
+    /* ─── BADGE ─── */
+    showModeBadge(mode){
+      var existing = document.querySelector(".music-mode-badge");
+      if(existing) existing.remove();
+      
+      var labels = { sequential: "Sequential", shuffle: "Shuffle", loop: "Loop 1 Lagu" };
+      var iconName = mode === "shuffle" ? "shuffle" : (mode === "loop" ? "loop" : "sequential");
+      
+      var badge = document.createElement("div");
+      badge.className = "music-mode-badge";
+      badge.innerHTML = svgIcon(iconName) + ' <span>' + labels[mode] + '</span>';
+      document.body.appendChild(badge);
+      
+      setTimeout(function(){
+        badge.classList.add("hide");
+        setTimeout(function(){ badge.remove(); }, 400);
+      }, 2000);
+    }
+  };
+  
+  /* ═══════════════════════════════════════════════════════════
+     STEP 4 — PATCH MUSIC PLAYER (Auto-Next)
+     ═══════════════════════════════════════════════════════════ */
+  function patchMusicPlayerAutoNext(){
+    if(!window.MusicPlayer) return;
+    if(window.MusicPlayer._autoNextPatched) return;
+    
+    var MP = window.MusicPlayer;
+    
+    // Disable loop
+    if(MP._audio) MP._audio.loop = false;
+    
+    // Hook: onended
+    var origInit = MP.init;
+    MP.init = function(){
+      origInit.call(this);
+      if(this._audio){
+        this._audio.loop = false;
+        
+        // Setup handler onended (sekali)
+        if(!this._autoNextHandlerSet){
+          var self = this;
+          this._audio.addEventListener("ended", async function(){
+            try{
+              var next = await PlaylistManager.getNextTrack(self._current ? self._current.id : null);
+              if(next && next.url){
+                self._current = next;
+                self._audio.src = next.url;
+                self._audio.play().then(function(){
+                  self._btnPlaying(true);
+                  self._showToast("▶️ " + (next.title || "Music"));
+                }).catch(function(){});
+                // Update button title
+                if(self._btn){
+                  self._btn.title = "Music: " + (next.title || "Untitled");
+                }
+              } else {
+                // Gak ada next → stop
+                self._btnPlaying(false);
+              }
+            }catch(e){ console.warn("autoNext:", e); }
+          });
+          this._autoNextHandlerSet = true;
+          console.log("✅ Auto-Next handler terpasang");
+        }
+      }
+    };
+    
+    // Re-init kalau audio udah ada
+    if(MP._audio){
+      MP._audio.loop = false;
+      MP.init();
+    }
+    
+    MP._autoNextPatched = true;
+    console.log("✅ MusicPlayer patched for auto-next");
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     STEP 5 — PATCH MUSIC PICKER — UI PLAYLIST
+     ═══════════════════════════════════════════════════════════ */
+  function patchMusicPickerUI(){
+    if(!window.PageMusic) return;
+    if(window.PageMusic._playlistUIPatched) return;
+    
+    var PM = window.PageMusic;
+    var origLoadList = PM.loadList;
+    
+    PM.loadList = async function(){
+      var wrap = document.getElementById("music-list-wrap");
+      if(!wrap) return;
+      
+      try{
+        var list = await (window.MusicLibrary ? window.MusicLibrary.list() : Promise.resolve([]));
+        var queue = PlaylistManager.getQueue();
+        var mode = PlaylistManager.getMode();
+        
+        if(list.length === 0){
+          wrap.innerHTML = '<div class="music-picker-empty">😶 Belum ada music. Tunggu admin upload ya!</div>';
+          return;
+        }
+        
+        var html = '';
+        
+        // Playlist Panel
+        html += '<div class="playlist-panel">';
+        html += '<div class="plp-head">';
+        html += '<div class="plp-title">' + svgIcon("musicBig") + ' Playlist Auto-Next</div>';
+        html += '<div class="plp-count">' + queue.length + ' lagu</div>';
+        html += '</div>';
+        
+        // Mode buttons
+        html += '<div class="playlist-mode-grid">';
+        html += '<div class="playlist-mode-btn ' + (mode === "sequential" ? "active" : "") + '" data-plmode="sequential">' + svgIcon("sequential") + '<span>Urut</span></div>';
+        html += '<div class="playlist-mode-btn ' + (mode === "shuffle" ? "active" : "") + '" data-plmode="shuffle">' + svgIcon("shuffle") + '<span>Acak</span></div>';
+        html += '<div class="playlist-mode-btn ' + (mode === "loop" ? "active" : "") + '" data-plmode="loop">' + svgIcon("loop") + '<span>Loop</span></div>';
+        html += '</div>';
+        
+        // Playlist items
+        if(queue.length === 0){
+          html += '<div class="playlist-empty">Belum ada lagu di playlist. Tap tombol <b>+ Tambah</b> di bawah.</div>';
+        } else {
+          queue.forEach(function(id, idx){
+            var music = list.find(function(m){ return m.id === id; });
+            if(!music) return;
+            html += '<div class="playlist-item" data-pl-id="' + id + '">';
+            html += '<div class="pli-handle">' + svgIcon("grip") + '</div>';
+            html += '<div class="pli-num">' + (idx+1) + '</div>';
+            html += '<div class="pli-info">';
+            html += '<div class="pli-title">' + escapeHtml(music.title || "Untitled") + '</div>';
+            html += '<div class="pli-artist">' + escapeHtml(music.artist || "Unknown") + '</div>';
+            html += '</div>';
+            html += '<button class="pli-remove" data-pl-remove="' + id + '">' + svgIcon("x") + '</button>';
+            html += '</div>';
+          });
+        }
+        
+        if(queue.length > 0){
+          html += '<button class="btn btn-sm btn-red btn-block" id="pl-clear" style="margin-top:10px">' + svgIcon("x") + ' Hapus Semua Playlist</button>';
+        }
+        
+        html += '</div>';
+        
+        // List music
+        html += '<div style="margin:14px 0 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft)">';
+        html += svgIcon("list") + ' Semua Music';
+        html += '</div>';
+        
+        list.forEach(function(m){
+          var inPl = queue.indexOf(m.id) !== -1;
+          html += '<div class="music-picker-item ' + (inPl ? "in-playlist" : "") + '" data-music-id="' + m.id + '">';
+          html += '<div class="mpi-play" data-action="preview" data-id="' + m.id + '">' + svgIcon("musicBig") + '</div>';
+          html += '<div class="mpi-info">';
+          html += '<div class="mpi-title">' + escapeHtml(m.title || "Untitled") + '</div>';
+          html += '<div class="mpi-artist">' + escapeHtml(m.artist || "Unknown") + (m.isDefault ? " · Default" : "") + '</div>';
+          html += '</div>';
+          html += '<button class="mpi-add" data-add-pl="' + m.id + '">' + 
+            (inPl ? svgIcon("check") + " Ada" : svgIcon("plus") + " Tambah") + 
+            '</button>';
+          html += '</div>';
+        });
+        
+        wrap.innerHTML = html;
+        
+        // Bind: mode buttons
+        wrap.querySelectorAll("[data-plmode]").forEach(function(btn){
+          btn.addEventListener("click", function(){
+            var m = btn.dataset.plmode;
+            PlaylistManager.setMode(m);
+            PM.loadList();
+          });
+        });
+        
+        // Bind: add to playlist
+        wrap.querySelectorAll("[data-add-pl]").forEach(function(btn){
+          btn.addEventListener("click", function(e){
+            e.stopPropagation();
+            var id = btn.dataset.addPl;
+            if(PlaylistManager.isInQueue(id)){
+              PlaylistManager.removeFromQueue(id);
+              if(window.toast) window.toast("Dihapus dari playlist","info");
+            } else {
+              PlaylistManager.addToQueue(id);
+              if(window.toast) window.toast("✅ Ditambah ke playlist!","success");
+            }
+            PM.loadList();
+          });
+        });
+        
+        // Bind: remove from playlist
+        wrap.querySelectorAll("[data-pl-remove]").forEach(function(btn){
+          btn.addEventListener("click", function(e){
+            e.stopPropagation();
+            var id = btn.dataset.plRemove;
+            PlaylistManager.removeFromQueue(id);
+            if(window.toast) window.toast("Dihapus dari playlist","info");
+            PM.loadList();
+          });
+        });
+        
+        // Bind: clear
+        var clearBtn = document.getElementById("pl-clear");
+        if(clearBtn) clearBtn.addEventListener("click", function(){
+          if(!confirm("Hapus semua lagu dari playlist?")) return;
+          PlaylistManager.clearQueue();
+          if(window.toast) window.toast("Playlist dikosongkan","info");
+          PM.loadList();
+        });
+        
+        // Bind: preview
+        wrap.querySelectorAll('[data-action="preview"]').forEach(function(el){
+          el.addEventListener("click", function(){
+            var id = el.dataset.id;
+            var music = list.find(function(x){ return x.id === id; });
+            if(music) PM.preview(music, el);
+          });
+        });
+        
+      }catch(e){
+        wrap.innerHTML = '<div class="music-picker-empty">😵 ' + escapeHtml(e.message) + '</div>';
+      }
+    };
+    
+    PM._playlistUIPatched = true;
+    console.log("✅ Music Picker UI patched (playlist)");
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HELPER — escape HTML
+     ═══════════════════════════════════════════════════════════ */
+  function escapeHtml(s){
+    return String(s || "").replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     INIT — MUTATION OBSERVER untuk re-patch
+     ═══════════════════════════════════════════════════════════ */
+  function init(){
+    // Patch segera
+    patchSoundToggle();
+    patchMusicButtonWhenExists();
+    patchMusicPlayerAutoNext();
+    patchMusicPickerUI();
+    
+    // Watch DOM changes
+    var observer = new MutationObserver(function(mutations){
+      var needSoundPatch = false;
+      var needMusicPatch = false;
+      
+      mutations.forEach(function(m){
+        m.addedNodes.forEach(function(node){
+          if(node.nodeType !== 1) return;
+          if(node.id === "sound-toggle-btn") needSoundPatch = true;
+          if(node.id === "music-float-btn") needMusicPatch = true;
+          if(node.querySelector){
+            if(node.querySelector("#sound-toggle-btn")) needSoundPatch = true;
+            if(node.querySelector("#music-float-btn")) needMusicPatch = true;
+          }
+        });
+      });
+      
+      if(needSoundPatch) setTimeout(patchSoundToggle, 50);
+      if(needMusicPatch) setTimeout(patchMusicFloat, 50);
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Periodic check (setiap 2 detik)
+    setInterval(function(){
+      patchSoundToggle();
+      patchMusicButtonWhenExists();
+    }, 2000);
+    
+    console.log("✅ Patch 1/4 — Sound & Music Icon + Playlist siap!");
+    console.log("📋 Playlist Mode:", PlaylistManager.getMode());
+    console.log("📋 Playlist Queue:", PlaylistManager.getQueue().length, "lagu");
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     EXPOSE
+     ═══════════════════════════════════════════════════════════ */
+  window.PlaylistManager = PlaylistManager;
+  window.__iconSvg = svgIcon;
+  
+  // Wait for dependencies
+  function waitFor(cond, timeout){
+    return new Promise(function(resolve, reject){
+      var start = Date.now();
+      var iv = setInterval(function(){
+        if(cond()){ clearInterval(iv); resolve(true); }
+        else if(Date.now() - start > (timeout || 8000)){ clearInterval(iv); reject(new Error("timeout")); }
+      }, 100);
+    });
+  }
+  
+  waitFor(function(){
+    return document.body && window.Sound && window.MusicPlayer;
+  }, 8000).then(function(){
+    setTimeout(init, 500);
+  }).catch(function(){
+    console.warn("⏱️ Timeout — paksa init");
+    setTimeout(init, 500);
+  });
+
+})();
+</script>
+<!-- ═══ END PATCH 1/4 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH 2/4 — SVG EMOJI LIBRARY (PART 1/2)
+     Library icon SVG buat ganti emoji
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="patch-2-emoji-css">
+/* ═══════════════════════════════════════════════════════════
+   SVG ICON BASE STYLING
+   ═══════════════════════════════════════════════════════════ */
+.svg-emoji{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.1em;
+  height:1.1em;
+  vertical-align:-0.15em;
+  flex-shrink:0;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  fill:none;
+}
+.svg-emoji svg{
+  width:100%;
+  height:100%;
+  display:block;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+/* Small size */
+.svg-emoji.svg-sm{
+  width:0.9em;
+  height:0.9em;
+}
+/* Large size */
+.svg-emoji.svg-lg{
+  width:1.4em;
+  height:1.4em;
+}
+/* XL size */
+.svg-emoji.svg-xl{
+  width:1.8em;
+  height:1.8em;
+}
+
+/* Color accents */
+.svg-emoji.svg-gold{color:#d4af37}
+.svg-emoji.svg-green{color:#22c55e}
+.svg-emoji.svg-red{color:#ff2a2a}
+.svg-emoji.svg-blue{color:#2563eb}
+.svg-emoji.svg-pink{color:#ff69b4}
+.svg-emoji.svg-purple{color:#a78bfa}
+.svg-emoji.svg-orange{color:#ff8c00}
+.svg-emoji.svg-yellow{color:#ffd700}
+.svg-emoji.svg-white{color:#fff}
+.svg-emoji.svg-ink{color:var(--ink,#0a0a0a)}
+</style>
+
+<script id="patch-2-emoji-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH 2/4 — SVG EMOJI LIBRARY (PART 1/2)
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  "use strict";
+  console.log("%c🎨 Patch 2/4 loading — SVG Emoji Library (1/2)...","color:#ffd700;font-weight:bold");
+
+  /* ═══════════════════════════════════════════════════════════
+     SVG EMOJI LIBRARY — ~120 icon definitions
+     Format: emoji → SVG path data
+     ═══════════════════════════════════════════════════════════ */
+  var EMOJI_SVG = {
+    // ═══ MONEY & PAYMENT ═══
+    "💰": '<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>',
+    "💎": '<path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12"/><path d="m13 3 3 6-4 12"/><path d="M2 9h20"/>',
+    "👑": '<path d="M2 20h20M4 20l-2-9 6 4 4-7 4 7 6-4-2 9"/>',
+    "🚀": '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+    "💸": '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+    "🪙": '<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/>',
+    "🏆": '<path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><path d="M6 3v6a6 6 0 0 0 12 0V3"/><path d="M6 21h12"/><path d="M12 15v6"/>',
+    "🎁": '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+
+    // ═══ MUSIC & AUDIO ═══
+    "🎵": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+    "🎶": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M9 9l12-2"/><path d="M9 14l12-2"/>',
+    "🎧": '<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+    "🔊": '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>',
+    "🔉": '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
+    "🔇": '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>',
+    "🎤": '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+
+    // ═══ LINKS & SOCIAL ═══
+    "🔗": '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    "🌐": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    "📷": '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+    "📸": '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/><path d="M9 5l1.5-2h3L15 5"/>',
+    "📹": '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>',
+    "▶️": '<polygon points="5 3 19 12 5 21 5 3"/>',
+    "⏸️": '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+    "⏯️": '<path d="M5 3l10 9-10 9V3z"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="21" y1="4" x2="21" y2="20"/>',
+    "❤️": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+
+    // ═══ UI ACTIONS ═══
+    "✨": '<path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>',
+    "⭐": '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    "🌟": '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path d="M12 6.5v4M10 8.5h4"/>',
+    "💫": '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+    "🔥": '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+    "⚡": '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+    "💡": '<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/>',
+    "🎯": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    "🎨": '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>',
+    "🌈": '<path d="M4 12a8 8 0 0 1 16 0"/><path d="M6.5 12a5.5 5.5 0 0 1 11 0"/><path d="M9 12a3 3 0 0 1 6 0"/><circle cx="12" cy="12" r="1"/>',
+    "🎬": '<rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>',
+
+    // ═══ COMMUNICATION ═══
+    "💬": '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+    "📢": '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+    "📣": '<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+    "📧": '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+    "📩": '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><line x1="16" y1="18" x2="22" y2="18"/>',
+    "📱": '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+    "📞": '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+
+    // ═══ STATUS & FEEDBACK ═══
+    "✅": '<circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 10"/>',
+    "✓": '<polyline points="20 6 9 17 4 12"/>',
+    "❌": '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+    "⚠️": '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    "❗": '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+    "❓": '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    "ℹ️": '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    "🔒": '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    "🔓": '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+    "🔑": '<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/>',
+    "🗝️": '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>',
+    "⚙️": '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+
+    // ═══ EDITOR & TOOLS ═══
+    "✏️": '<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+    "📝": '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
+    "📋": '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>',
+    "📄": '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+    "📁": '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+    "📂": '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><path d="M2 11l3-3h15l2 2"/>',
+    "💾": '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+    "🗑️": '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+    "📤": '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+    "📥": '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+    "📎": '<path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+    "🔍": '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+    "🔎": '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>',
+
+    // ═══ CHARTS & DATA ═══
+    "📊": '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+    "📈": '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+    "📉": '<polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/>',
+    "📌": '<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-4a4 4 0 0 0-4-4h-1V3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v6H9a4 4 0 0 0-4 4z"/>',
+    "📍": '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+
+    // ═══ NAVIGASI & ARROWS ═══
+    "→": '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+    "←": '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+    "↑": '<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>',
+    "↓": '<line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>',
+    "↗️": '<line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>',
+    "↘️": '<line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 7 17 17 7 17"/>',
+    "↔️": '<polyline points="7 4 3 8 7 12"/><line x1="3" y1="8" x2="21" y2="8"/><polyline points="17 16 21 20 17 24"/>',
+    "↺": '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',
+
+    // ═══ TIME & CLOCK ═══
+    "⏰": '<circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 15 15"/><line x1="5" y1="3" x2="9" y2="7"/><line x1="19" y1="3" x2="15" y2="7"/>',
+    "⏱️": '<circle cx="12" cy="14" r="8"/><polyline points="12 10 12 14 15 14"/><line x1="9" y1="2" x2="15" y2="2"/>',
+    "⏳": '<path d="M6 2h12v6l-4 4 4 4v6H6v-6l4-4-4-4z"/><line x1="6" y1="2" x2="18" y2="2"/><line x1="6" y1="22" x2="18" y2="22"/>',
+    "⏳": '<path d="M6 2h12v6l-4 4 4 4v6H6v-6l4-4-4-4z"/><line x1="6" y1="2" x2="18" y2="2"/><line x1="6" y1="22" x2="18" y2="22"/>',
+    "📅": '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+    "🕐": '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+
+    // ═══ PLAN & BADGES ═══
+    "🚫": '<circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>',
+    "🎖️": '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+    "🏅": '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+    "🔰": '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+
+    // ═══ MISC ═══
+    "🎉": '<path d="M2 22l2-2"/><path d="M5 18l1-1"/><path d="m7.3 8-2.85 5.7a1.6 1.6 0 0 0 .81 2.1l1.34.67a1.6 1.6 0 0 0 2.1-.81L11.55 10"/><path d="M22 12h-2"/><path d="M15 3v2"/><path d="M20.6 5.4l-1.4 1.4"/><path d="M12.4 5.4l1.4 1.4"/>',
+    "🎊": '<path d="M2 22l2-2"/><path d="M5 18l1-1"/><path d="m7.3 8-2.85 5.7a1.6 1.6 0 0 0 .81 2.1l1.34.67a1.6 1.6 0 0 0 2.1-.81L11.55 10"/><circle cx="17" cy="7" r="1"/><circle cx="20" cy="13" r="1"/><circle cx="15" cy="16" r="1"/>',
+    "👋": '<path d="M12 2v20M8 6c0-2 1-3 1-3s.5 1 1 1 1-.5 1-1 1-1 1-1 1 .5 1 1 .5 1 1 1 1-1 1-1 1 1 1 3v5s3 0 3 3-1 6-5 6-7-3-7-6 1-6 1-6z"/>',
+    "🙂": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    "🙌": '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',
+    "👍": '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>',
+    "💪": '<path d="M18 12a2 2 0 0 0-1.5-1.94A5 5 0 0 0 7 8v8a5 5 0 0 0 9.5 2.06A2 2 0 0 0 18 16z"/>',
+    "🍀": '<path d="M10 5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM14 5a2 2 0 1 1 4 0 2 2 0 1 1-4 0zM10 13a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM14 13a2 2 0 1 1 4 0 2 2 0 1 1-4 0z"/>',
+    "🏠": '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    "🧭": '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+    "📖": '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+    "📚": '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    "📘": '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    "🚀": '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+    "🧪": '<path d="M9 3h6v6l4 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2l4-10V3z"/><line x1="8" y1="3" x2="16" y2="3"/><line x1="6.5" y1="12" x2="17.5" y2="12"/>',
+    "🤝": '<path d="M11 17l-2-2a1 1 0 0 1 0-1.4l3-3a1 1 0 0 1 1.4 0l2 2 2-2 4 4-4 4-4-4-2 2z"/><path d="M13 7l-3 3M3 12l6-6 3 3"/>',
+    "🌙": '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    "☀️": '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+    "👤": '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+    "👥": '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    "🔔": '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+    "🔕": '<path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><line x1="1" y1="1" x2="23" y2="23"/>',
+    "🎓": '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+    "🌍": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    "🎮": '<line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="6" ry="6"/>',
+    "🎵": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+    "🖼️": '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+    "🎭": '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="11" r="1"/>',
+    "💎": '<path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12"/><path d="m13 3 3 6-4 12"/>',
+    "🌟": '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+    "🏡": '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    "🌐": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     EXPOSE KE WINDOW
+     ═══════════════════════════════════════════════════════════ */
+  window.__EMOJI_SVG = EMOJI_SVG;
+  
+  /* ═══════════════════════════════════════════════════════════
+     UTILITY FUNCTION — Convert Emoji to SVG
+     ═══════════════════════════════════════════════════════════ */
+  window.__emojiToSvg = function(text, opts){
+    opts = opts || {};
+    if(!text) return text;
+    
+    var sizeClass = opts.size === "sm" ? "svg-sm" : (opts.size === "lg" ? "svg-lg" : (opts.size === "xl" ? "svg-xl" : ""));
+    var colorClass = opts.color ? ("svg-" + opts.color) : "";
+    
+    return String(text).replace(/([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F1E6}-\u{1F1FF}]|[\u{2700}-\u{27BF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\uFE0F])/gu, function(match){
+      // Filter pure variation selector
+      if(match === "\uFE0F") return "";
+      
+      var svgData = EMOJI_SVG[match];
+      if(!svgData) return match;  // fallback: keep emoji
+      
+      var classes = ["svg-emoji"];
+      if(sizeClass) classes.push(sizeClass);
+      if(colorClass) classes.push(colorClass);
+      
+      return '<span class="' + classes.join(" ") + '"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + svgData + '</svg></span>';
+    });
+  };
+  
+  /* ═══════════════════════════════════════════════════════════
+     AUTO-CONVERT — Replace emoji di text nodes
+     ═══════════════════════════════════════════════════════════ */
+  var autoConvertEnabled = true;
+  var SKIP_SELECTORS = [
+    "script", "style", "textarea", "input", "code", "pre",
+    ".svg-emoji", "svg", "[data-no-emoji]", ".modal-back"
+  ];
+  
+  function shouldSkip(el){
+    if(!el || el.nodeType !== 1) return false;
+    for(var i = 0; i < SKIP_SELECTORS.length; i++){
+      try{
+        if(el.matches && el.matches(SKIP_SELECTORS[i])) return true;
+        if(el.closest && el.closest(SKIP_SELECTORS[i])) return true;
+      }catch(e){}
+    }
+    return false;
+  }
+  
+  function convertTextNode(node){
+    if(!node || !node.nodeValue) return;
+    var text = node.nodeValue;
+    if(!text) return;
+    
+    // Quick check: ada emoji?
+    var hasEmoji = /[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]/u.test(text);
+    if(!hasEmoji) return;
+    
+    var newHtml = window.__emojiToSvg(text);
+    if(newHtml === text) return;
+    
+    // Ganti text node dengan span
+    try{
+      var span = document.createElement("span");
+      span.innerHTML = newHtml;
+      span.style.display = "contents";
+      span.setAttribute("data-emoji-converted", "1");
+      node.parentNode.replaceChild(span, node);
+    }catch(e){}
+  }
+  
+  function walkAndConvert(root){
+    if(!root) return;
+    if(root.nodeType === 3){
+      convertTextNode(root);
+      return;
+    }
+    if(root.nodeType !== 1) return;
+    if(shouldSkip(root)) return;
+    
+    // Convert children
+    var childNodes = Array.from(root.childNodes);
+    childNodes.forEach(function(child){
+      if(child.nodeType === 3){
+        convertTextNode(child);
+      } else if(child.nodeType === 1){
+        walkAndConvert(child);
+      }
+    });
+  }
+  
+  window.__convertEmojiInDOM = function(root){
+    walkAndConvert(root || document.body);
+  };
+  
+  /* ═══════════════════════════════════════════════════════════
+     MUTATION OBSERVER — Auto-convert emoji baru
+     ═══════════════════════════════════════════════════════════ */
+  var observer = null;
+  
+  function startObserver(){
+    if(observer) return;
+    
+    observer = new MutationObserver(function(mutations){
+      if(!autoConvertEnabled) return;
+      
+      mutations.forEach(function(m){
+        // Skip kalau mutation dari conversion kita sendiri
+        if(m.target && m.target.closest && m.target.closest("[data-emoji-converted]")) return;
+        
+        m.addedNodes.forEach(function(node){
+          if(node.nodeType === 3){
+            convertTextNode(node);
+          } else if(node.nodeType === 1){
+            walkAndConvert(node);
+          }
+        });
+      });
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: false
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════ */
+  function init(){
+    // Convert semua emoji yang ada sekarang
+    setTimeout(function(){
+      try{
+        window.__convertEmojiInDOM(document.body);
+        console.log("✅ Emoji converted (initial pass)");
+      }catch(e){ console.warn("initial convert:", e); }
+    }, 1500);
+    
+    // Start observer buat emoji baru
+    startObserver();
+    
+    console.log("🎨 SVG Emoji Library siap");
+    console.log("📦 Total emoji:", Object.keys(EMOJI_SVG).length);
+  }
+  
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){ setTimeout(init, 1000); });
+  } else {
+    setTimeout(init, 1000);
+  }
+
+})();
+</script>
+<!-- ═══ END PATCH 2/4 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH 3/4 — SVG EMOJI LIBRARY EXTENDED (PART 2/2)
+     Tambahan icon + fix auto-convert di placeholder & modal
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="patch-3-emoji-css">
+/* ═══════════════════════════════════════════════════════════
+   FIX CSS — Emoji di placeholder & modal
+   ═══════════════════════════════════════════════════════════ */
+input::placeholder,
+textarea::placeholder{
+  font-family: 'Inter', -apple-system, sans-serif !important;
+}
+
+/* SVG emoji di dalam button, span, label, header */
+.btn .svg-emoji,
+button .svg-emoji{
+  margin:0 2px;
+}
+
+/* Emoji di helper text */
+small .svg-emoji,
+.hint .svg-emoji{
+  opacity:.85;
+}
+
+/* Emoji di placeholder fallback */
+.svg-emoji.svg-placeholder{
+  opacity:.6;
+}
+</style>
+
+<script id="patch-3-emoji-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH 3/4 — SVG EMOJI LIBRARY EXTENDED (PART 2/2)
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  "use strict";
+  console.log("%c🎨 Patch 3/4 loading — Emoji Extended...","color:#ffd700;font-weight:bold");
+
+  /* ═══════════════════════════════════════════════════════════
+     EXTENDED EMOJI LIBRARY — ~80 icon tambahan
+     ═══════════════════════════════════════════════════════════ */
+  var EMOJI_SVG_EXT = {
+    // ═══ ADDITIONAL UI ═══
+    "☰": '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>',
+    "☷": '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>',
+    "✕": '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+    "✖": '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+    "✚": '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+    "✚": '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+    "➖": '<line x1="5" y1="12" x2="19" y2="12"/>',
+    "➗": '<circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/>',
+    "•": '<circle cx="12" cy="12" r="2" fill="currentColor"/>',
+    "◦": '<circle cx="12" cy="12" r="2"/>',
+    "—": '<line x1="3" y1="12" x2="21" y2="12"/>',
+
+    // ═══ ARROWS EXTENDED ═══
+    "⇄": '<polyline points="17 2 21 6 17 10"/><line x1="3" y1="6" x2="21" y2="6"/><polyline points="7 14 3 18 7 22"/><line x1="21" y1="18" x2="3" y2="18"/>',
+    "⟳": '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+    "⤴": '<polyline points="14 9 9 4 4 9"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>',
+    "⤵": '<polyline points="14 15 9 20 4 15"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/>',
+    "⇧": '<polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="18"/>',
+    "⇩": '<polyline points="7 13 12 18 17 13"/><line x1="12" y1="6" x2="12" y2="18"/>',
+    "⇦": '<polyline points="11 17 6 12 11 7"/><line x1="6" y1="12" x2="18" y2="12"/>',
+    "⇨": '<polyline points="13 17 18 12 13 7"/><line x1="6" y1="12" x2="18" y2="12"/>',
+
+    // ═══ STATUS EXTENDED ═══
+    "🟢": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "🔴": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "🟡": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "🔵": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "🟣": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "🟠": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "⚪": '<circle cx="12" cy="12" r="8" fill="currentColor"/><circle cx="12" cy="12" r="8"/>',
+    "⚫": '<circle cx="12" cy="12" r="8" fill="currentColor"/>',
+    "🟥": '<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><rect x="4" y="4" width="16" height="16" rx="2"/>',
+    "🟦": '<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><rect x="4" y="4" width="16" height="16" rx="2"/>',
+    "🟩": '<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><rect x="4" y="4" width="16" height="16" rx="2"/>',
+    "🟨": '<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><rect x="4" y="4" width="16" height="16" rx="2"/>',
+    "🟪": '<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><rect x="4" y="4" width="16" height="16" rx="2"/>',
+
+    // ═══ NUMBER EMOJI ═══
+    "0️⃣": '<circle cx="12" cy="12" r="10"/><path d="M12 7v10"/>',
+    "1️⃣": '<circle cx="12" cy="12" r="10"/><line x1="12" y1="7" x2="12" y2="17"/><line x1="9" y1="10" x2="12" y2="7"/>',
+    "2️⃣": '<circle cx="12" cy="12" r="10"/><path d="M8 9c0-1.66 1.79-3 4-3s4 1.34 4 3-1.5 2.5-3 4-2.5 2.5-2.5 4h6"/>',
+    "3️⃣": '<circle cx="12" cy="12" r="10"/><path d="M8 8c.5-1.5 2-2 4-2s3 1 3 2.5-2 2-3 2 3 0.5 3 2.5-1.5 3-4 3-3.5-1-4-2"/>',
+    "4️⃣": '<circle cx="12" cy="12" r="10"/><path d="M14 7v6h3M14 13l-4 4V7"/>',
+    "5️⃣": '<circle cx="12" cy="12" r="10"/><path d="M8 7v3h4c2 0 3 1 3 2.5s-1.5 3-3 3-3-1-3-2"/>',
+    "6️⃣": '<circle cx="12" cy="12" r="10"/><path d="M15 7a5 5 0 0 0-3 5v0a3 3 0 0 1 0 0 4 4 0 1 1-4 0c0-3 3-5 7-5z"/>',
+    "7️⃣": '<circle cx="12" cy="12" r="10"/><path d="M8 7h8l-4 10"/>',
+    "8️⃣": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="9" r="2.5"/><circle cx="12" cy="15" r="3"/>',
+    "9️⃣": '<circle cx="12" cy="12" r="10"/><path d="M9 17a5 5 0 0 0 3-5v0a4 4 0 1 1 4 0c0 3-3 5-7 5z"/>',
+    "🔟": '<circle cx="12" cy="12" r="10"/><path d="M8 7v10M12 7h3c2 0 3 1 3 2.5s-1 2.5-3 2.5h-3M12 12h3c2 0 3 1 3 2.5s-1 2.5-3 2.5h-3"/>',
+
+    // ═══ HEARTS & LOVE ═══
+    "💕": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M8 3.5a3 3 0 0 0-3 3M18 3.5a3 3 0 0 1 3 3" opacity=".5"/>',
+    "💖": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M12 6v12" opacity=".5"/>',
+    "💔": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2.5"/>',
+    "💗": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><line x1="8" y1="10" x2="8" y2="13" opacity=".5"/>',
+
+    // ═══ ANIMALS ═══
+    "🐱": '<circle cx="12" cy="14" r="7"/><path d="M7 8l-1-4 4 2M17 8l1-4-4 2"/><circle cx="9.5" cy="13" r=".5" fill="currentColor"/><circle cx="14.5" cy="13" r=".5" fill="currentColor"/><path d="M10 16c1 1 3 1 4 0"/>',
+    "🐶": '<circle cx="12" cy="14" r="7"/><path d="M5 8c0-3 1-5 3-5s3 2 3 2M19 8c0-3-1-5-3-5s-3 2-3 2"/><circle cx="9.5" cy="13" r=".5" fill="currentColor"/><circle cx="14.5" cy="13" r=".5" fill="currentColor"/><path d="M9 16h6"/>',
+    "🐦": '<path d="M16 7h.01M20 7a8 8 0 1 1-9.16 7.9c.77-.25 1.4-.88 1.65-1.65A8 8 0 0 1 20 7z"/><path d="M22 7c-2 1-4 2-6 2"/>',
+    "🦋": '<path d="M12 2v20M12 8c-2-3-5-5-7-3s-1 6 1 8 6 3 6 3M12 8c2-3 5-5 7-3s1 6-1 8-6 3-6 3M12 16c-2 2-5 3-7 2s-1-4 1-5M12 16c2 2 5 3 7 2s1-4-1-5"/>',
+    "🐢": '<circle cx="12" cy="14" r="7"/><path d="M5 14h14M12 7v14M9 8l-2-2M15 8l2-2"/><circle cx="18" cy="9" r="1" fill="currentColor"/>',
+    "🐰": '<ellipse cx="12" cy="16" rx="6" ry="5"/><path d="M8 11c0-4 1-7 2-7s2 3 2 7M16 11c0-4-1-7-2-7s-2 3-2 7"/><circle cx="10" cy="16" r=".5" fill="currentColor"/><circle cx="14" cy="16" r=".5" fill="currentColor"/>',
+    "🦁": '<circle cx="12" cy="12" r="7"/><path d="M5 8c-2-2-1-5 2-5s4 1 4 3M19 8c2-2 1-5-2-5s-4 1-4 3M12 5v3"/><circle cx="9.5" cy="11" r=".5" fill="currentColor"/><circle cx="14.5" cy="11" r=".5" fill="currentColor"/><path d="M10 14c1 1 3 1 4 0"/>',
+
+    // ═══ GAMING ═══
+    "🎲": '<rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/>',
+    "🎯": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    "🕹️": '<rect x="2" y="10" width="20" height="12" rx="3"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="6" y1="14" x2="10" y2="14"/><line x1="6" y1="18" x2="10" y2="18"/><circle cx="15" cy="15" r="1" fill="currentColor"/><circle cx="17" cy="17" r="1" fill="currentColor"/>',
+    "🏆": '<path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><path d="M6 3v6a6 6 0 0 0 12 0V3"/><path d="M6 21h12"/><path d="M12 15v6"/>',
+    "🥇": '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+    "🥈": '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+    "🥉": '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+
+    // ═══ WEATHER & NATURE ═══
+    "☁️": '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
+    "🌤️": '<circle cx="8" cy="8" r="4"/><path d="M2 18h14a4 4 0 0 0 0-8"/>',
+    "🌧️": '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/><line x1="8" y1="18" x2="8" y2="22"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="16" y1="18" x2="16" y2="22"/>',
+    "❄️": '<line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/>',
+    "⭐": '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    "✨": '<path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>',
+    "🌊": '<path d="M2 12c2-3 4-5 6-5s4 2 6 2 4-2 6-2"/>',
+    "🌺": '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/>',
+    "🌸": '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/>',
+    "🌹": '<path d="M12 2a5 5 0 0 1 5 5c0 3-5 6-5 6s-5-3-5-6a5 5 0 0 1 5-5z"/><line x1="12" y1="13" x2="12" y2="22"/>',
+
+    // ═══ PLANET & SPACE ═══
+    "🌌": '<circle cx="12" cy="12" r="10"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="10" r="1" fill="currentColor"/><circle cx="10" cy="16" r="1" fill="currentColor"/><circle cx="15" cy="15" r="1" fill="currentColor"/>',
+    "🪐": '<circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(-20 12 12)"/>',
+    "☄️": '<circle cx="18" cy="6" r="2"/><line x1="2" y1="22" x2="16" y2="8"/><line x1="6" y1="22" x2="18" y2="10" opacity=".5"/><line x1="10" y1="22" x2="20" y2="12" opacity=".5"/>',
+
+    // ═══ SPORTS ═══
+    "⚽": '<circle cx="12" cy="12" r="10"/><path d="M12 2l3 6h6M3 7l6 3-3 6M12 22l-3-6-6 0M21 17l-6-3 3-6"/>',
+    "🏀": '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2v20M5 5c4 4 4 10 0 14M19 5c-4 4-4 10 0 14"/>',
+    "⚾": '<circle cx="12" cy="12" r="10"/><path d="M4 4c4 4 4 12 0 16M20 4c-4 4-4 12 0 16"/>',
+    "🎾": '<circle cx="12" cy="12" r="10"/><path d="M5 5c4 4 4 10 0 14"/>',
+    "🏈": '<ellipse cx="12" cy="12" rx="10" ry="6" transform="rotate(-30 12 12)"/><line x1="6" y1="14" x2="18" y2="10"/>',
+    "🎱": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/>',
+
+    // ═══ FOOD ═══
+    "🍕": '<path d="M12 2 4 16c3 2 13 2 16 0L12 2z"/><circle cx="10" cy="10" r="1" fill="currentColor"/><circle cx="14" cy="12" r="1" fill="currentColor"/>',
+    "🍔": '<path d="M3 11h18M3 11c0-4 4-7 9-7s9 3 9 7M3 11v5c0 1 1 2 2 2h14c1 0 2-1 2-2v-5"/>',
+    "🍟": '<path d="M4 12l2-8 1 8M10 12V3l1 9M14 12V3l1 9M19 12l-1-8-2 8M4 12h15l-1 8H5z"/>',
+    "🍰": '<path d="M3 20h18v-8a2 2 0 0 0-2-2h-14a2 2 0 0 0-2 2v8z"/><line x1="12" y1="10" x2="12" y2="6"/><circle cx="12" cy="4" r="1" fill="currentColor"/>',
+    "☕": '<path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>',
+    "🍦": '<path d="M12 2a5 5 0 0 1 5 5h-10a5 5 0 0 1 5-5z"/><path d="M7 7l5 13 5-13"/>',
+    "🍩": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="9" cy="7" r="1" fill="currentColor"/><circle cx="15" cy="9" r="1" fill="currentColor"/>',
+
+    // ═══ TRANSPORT ═══
+    "🚗": '<path d="M5 17h14M5 17a2 2 0 1 0 4 0M15 17a2 2 0 1 0 4 0M3 17V11l2-6h14l2 6v6M5 11h14"/>',
+    "✈️": '<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
+    "🚲": '<circle cx="5" cy="17" r="3"/><circle cx="19" cy="17" r="3"/><path d="M5 17h4l3-10 6 10h-6M12 7h4"/>',
+    "🚀": '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>',
+
+    // ═══ BUILDINGS ═══
+    "🏢": '<rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/>',
+    "🏬": '<rect x="3" y="3" width="18" height="18"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>',
+    "🏭": '<rect x="2" y="10" width="20" height="12" rx="1"/><path d="M6 10V6M10 10V6M14 10V6M18 10V6"/>',
+    "🏰": '<path d="M3 21V9l3-2 3 2v-2l3-2 3 2v2l3-2 3 2v12z"/><path d="M9 21v-5h6v5"/>',
+    "⛺": '<path d="M12 3 2 21h20z"/><path d="M12 3v18"/>',
+
+    // ═══ PEOPLE & EMOTIONS ═══
+    "😀": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    "😂": '<circle cx="12" cy="12" r="10"/><path d="M7 14s2 4 5 4 5-4 5-4"/><line x1="8" y1="8" x2="10" y2="10"/><line x1="16" y1="8" x2="14" y2="10"/>',
+    "😍": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M8 9l2 2-2 2M16 9l-2 2 2 2"/>',
+    "😎": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><rect x="5" y="7" width="6" height="3" rx="1"/><rect x="13" y="7" width="6" height="3" rx="1"/>',
+    "🤔": '<circle cx="12" cy="12" r="10"/><path d="M9 12h.01M15 12h.01"/><path d="M10 16h4"/><path d="M16 9l2-3"/>',
+    "😴": '<circle cx="12" cy="12" r="10"/><path d="M9 10h.01M15 10h.01"/><path d="M9 15h6"/><text x="18" y="8" font-size="6" fill="currentColor" stroke="none">Z</text>',
+    "🤖": '<rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="9" y1="18" x2="9" y2="21"/><line x1="15" y1="18" x2="15" y2="21"/>',
+    "👻": '<path d="M12 2a8 8 0 0 0-8 8v10l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V10a8 8 0 0 0-8-8z"/><line x1="9" y1="10" x2="9.01" y2="10"/><line x1="15" y1="10" x2="15.01" y2="10"/>',
+
+    // ═══ ACTION EMOJI ═══
+    "👆": '<path d="M12 2v10M8 6l4-4 4 4"/><circle cx="12" cy="17" r="5"/>',
+    "👉": '<path d="M2 12h10M6 8l4 4-4 4"/><circle cx="17" cy="12" r="5"/>',
+    "👇": '<path d="M12 22V12M8 18l4 4 4-4"/><circle cx="12" cy="7" r="5"/>',
+    "👈": '<path d="M22 12H12M18 8l-4 4 4 4"/><circle cx="7" cy="12" r="5"/>',
+    "✋": '<path d="M18 11V6a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v5M9 11V3a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10M22 11a2 2 0 0 0-2-2h-2v8a4 4 0 0 1-4 4h-2a4 4 0 0 1-4-4v-1"/>',
+    "🤚": '<path d="M8 13V4a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v9M16 13V7a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v9a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-3"/>',
+    "👍": '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>',
+    "👎": '<path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zM17 2h2a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/>',
+    "👏": '<path d="M11 9V2a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v7"/><path d="M8 13V5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v8"/><path d="M5 9V8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v9"/><path d="M18 10V8a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v8"/><circle cx="7" cy="22" r="0"/>',
+    "🙏": '<path d="M17 21v-4a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3v4"/><circle cx="12" cy="8" r="4"/>',
+
+    // ═══ SYMBOLS ═══
+    "💯": '<circle cx="12" cy="12" r="10"/><line x1="9" y1="9" x2="9" y2="15"/><line x1="15" y1="9" x2="15" y2="15"/><line x1="9" y1="15" x2="15" y2="9"/>',
+    "♾️": '<path d="M6 12a4 4 0 1 1 4-4c0 2-2 4-4 6s-4 4-4 4"/>',
+    "💤": '<circle cx="12" cy="12" r="10"/><text x="9" y="16" font-size="10" fill="currentColor" stroke="none">Z</text><text x="15" y="12" font-size="8" fill="currentColor" stroke="none">Z</text>',
+    "💬": '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+    "💭": '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="13" cy="12" r="1" fill="currentColor"/><circle cx="17" cy="12" r="1" fill="currentColor"/>',
+
+    // ═══ EDITING ═══
+    "✂️": '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>',
+    "📐": '<path d="M2 22 22 2M2 22h20V2"/>',
+    "📏": '<line x1="2" y1="12" x2="22" y2="12"/><line x1="4" y1="8" x2="4" y2="16"/><line x1="8" y1="8" x2="8" y2="16"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="16" y1="8" x2="16" y2="16"/><line x1="20" y1="8" x2="20" y2="16"/>',
+    "🖌️": '<path d="M3 21l4-2 12-12a2.83 2.83 0 0 0-4-4L3 15z"/><line x1="14" y1="7" x2="17" y2="10"/>',
+    "🖍️": '<path d="M3 21l4-2 12-12-4-4L3 15z"/><line x1="14" y1="7" x2="17" y2="10"/>',
+    "🎨": '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>',
+
+    // ═══ MISC ═══
+    "💡": '<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/>',
+    "🔦": '<path d="M9 2h6l1 4H8z"/><path d="M8 6l-1 8h10l-1-8"/><line x1="12" y1="14" x2="12" y2="22"/>',
+    "🕯️": '<rect x="10" y="10" width="4" height="12"/><path d="M12 2a2 2 0 0 0-2 2c0 1 1 2 2 4 1-2 2-3 2-4a2 2 0 0 0-2-2z" fill="currentColor"/>',
+    "🪔": '<ellipse cx="12" cy="17" rx="8" ry="4"/><ellipse cx="12" cy="11" rx="4" ry="2"/><path d="M12 9V4M10 4h4"/>',
+    "🎈": '<path d="M12 2a5 5 0 0 1 5 5c0 4-5 9-5 9s-5-5-5-9a5 5 0 0 1 5-5z"/><path d="M12 16v6"/>',
+    "🎀": '<path d="M12 12L4 4h6l2 2 2-2h6l-8 8zM12 12l8 8h-6l-2-2-2 2H4l8-8z"/>',
+    "🎀": '<path d="M2 8h20l-2 12H4z"/><path d="M12 20V8M8 8l2 4M16 8l-2 4"/>',
+    "📦": '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+    "🏷️": '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+    "🎫": '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="13" y1="5" x2="13" y2="7"/><line x1="13" y1="11" x2="13" y2="13"/><line x1="13" y1="17" x2="13" y2="19"/>',
+    "🔮": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>',
+    "🌡️": '<path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>',
+
+    // ═══ NEW: TOOLS ═══
+    "🔧": '<path d="M14.7 6.3a4 4 0 1 0 5 5L21 21l-3-3-9.7-9.7a4 4 0 0 0-5-5l3 3-5 5-3-3a4 4 0 0 0 5 5z" transform="rotate(90 12 12)"/>',
+    "🔨": '<path d="M14 2l4 4-2 2-4-4zM2 20l8-8 4 4-8 8zM16 6l2-2M18 8l4 4"/>',
+    "🛠️": '<path d="M14.7 6.3a4 4 0 1 0 5 5L21 21l-3-3-9.7-9.7a4 4 0 0 0-5-5l3 3-5 5-3-3a4 4 0 0 0 5 5z" transform="rotate(90 12 12)"/><line x1="17" y1="17" x2="21" y2="21"/>',
+    "⚒️": '<path d="M14 2l4 4-2 2-4-4zM2 20l8-8 4 4-8 8z"/>',
+    "⚙": '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+    "🔌": '<path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8z"/><line x1="12" y1="18" x2="12" y2="22"/>',
+    "💻": '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+    "⌨️": '<rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="10"/><line x1="10" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="14" y2="10"/><line x1="18" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/>',
+    "🖱️": '<rect x="6" y="2" width="12" height="20" rx="6"/><line x1="12" y1="6" x2="12" y2="10"/>',
+    "🖥️": '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+    "📺": '<rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/>'
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     MERGE ke library existing
+     ═══════════════════════════════════════════════════════════ */
+  if(window.__EMOJI_SVG){
+    Object.keys(EMOJI_SVG_EXT).forEach(function(key){
+      if(!window.__EMOJI_SVG[key]){
+        window.__EMOJI_SVG[key] = EMOJI_SVG_EXT[key];
+      }
+    });
+    console.log("✅ Emoji library extended:", Object.keys(window.__EMOJI_SVG).length, "total icons");
+  } else {
+    window.__EMOJI_SVG = EMOJI_SVG_EXT;
+    console.log("⚠️ Library existing gak ada, pakai extended doang");
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FIX — Convert emoji di PLACEHOLDER
+     ═══════════════════════════════════════════════════════════ */
+  function convertPlaceholders(){
+    var inputs = document.querySelectorAll("input[placeholder], textarea[placeholder]");
+    inputs.forEach(function(el){
+      var ph = el.getAttribute("placeholder");
+      if(!ph) return;
+      
+      var hasEmoji = /[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]/u.test(ph);
+      if(!hasEmoji) return;
+      
+      // Placeholder gak bisa pakai HTML, jadi strip emoji aja
+      var cleaned = ph.replace(/([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\uFE0F]|[\u200D])/gu, "").trim();
+      cleaned = cleaned.replace(/\s+/g, " ").trim();
+      if(cleaned) el.setAttribute("placeholder", cleaned);
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FIX — Convert emoji di MODAL (yang di-skip di Patch 2)
+     ═══════════════════════════════════════════════════════════ */
+  function convertModals(){
+    var modals = document.querySelectorAll(".modal-back:not([data-emoji-patched])");
+    modals.forEach(function(modal){
+      if(!window.__convertEmojiInDOM) return;
+      try{
+        // Temporarily unskip .modal-back
+        window.__convertEmojiInDOM(modal);
+        modal.setAttribute("data-emoji-patched", "1");
+      }catch(e){}
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FIX — Convert emoji di dynamic content
+     ═══════════════════════════════════════════════════════════ */
+  function convertDynamic(){
+    // Convert emoji di dashboard, editor, store, dll.
+    if(window.__convertEmojiInDOM){
+      try{
+        var targets = [
+          "#app",
+          ".dev-content",
+          "#dev-content",
+          ".editor-panel",
+          ".music-picker-page",
+          ".store-grid",
+          ".settings-page"
+        ];
+        
+        targets.forEach(function(sel){
+          var el = document.querySelector(sel);
+          if(el) window.__convertEmojiInDOM(el);
+        });
+      }catch(e){}
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════ */
+  function init(){
+    // Convert placeholders
+    setTimeout(convertPlaceholders, 2000);
+    
+    // Convert modals
+    setTimeout(convertModals, 2500);
+    
+    // Convert dynamic content
+    setTimeout(convertDynamic, 3000);
+    
+    // Periodic re-convert
+    setInterval(function(){
+      convertPlaceholders();
+      convertModals();
+    }, 5000);
+    
+    // Watch for new modals
+    var modalObserver = new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        m.addedNodes.forEach(function(node){
+          if(node.nodeType === 1){
+            if(node.classList && node.classList.contains("modal-back")){
+              setTimeout(function(){
+                if(window.__convertEmojiInDOM) window.__convertEmojiInDOM(node);
+              }, 100);
+            }
+            // Convert dynamic content baru
+            if(window.__convertEmojiInDOM && node.querySelectorAll){
+              try{
+                window.__convertEmojiInDOM(node);
+              }catch(e){}
+            }
+          }
+        });
+      });
+    });
+    
+    modalObserver.observe(document.body, { childList: true, subtree: true });
+    
+    console.log("✅ Extended emoji library loaded");
+    console.log("✅ Placeholder cleanup aktif");
+    console.log("✅ Modal emoji conversion aktif");
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){ setTimeout(init, 1500); });
+  } else {
+    setTimeout(init, 1500);
+  }
+
+})();
+</script>
+<!-- ═══ END PATCH 3/4 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH 4/4 — MANUAL REPLACEMENT + FINAL FIXES
+     Hook ke render functions untuk auto-convert emoji
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="patch-4-final-css">
+/* ═══════════════════════════════════════════════════════════
+   FINAL POLISH — emoji consistency
+   ═══════════════════════════════════════════════════════════ */
+
+/* Semua SVG emoji ukuran default */
+.svg-emoji{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.1em;
+  height:1.1em;
+  vertical-align:-0.15em;
+  flex-shrink:0;
+}
+.svg-emoji svg{
+  width:100%;
+  height:100%;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+/* Emoji di section title */
+.section-title .svg-emoji,
+.editor-section h3 .svg-emoji,
+.settings-section h3 .svg-emoji{
+  width:1.2em;
+  height:1.2em;
+}
+
+/* Emoji di btn */
+.btn .svg-emoji{
+  width:1.15em;
+  height:1.15em;
+}
+
+/* Emoji di kartu plan / store card */
+.store-card .svg-emoji,
+.topup-card .svg-emoji,
+.pricing-card .svg-emoji{
+  width:1.3em;
+  height:1.3em;
+}
+
+/* Prevent auto-convert di area yang gak perlu */
+.modal-back input,
+.modal-back textarea{
+  font-family: 'Inter', sans-serif !important;
+}
+</style>
+
+<script id="patch-4-final-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH 4/4 — MANUAL REPLACEMENT + FINAL FIXES
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  "use strict";
+  console.log("%c🎨 Patch 4/4 loading — Final Fixes...","color:#ffd700;font-weight:bold");
+
+  /* ═══════════════════════════════════════════════════════════
+     HOOK: Intercept innerHTML SET
+     Biar semua konten yang di-render otomatis di-convert
+     ═══════════════════════════════════════════════════════════ */
+  
+  // Simpan original setter
+  var _innerHTMLDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML");
+  var _origSet = _innerHTMLDescriptor.set;
+  var _origGet = _innerHTMLDescriptor.get;
+  
+  // Track apakah conversion lagi jalan (prevent infinite loop)
+  var _isConverting = false;
+  
+  function isEmojiText(text){
+    if(!text) return false;
+    return /[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]/u.test(text);
+  }
+  
+  // Override innerHTML setter
+  Object.defineProperty(Element.prototype, "innerHTML", {
+    set: function(html){
+      try{
+        // Kalau lagi converting atau html kosong → langsung set
+        if(_isConverting || !html || typeof html !== "string"){
+          return _origSet.call(this, html);
+        }
+        
+        // Cek apakah ada emoji di html
+        if(!isEmojiText(html)){
+          return _origSet.call(this, html);
+        }
+        
+        // Convert emoji di html
+        if(window.__emojiToSvg){
+          _isConverting = true;
+          try{
+            var converted = window.__emojiToSvg(html);
+            _origSet.call(this, converted);
+          }catch(e){
+            _origSet.call(this, html);
+          }finally{
+            _isConverting = false;
+          }
+        } else {
+          _origSet.call(this, html);
+        }
+      }catch(e){
+        // Fallback
+        try{ _origSet.call(this, html); }catch(err){}
+      }
+    },
+    get: function(){
+      return _origGet.call(this);
+    },
+    configurable: true
+  });
+  
+  console.log("✅ innerHTML hook installed — auto-convert emoji on render");
+  
+  /* ═══════════════════════════════════════════════════════════
+     HOOK: Intercept insertAdjacentHTML
+     ═══════════════════════════════════════════════════════════ */
+  var _origInsertAdjacentHTML = Element.prototype.insertAdjacentHTML;
+  Element.prototype.insertAdjacentHTML = function(position, html){
+    try{
+      if(!_isConverting && typeof html === "string" && isEmojiText(html) && window.__emojiToSvg){
+        _isConverting = true;
+        try{
+          html = window.__emojiToSvg(html);
+        }finally{
+          _isConverting = false;
+        }
+      }
+    }catch(e){}
+    return _origInsertAdjacentHTML.call(this, position, html);
+  };
+  
+  console.log("✅ insertAdjacentHTML hook installed");
+  
+  /* ═══════════════════════════════════════════════════════════
+     HOOK: Intercept createElement + textContent
+     Buat dynamic element dengan emoji
+     ═══════════════════════════════════════════════════════════ */
+  var _textContentDescriptor = Object.getOwnPropertyDescriptor(Node.prototype, "textContent");
+  var _origTextContentSet = _textContentDescriptor.set;
+  
+  Object.defineProperty(Node.prototype, "textContent", {
+    set: function(text){
+      try{
+        // Skip kalau lagi converting atau bukan element
+        if(_isConverting || !text || typeof text !== "string" || this.nodeType !== 1){
+          return _origTextContentSet.call(this, text);
+        }
+        
+        // Cek emoji
+        if(!isEmojiText(text)){
+          return _origTextContentSet.call(this, text);
+        }
+        
+        // Convert pakai innerHTML (biar text dengan emoji jadi span + svg)
+        if(window.__emojiToSvg){
+          _isConverting = true;
+          try{
+            var converted = window.__emojiToSvg(text);
+            if(converted !== text){
+              // Pakai innerHTML karena udah ada span
+              return _origSet.call(this, converted);
+            }
+          }catch(e){}finally{
+            _isConverting = false;
+          }
+        }
+        
+        return _origTextContentSet.call(this, text);
+      }catch(e){
+        try{ _origTextContentSet.call(this, text); }catch(err){}
+      }
+    },
+    get: _textContentDescriptor.get,
+    configurable: true
+  });
+  
+  console.log("✅ textContent hook installed — auto-convert emoji in text");
+  
+  /* ═══════════════════════════════════════════════════════════
+     HOOK: Intercept createTextNode
+     ═══════════════════════════════════════════════════════════ */
+  var _origCreateTextNode = document.createTextNode.bind(document);
+  // Note: createTextNode gak bisa direct intercept (read-only), tapi innerHTML/textContent hooks udah cover
+  
+  /* ═══════════════════════════════════════════════════════════
+     MANUAL FIX — Replace emoji di STRING CONSTANT
+     Buat emoji yang sering muncul di template
+     ═══════════════════════════════════════════════════════════ */
+  var stringFixMap = {
+    "🎵 Music Library": "🎵 Music Library",  // akan di-convert via innerHTML
+    // Note: kita GAK ganti source code, cuma rely on innerHTML hook
+  };
+  
+  /* ═══════════════════════════════════════════════════════════
+     FIX SPECIFIC — Convert emoji di element yang ID-nya di-set
+     (misal innerHTML langsung di .innerHTML)
+     ═══════════════════════════════════════════════════════════ */
+  function fixSpecificElements(){
+    // Sound toggle button
+    var sndBtn = document.getElementById("sound-toggle-btn");
+    if(sndBtn && !sndBtn.querySelector("svg")){
+      // Biar Patch 1 yang handle
+    }
+    
+    // Music float button
+    var musBtn = document.getElementById("music-float-btn");
+    if(musBtn && !musBtn.querySelector("svg")){
+      // Biar Patch 1 yang handle
+    }
+    
+    // Emoji di drawer menu (yang udah di-render)
+    var menuItems = document.querySelectorAll(".menu-item");
+    menuItems.forEach(function(item){
+      if(window.__convertEmojiInDOM){
+        window.__convertEmojiInDOM(item);
+      }
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FIX SPECIFIC — Convert emoji di <option> (select dropdown)
+     ═══════════════════════════════════════════════════════════ */
+  function fixSelectOptions(){
+    var options = document.querySelectorAll("option");
+    options.forEach(function(opt){
+      var text = opt.textContent || "";
+      if(isEmojiText(text)){
+        // Option gak bisa pakai HTML, strip emoji
+        var cleaned = text.replace(/([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\uFE0F])/gu, "").trim();
+        cleaned = cleaned.replace(/\s+/g, " ").trim();
+        if(cleaned){
+          _origTextContentSet.call(opt, cleaned);
+        }
+      }
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FIX SPECIFIC — Convert emoji di Toast, Alert, dll
+     (yang di-inject langsung via appendChild)
+     ═══════════════════════════════════════════════════════════ */
+  function fixToasts(){
+    var toasts = document.querySelectorAll(".toast, .music-toast, .varsmile-bubble, .music-mode-badge");
+    toasts.forEach(function(t){
+      if(t.querySelector(".svg-emoji")) return;  // udah converted
+      if(window.__convertEmojiInDOM){
+        window.__convertEmojiInDOM(t);
+      }
+    });
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     PERIODIC CLEANUP
+     ═══════════════════════════════════════════════════════════ */
+  function periodicCleanup(){
+    try{
+      fixSpecificElements();
+      fixSelectOptions();
+      fixToasts();
+    }catch(e){ console.warn("periodicCleanup:", e); }
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     EMOJI COUNTER (buat debug)
+     ═══════════════════════════════════════════════════════════ */
+  function countEmojis(){
+    try{
+      var allText = document.body.innerText || "";
+      var matches = allText.match(/[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]/gu);
+      return matches ? matches.length : 0;
+    }catch(e){ return 0; }
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════ */
+  function init(){
+    // Periodic cleanup tiap 2 detik
+    setInterval(periodicCleanup, 2000);
+    
+    // One-time cleanup pas init
+    setTimeout(function(){
+      fixSpecificElements();
+      fixSelectOptions();
+    }, 2500);
+    
+    console.log("✅ Patch 4/4 — Final fixes ready");
+    console.log("📊 Emoji remaining in DOM:", countEmojis());
+    
+    // Log final state
+    setTimeout(function(){
+      console.log("📊 Emoji remaining (after 5s):", countEmojis());
+      console.log("📊 Total SVG emoji:", document.querySelectorAll(".svg-emoji").length);
+    }, 5000);
+  }
+  
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){ setTimeout(init, 1000); });
+  } else {
+    setTimeout(init, 1000);
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     EXPOSE UTILITY
+     ═══════════════════════════════════════════════════════════ */
+  window.__countEmojis = countEmojis;
+  window.__fixEmoji = periodicCleanup;
+
+})();
+</script>
+<!-- ═══ END PATCH 4/4 ═══ -->
 </body>
    </html>

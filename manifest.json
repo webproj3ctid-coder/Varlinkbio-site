@@ -1,0 +1,22 @@
+{
+  "name": "Varlinkbio — Link in Bio Generator",
+  "short_name": "Varlinkbio",
+  "description": "Satu link untuk semua — bikin link in bio keren dalam hitungan detik.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0ebe0",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%230a0a0a'/><circle cx='256' cy='256' r='112' fill='%23ffd700' stroke='%23fff' stroke-width='20'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "social"],
+  "lang": "id",
+  "dir": "ltr"
+}

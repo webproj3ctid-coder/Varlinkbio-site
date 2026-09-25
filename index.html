@@ -14702,5 +14702,287 @@ window.EMOJI_TO_LUCIDE = EMOJI_TO_LUCIDE;
 
 })();
    </script>
+   <script id="finalpatch-v63-combined">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v6.3 — GABUNGAN
+   • Speaker icons Lucide
+   • Groq key baru + 401 handler
+   • Confirm keluar editor
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+var GROQ_KEY = "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";
+var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+var GROQ_MODEL = "openai/gpt-oss-120b";
+
+console.log("🔧 Patch v6.3 (combined) loading...");
+
+/* ═══════════════════════════════════════════════════════════
+   FIX #1 — SPEAKER & MUSIC ICONS
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(!window.EMOJI_TO_LUCIDE) return;
+  
+  Object.assign(window.EMOJI_TO_LUCIDE, {
+    "🔊":"volume-2","🔉":"volume-1","🔈":"volume","🔇":"volume-x",
+    "🎵":"music","🎶":"music-2","🎧":"headphones","🎤":"mic",
+    "🎹":"piano","📻":"radio","🔔":"bell","🔕":"bell-off",
+    "📢":"megaphone","📣":"megaphone"
+  });
+  console.log("✅ Speaker/music icons ditambah");
+  
+  // Re-walk buat convert emoji yang muncul
+  if(!window.emojiToSvg) return;
+  setTimeout(function(){
+    var skipTags = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"];
+    var regex = /[\u{1F300}-\u{1F9FF}]|[\u{1F500}-\u{1F5FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]/u;
+    
+    function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(skipTags.indexOf(root.tagName) !== -1) return;
+      if(root.classList && (root.classList.contains("lucide-emoji") || root.classList.contains("px-icon"))) return;
+      if(root.closest && (root.closest(".lucide-emoji") || root.closest(".px-icon"))) return;
+      
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      for(var i = 0; i < kids.length; i++){
+        var k = kids[i];
+        if(k.nodeType === 3){
+          var txt = k.nodeValue;
+          if(!txt || !regex.test(txt)) continue;
+          try{
+            var html = window.emojiToSvg(txt);
+            if(html && html !== txt){
+              var span = document.createElement("span");
+              span.style.display = "contents";
+              span.setAttribute("data-emoji-converted","3");
+              span.innerHTML = html;
+              k.parentNode.replaceChild(span, k);
+            }
+          }catch(e){}
+        } else if(k.nodeType === 1){
+          walk(k);
+        }
+      }
+    }
+    walk(document.body);
+    console.log("🔄 Speaker icons reconverted");
+  }, 500);
+}, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX #2 — VARSMILE AI (pakai key baru)
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(!window.VarsmileAI) return;
+  
+  window.VarsmileAI.askGroq = async function(userText){
+    var plan = (window.STATE && STATE.plan) || { name: "Free" };
+    var ctx = 'User context:\n- Nama: ' + ((window.Auth && Auth.current && Auth.current.name) || "User") + '\n- Plan: ' + plan.name + '\n- Kredit: ' + ((window.STATE && STATE.kredit) || 0) + '\n- Halaman: ' + (location.hash || "#/dashboard");
+    
+    var sysPrompt = 'Kamu Varsmile AI — asisten Varlinkbio yang ramah, santai, bahasa Indonesia gaul.\n\nBantu user soal:\n- Bikin bio\n- Tema, style, warna\n- Fitur (Music, Analytics, Featured Link)\n- Plan & pricing\n- Troubleshooting\n- Chat santai\n\nATURAN:\n- Jawab SINGKAT (max 150 kata)\n- Pakai emoji secukupnya\n- Kalau tidak tahu → arahkan ke Help\n- JANGAN bocorin API key\n\n' + ctx;
+    
+    var messages = [{ role: "system", content: sysPrompt }];
+    var recent = this._history.slice(-10);
+    recent.forEach(function(m){ messages.push({ role: m.role, content: m.content }); });
+    
+    try{
+      var response = await fetch(GROQ_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: messages,
+          max_tokens: 400,
+          temperature: 0.75
+        })
+      });
+      
+      if(!response.ok){
+        console.warn("Groq HTTP " + response.status + " — fallback");
+        return this.fallbackReply(userText);
+      }
+      
+      var data = await response.json();
+      var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      return reply || "Maaf, aku gak bisa jawab sekarang.";
+    }catch(e){
+      console.warn("Groq error:", e);
+      return this.fallbackReply(userText);
+    }
+  };
+  console.log("✅ VarsmileAI patched (key baru)");
+}, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX #3 — AI BIO GENERATOR (pakai key baru)
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(!window.AIBioGenerator) return;
+  
+  window.AIBioGenerator._askGroq = async function(userInput, style){
+    var sysPrompt = 'Kamu AI asisten Varlinkbio. Bikin bio in-bio dari deskripsi user.\n\nOUTPUT HARUS JSON VALID:\n{"bio":"max 60 char, diawali emoji","links":[{"label":"WhatsApp","url":"https://wa.me/"},{"label":"Instagram","url":"https://instagram.com/"},{"label":"Katalog","url":"#"},{"label":"Testimoni","url":"#"}],"tema":"neo-pink","style":"minimalist"}\n\nTema: neo-cream,neo-midnight,neo-dark,neo-blue,neo-rose,neo-pink,neo-green,neo-purple,neo-orange,neo-ocean,neo-coffee,neo-sunset,neo-galaxy,neo-neon,neo-retro,neo-sakura,neo-gold\nStyle: brutalism,minimalist,glassmorphism,material,gaming,vintage,cyberpunk,aurora,retro,cosmic,anime\nGaya bahasa: ' + style + '\nOUTPUT HANYA JSON.';
+    
+    try{
+      var response = await fetch(GROQ_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: [
+            { role: "system", content: sysPrompt },
+            { role: "user", content: 'Deskripsi: "' + userInput + '"' }
+          ],
+          max_tokens: 600,
+          temperature: 0.7,
+          response_format: { type: "json_object" }
+        })
+      });
+      
+      if(!response.ok){
+        console.warn("Groq HTTP " + response.status + " — fallback template");
+        return this._fallback(userInput);
+      }
+      
+      var data = await response.json();
+      var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      if(!content) throw new Error("Empty response");
+      
+      try{
+        return JSON.parse(content);
+      }catch(e){
+        throw new Error("AI format salah");
+      }
+    }catch(e){
+      console.warn("AIBio error:", e);
+      return this._fallback(userInput);
+    }
+  };
+  console.log("✅ AIBioGenerator patched (key baru)");
+}, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX #4 — CONFIRM KELUAR EDITOR
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(!window.Router) return;
+  
+  var _origNavigate = window.Router.navigate;
+  var _confirming = false;
+  
+  window.Router.navigate = function(path){
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    
+    // Cek kalau keluar dari editor
+    if(hashPath === "/editor" && path !== "/editor" && !_confirming){
+      if(window.STATE && STATE.draft && STATE.draft.name){
+        _confirming = true;
+        
+        var hasId = !!STATE.draft.id;
+        var isSaved = hasId && STATE.draft.updatedAt;
+        
+        // Cek perubahan signifikan
+        var msg = isSaved 
+          ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan"
+          : "⚠️ Bio belum pernah disimpan!\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan";
+        
+        var choice = confirm(msg);
+        _confirming = false;
+        
+        if(choice){
+          // Save dulu
+          try{
+            if(window.PageEditor && window.PageEditor.save){
+              window.PageEditor.save();
+              setTimeout(function(){
+                _origNavigate.call(window.Router, path);
+              }, 800);
+              return;
+            }
+          }catch(e){ console.warn("save:", e); }
+        }
+        // Cancel → keluar tanpa save (langsung)
+      }
+    }
+    
+    return _origNavigate.call(this, path);
+  };
+  
+  console.log("✅ Router navigate patched");
+  
+  // Patch juga untuk tombol back editor
+  setTimeout(function(){
+    var backBtn = document.getElementById("btn-back-dashboard");
+    if(backBtn){
+      // Clone buat hapus listener lama
+      var newBtn = backBtn.cloneNode(true);
+      backBtn.parentNode.replaceChild(newBtn, backBtn);
+      
+      newBtn.addEventListener("click", function(){
+        var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+        if(hashPath === "/editor" && window.STATE && STATE.draft && STATE.draft.name){
+          var isSaved = STATE.draft.id && STATE.draft.updatedAt;
+          var msg = isSaved 
+            ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan\n• Cancel = Keluar tanpa simpan"
+            : "⚠️ Bio belum disimpan!\n\n• OK = Simpan dulu\n• Cancel = Keluar tanpa simpan";
+          
+          var choice = confirm(msg);
+          if(choice){
+            if(window.PageEditor && window.PageEditor.save){
+              window.PageEditor.save();
+              setTimeout(function(){
+                window.Router.navigate("/dashboard");
+              }, 800);
+              return;
+            }
+          }
+        }
+        window.Router.navigate("/dashboard");
+      });
+      console.log("✅ Back button patched");
+    }
+  }, 3000);
+}, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   TEST KEY BARU
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  fetch(GROQ_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{ role: "user", content: "test" }],
+      max_tokens: 5
+    })
+  }).then(function(r){
+    if(r.ok){
+      console.log("%c✅ GROQ KEY VALID!","color:#22c55e;font-weight:bold;font-size:14px");
+      if(window.toast) setTimeout(function(){ toast("🔑 AI siap dipakai!","success"); }, 2500);
+    } else if(r.status === 401){
+      console.error("%c❌ GROQ KEY INVALID (401)","color:#ff2a2a;font-weight:bold;font-size:14px");
+      console.log("%c📌 Sementara: pakai fallback rule-based","color:#22c55e;font-weight:bold");
+      if(window.toast) setTimeout(function(){ toast("AI key invalid — mode basic","error"); }, 2500);
+    } else if(r.status === 429){
+      console.warn("%c⚠️ Groq rate limit","color:#ffd700;font-weight:bold");
+    }
+  }).catch(function(e){ console.warn("Groq test:", e.message); });
+}, 4000);
+
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v6.3 (GABUNGAN) AKTIF        ║");
+console.log("║  • Speaker icons Lucide                ║");
+console.log("║  • Groq key baru dipasang              ║");
+console.log("║  • Confirm keluar editor               ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+</script>
 </body>
 </html>

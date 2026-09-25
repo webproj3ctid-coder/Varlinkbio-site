@@ -11761,5 +11761,178 @@ console.log("╚═════════════════════�
 
 })();
      </script>
+     <script id="patchfix-v27-3">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH FIX v27.3 — FINAL
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🔧 PATCH v27.3 loading...");
+
+/* ============================================================
+   1. FORCE CSS TOPBAR FIXED (paling penting!)
+   ============================================================ */
+var css = document.createElement("style");
+css.id = "patchfix-css-v273";
+css.textContent = [
+  /* Force topbar fixed */
+  ".lt-topbar{",
+  "  position:fixed !important;",
+  "  top:0 !important;",
+  "  left:0 !important;",
+  "  right:0 !important;",
+  "  width:100vw !important;",
+  "  max-width:100vw !important;",
+  "  z-index:99999 !important;",
+  "  background:var(--topbar-bg,#fff) !important;",
+  "  display:flex !important;",
+  "  visibility:visible !important;",
+  "  opacity:1 !important;",
+  "  transform:none !important;",
+  "}",
+  /* Body spacer */
+  "body:not(.public-mode){",
+  "  padding-top:62px !important;",
+  "}",
+  "body.public-mode{",
+  "  padding-top:0 !important;",
+  "}",
+  /* Notif dropdown & music button adjust */
+  ".notif-dropdown{",
+  "  top:70px !important;",
+  "}",
+  ".music-float-btn{",
+  "  top:74px !important;",
+  "}",
+  "@media(max-width:768px){",
+  "  .lt-topbar{padding:8px 10px !important}",
+  "  body:not(.public-mode){padding-top:56px !important}",
+  "}"
+].join("\n");
+document.head.appendChild(css);
+console.log("✅ CSS topbar fixed applied");
+
+
+/* ============================================================
+   2. FORCE QR — Ganti total showQRModal dengan API online
+   ============================================================ */
+window.showQRModal = async function(bio, url){
+  console.log("🔲 showQRModal → pakai API online:", url);
+  
+  var apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=10&data=" + encodeURIComponent(url);
+  
+  var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
+  html += '<h3>' + (window.ico ? ico("qr") : "QR") + ' QR Code</h3>';
+  html += '<p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka bio kamu</p>';
+  html += '<div style="text-align:center">';
+  html += '<div style="padding:16px;background:#fff;border:3px solid var(--ink);border-radius:12px;display:inline-block;box-shadow:5px 5px 0 var(--ink)">';
+  html += '<img id="qr-img-live" src="' + apiUrl + '" style="width:240px;height:240px;display:block;background:#fff;border-radius:6px" alt="QR Code"/>';
+  html += '</div>';
+  html += '<div class="qr-url" style="margin-top:12px">' + (window.esc ? esc(url) : url) + '</div>';
+  html += '</div>';
+  html += '<div style="background:var(--yellow);border:2px solid var(--ink);border-radius:10px;padding:10px;margin:14px 0;font-size:11.5px;font-weight:700;text-align:center">💡 QR pakai layanan online. Klik tombol download untuk save.</div>';
+  html += '<a id="qr-dl-link" href="' + apiUrl + '" target="_blank" style="display:flex;width:100%;padding:14px;background:var(--ink);color:#fff;border:2.5px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--yellow);align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:900;font-size:13.5px;text-transform:uppercase;margin-bottom:8px">📥 Download QR (Buka Gambar)</a>';
+  html += '<button class="btn btn-primary btn-block" id="qr-copy-link" style="margin-bottom:8px">📋 Copy Link Bio</button>';
+  html += '<button class="btn btn-block" id="qr-buka-bio" style="background:var(--cream)">🔗 Buka Bio</button>';
+  
+  var m = window.openModal(html);
+  if(!m) return;
+  
+  var copyBtn = m.querySelector("#qr-copy-link");
+  if(copyBtn) copyBtn.addEventListener("click", function(){
+    try{
+      navigator.clipboard.writeText(url);
+      if(window.toast) toast("Link disalin!", "success");
+    }catch(e){
+      var ta = document.createElement("textarea");
+      ta.value = url; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+      if(window.toast) toast("Link disalin!", "success");
+    }
+  });
+  
+  var bukaBtn = m.querySelector("#qr-buka-bio");
+  if(bukaBtn) bukaBtn.addEventListener("click", function(){ window.open(url, "_blank"); });
+  
+  if(window.Sound && Sound.tada) Sound.tada();
+};
+console.log("✅ showQRModal replaced with API online version");
+
+
+/* ============================================================
+   3. FORCE HIDE LOADING STUCK
+   ============================================================ */
+setTimeout(function(){
+  var ov = document.getElementById("loading-overlay");
+  if(ov && !ov.classList.contains("hidden")){
+    console.log("⚠️ Force hide loading");
+    ov.classList.add("hidden");
+  }
+}, 3000);
+setTimeout(function(){
+  var ov = document.getElementById("loading-overlay");
+  if(ov && !ov.classList.contains("hidden")) ov.classList.add("hidden");
+}, 7000);
+
+
+/* ============================================================
+   4. FORCE DASHBOARD RENDER KALAU BLANK
+   ============================================================ */
+setTimeout(function(){
+  try{
+    var app = document.getElementById("app");
+    if(!app) return;
+    var txt = (app.innerText || "").trim();
+    if(txt.length < 20){
+      if(window.Auth && window.Auth.current && window.PageDashboard){
+        console.log("🔄 Force render dashboard");
+        PageDashboard.render("");
+      }
+    }
+  }catch(e){}
+}, 2500);
+
+
+/* ============================================================
+   5. DEBUG INFO — log tiap 2 detik selama 10 detik
+   ============================================================ */
+var debugCount = 0;
+var debugTimer = setInterval(function(){
+  debugCount++;
+  var topbar = document.querySelector(".lt-topbar");
+  if(topbar){
+    var rect = topbar.getBoundingClientRect();
+    var style = window.getComputedStyle(topbar);
+    console.log("[v27.3 DEBUG #" + debugCount + "] topbar:", {
+      ada: true,
+      posisi: style.position,
+      top: style.top,
+      zIndex: style.zIndex,
+      display: style.display,
+      visibility: style.visibility,
+      rectTop: rect.top,
+      rectLeft: rect.left,
+      rectWidth: rect.width,
+      rectHeight: rect.height,
+      diBody: topbar.parentNode === document.body,
+      diApp: !!(topbar.closest && topbar.closest("#app"))
+    });
+  } else {
+    console.log("[v27.3 DEBUG #" + debugCount + "] topbar: TIDAK ADA DI DOM");
+  }
+  if(debugCount >= 5) clearInterval(debugTimer);
+}, 2000);
+
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v27.3 AKTIF                  ║");
+console.log("║  • Topbar → fixed !important          ║");
+console.log("║  • QR → API online (selalu jalan)      ║");
+console.log("║  • Loading → force hide                ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+     </script>
 </body>
 </html>

@@ -14097,5 +14097,610 @@ var check = setInterval(function(){
 })();
 </script>
 <!-- ═══ END FINAL PATCH v6 ═══ -->
+   <script id="finalpatch-fix-v61">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v6.1 — FIX VARSMILE CLICK + 4x KLIK HIDE
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🔧 Patch v6.1 loading...");
+
+/* ─── FIX #1: Force pointer-events auto di Varsmile ─── */
+var style = document.createElement("style");
+style.textContent = [
+  "#varsmile-char{",
+  "  pointer-events:auto !important;",
+  "  cursor:pointer !important;",
+  "  user-select:none !important;",
+  "  -webkit-user-select:none !important;",
+  "  -webkit-tap-highlight-color:transparent !important;",
+  "  touch-action:manipulation !important;",
+  "}",
+  "#varsmile-char *{",
+  "  pointer-events:auto !important;",
+  "  user-select:none !important;",
+  "  -webkit-user-select:none !important;",
+  "}"
+].join("\n");
+document.head.appendChild(style);
+console.log("✅ CSS pointer-events applied");
+
+/* ─── FIX #2: Override VarsmileAI handler ─── */
+function fixVarsmileHandler(){
+  var vs = document.getElementById("varsmile-char");
+  if(!vs) return;
+  if(vs.dataset.fixV61 === "1") return;
+  vs.dataset.fixV61 = "1";
+  
+  // Force pointer-events via inline style
+  vs.style.pointerEvents = "auto";
+  vs.style.cursor = "pointer";
+  
+  // Reset semua handler lama dengan clone
+  var newVs = vs.cloneNode(true);
+  vs.parentNode.replaceChild(newVs, vs);
+  vs = newVs;
+  vs.dataset.fixV61 = "1";
+  vs.style.pointerEvents = "auto";
+  vs.style.cursor = "pointer";
+  
+  // Attach handler baru — pakai pointerdown biar lebih reliable
+  var clickCount = 0;
+  var clickTimer = null;
+  var openTimer = null;
+  
+  function handleClick(e){
+    if(e){ 
+      e.preventDefault(); 
+      e.stopPropagation(); 
+    }
+    
+    clickCount++;
+    console.log("🖱️ Varsmile click #" + clickCount);
+    
+    // Reset counter 1.5s setelah klik terakhir
+    if(clickTimer) clearTimeout(clickTimer);
+    clickTimer = setTimeout(function(){ 
+      clickCount = 0; 
+    }, 1500);
+    
+    // ═══ 3x KLIK → tunggu 2s → buka Varsmile AI ═══
+    if(clickCount === 3){
+      console.log("🎯 3 klik → AI akan buka dalam 2s");
+      
+      // Cancel kalau udah ada timer lain
+      if(openTimer) clearTimeout(openTimer);
+      
+      // Show countdown
+      showCountdownV61(2);
+      
+      openTimer = setTimeout(function(){
+        hideCountdownV61();
+        clickCount = 0;
+        console.log("🤖 Opening Varsmile AI...");
+        if(window.VarsmileAI && window.VarsmileAI.open){
+          window.VarsmileAI.open();
+        } else {
+          if(window.toast) toast("Varsmile AI belum siap","error");
+        }
+      }, 2000);
+    }
+    
+    // ═══ 4x KLIK → Varsmile HILANG total ═══
+    if(clickCount >= 4){
+      console.log("🎯 4 klik → Varsmile hilang");
+      
+      if(openTimer){ clearTimeout(openTimer); openTimer = null; }
+      hideCountdownV61();
+      clickCount = 0;
+      
+      // Tutup AI panel kalau kebuka
+      if(window.VarsmileAI && window.VarsmileAI._panel){
+        window.VarsmileAI.close && window.VarsmileAI.close();
+      }
+      
+      // HIDE Varsmile (bukan close AI)
+      hideVarsmile();
+    }
+  }
+  
+  // Attach ke pointerdown (lebih reliable di mobile)
+  vs.addEventListener("pointerdown", handleClick, true);
+  
+  // Fallback touchstart
+  vs.addEventListener("touchstart", function(e){
+    if(e.cancelable) e.preventDefault();
+  }, { passive: false });
+  
+  // Fallback click (desktop)
+  vs.addEventListener("click", function(e){
+    // Skip kalau pointerdown udah handle
+    if(e.detail === 0) return;
+  }, true);
+  
+  console.log("✅ Varsmile handler reattached");
+}
+
+/* ─── COUNTDOWN ─── */
+var _cdEl = null;
+function showCountdownV61(sec){
+  hideCountdownV61();
+  var el = document.createElement("div");
+  el.className = "vai-countdown";
+  el.textContent = sec;
+  el.style.cssText = "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99998;background:#0a0a0a;color:#ffd700;border:3px solid #ffd700;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;font-family:'Press Start 2P',monospace;font-size:32px;font-weight:900;box-shadow:0 0 40px rgba(255,215,0,.6);pointer-events:none;animation:vaiCountdownPulse .5s ease-in-out infinite";
+  document.body.appendChild(el);
+  _cdEl = el;
+  var current = sec;
+  var iv = setInterval(function(){
+    current--;
+    if(current > 0 && _cdEl){
+      _cdEl.textContent = current;
+      if(window.Sound && Sound.tick) Sound.tick();
+    } else {
+      clearInterval(iv);
+    }
+  }, 1000);
+  if(window.Sound && Sound.tick) Sound.tick();
+}
+
+function hideCountdownV61(){
+  if(_cdEl){ 
+    try{ _cdEl.remove(); }catch(e){} 
+    _cdEl = null; 
+  }
+}
+
+/* ─── HIDE VARSMILE ─── */
+function hideVarsmile(){
+  try{
+    var vs = document.getElementById("varsmile-char");
+    if(!vs) return;
+    
+    // Fade out + remove
+    vs.style.transition = "transform .3s ease, opacity .3s ease";
+    vs.style.transform = "scale(0.5) translateY(20px)";
+    vs.style.opacity = "0";
+    
+    setTimeout(function(){
+      if(vs.parentNode) vs.parentNode.removeChild(vs);
+    }, 300);
+    
+    // Disable STATE
+    if(window.STATE) STATE.varsmileEnabled = false;
+    
+    // Feedback
+    if(window.toast) toast("Varsmile hilang. Swipe ⬆️⬆️⬇️⬇️ untuk munculin lagi","info");
+    if(window.Sound && Sound.bip) Sound.bip();
+    
+    // Vibrate di mobile
+    if(navigator.vibrate) navigator.vibrate([30, 30, 30]);
+    
+    console.log("👋 Varsmile hidden");
+  }catch(e){ console.warn("hideVarsmile:", e); }
+}
+
+/* ─── FIX #3: Update GestureRecovery biar enable STATE lagi ─── */
+setTimeout(function(){
+  if(window.GestureRecovery){
+    var _origTrigger = window.GestureRecovery._trigger;
+    window.GestureRecovery._trigger = function(){
+      // Enable STATE dulu
+      if(window.STATE) STATE.varsmileEnabled = true;
+      
+      try{
+        var vs = document.getElementById("varsmile-char");
+        if(!vs){
+          // Varsmile dihapus, re-init
+          if(window.Varsmile){
+            window.Varsmile.hide && window.Varsmile.hide();
+            setTimeout(function(){
+              window.Varsmile.init();
+              // Re-fix handler setelah init
+              setTimeout(fixVarsmileHandler, 200);
+              setTimeout(fixVarsmileHandler, 800);
+            }, 100);
+          }
+        } else {
+          // Udah ada, panggil orig
+          if(_origTrigger) _origTrigger.call(window.GestureRecovery);
+        }
+        
+        if(window.toast) toast("Varsmile balik lagi!","success");
+        if(window.Sound && Sound.tada) Sound.tada();
+        if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
+      }catch(e){ console.warn("gesture trigger:", e); }
+    };
+    console.log("✅ GestureRecovery patched");
+  }
+}, 1500);
+
+/* ─── RUN: Fix handler berkala ─── */
+setTimeout(fixVarsmileHandler, 1000);
+setTimeout(fixVarsmileHandler, 2500);
+setTimeout(fixVarsmileHandler, 5000);
+
+// Watch kalau Varsmile di-render ulang
+var obs = new MutationObserver(function(muts){
+  muts.forEach(function(m){
+    m.addedNodes.forEach(function(n){
+      if(n.nodeType === 1 && n.id === "varsmile-char"){
+        setTimeout(fixVarsmileHandler, 100);
+      }
+    });
+  });
+});
+try{ obs.observe(document.body, { childList: true, subtree: true }); }catch(e){}
+
+// Cek berkala
+setInterval(fixVarsmileHandler, 3000);
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v6.1 AKTIF                   ║");
+console.log("║  • Varsmile bisa diklik                ║");
+console.log("║  • 3x klik → 2s → AI buka              ║");
+console.log("║  • 4x klik → Varsmile HILANG           ║");
+console.log("║  • Swipe ⬆️⬆️⬇️⬇️ → Varsmile balik       ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+   </script>
+   <script id="finalpatch-v62-lucide">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v6.2 — Ganti Pixel Icon ke Lucide Icon
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🎨 Patch v6.2 (Lucide) loading...");
+
+/* ─── LOAD LUCIDE CDN ─── */
+var LUCIDE_CDNS = [
+  "https://unpkg.com/lucide@latest/dist/umd/lucide.js",
+  "https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js",
+  "https://cdnjs.cloudflare.com/ajax/libs/lucide/0.454.0/lucide.min.js"
+];
+
+var _lucideLoading = null;
+function loadLucide(){
+  if(window.lucide && window.lucide.icons) return Promise.resolve(true);
+  if(_lucideLoading) return _lucideLoading;
+  _lucideLoading = new Promise(function(resolve){
+    var i = 0;
+    function tryNext(){
+      if(i >= LUCIDE_CDNS.length){
+        console.warn("❌ Semua CDN Lucide gagal");
+        _lucideLoading = null;
+        resolve(false);
+        return;
+      }
+      var url = LUCIDE_CDNS[i++];
+      var s = document.createElement("script");
+      s.src = url;
+      s.async = true;
+      var timer = setTimeout(function(){
+        try{ s.remove(); }catch(e){}
+        tryNext();
+      }, 5000);
+      s.onload = function(){
+        clearTimeout(timer);
+        if(window.lucide && window.lucide.icons){
+          console.log("✅ Lucide loaded: " + url);
+          resolve(true);
+        } else {
+          tryNext();
+        }
+      };
+      s.onerror = function(){
+        clearTimeout(timer);
+        tryNext();
+      };
+      document.head.appendChild(s);
+    }
+    tryNext();
+  });
+  return _lucideLoading;
+}
+
+/* Preload */
+loadLucide();
+
+/* ═══════════════════════════════════════════════════════════
+   MAP EMOJI → LUCIDE ICON NAME
+   ═══════════════════════════════════════════════════════════ */
+var EMOJI_TO_LUCIDE = {
+  /* Stars & Sparkle */
+  "⭐":"star","🌟":"star","💫":"sparkles","✨":"sparkles",
+  /* Hearts */
+  "❤️":"heart","💖":"heart","💕":"heart","💗":"heart","💓":"heart","💘":"heart",
+  /* Fire & Power */
+  "🔥":"flame","⚡":"zap","💥":"zap",
+  /* Crowns & Trophy */
+  "👑":"crown","🏆":"trophy","🥇":"award","🥈":"medal","🥉":"medal","🏅":"medal","🎖️":"medal",
+  /* Gift & Money */
+  "🎁":"gift","💰":"coins","🪙":"circle-dollar-sign","💵":"banknote","💸":"banknote","💴":"banknote","💶":"banknote","💷":"banknote","💎":"gem","💠":"gem",
+  /* Users */
+  "👤":"user","👥":"users","🙂":"smile","😊":"smile","😄":"smile","😁":"smile","😎":"smile",
+  /* Home */
+  "🏠":"home","🏡":"home",
+  /* Links */
+  "🔗":"link","🌐":"globe","📎":"paperclip",
+  /* Status */
+  "✅":"check-circle-2","✓":"check","✔️":"check","❌":"x-circle","❎":"x-circle","✖":"x","✕":"x",
+  "➕":"plus-circle","➕️":"plus-circle",
+  "⚠️":"alert-triangle","⚠":"alert-triangle","🚨":"siren",
+  "ℹ️":"info","ℹ":"info","❓":"help-circle","❔":"help-circle","❗":"alert-circle","❕":"alert-circle",
+  "🚫":"ban","❌️":"x-circle",
+  /* Lock */
+  "🔒":"lock","🔓":"unlock","🔐":"shield-check","🔑":"key","🗝️":"key",
+  /* Mail & Notif */
+  "📧":"mail","✉️":"mail","📩":"mail","📨":"mail","💌":"mail","🔔":"bell","🔕":"bell-off","📢":"megaphone","📣":"megaphone",
+  /* Search */
+  "🔍":"search","🔎":"search","🔍️":"search",
+  /* Rocket */
+  "🚀":"rocket","🛸":"rocket",
+  /* Edit */
+  "✏️":"pencil","📝":"file-edit","✍️":"pen-line","📄":"file","📋":"clipboard-list","📊":"bar-chart-3","📈":"trending-up","📉":"trending-down",
+  /* Trash */
+  "🗑️":"trash-2","🗑":"trash-2","🚮":"trash-2",
+  /* Folder & File */
+  "📁":"folder","📂":"folder-open","🗂️":"folder-tree","💾":"save","📦":"package",
+  /* Music */
+  "🎵":"music","🎶":"music-2","🎼":"music-4","🎧":"headphones","🎤":"mic","🎹":"piano",
+  /* Media */
+  "📺":"tv","📻":"radio","📷":"camera","📸":"camera","📹":"video","🎬":"film","🎥":"video",
+  "▶️":"play","▶":"play","⏸️":"pause","⏹️":"square","⏺️":"circle","🖼️":"image",
+  /* Clock */
+  "⏰":"alarm-clock","⏱️":"timer","⏳":"hourglass","📅":"calendar","🕐":"clock","🕑":"clock","🕒":"clock","🕓":"clock","🕔":"clock","🕕":"clock","🕖":"clock","🕗":"clock","🕘":"clock","🕙":"clock","🕚":"clock","🕛":"clock",
+  /* Nature */
+  "🌙":"moon","🌛":"moon","🌜":"moon","☀️":"sun","🌞":"sun","🌈":"rainbow","🍀":"clover","🌸":"flower-2","🌺":"flower","🌻":"flower","🌹":"flower-2","🌷":"flower-2",
+  /* Target */
+  "🎯":"target","🎪":"tent-tree","🎨":"palette","🖌️":"brush","🖍️":"pencil","🧭":"compass",
+  /* Books */
+  "📖":"book-open","📚":"library","📕":"book","📗":"book","📘":"book","📙":"book",
+  /* Misc */
+  "💡":"lightbulb","🔮":"sparkles","💻":"laptop","📱":"smartphone","📞":"phone","📟":"smartphone",
+  "🎮":"gamepad-2","🕹️":"joystick","🎲":"dice-6","🎯️":"target",
+  "💬":"message-circle","💭":"message-square","🗨️":"message-circle","🗯️":"message-square",
+  "📤":"upload","📥":"download","⬆️":"arrow-up","⬇️":"arrow-down","⬅️":"arrow-left","➡️":"arrow-right","↩️":"corner-up-left","↪️":"corner-up-right",
+  "↻":"rotate-cw","↺":"rotate-ccw","🔄":"refresh-cw","🔃":"refresh-cw",
+  "⚙️":"settings","🔧":"wrench","🔨":"hammer","🛠️":"wrench","⚒️":"hammer",
+  "📌":"pin","📍":"map-pin","🏷️":"tag","🎫":"ticket","🏁":"flag","🚩":"flag","🇮🇩":"flag",
+  "💯":"badge-check","🎉":"party-popper","🎊":"party-popper",
+  "🙏":"hand-heart","👍":"thumbs-up","👎":"thumbs-down","💪":"dumbbell","🤝":"handshake",
+  "👋":"hand","👆":"pointer","👇":"pointer","👉":"pointer","👈":"pointer",
+  "🟢":"circle-dot","🔴":"circle-dot","🟡":"circle-dot","🔵":"circle-dot","⚪":"circle","⚫":"circle-dot",
+  "☕":"coffee","🍕":"pizza","🍔":"sandwich","🍰":"cake-slice","🍪":"cookie",
+  "🎭":"drama","🎓":"graduation-cap","🏢":"building","🏦":"building-2","🏥":"hospital","🏪":"store",
+  "🚗":"car","🚕":"car","🚙":"car-front","✈️":"plane","🚁":"helicopter",
+  "🗺️":"map","🧳":"luggage","🌍":"globe","🌎":"globe","🌏":"globe"
+};
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER LUCIDE ICON → SVG STRING
+   ═══════════════════════════════════════════════════════════ */
+function pascalCase(str){
+  return String(str || "").split("-").map(function(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }).join("");
+}
+
+function renderLucideIcon(name){
+  if(!window.lucide || !window.lucide.icons) return "";
+  var pascalName = pascalCase(name);
+  var iconNode = window.lucide.icons[pascalName];
+  if(!iconNode) return "";
+  
+  var inner = "";
+  // iconNode = [["tag", {attrs}], ...]
+  for(var i = 0; i < iconNode.length; i++){
+    var item = iconNode[i];
+    if(!item || !item[0]) continue;
+    var tag = item[0];
+    var attrs = item[1] || {};
+    var attrStr = "";
+    var keys = Object.keys(attrs);
+    for(var j = 0; j < keys.length; j++){
+      var k = keys[j];
+      var v = String(attrs[k]);
+      v = v.replace(/"/g, "&quot;");
+      attrStr += " " + k + '="' + v + '"';
+    }
+    inner += "<" + tag + attrStr + "></" + tag + ">";
+  }
+  
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OVERRIDE emojiToSvg → Pakai Lucide
+   ═══════════════════════════════════════════════════════════ */
+var _EMOJI_REGEX = /([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\uFE0F]|[\u2700-\u27BF])/gu;
+
+window.emojiToSvg = function(text, opts){
+  if(!text) return text;
+  return String(text).replace(_EMOJI_REGEX, function(match){
+    if(match === "\uFE0F") return "";
+    var name = EMOJI_TO_LUCIDE[match];
+    if(!name){
+      // Fallback: kalau gak ada map, tampilkan emoji asli
+      return match;
+    }
+    var svg = renderLucideIcon(name);
+    if(!svg) return match;
+    return '<span class="lucide-emoji">' + svg + '</span>';
+  });
+};
+
+/* ═══════════════════════════════════════════════════════════
+   CSS BUAT .lucide-emoji
+   ═══════════════════════════════════════════════════════════ */
+var styleEl = document.createElement("style");
+styleEl.id = "lucide-emoji-style";
+styleEl.textContent = [
+  ".lucide-emoji{",
+  "  display:inline-flex !important;",
+  "  align-items:center !important;",
+  "  justify-content:center !important;",
+  "  width:1.15em !important;",
+  "  height:1.15em !important;",
+  "  vertical-align:-0.2em !important;",
+  "  flex-shrink:0 !important;",
+  "  line-height:0 !important;",
+  "  color:currentColor !important;",
+  "}",
+  ".lucide-emoji svg{",
+  "  width:100% !important;",
+  "  height:100% !important;",
+  "  display:block !important;",
+  "  stroke:currentColor !important;",
+  "}",
+  "h1 .lucide-emoji,h2 .lucide-emoji,h3 .lucide-emoji,h4 .lucide-emoji{",
+  "  width:1.35em !important;",
+  "  height:1.35em !important;",
+  "}",
+  ".btn .lucide-emoji,.btn-sm .lucide-emoji{",
+  "  width:1.05em !important;",
+  "  height:1.05em !important;",
+  "}",
+  ".menu-item .lucide-emoji,.feature-card .fi .lucide-emoji{",
+  "  width:18px !important;",
+  "  height:18px !important;",
+  "}",
+  /* Hide pixel icons lama */
+  ".px-icon{display:none !important;}"
+].join("\n");
+document.head.appendChild(styleEl);
+
+/* ═══════════════════════════════════════════════════════════
+   CLEANUP PIXEL ICON YANG UDAH RENDERED + RE-CONVERT KE LUCIDE
+   ═══════════════════════════════════════════════════════════ */
+function cleanupAndReconvert(){
+  try{
+    // Hapus semua wrapper .px-icon yang ada
+    var oldIcons = document.querySelectorAll(".px-icon");
+    oldIcons.forEach(function(el){
+      // Ambil emoji asli dari title atau data attribute
+      var emoji = el.dataset.emoji || el.getAttribute("data-emoji") || el.textContent || "";
+      
+      if(emoji){
+        var newSvg = window.emojiToSvg(emoji);
+        if(newSvg && newSvg !== emoji){
+          var span = document.createElement("span");
+          span.style.display = "contents";
+          span.setAttribute("data-emoji-converted", "2");
+          span.innerHTML = newSvg;
+          el.parentNode.replaceChild(span, el);
+          return;
+        }
+      }
+      // Fallback: hapus aja
+      if(el.parentNode) el.parentNode.removeChild(el);
+    });
+    
+    // Hapus span dengan data-emoji-converted="1" (pixel lama)
+    var oldConverted = document.querySelectorAll('span[data-emoji-converted="1"]');
+    oldConverted.forEach(function(el){
+      if(el.parentNode) el.parentNode.removeChild(el);
+    });
+    
+    console.log("🧹 Cleanup selesai: " + (oldIcons.length + oldConverted.length) + " element");
+  }catch(e){
+    console.warn("cleanupAndReconvert:", e);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FORCE WALK SEMUA TEXT NODE LAGI
+   ═══════════════════════════════════════════════════════════ */
+function forceReconvert(){
+  try{
+    if(!window.EmojiReplacer) return;
+    
+    // Reset semua text nodes
+    var skipTags = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"];
+    
+    function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(skipTags.indexOf(root.tagName) !== -1) return;
+      if(root.classList && (root.classList.contains("lucide-emoji") || root.classList.contains("px-icon"))) return;
+      if(root.closest && (root.closest(".lucide-emoji") || root.closest(".px-icon"))) return;
+      
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      for(var i = 0; i < kids.length; i++){
+        var k = kids[i];
+        if(k.nodeType === 3){
+          try{
+            var txt = k.nodeValue;
+            if(!txt) continue;
+            _EMOJI_REGEX.lastIndex = 0;
+            if(!_EMOJI_REGEX.test(txt)) continue;
+            var html = window.emojiToSvg(txt);
+            if(html && html !== txt){
+              var span = document.createElement("span");
+              span.style.display = "contents";
+              span.setAttribute("data-emoji-converted", "2");
+              span.innerHTML = html;
+              k.parentNode.replaceChild(span, k);
+            }
+          }catch(e){}
+        } else if(k.nodeType === 1){
+          walk(k);
+        }
+      }
+    }
+    
+    walk(document.body);
+    console.log("🔄 Force reconvert done");
+  }catch(e){ console.warn("forceReconvert:", e); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT — Jalankan setelah Lucide loaded
+   ═══════════════════════════════════════════════════════════ */
+loadLucide().then(function(loaded){
+  if(!loaded){
+    console.warn("⚠️ Lucide gagal load, fallback ke emoji asli");
+    return;
+  }
+  
+  console.log("✅ Lucide ready, mulai convert emoji...");
+  
+  // Step 1: Cleanup pixel lama
+  setTimeout(cleanupAndReconvert, 800);
+  
+  // Step 2: Force walk semua text node
+  setTimeout(forceReconvert, 1500);
+  setTimeout(forceReconvert, 3000);
+  
+  // Step 3: Mutation observer buat element baru
+  try{
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        m.addedNodes.forEach(function(n){
+          if(n.nodeType === 1){
+            if(n.classList && (n.classList.contains("lucide-emoji") || n.classList.contains("px-icon"))) return;
+            // Trigger re-walk nanti (batched)
+          }
+        });
+      });
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  }catch(e){}
+  
+  console.log("╔════════════════════════════════════════╗");
+  console.log("║  ✅ PATCH v6.2 (LUCIDE) AKTIF          ║");
+  console.log("║  • Emoji → Lucide icons                ║");
+  console.log("║  • Pixel icon lama dihapus             ║");
+  console.log("╚════════════════════════════════════════╝");
+});
+
+/* Expose debug */
+window.renderLucideIcon = renderLucideIcon;
+window.EMOJI_TO_LUCIDE = EMOJI_TO_LUCIDE;
+
+})();
+   </script>
 </body>
 </html>

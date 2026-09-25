@@ -13036,238 +13036,186 @@ body[data-warna="neo-gold"] .user-box{
 }
 </style>
    <!-- ═══════════════════════════════════════════════════════════
-     FINAL PATCH v4 — Varsmile AI + Emoji SVG + QR (qrcodejs)
+     FINAL PATCH v5 — Varsmile AI + AI Bio + Emoji + QR + Back
      by Varoo | TEMPEL SEBELUM </body>
      ═══════════════════════════════════════════════════════════ -->
 
 <style id="finalpatch-css">
-/* ═══ SVG EMOJI STYLE ═══ */
-.svg-emoji{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  width:1.15em !important;
-  height:1.15em !important;
-  max-width:1.3em !important;
-  max-height:1.3em !important;
-  vertical-align:-0.18em !important;
-  flex-shrink:0 !important;
-  overflow:visible !important;
+/* ═══ SVG EMOJI ═══ */
+.svg-emoji{display:inline-flex !important;align-items:center !important;justify-content:center !important;width:1.15em !important;height:1.15em !important;max-width:1.3em !important;max-height:1.3em !important;vertical-align:-0.18em !important;flex-shrink:0 !important;overflow:visible !important}
+.svg-emoji svg{width:100% !important;height:100% !important;display:block !important;stroke:currentColor !important;fill:none !important;stroke-width:2 !important;stroke-linecap:round !important;stroke-linejoin:round !important}
+h1 .svg-emoji,h2 .svg-emoji,h3 .svg-emoji,h4 .svg-emoji{width:1.4em !important;height:1.4em !important}
+.btn .svg-emoji,.btn-sm .svg-emoji{width:1.05em !important;height:1.05em !important}
+.menu-item .svg-emoji,.feature-card .fi .svg-emoji{width:18px !important;height:18px !important}
+
+/* ═══ MODAL BACK BUTTON ═══ */
+.modal-back-btn{
+  position:absolute;
+  top:12px;
+  left:14px;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#fff;
+  color:#0a0a0a;
+  border:2.5px solid #0a0a0a;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  font-size:18px;
+  font-weight:900;
+  line-height:1;
+  padding:0;
+  box-shadow:2px 2px 0 #0a0a0a;
+  transition:transform .1s, box-shadow .1s;
+  z-index:10;
+  font-family:'Inter',sans-serif;
 }
-.svg-emoji svg{
-  width:100% !important;
-  height:100% !important;
-  display:block !important;
-  stroke:currentColor !important;
-  fill:none !important;
-  stroke-width:2 !important;
-  stroke-linecap:round !important;
-  stroke-linejoin:round !important;
-}
-h1 .svg-emoji,h2 .svg-emoji,h3 .svg-emoji,h4 .svg-emoji{
-  width:1.4em !important;
-  height:1.4em !important;
-}
-.btn .svg-emoji,.btn-sm .svg-emoji{
-  width:1.05em !important;
-  height:1.05em !important;
-}
-.menu-item .svg-emoji,.feature-card .fi .svg-emoji{
-  width:18px !important;
-  height:18px !important;
-}
+.modal-back-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#ffd700}
+.modal-back-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}
+.modal-back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Modal adjust supaya ada ruang buat back btn */
+.modal{position:relative}
+.modal h3{padding-left:38px}
 
 /* ═══ VARSMILE AI PANEL ═══ */
-.vai-panel{
-  position:fixed;
-  bottom:120px;
-  right:16px;
-  z-index:99990;
-  width:min(380px,calc(100vw - 32px));
-  max-height:min(560px,75vh);
-  background:var(--white,#fff);
-  border:3px solid var(--ink,#0a0a0a);
-  border-radius:16px;
-  box-shadow:8px 8px 0 var(--ink,#0a0a0a);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  font-family:'Inter',sans-serif;
-  animation:vaiSlide .3s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes vaiSlide{
-  from{opacity:0;transform:translateY(20px) scale(.95)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
+.vai-panel{position:fixed;bottom:120px;right:16px;z-index:99990;width:min(380px,calc(100vw - 32px));max-height:min(560px,75vh);background:#fff;border:3px solid #0a0a0a;border-radius:16px;box-shadow:8px 8px 0 #0a0a0a;overflow:hidden;display:flex;flex-direction:column;font-family:'Inter',sans-serif;animation:vaiSlide .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes vaiSlide{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 .vai-panel.hide{animation:vaiSlideOut .25s ease forwards}
 @keyframes vaiSlideOut{to{opacity:0;transform:translateY(20px) scale(.95)}}
-
-.vai-head{
-  background:linear-gradient(135deg,#0a0a0a,#2a2a2a);
-  color:#ffd700;
-  padding:14px 16px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-shrink:0;
-  border-bottom:3px solid #ffd700;
-}
-.vai-head .vai-avatar{
-  width:38px;height:38px;border-radius:50%;
-  background:#ffd700;border:2px solid #0a0a0a;
-  display:grid;place-items:center;font-size:18px;
-  flex-shrink:0;overflow:hidden;
-}
+.vai-head{background:linear-gradient(135deg,#0a0a0a,#2a2a2a);color:#ffd700;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #ffd700}
+.vai-head .vai-avatar{width:38px;height:38px;border-radius:50%;background:#ffd700;border:2px solid #0a0a0a;display:grid;place-items:center;font-size:18px;flex-shrink:0;overflow:hidden}
 .vai-head .vai-avatar svg{width:100%;height:100%}
 .vai-head-info{flex:1;min-width:0}
-.vai-head-info b{
-  display:block;font-size:13.5px;font-weight:900;
-  text-transform:uppercase;letter-spacing:.3px;
-}
+.vai-head-info b{display:block;font-size:13.5px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
 .vai-head-info span{font-size:10.5px;font-weight:700;opacity:.75}
-.vai-head .vai-close{
-  width:30px;height:30px;border-radius:50%;
-  background:rgba(255,255,255,.15);color:#ffd700;
-  border:2px solid #ffd700;display:grid;place-items:center;
-  cursor:pointer;flex-shrink:0;padding:0;
-}
+.vai-head .vai-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);color:#ffd700;border:2px solid #ffd700;display:grid;place-items:center;cursor:pointer;flex-shrink:0;padding:0}
 .vai-head .vai-close svg{width:14px;height:14px}
-
-.vai-body{
-  flex:1;overflow-y:auto;padding:12px;
-  background:#f0ebe0;
-  display:flex;flex-direction:column;gap:10px;
-}
-.vai-msg{
-  display:flex;gap:8px;max-width:100%;
-  animation:vaiMsgIn .2s ease;
-}
+.vai-body{flex:1;overflow-y:auto;padding:12px;background:#f0ebe0;display:flex;flex-direction:column;gap:10px}
+.vai-msg{display:flex;gap:8px;max-width:100%;animation:vaiMsgIn .2s ease}
 @keyframes vaiMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .vai-msg.from-ai{align-self:flex-start;flex-direction:row}
 .vai-msg.from-user{align-self:flex-end;flex-direction:row-reverse}
-.vai-msg .vai-bubble{
-  padding:10px 14px;border-radius:12px;
-  font-size:13px;line-height:1.5;font-weight:600;
-  max-width:calc(100% - 40px);word-break:break-word;
-  white-space:pre-wrap;
-}
-.vai-msg.from-ai .vai-bubble{
-  background:#fff;border:2px solid #0a0a0a;
-  border-bottom-left-radius:4px;
-  box-shadow:2px 2px 0 #0a0a0a;color:#0a0a0a;
-}
-.vai-msg.from-user .vai-bubble{
-  background:#0a0a0a;color:#ffd700;
-  border:2px solid #0a0a0a;border-bottom-right-radius:4px;
-  box-shadow:2px 2px 0 #ffd700;
-}
-.vai-msg .vai-icon{
-  width:30px;height:30px;border-radius:50%;
-  background:#ffd700;border:2px solid #0a0a0a;
-  display:grid;place-items:center;font-size:14px;
-  flex-shrink:0;overflow:hidden;
-}
+.vai-msg .vai-bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5;font-weight:600;max-width:calc(100% - 40px);word-break:break-word;white-space:pre-wrap}
+.vai-msg.from-ai .vai-bubble{background:#fff;border:2px solid #0a0a0a;border-bottom-left-radius:4px;box-shadow:2px 2px 0 #0a0a0a;color:#0a0a0a}
+.vai-msg.from-user .vai-bubble{background:#0a0a0a;color:#ffd700;border:2px solid #0a0a0a;border-bottom-right-radius:4px;box-shadow:2px 2px 0 #ffd700}
+.vai-msg .vai-icon{width:30px;height:30px;border-radius:50%;background:#ffd700;border:2px solid #0a0a0a;display:grid;place-items:center;font-size:14px;flex-shrink:0;overflow:hidden}
 .vai-msg .vai-icon svg{width:100%;height:100%}
-
-.vai-typing{
-  display:flex;gap:3px;padding:12px 14px;
-  background:#fff;border:2px solid #0a0a0a;
-  border-radius:12px;border-bottom-left-radius:4px;
-  width:fit-content;box-shadow:2px 2px 0 #0a0a0a;
-}
-.vai-typing span{
-  width:6px;height:6px;border-radius:50%;
-  background:#555;animation:vaiTyping 1.2s infinite;
-}
+.vai-typing{display:flex;gap:3px;padding:12px 14px;background:#fff;border:2px solid #0a0a0a;border-radius:12px;border-bottom-left-radius:4px;width:fit-content;box-shadow:2px 2px 0 #0a0a0a}
+.vai-typing span{width:6px;height:6px;border-radius:50%;background:#555;animation:vaiTyping 1.2s infinite}
 .vai-typing span:nth-child(2){animation-delay:.2s}
 .vai-typing span:nth-child(3){animation-delay:.4s}
-@keyframes vaiTyping{
-  0%,60%,100%{transform:translateY(0);opacity:.4}
-  30%{transform:translateY(-4px);opacity:1}
-}
-
-.vai-suggestions{
-  padding:8px 12px;background:#f0ebe0;
-  display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;
-  border-top:2px solid #e8e2d5;
-}
-.vai-sugg-btn{
-  padding:6px 10px;background:#fff;
-  border:2px solid #0a0a0a;border-radius:999px;
-  font-size:10.5px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.3px;
-  cursor:pointer;color:#0a0a0a;
-  box-shadow:2px 2px 0 #0a0a0a;
-  transition:transform .1s;
-}
+@keyframes vaiTyping{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+.vai-suggestions{padding:8px 12px;background:#f0ebe0;display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;border-top:2px solid #e8e2d5}
+.vai-sugg-btn{padding:6px 10px;background:#fff;border:2px solid #0a0a0a;border-radius:999px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;color:#0a0a0a;box-shadow:2px 2px 0 #0a0a0a;transition:transform .1s}
 .vai-sugg-btn:hover{transform:translate(-1px,-1px);background:#ffd700}
-
-.vai-foot{
-  padding:10px 12px;background:#fff;
-  border-top:3px solid #0a0a0a;
-  display:flex;gap:8px;align-items:flex-end;flex-shrink:0;
-}
-.vai-foot textarea{
-  flex:1;min-height:40px;max-height:100px;
-  padding:10px 12px;font-size:13px;font-weight:600;
-  border:2px solid #0a0a0a;border-radius:10px;
-  background:#f0ebe0;resize:none;font-family:inherit;
-  box-shadow:none;line-height:1.4;
-}
+.vai-foot{padding:10px 12px;background:#fff;border-top:3px solid #0a0a0a;display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.vai-foot textarea{flex:1;min-height:40px;max-height:100px;padding:10px 12px;font-size:13px;font-weight:600;border:2px solid #0a0a0a;border-radius:10px;background:#f0ebe0;resize:none;font-family:inherit;box-shadow:none;line-height:1.4}
 .vai-foot textarea:focus{box-shadow:2px 2px 0 #0a0a0a;outline:none}
-.vai-foot .vai-send{
-  width:42px;height:42px;border-radius:10px;
-  background:#0a0a0a;color:#ffd700;
-  border:2px solid #0a0a0a;display:grid;place-items:center;
-  cursor:pointer;flex-shrink:0;
-  box-shadow:2px 2px 0 #ffd700;padding:0;
-  transition:transform .1s;
-}
+.vai-foot .vai-send{width:42px;height:42px;border-radius:10px;background:#0a0a0a;color:#ffd700;border:2px solid #0a0a0a;display:grid;place-items:center;cursor:pointer;flex-shrink:0;box-shadow:2px 2px 0 #ffd700;padding:0;transition:transform .1s}
 .vai-foot .vai-send:hover{transform:translate(-1px,-1px)}
 .vai-foot .vai-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .vai-foot .vai-send svg{width:18px;height:18px}
-
-.vai-quota{
-  padding:6px 12px;background:#e8e2d5;
-  border-top:2px solid #0a0a0a;
-  font-size:10.5px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.5px;
-  color:#555;text-align:center;flex-shrink:0;
-}
+.vai-quota{padding:6px 12px;background:#e8e2d5;border-top:2px solid #0a0a0a;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#555;text-align:center;flex-shrink:0}
 .vai-quota.warning{background:#ff2a2a;color:#fff}
 .vai-quota .vai-quota-num{font-family:monospace;font-weight:900;color:#0a0a0a}
 .vai-quota.warning .vai-quota-num{color:#ffd700}
+
+/* ═══ VARSMILE AI COUNTDOWN OVERLAY ═══ */
+.vai-countdown{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:99998;
+  background:#0a0a0a;
+  color:#ffd700;
+  border:3px solid #ffd700;
+  border-radius:50%;
+  width:100px;
+  height:100px;
+  display:grid;
+  place-items:center;
+  font-family:'Press Start 2P',monospace;
+  font-size:32px;
+  font-weight:900;
+  box-shadow:0 0 40px rgba(255,215,0,.6), 6px 6px 0 rgba(255,215,0,.3);
+  animation:vaiCountdownPulse .5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes vaiCountdownPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.1)}
+}
+
+/* ═══ AI BIO MODAL ═══ */
+.aib-modal{padding:4px}
+.aib-hero{text-align:center;padding:10px 0 16px}
+.aib-hero h3{font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:-.3px;margin-bottom:6px;color:#0a0a0a}
+.aib-hero p{font-size:12.5px;font-weight:600;color:#555;line-height:1.5}
+.aib-field{margin-bottom:14px}
+.aib-field label{display:block;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#0a0a0a}
+.aib-field textarea,.aib-field select{width:100%;padding:11px 13px;font-size:13px;font-weight:600;border:2.5px solid #0a0a0a;border-radius:10px;background:#f0ebe0;font-family:inherit;outline:none;color:#0a0a0a}
+.aib-field textarea{min-height:90px;resize:vertical;line-height:1.5}
+.aib-field textarea:focus,.aib-field select:focus{box-shadow:3px 3px 0 #0a0a0a}
+.aib-style-row{display:flex;gap:6px;margin-bottom:14px}
+.aib-style-btn{flex:1;padding:10px 6px;text-align:center;border:2.5px solid #0a0a0a;border-radius:10px;background:#fff;font-weight:900;font-size:11px;text-transform:uppercase;cursor:pointer;box-shadow:2px 2px 0 #0a0a0a;transition:transform .1s}
+.aib-style-btn.active{background:#ffd700}
+.aib-style-btn:hover{transform:translate(-1px,-1px)}
+.aib-btn-primary{width:100%;padding:14px;background:#0a0a0a;color:#fff;border:2.5px solid #0a0a0a;border-radius:10px;font-weight:900;font-size:13.5px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:3px 3px 0 #ffd700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.aib-btn-primary:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #ffd700}
+.aib-btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.aib-result{margin-top:14px;background:#f0ebe0;border:2.5px solid #0a0a0a;border-radius:12px;padding:14px;display:none;box-shadow:3px 3px 0 #0a0a0a}
+.aib-result.show{display:block}
+.aib-result-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#555}
+.aib-result-bio{font-size:14px;font-weight:800;line-height:1.5;margin-bottom:12px;color:#0a0a0a;padding:10px 12px;background:#fff;border:2px solid #0a0a0a;border-radius:8px}
+.aib-result-links{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
+.aib-result-links li{font-size:12.5px;font-weight:700;padding:8px 12px;background:#fff;border:2px solid #0a0a0a;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.aib-result-links li span{color:#555;font-size:11px;font-family:monospace;word-break:break-all}
+.aib-result-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.aib-tag{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:900;border:2px solid #0a0a0a;text-transform:uppercase;letter-spacing:.3px}
+.aib-tag-tema{background:#0a0a0a;color:#ffd700}
+.aib-tag-style{background:#a78bfa;color:#fff}
+.aib-result-actions{display:flex;gap:8px}
+.aib-result-actions button{flex:1;padding:12px;font-size:12.5px;font-weight:900;text-transform:uppercase;border:2.5px solid #0a0a0a;border-radius:10px;cursor:pointer;box-shadow:3px 3px 0 #0a0a0a;font-family:inherit}
+.aib-btn-apply{background:#22c55e;color:#fff}
+.aib-btn-retry{background:#fff;color:#0a0a0a}
+.aib-loading{text-align:center;padding:20px;display:none}
+.aib-loading.show{display:block}
+.aib-spinner{width:40px;height:40px;border:4px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:aibSpin .7s linear infinite;margin:0 auto 12px}
+@keyframes aibSpin{to{transform:rotate(360deg)}}
+.aib-loading-text{font-size:12px;font-weight:700;color:#0a0a0a;text-transform:uppercase;letter-spacing:.5px}
 </style>
 
 <script id="finalpatch-js">
 /* ═══════════════════════════════════════════════════════════════
-   FINAL PATCH v4 — by Varoo
-   1. Varsmile AI Agent (Groq)
-   2. Emoji → SVG auto-convert
-   3. QR pakai qrcodejs (davidshimjs)
+   FINAL PATCH v5 — by Varoo
+   1. Varsmile AI (3 klik → 2s → open | 4 klik → close)
+   2. AI Bio Generator (Groq)
+   3. Emoji → SVG
+   4. QR (qrcodejs)
+   5. Auto Back Button di modal
    ═══════════════════════════════════════════════════════════════ */
 (function(){
 "use strict";
 
-console.log("🚀 Final Patch v4 loading...");
+console.log("🚀 Final Patch v5 loading...");
 
-/* ═══ KONFIG GROQ ═══ */
 var GROQ_API_KEY = "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";
 var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 var GROQ_MODEL = "openai/gpt-oss-120b";
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 1 — EMOJI → SVG AUTO-CONVERT
+   MODUL 1 — EMOJI → SVG
    ═══════════════════════════════════════════════════════════ */
 var EmojiReplacer = {
   _skipTags: ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"],
   _regex: /[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\u{2700}-\u{27BF}]/gu,
-  
   init: function(){
     var self = this;
     setTimeout(function(){ self._walk(document.body); }, 1500);
     setTimeout(function(){ self._walk(document.body); }, 3500);
-    
     var observer = new MutationObserver(function(muts){
       muts.forEach(function(m){
         if(m.target && m.target.closest && m.target.closest(".svg-emoji")) return;
@@ -13276,18 +13224,12 @@ var EmojiReplacer = {
           if(n.nodeType === 1){
             if(self._skipTags.indexOf(n.tagName) !== -1) return;
             self._walk(n);
-          } else if(n.nodeType === 3){
-            self._convertTextNode(n);
-          }
+          } else if(n.nodeType === 3){ self._convertTextNode(n); }
         });
       });
     });
-    try{
-      observer.observe(document.body, { childList: true, subtree: true });
-      console.log("✅ EmojiReplacer aktif");
-    }catch(e){}
+    try{ observer.observe(document.body, { childList: true, subtree: true }); }catch(e){}
   },
-  
   _walk: function(root){
     if(!root || root.nodeType !== 1) return;
     if(this._skipTags.indexOf(root.tagName) !== -1) return;
@@ -13300,7 +13242,6 @@ var EmojiReplacer = {
       else if(k.nodeType === 1) this._walk(k);
     }
   },
-  
   _convertTextNode: function(node){
     try{
       var txt = node.nodeValue;
@@ -13324,10 +13265,55 @@ var EmojiReplacer = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 2 — VARSMILE AI AGENT
+   MODUL 2 — AUTO BACK BUTTON DI MODAL
+   Setiap .modal-back yang muncul, pastikan ada tombol back
+   ═══════════════════════════════════════════════════════════ */
+var ModalBackInjector = {
+  BACK_SVG: '<svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+  init: function(){
+    var self = this;
+    var observer = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        m.addedNodes.forEach(function(n){
+          if(n.nodeType === 1 && n.classList && n.classList.contains("modal-back")){
+            setTimeout(function(){ self.injectInto(n); }, 30);
+          }
+        });
+      });
+    });
+    try{
+      observer.observe(document.body, { childList: true, subtree: true });
+      console.log("✅ ModalBackInjector aktif");
+    }catch(e){}
+  },
+  injectInto: function(modalBack){
+    try{
+      var modal = modalBack.querySelector(".modal");
+      if(!modal) return;
+      if(modal.querySelector(".modal-back-btn")) return;
+      if(modal.querySelector("#aib-modal-root")) return; // skip AI Bio modal (dia udah punya)
+      
+      var btn = document.createElement("button");
+      btn.className = "modal-back-btn";
+      btn.type = "button";
+      btn.innerHTML = this.BACK_SVG;
+      btn.setAttribute("aria-label", "Kembali");
+      btn.addEventListener("click", function(){
+        if(window.Sound && Sound.click) Sound.click();
+        modalBack.remove();
+      });
+      
+      modal.insertBefore(btn, modal.firstChild);
+    }catch(e){ console.warn("injectBackBtn:", e); }
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════
+   MODUL 3 — VARSMILE AI (trigger 3 klik → 2s → open | 4 klik close)
    ═══════════════════════════════════════════════════════════ */
 var VarsmileAI = {
   _panel: null, _history: [], _typing: false,
+  _clickCount: 0, _clickTimer: null, _openTimer: null, _countdownEl: null,
   
   checkLimit: function(){
     var plan = (window.STATE && STATE.plan) || { features:{ aiChatLimit: 25 } };
@@ -13351,6 +13337,68 @@ var VarsmileAI = {
         await FB.db.collection("users").doc(Auth.current.uid).update({ aiChatUsage: usage });
       }
     }catch(e){}
+  },
+  
+  /* Handle klik Varsmile */
+  handleVarsmileClick: function(){
+    var self = this;
+    this._clickCount++;
+    console.log("🖱️ Varsmile click #" + this._clickCount);
+    
+    if(this._clickTimer){ clearTimeout(this._clickTimer); }
+    
+    // Reset counter setelah 1.5s idle
+    this._clickTimer = setTimeout(function(){
+      self._clickCount = 0;
+    }, 1500);
+    
+    // 3x klik → countdown 2s → open
+    if(this._clickCount === 3){
+      if(this._panel && document.body.contains(this._panel)) return; // udah kebuka
+      this.showCountdown(2);
+      this._openTimer = setTimeout(function(){
+        self.hideCountdown();
+        self._clickCount = 0;
+        self.open();
+      }, 2000);
+    }
+    
+    // 4x klik → cancel + close
+    if(this._clickCount >= 4){
+      if(this._openTimer){ clearTimeout(this._openTimer); this._openTimer = null; }
+      this.hideCountdown();
+      this._clickCount = 0;
+      if(this._panel){ this.close(); }
+    }
+  },
+  
+  showCountdown: function(sec){
+    var self = this;
+    this.hideCountdown();
+    var el = document.createElement("div");
+    el.className = "vai-countdown";
+    el.textContent = sec;
+    document.body.appendChild(el);
+    this._countdownEl = el;
+    
+    var current = sec;
+    var iv = setInterval(function(){
+      current--;
+      if(current > 0 && self._countdownEl){
+        self._countdownEl.textContent = current;
+        if(window.Sound && Sound.tick) Sound.tick();
+      } else {
+        clearInterval(iv);
+      }
+    }, 1000);
+    if(window.Sound && Sound.tick) Sound.tick();
+  },
+  
+  hideCountdown: function(){
+    if(this._countdownEl){
+      try{ this._countdownEl.remove(); }catch(e){}
+      this._countdownEl = null;
+    }
   },
   
   open: function(){
@@ -13386,6 +13434,9 @@ var VarsmileAI = {
     document.body.appendChild(this._panel);
     this.renderHistory();
     this.bindEvents();
+    
+    if(window.Sound && Sound.success) Sound.success();
+    
     setTimeout(function(){
       var inp = document.getElementById("vai-input");
       if(inp) inp.focus();
@@ -13398,6 +13449,7 @@ var VarsmileAI = {
       var p = this._panel;
       setTimeout(function(){ try{ p.remove(); }catch(e){} }, 250);
       this._panel = null;
+      if(window.Sound && Sound.click) Sound.click();
     }
   },
   
@@ -13501,11 +13553,7 @@ var VarsmileAI = {
     var quota = document.getElementById("vai-quota");
     if(!quota) return;
     var chk = this.checkLimit();
-    if(chk.remaining === -1){
-      quota.className = "vai-quota";
-      quota.innerHTML = "∞ pesan unlimited";
-      return;
-    }
+    if(chk.remaining === -1){ quota.className = "vai-quota"; quota.innerHTML = "∞ pesan unlimited"; return; }
     quota.className = "vai-quota" + (chk.remaining <= 3 ? " warning" : "");
     quota.innerHTML = '💬 <span class="vai-quota-num">' + chk.remaining + '</span>/' + chk.limit + ' pesan hari ini';
   },
@@ -13520,16 +13568,8 @@ var VarsmileAI = {
     recent.forEach(function(m){ messages.push({ role: m.role, content: m.content }); });
     var response = await fetch(GROQ_ENDPOINT, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + GROQ_API_KEY
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: messages,
-        max_tokens: 400,
-        temperature: 0.75
-      })
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_API_KEY },
+      body: JSON.stringify({ model: GROQ_MODEL, messages: messages, max_tokens: 400, temperature: 0.75 })
     });
     if(!response.ok){
       if(response.status === 429) return this.fallbackReply(userText);
@@ -13542,51 +13582,17 @@ var VarsmileAI = {
   
   fallbackReply: function(text){
     var t = (text || "").toLowerCase();
-    if(t.indexOf("bikin bio") !== -1 || t.indexOf("buat bio") !== -1){
-      return 'Oke! Ceritain:\n1. Kamu jualan apa / kerja apa?\n2. Target audience siapa?\n3. Vibe yang diinginkan?\n\nNanti aku bantu bikin 💪';
-    }
-    if(t.indexOf("tema") !== -1 || t.indexOf("warna") !== -1){
-      return 'Cara ganti tema:\n1. Buka **Editor**\n2. Cari **Tema Warna**\n3. Pilih tema\n4. Klik **Simpan** ✅';
-    }
-    if(t.indexOf("plan") !== -1 || t.indexOf("upgrade") !== -1){
-      return 'Plan Varlinkbio:\n• **Free** — Rp 0\n• **Starter** — Rp 5.000 PERMANEN ✨\n• **Pro** — Rp 1.000+/hari\n• **Ultimate** — Rp 6.000+/hari\n\nUpgrade di Settings 🚀';
-    }
-    if(t.indexOf("fitur") !== -1){
-      return 'Fitur Varlinkbio:\n✨ 17 tema\n🎨 11 style\n🔗 Featured Link\n🎵 Music system\n📊 Analytics\n\nCek dashboard yuk! 🚀';
-    }
-    if(t.indexOf("error") !== -1 || t.indexOf("bug") !== -1){
-      return 'Aduh error ya? 😅\n\nCoba:\n1. Refresh halaman\n2. Clear cache\n3. Cek koneksi\n4. Chat admin WA kalau masih error';
-    }
-    if(t.indexOf("halo") !== -1 || t.indexOf("hai") !== -1){
-      return 'Hai juga! 👋 Ada yang bisa aku bantu?\n\nCoba tanya:\n• "Bikin bio jualan kue"\n• "Beda Starter sama Pro?"\n• "Cara ganti tema?"';
-    }
-    return 'Hmm, aku belum ngerti 😅 Coba tanya lebih spesifik ya, atau buka **Help**.';
+    if(t.indexOf("bikin bio") !== -1 || t.indexOf("buat bio") !== -1) return 'Oke! Ceritain:\n1. Kamu jualan apa?\n2. Target audience siapa?\n3. Vibe yang diinginkan?\n\nAku bantu bikin 💪';
+    if(t.indexOf("tema") !== -1) return 'Buka **Editor** → **Tema Warna** → pilih → **Simpan** ✅';
+    if(t.indexOf("plan") !== -1) return 'Plan:\n• Free — Rp 0\n• Starter — Rp 5.000 PERMANEN\n• Pro — Rp 1.000+/hari\n• Ultimate — Rp 6.000+/hari';
+    if(t.indexOf("error") !== -1) return 'Coba:\n1. Refresh\n2. Clear cache\n3. Chat admin WA';
+    if(t.indexOf("hai") !== -1 || t.indexOf("halo") !== -1) return 'Hai! 👋 Ada yang bisa aku bantu?';
+    return 'Hmm, coba tanya lebih spesifik ya 😅';
   },
   
-  _escape: function(s){
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
-      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
-    });
-  },
-  
-  _formatAI: function(txt){
-    if(!txt) return "";
-    var s = this._escape(txt);
-    s = s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    s = s.replace(/\n/g, "<br>");
-    return s;
-  },
-  
-  _svg: function(){
-    return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' +
-      '<rect x="2" y="3" width="12" height="7" fill="#ffd700"/>' +
-      '<rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/>' +
-      '<rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/>' +
-      '<rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/>' +
-      '<rect x="5" y="13" width="6" height="2" fill="#2563eb"/>' +
-    '</svg>';
-  },
-  
+  _escape: function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); },
+  _formatAI: function(txt){ if(!txt) return ""; var s = this._escape(txt); s = s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"); s = s.replace(/\n/g, "<br>"); return s; },
+  _svg: function(){ return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/></svg>'; },
   _icon: function(name){
     var icons = {
       x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
@@ -13597,15 +13603,296 @@ var VarsmileAI = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 3 — QR CODE (pakai qrcodejs davidshimjs)
+   MODUL 4 — AI BIO GENERATOR
+   ═══════════════════════════════════════════════════════════ */
+var AIBioGenerator = {
+  _generating: false,
+  _style: "santai",
+  
+  open: function(){
+    if(!window.Auth || !Auth.current){
+      if(window.toast) toast("Login dulu","error");
+      return;
+    }
+    
+    var styleBtns = [
+      { id: "santai", label: "Santai" },
+      { id: "formal", label: "Formal" },
+      { id: "lucu", label: "Lucu" }
+    ];
+    
+    var styleHTML = "";
+    styleBtns.forEach(function(b){
+      styleHTML += '<div class="aib-style-btn ' + (b.id === "santai" ? "active" : "") + '" data-style="' + b.id + '">' + b.label + '</div>';
+    });
+    
+    var html = '<div class="aib-modal" id="aib-modal-root">';
+    html += '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
+    html += '<div class="aib-hero">';
+    html += '<div style="font-size:44px;margin-bottom:6px">✨</div>';
+    html += '<h3>AI Bio Generator</h3>';
+    html += '<p>Ceritain tentang kamu → AI bikin bio + link otomatis</p>';
+    html += '</div>';
+    
+    html += '<div class="aib-field">';
+    html += '<label>Ceritakan tentang kamu</label>';
+    html += '<textarea id="aib-input" placeholder="Contoh: aku jualan kue rumahan enak murah, sistem PO, area jakarta"></textarea>';
+    html += '</div>';
+    
+    html += '<div class="aib-field">';
+    html += '<label>Gaya bahasa</label>';
+    html += '<div class="aib-style-row">' + styleHTML + '</div>';
+    html += '</div>';
+    
+    html += '<button class="aib-btn-primary" id="aib-generate">✨ Generate Bio</button>';
+    
+    html += '<div class="aib-loading" id="aib-loading">';
+    html += '<div class="aib-spinner"></div>';
+    html += '<div class="aib-loading-text">AI sedang mikir...</div>';
+    html += '</div>';
+    
+    html += '<div class="aib-result" id="aib-result"></div>';
+    
+    html += '</div>';
+    
+    var m = window.openModal ? window.openModal(html) : null;
+    if(!m) return;
+    
+    // Style picker
+    var self = this;
+    m.querySelectorAll("[data-style]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        m.querySelectorAll("[data-style]").forEach(function(x){ x.classList.remove("active"); });
+        btn.classList.add("active");
+        self._style = btn.dataset.style;
+      });
+    });
+    
+    // Generate button
+    var genBtn = m.querySelector("#aib-generate");
+    if(genBtn) genBtn.addEventListener("click", function(){
+      var input = m.querySelector("#aib-input").value.trim();
+      if(!input || input.length < 5){
+        if(window.toast) toast("Ceritakan dulu min 5 karakter","error");
+        return;
+      }
+      self._generate(m, input);
+    });
+  },
+  
+  _generate: async function(m, userInput){
+    if(this._generating) return;
+    this._generating = true;
+    
+    var genBtn = m.querySelector("#aib-generate");
+    var loading = m.querySelector("#aib-loading");
+    var result = m.querySelector("#aib-result");
+    
+    if(genBtn) genBtn.disabled = true;
+    if(loading) loading.classList.add("show");
+    if(result) result.classList.remove("show");
+    
+    try{
+      var data = await this._askGroq(userInput, this._style);
+      this._renderResult(m, data);
+    }catch(e){
+      console.error("AIBioGenerator:", e);
+      if(result){
+        result.innerHTML = '<div style="background:#ff2a2a;color:#fff;border:2px solid #0a0a0a;border-radius:8px;padding:12px;font-size:12px;font-weight:700">❌ ' + (window.esc ? esc(e.message) : e.message) + '</div>';
+        result.classList.add("show");
+      }
+      if(window.toast) toast("Gagal generate: " + e.message, "error");
+    }
+    
+    if(genBtn) genBtn.disabled = false;
+    if(loading) loading.classList.remove("show");
+    this._generating = false;
+  },
+  
+  _askGroq: async function(userInput, style){
+    if(!GROQ_API_KEY || GROQ_API_KEY.trim() === ""){
+      return this._fallback(userInput);
+    }
+    
+    var sysPrompt = 'Kamu AI asisten Varlinkbio. Bikin bio in-bio dari deskripsi user.\n\n' +
+      'OUTPUT HARUS JSON VALID (tanpa markdown, tanpa penjelasan):\n' +
+      '{\n' +
+      '  "bio": "max 60 karakter, diawali 1 emoji",\n' +
+      '  "links": [\n' +
+      '    {"label": "WhatsApp Order", "url": "https://wa.me/"},\n' +
+      '    {"label": "Instagram", "url": "https://instagram.com/"},\n' +
+      '    {"label": "Katalog", "url": "#"},\n' +
+      '    {"label": "Testimoni", "url": "#"}\n' +
+      '  ],\n' +
+      '  "tema": "neo-pink",\n' +
+      '  "style": "minimalist"\n' +
+      '}\n\n' +
+      'ATURAN:\n' +
+      '- Bio: max 60 char, 1 emoji di awal\n' +
+      '- Links: 3-4 link relevan dengan bisnis user\n' +
+      '- Tema: pilih dari "neo-cream","neo-midnight","neo-dark","neo-blue","neo-rose","neo-pink","neo-green","neo-purple","neo-orange","neo-ocean","neo-coffee","neo-sunset","neo-galaxy","neo-neon","neo-retro","neo-sakura","neo-gold"\n' +
+      '- Style: pilih dari "brutalism","minimalist","glassmorphism","material","gaming","vintage","cyberpunk","aurora","retro","cosmic","anime"\n' +
+      '- Gaya bahasa: ' + style + '\n' +
+      '- OUTPUT HANYA JSON.';
+    
+    var response = await fetch(GROQ_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_API_KEY },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          { role: "system", content: sysPrompt },
+          { role: "user", content: 'Deskripsi user: "' + userInput + '"' }
+        ],
+        max_tokens: 600,
+        temperature: 0.7,
+        response_format: { type: "json_object" }
+      })
+    });
+    
+    if(!response.ok){
+      if(response.status === 429) return this._fallback(userInput);
+      throw new Error("Groq HTTP " + response.status);
+    }
+    
+    var data = await response.json();
+    var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if(!content) throw new Error("Empty response");
+    
+    var parsed;
+    try{ parsed = JSON.parse(content); }
+    catch(e){ throw new Error("AI kasih format salah, coba lagi"); }
+    
+    return parsed;
+  },
+  
+  _fallback: function(userInput){
+    var input = (userInput || "").toLowerCase();
+    var KATEGORI = {
+      kuliner: { kw: ["kue","cake","roti","catering","makanan","bakery","kuliner"], bio: "🍰 Homemade & Fresh | Order Now", links: ["WhatsApp Order","Instagram","Katalog Menu","Testimoni"], tema: "neo-pink", style: "minimalist" },
+      fashion: { kw: ["baju","fashion","outfit","hijab","tas","sepatu"], bio: "👗 Style & Trend | Ready Stock", links: ["WhatsApp","Shopee","Instagram","Katalog"], tema: "neo-purple", style: "material" },
+      freelance: { kw: ["freelance","desain","developer","jasa","programmer"], bio: "💼 Ready for Project | Fast Response", links: ["Portfolio","WhatsApp","Email","LinkedIn"], tema: "neo-blue", style: "minimalist" },
+      musisi: { kw: ["musisi","penyanyi","band","dj","music"], bio: "🎵 New Single Out Now!", links: ["Spotify","YouTube","Instagram","TikTok"], tema: "neo-galaxy", style: "glassmorphism" },
+      gaming: { kw: ["gaming","gamer","streamer","esports"], bio: "🎮 Streamer | Live Setiap Hari", links: ["YouTube","Twitch","Discord","Instagram"], tema: "neo-neon", style: "gaming" }
+    };
+    var matched = null;
+    for(var k in KATEGORI){
+      for(var i = 0; i < KATEGORI[k].kw.length; i++){
+        if(input.indexOf(KATEGORI[k].kw[i]) !== -1){ matched = KATEGORI[k]; break; }
+      }
+      if(matched) break;
+    }
+    if(!matched) matched = { bio: "✨ Kreator Hebat | Link di Bawah", links: ["WhatsApp","Instagram","Portfolio","Kontak"], tema: "neo-cream", style: "brutalism" };
+    
+    return {
+      bio: matched.bio,
+      links: matched.links.map(function(l){ return { label: l, url: "#" }; }),
+      tema: matched.tema,
+      style: matched.style
+    };
+  },
+  
+  _renderResult: function(m, data){
+    var result = m.querySelector("#aib-result");
+    if(!result) return;
+    
+    var linksHTML = "";
+    (data.links || []).forEach(function(l){
+      linksHTML += '<li>' + (window.esc ? esc(l.label || "") : l.label) + ' <span>' + (window.esc ? esc(l.url || "") : l.url) + '</span></li>';
+    });
+    
+    var html = '<div class="aib-result-label">📝 Bio Rekomendasi:</div>';
+    html += '<div class="aib-result-bio">' + (window.esc ? esc(data.bio || "") : data.bio) + '</div>';
+    html += '<div class="aib-result-label">🔗 Link:</div>';
+    html += '<ul class="aib-result-links">' + linksHTML + '</ul>';
+    html += '<div class="aib-result-tags">';
+    html += '<span class="aib-tag aib-tag-tema">🎨 ' + (window.esc ? esc(data.tema || "neo-cream") : data.tema) + '</span>';
+    html += '<span class="aib-tag aib-tag-style">🎮 ' + (window.esc ? esc(data.style || "brutalism") : data.style) + '</span>';
+    html += '</div>';
+    html += '<div class="aib-result-actions">';
+    html += '<button class="aib-btn-apply" id="aib-apply">✅ Pakai Bio Ini</button>';
+    html += '<button class="aib-btn-retry" id="aib-retry">🔄 Generate Ulang</button>';
+    html += '</div>';
+    
+    result.innerHTML = html;
+    result.classList.add("show");
+    
+    var self = this;
+    
+    // Apply button
+    var applyBtn = result.querySelector("#aib-apply");
+    if(applyBtn) applyBtn.addEventListener("click", function(){
+      self._applyToDraft(data);
+      // Tutup modal
+      var mb = result.closest(".modal-back");
+      if(mb) mb.remove();
+    });
+    
+    // Retry button
+    var retryBtn = result.querySelector("#aib-retry");
+    if(retryBtn) retryBtn.addEventListener("click", function(){
+      var input = m.querySelector("#aib-input").value.trim();
+      if(input) self._generate(m, input);
+    });
+  },
+  
+  _applyToDraft: function(data){
+    try{
+      if(!window.STATE) return;
+      
+      if(!STATE.draft){
+        if(window.PageEditor && PageEditor.newDraft){
+          STATE.draft = PageEditor.newDraft();
+        } else {
+          STATE.draft = {
+            id: null, slug: "", name: "", bio: "", profile: "", banner: "",
+            bannerType: "image", logos: [], animation: "none",
+            links: [], theme: "neo-cream", lock: "", allowDirectory: true,
+            stats: { views: 0, clicks: {}, daily: {} }
+          };
+        }
+      }
+      
+      if(data.bio) STATE.draft.bio = data.bio;
+      if(data.tema) STATE.draft.theme = data.tema;
+      
+      if(data.links && data.links.length){
+        STATE.draft.links = data.links.map(function(l){
+          return {
+            label: l.label || "Link",
+            url: l.url || "#",
+            type: (window.LinkTypes && LinkTypes.detect) ? LinkTypes.detect(l.url) : "classic",
+            color: "", thumb: "", active: true,
+            featPosX: 50, featPosY: 50, featZoom: 1, featPadding: 10, featRatio: "16:9"
+          };
+        });
+      }
+      
+      if(window.toast) toast("✅ AI Bio diterapkan ke Editor!","success");
+      if(window.Sound && Sound.tada) Sound.tada();
+      
+      // Kalau gak di editor, arahkan ke editor
+      var hash = location.hash || "";
+      if(hash.indexOf("/editor") === -1){
+        if(window.Router) Router.navigate("/editor");
+      } else {
+        if(window.PageEditor && PageEditor.render) PageEditor.render();
+      }
+    }catch(e){
+      console.warn("applyToDraft:", e);
+      if(window.toast) toast("Gagal apply: " + e.message, "error");
+    }
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════
+   MODUL 5 — QR CODE (qrcodejs)
    ═══════════════════════════════════════════════════════════ */
 var QRCODEJS_CDNS = [
   "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
   "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js",
-  "https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js",
-  "https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"
+  "https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js"
 ];
-
 var _qrLibLoading = null;
 function loadQRCodeJS(){
   if(window.QRCode && typeof window.QRCode === "function") return Promise.resolve(true);
@@ -13613,45 +13900,26 @@ function loadQRCodeJS(){
   _qrLibLoading = new Promise(function(resolve){
     var i = 0;
     function tryNext(){
-      if(i >= QRCODEJS_CDNS.length){
-        console.error("❌ Semua CDN qrcodejs gagal");
-        _qrLibLoading = null;
-        resolve(false);
-        return;
-      }
+      if(i >= QRCODEJS_CDNS.length){ _qrLibLoading = null; resolve(false); return; }
       var url = QRCODEJS_CDNS[i++];
       var s = document.createElement("script");
-      s.src = url;
-      s.async = true;
-      var timer = setTimeout(function(){
-        console.warn("⏱️ Timeout:", url);
-        try{ s.remove(); }catch(e){}
-        tryNext();
-      }, 4000);
+      s.src = url; s.async = true;
+      var timer = setTimeout(function(){ try{ s.remove(); }catch(e){} tryNext(); }, 4000);
       s.onload = function(){
         clearTimeout(timer);
-        if(window.QRCode && typeof window.QRCode === "function"){
-          console.log("✅ qrcodejs loaded: " + url);
-          resolve(true);
-        } else { tryNext(); }
+        if(window.QRCode && typeof window.QRCode === "function") resolve(true);
+        else tryNext();
       };
-      s.onerror = function(){
-        clearTimeout(timer);
-        tryNext();
-      };
+      s.onerror = function(){ clearTimeout(timer); tryNext(); };
       document.head.appendChild(s);
     }
     tryNext();
   });
   return _qrLibLoading;
 }
-
-/* Preload QRCodeJS */
 setTimeout(loadQRCodeJS, 500);
 
-/* Override showQRModal */
 window.showQRModal = async function(bio, url){
-  console.log("🔲 QR Modal v4:", url);
   var loaded = await loadQRCodeJS();
   if(!loaded){ return showQRModalFallback(bio, url); }
   
@@ -13661,15 +13929,11 @@ window.showQRModal = async function(bio, url){
   var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
   html += '<h3>📱 QR Code</h3>';
   html += '<p style="font-size:13px;margin-bottom:14px;font-weight:600;text-align:center">Scan untuk buka bio kamu</p>';
-  html += '<div style="text-align:center">';
-  html += '<div style="display:inline-block;padding:16px;background:#fff;border:3px solid #0a0a0a;border-radius:14px;box-shadow:6px 6px 0 #0a0a0a">';
-  html += '<div id="qr-render-target" style="display:inline-block;line-height:0"></div>';
-  html += '</div></div>';
+  html += '<div style="text-align:center"><div style="display:inline-block;padding:16px;background:#fff;border:3px solid #0a0a0a;border-radius:14px;box-shadow:6px 6px 0 #0a0a0a"><div id="qr-render-target" style="display:inline-block;line-height:0"></div></div></div>';
   html += '<div style="margin-top:14px;padding:10px 12px;background:#f0ebe0;border:1.5px solid #0a0a0a;border-radius:8px;font-family:monospace;font-size:11.5px;word-break:break-all;text-align:center;font-weight:600">' + (window.esc ? esc(url) : url) + '</div>';
   html += '<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">';
-  html += '<button id="qr-dl-v4" class="btn btn-primary btn-block" style="display:flex;align-items:center;justify-content:center;gap:6px">⬇️ Download QR (PNG)</button>';
-  html += '<button id="qr-copy-v4" class="btn btn-block" style="background:#f0ebe0">📋 Copy Link Bio</button>';
-  html += '<button id="qr-open-v4" class="btn btn-block" style="background:#f0ebe0">🔗 Buka Bio</button>';
+  html += '<button id="qr-dl-v5" class="btn btn-primary btn-block">⬇️ Download QR (PNG)</button>';
+  html += '<button id="qr-copy-v5" class="btn btn-block" style="background:#f0ebe0">📋 Copy Link Bio</button>';
   html += '</div>';
   
   var m = window.openModal ? window.openModal(html) : null;
@@ -13679,22 +13943,15 @@ window.showQRModal = async function(bio, url){
   try{
     qrTarget.innerHTML = "";
     new window.QRCode(qrTarget, {
-      text: url,
-      width: 220,
-      height: 220,
-      colorDark: "#0a0a0a",
-      colorLight: "#ffffff",
+      text: url, width: 220, height: 220,
+      colorDark: "#0a0a0a", colorLight: "#ffffff",
       correctLevel: window.QRCode.CorrectLevel.H
     });
-    console.log("✅ QR generated via qrcodejs");
-  }catch(e){
-    console.error("QR generation error:", e);
-    qrTarget.innerHTML = '<div style="padding:20px;color:#ff2a2a;font-weight:700;font-size:12px">QR gagal</div>';
-  }
+  }catch(e){ qrTarget.innerHTML = '<div style="padding:20px;color:#ff2a2a;font-weight:700;font-size:12px">QR gagal</div>'; }
   
   if(window.Sound && Sound.tada) Sound.tada();
   
-  var dlBtn = m.querySelector("#qr-dl-v4");
+  var dlBtn = m.querySelector("#qr-dl-v5");
   if(dlBtn) dlBtn.addEventListener("click", function(){
     try{
       var canvas = qrTarget.querySelector("canvas");
@@ -13702,122 +13959,146 @@ window.showQRModal = async function(bio, url){
       var dataUrl = null;
       if(canvas && canvas.toDataURL) dataUrl = canvas.toDataURL("image/png");
       else if(img && img.src && img.src.indexOf("data:image") === 0) dataUrl = img.src;
-      
-      if(!dataUrl){
-        if(window.toast) toast("Gagal convert QR","error");
-        return;
-      }
-      
+      if(!dataUrl){ if(window.toast) toast("Gagal convert QR","error"); return; }
       var a = document.createElement("a");
       a.href = dataUrl;
       a.download = "varlinkbio-qr-" + safeFileName + ".png";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      document.body.appendChild(a); a.click(); a.remove();
       if(window.toast) toast("QR didownload! ✅","success");
-      if(window.Sound && Sound.success) Sound.success();
-    }catch(e){
-      if(window.toast) toast("Gagal download: " + e.message,"error");
-    }
+    }catch(e){ if(window.toast) toast("Gagal: " + e.message,"error"); }
   });
   
-  var copyBtn = m.querySelector("#qr-copy-v4");
+  var copyBtn = m.querySelector("#qr-copy-v5");
   if(copyBtn) copyBtn.addEventListener("click", function(){
     try{
-      if(navigator.clipboard){
-        navigator.clipboard.writeText(url).then(function(){ if(window.toast) toast("Link disalin!","success"); });
-      } else {
-        var ta = document.createElement("textarea");
-        ta.value = url; document.body.appendChild(ta); ta.select();
-        document.execCommand("copy"); ta.remove();
-        if(window.toast) toast("Link disalin!","success");
-      }
-    }catch(e){ if(window.toast) toast("Gagal copy","error"); }
+      if(navigator.clipboard) navigator.clipboard.writeText(url).then(function(){ if(window.toast) toast("Link disalin!","success"); });
+      else { var ta = document.createElement("textarea"); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); if(window.toast) toast("Link disalin!","success"); }
+    }catch(e){}
   });
-  
-  var openBtn = m.querySelector("#qr-open-v4");
-  if(openBtn) openBtn.addEventListener("click", function(){ window.open(url, "_blank"); });
 };
 
 function showQRModalFallback(bio, url){
-  console.log("🔲 QR Fallback (API online)");
-  var size = 500;
-  var apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=" + size + "x" + size + "&margin=10&data=" + encodeURIComponent(url) + "&format=png";
+  var apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=10&data=" + encodeURIComponent(url);
   var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
   html += '<h3>📱 QR Code</h3>';
-  html += '<p style="font-size:13px;margin-bottom:14px;font-weight:600;text-align:center">Scan untuk buka bio kamu</p>';
-  html += '<div style="text-align:center"><div style="display:inline-block;padding:16px;background:#fff;border:3px solid #0a0a0a;border-radius:14px;box-shadow:6px 6px 0 #0a0a0a"><img src="' + apiUrl + '" width="240" height="240" style="display:block;background:#fff;border-radius:6px" crossorigin="anonymous" alt="QR"/></div></div>';
-  html += '<div style="margin-top:14px;padding:10px 12px;background:#f0ebe0;border:1.5px solid #0a0a0a;border-radius:8px;font-family:monospace;font-size:11.5px;word-break:break-all;text-align:center;font-weight:600">' + (window.esc ? esc(url) : url) + '</div>';
-  html += '<div style="margin-top:16px"><a href="' + apiUrl + '" download="varlinkbio-qr.png" target="_blank" rel="noopener" class="btn btn-primary btn-block" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">⬇️ Download QR</a></div>';
+  html += '<div style="text-align:center"><img src="' + apiUrl + '" width="240" height="240" style="background:#fff;border-radius:6px" alt="QR"/></div>';
+  html += '<div style="margin-top:14px"><a href="' + apiUrl + '" download="qr.png" target="_blank" class="btn btn-primary btn-block" style="text-decoration:none;display:flex;justify-content:center;gap:6px">⬇️ Download QR</a></div>';
   window.openModal && window.openModal(html);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HOOK — Varsmile tahan 0.6s → buka AI
+   HOOK VARSMILE — 3 klik / 4 klik
    ═══════════════════════════════════════════════════════════ */
 function hookVarsmile(){
   var vs = document.getElementById("varsmile-char");
   if(!vs) return;
-  if(vs.dataset.aiHooked === "1") return;
-  vs.dataset.aiHooked = "1";
-  var pressTimer = null;
+  if(vs.dataset.aiHooked === "v5") return;
   
-  function startPress(){
-    pressTimer = setTimeout(function(){
-      pressTimer = null;
-      VarsmileAI.open();
-    }, 600);
-  }
-  function cancelPress(){
-    if(pressTimer){ clearTimeout(pressTimer); pressTimer = null; }
-  }
+  // Clean up hook lama
+  vs.dataset.aiHooked = "v5";
   
-  vs.addEventListener("mousedown", startPress);
-  vs.addEventListener("mouseup", cancelPress);
-  vs.addEventListener("mouseleave", cancelPress);
-  vs.addEventListener("touchstart", startPress, { passive: true });
-  vs.addEventListener("touchend", cancelPress);
-  vs.addEventListener("touchcancel", cancelPress);
+  // Kalau ada event listener lama, kita gak bisa remove tanpa ref,
+  // jadi kita pakai flag: stop propagation di capture phase
+  var handler = function(e){
+    // Cancel semua handler lama
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    VarsmileAI.handleVarsmileClick();
+  };
+  
+  vs.addEventListener("click", handler, true); // capture phase — eksekusi duluan
+  vs.addEventListener("touchend", function(e){
+    // Cegah double-trigger di mobile
+    if(e.cancelable) e.preventDefault();
+    VarsmileAI.handleVarsmileClick();
+  }, true);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INJECT TOMBOL "AI BIO" KE EDITOR TOOLBAR
+   ═══════════════════════════════════════════════════════════ */
+function injectAIBioButton(){
+  try{
+    // Cek kalau di editor
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/editor") return;
+    
+    // Cari toolbar editor
+    var toolbars = document.querySelectorAll("div[style*='max-width:1180px']");
+    if(!toolbars.length) return;
+    
+    var toolbar = toolbars[0].querySelector("div[style*='display:flex']");
+    if(!toolbar) return;
+    
+    if(document.getElementById("btn-ai-bio")) return;
+    
+    // Cari tombol Simpan untuk disisipkan sebelum
+    var saveBtn = document.getElementById("btn-save");
+    if(!saveBtn) return;
+    
+    var aiBtn = document.createElement("button");
+    aiBtn.className = "btn btn-sm btn-purple";
+    aiBtn.id = "btn-ai-bio";
+    aiBtn.type = "button";
+    aiBtn.style.background = "#a78bfa";
+    aiBtn.style.color = "#fff";
+    aiBtn.innerHTML = "✨ AI Bio";
+    aiBtn.addEventListener("click", function(){
+      if(window.Sound && Sound.click) Sound.click();
+      AIBioGenerator.open();
+    });
+    
+    saveBtn.parentNode.insertBefore(aiBtn, saveBtn);
+    console.log("✅ Tombol AI Bio di-inject ke editor");
+  }catch(e){ console.warn("injectAIBioButton:", e); }
 }
 
 /* ═══════════════════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════════════════ */
 function initAll(){
-  try{ EmojiReplacer.init(); }catch(e){}
+  try{ EmojiReplacer.init(); }catch(e){ console.warn("EmojiReplacer:", e); }
+  try{ ModalBackInjector.init(); }catch(e){ console.warn("ModalBackInjector:", e); }
+  
   hookVarsmile();
-  setInterval(hookVarsmile, 3000);
+  setInterval(hookVarsmile, 2000);
+  
+  // Cek tombol AI Bio di editor
+  setInterval(injectAIBioButton, 2000);
+  
+  // Watch kalau editor render baru
+  var editorObserver = new MutationObserver(function(){
+    injectAIBioButton();
+  });
+  try{ editorObserver.observe(document.body, { childList: true, subtree: true }); }catch(e){}
+  
   window.VarsmileAI = VarsmileAI;
+  window.AIBioGenerator = AIBioGenerator;
   window.EmojiReplacer = EmojiReplacer;
   
   console.log("╔════════════════════════════════════════╗");
-  console.log("║  ✅ FINAL PATCH v4 AKTIF               ║");
-  console.log("║  • Varsmile AI (tahan mascot 0.6s)    ║");
+  console.log("║  ✅ FINAL PATCH v5 AKTIF               ║");
+  console.log("║  • Varsmile AI: 3 klik → 2s → buka     ║");
+  console.log("║                 4 klik → tutup         ║");
+  console.log("║  • AI Bio: tombol ✨ di editor         ║");
   console.log("║  • Emoji → SVG auto-convert            ║");
   console.log("║  • QR pakai qrcodejs                   ║");
+  console.log("║  • Auto back button di semua modal     ║");
   console.log("╚════════════════════════════════════════╝");
-  console.log("💡 Buka Varsmile AI: TAHAN mascot 0.6 detik");
-  console.log("💡 Atau: VarsmileAI.open()");
 }
 
 var attempts = 0;
 var check = setInterval(function(){
   attempts++;
-  if(attempts > 50){
-    clearInterval(check);
-    console.warn("⏱️ Timeout — force init");
-    initAll();
-    return;
-  }
+  if(attempts > 50){ clearInterval(check); initAll(); return; }
   if(window.emojiToSvg && window.Auth && window.FB && window.STATE){
     clearInterval(check);
-    console.log("✅ Dependencies ready");
     setTimeout(initAll, 500);
   }
 }, 200);
 
 })();
 </script>
-<!-- ═══ END FINAL PATCH v4 ═══ -->
+<!-- ═══ END FINAL PATCH v5 ═══ -->
 </body>
-     </html>
+   </html>

@@ -11440,5 +11440,326 @@ console.log("╚═════════════════════�
 
 })();
      </script>
+     <script id="patchfix-v27-2">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH FIX v27.2 — Fix Topbar + QR + Dashboard
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🔧 PATCH FIX v27.2 loading...");
+
+/* ============================================================
+   FIX #1 — TOPBAR FIXED (Pindahkan keluar #app)
+   
+   MASALAH: .lt-topbar ada di dalam #app yang overflow-x:hidden
+            → position:sticky GAGAL di mobile browser
+   
+   SOLUSI:  Setiap kali topbar muncul di #app, PINDAHKAN
+            ke document.body langsung + set position:fixed
+   ============================================================ */
+
+function relocateTopbar(){
+  try{
+    var topbarInApp = document.querySelector("#app .lt-topbar");
+    if(!topbarInApp) return;
+    
+    // Cek kalau udah ada topbar di body (avoid duplikat)
+    var existingBodyTopbar = document.querySelector("body > .lt-topbar");
+    
+    if(existingBodyTopbar){
+      // Kalau udah ada, hapus yang di #app aja
+      topbarInApp.remove();
+      return;
+    }
+    
+    // Pindahkan ke body
+    console.log("🔄 Relocate topbar ke body");
+    document.body.appendChild(topbarInApp);
+    
+    // Apply fixed position
+    topbarInApp.style.position = "fixed";
+    topbarInApp.style.top = "0";
+    topbarInApp.style.left = "0";
+    topbarInApp.style.right = "0";
+    topbarInApp.style.width = "100%";
+    topbarInApp.style.zIndex = "9999";
+    
+    // Adjust body padding
+    setTimeout(function(){
+      var h = topbarInApp.offsetHeight || 56;
+      if(!document.body.classList.contains("public-mode")){
+        document.body.style.paddingTop = h + "px";
+      }
+      // Adjust drawer panel top
+      var drawerPanel = document.querySelector(".lt-drawer-panel");
+      if(drawerPanel) drawerPanel.style.paddingTop = h + "px";
+    }, 100);
+  }catch(e){ console.warn("relocateTopbar:", e); }
+}
+
+// Watch #app untuk topbar
+try{
+  var topbarObs = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType === 1){
+          if(n.classList && n.classList.contains("lt-topbar")){
+            setTimeout(relocateTopbar, 50);
+          }
+          if(n.querySelector && n.querySelector(".lt-topbar")){
+            setTimeout(relocateTopbar, 50);
+          }
+        }
+      });
+    });
+  });
+  topbarObs.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+// Cek berkala (jaga-jaga)
+setInterval(relocateTopbar, 800);
+setTimeout(relocateTopbar, 1000);
+setTimeout(relocateTopbar, 2500);
+
+// Force CSS topbar
+var topbarCSS = document.createElement("style");
+topbarCSS.textContent = [
+  "html,body{overflow-x:hidden}",
+  ".lt-topbar{position:fixed !important;top:0 !important;left:0 !important;right:0 !important;width:100% !important;z-index:9999 !important}",
+  "body:not(.public-mode){padding-top:60px !important}",
+  "body.public-mode{padding-top:0 !important}",
+  ".notif-dropdown{top:70px !important}",
+  ".music-float-btn{top:74px !important}",
+  "#app{padding-top:0 !important}",
+  "@media(max-width:768px){",
+  "  .lt-topbar{padding:8px 10px !important}",
+  "  .lt-topbar .lt-brand{font-size:13px !important}",
+  "  body:not(.public-mode){padding-top:56px !important}",
+  "}"
+].join("\n");
+document.head.appendChild(topbarCSS);
+console.log("✅ Topbar CSS applied");
+
+
+/* ============================================================
+   FIX #2 — QR CODE (Multi-fallback)
+   
+   MASALAH: qrcode@1.5.3 gagal load di mobile
+   SOLUSI:  1. Preload dengan 4 CDN berbeda
+            2. Kalau semua gagal → pakai API online qrserver.com
+            3. Fallback terakhir → tampilkan link copy
+   ============================================================ */
+
+// Preload QRCode library
+async function preloadQRCode(){
+  if(typeof window.QRCode !== "undefined"){
+    console.log("✅ QRCode ready");
+    return true;
+  }
+  var cdns = [
+    "https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js",
+    "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js",
+    "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js",
+    "https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"
+  ];
+  for(var i = 0; i < cdns.length; i++){
+    try{
+      var ok = await new Promise(function(resolve){
+        var s = document.createElement("script");
+        s.src = cdns[i];
+        s.onload = function(){ resolve(true); };
+        s.onerror = function(){ resolve(false); };
+        document.head.appendChild(s);
+        setTimeout(function(){ resolve(false); }, 4000);
+      });
+      if(ok && typeof window.QRCode !== "undefined"){
+        console.log("✅ QRCode loaded: " + cdns[i]);
+        return true;
+      }
+    }catch(e){}
+  }
+  console.warn("❌ QRCode library gagal load semua CDN");
+  return false;
+}
+
+// Auto preload di awal
+setTimeout(preloadQRCode, 500);
+
+// Override showQRModal — pakai API online kalau lib gagal
+var _origShowQR = window.showQRModal;
+window.showQRModal = async function(bio, url){
+  console.log("🔲 showQRModal called, url:", url);
+  
+  var loaded = await preloadQRCode();
+  
+  // Kalau library gagal → langsung pakai API online
+  if(!loaded){
+    console.log("⚠️ Lib gagal → pakai API online qrserver.com");
+    var apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&data=" + encodeURIComponent(url);
+    
+    var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
+    html += '<h3>' + ico("qr") + ' QR Code</h3>';
+    html += '<p style="font-size:13px;margin-bottom:10px;font-weight:600">Scan untuk buka bio kamu</p>';
+    html += '<div style="text-align:center">';
+    html += '<div style="padding:16px;background:#fff;border:2px solid var(--ink);border-radius:12px;display:inline-block">';
+    html += '<img src="' + apiUrl + '" style="width:220px;height:220px;display:block;background:#fff;border-radius:6px" crossorigin="anonymous" alt="QR Code"/>';
+    html += '</div>';
+    html += '<div class="qr-url" style="margin-top:12px">' + esc(url) + '</div>';
+    html += '</div>';
+    html += '<div style="background:var(--yellow);border:2px solid var(--ink);border-radius:10px;padding:10px;margin:14px 0;font-size:11.5px;font-weight:700;text-align:center">💡 QR ini pakai layanan online. Klik kanan → Save image untuk download.</div>';
+    html += '<a href="' + apiUrl + '" download="varlinkbio-qr.png" target="_blank" style="display:flex;width:100%;padding:14px;background:var(--ink);color:#fff;border:2.5px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--yellow);align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:900;font-size:13.5px;text-transform:uppercase;margin-bottom:8px">' + ico("save") + ' Download / Buka Gambar</a>';
+    html += '<button class="btn btn-block" onclick="navigator.clipboard.writeText(\'' + url + '\');toast(\'Link disalin!\',\'success\')" style="background:var(--cream)">' + ico("copy") + ' Copy Link Bio</button>';
+    
+    openModal(html);
+    return;
+  }
+  
+  // Kalau library OK → pakai original
+  try{
+    return await _origShowQR.call(this, bio, url);
+  }catch(e){
+    console.error("showQRModal error:", e);
+    toast("QR gagal, coba lagi", "error");
+  }
+};
+
+// Patch generateQRCustom supaya robust
+var _origGenQR = window.generateQRCustom;
+window.generateQRCustom = async function(canvasEl, text, opts){
+  opts = opts || {};
+  try{
+    if(!canvasEl) throw new Error("Canvas not found");
+    
+    // Ensure canvas visible + sized
+    canvasEl.style.display = "block";
+    if(!canvasEl.width || canvasEl.width < 100) canvasEl.width = 440;
+    if(!canvasEl.height || canvasEl.height < 100) canvasEl.height = 440;
+    
+    // Cek lib
+    if(typeof window.QRCode === "undefined"){
+      throw new Error("QRCode library not loaded");
+    }
+    
+    // Pakai API dari lib
+    var color = opts.color || "#0a0a0a";
+    var bg = opts.bg || "#ffffff";
+    var size = opts.size || 440;
+    var logo = opts.logo || null;
+    
+    await window.QRCode.toCanvas(canvasEl, text, {
+      width: size,
+      margin: 2,
+      color: { dark: color, light: bg },
+      errorCorrectionLevel: logo ? "H" : "M"
+    });
+    
+    // Kalau ada logo, gambar di tengah
+    if(logo){
+      await new Promise(function(resolve){
+        var ctx = canvasEl.getContext("2d");
+        var img = new Image();
+        img.crossOrigin = "anonymous";
+        var timeout = setTimeout(resolve, 3000);
+        img.onload = function(){
+          clearTimeout(timeout);
+          try{
+            var logoSize = size * 0.22;
+            var x = (size - logoSize) / 2;
+            var y = (size - logoSize) / 2;
+            var padding = 8;
+            ctx.fillStyle = bg;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, logoSize/2 + padding, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.drawImage(img, x, y, logoSize, logoSize);
+          }catch(e){ console.warn("logo draw:", e); }
+          resolve();
+        };
+        img.onerror = function(){ clearTimeout(timeout); resolve(); };
+        img.src = logo;
+      });
+    }
+    return true;
+  }catch(e){
+    console.error("generateQRCustom error:", e);
+    throw e;
+  }
+};
+console.log("✅ QR patches applied");
+
+
+/* ============================================================
+   FIX #3 — Dashboard blank fix (tetap dipertahankan)
+   ============================================================ */
+
+var _origResolve = window.Router && window.Router.resolve;
+if(window.Router && _origResolve){
+  window.Router.resolve = function(){
+    try{
+      var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+      var PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help","/explore","/store","/fitur-saya","/topup","/music","/notifikasi"];
+      if(PROTECTED.indexOf(hashPath) !== -1 && !window.Auth.current && window.Auth._initialized === false){
+        var self = this;
+        setTimeout(function(){ self.resolve(); }, 300);
+        return;
+      }
+      return _origResolve.call(this);
+    }catch(e){
+      return _origResolve.call(this);
+    }
+  };
+}
+
+// Force re-render kalau blank
+function forceRenderIfBlank(){
+  try{
+    var app = document.getElementById("app");
+    if(!app) return;
+    var txt = (app.innerText || "").trim();
+    if(txt.length < 10 || app.querySelector(".loader")){
+      if(window.Auth && window.Auth.current){
+        var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+        if(!hashPath || hashPath === "/" || hashPath === "/dashboard"){
+          if(window.PageDashboard) PageDashboard.render("");
+        }
+      }
+    }
+  }catch(e){}
+}
+setTimeout(forceRenderIfBlank, 3000);
+setTimeout(forceRenderIfBlank, 5000);
+
+// Force hide loading stuck
+setTimeout(function(){
+  var ov = document.getElementById("loading-overlay");
+  if(ov && !ov.classList.contains("hidden")) ov.classList.add("hidden");
+}, 6000);
+
+
+/* ============================================================
+   FIX #4 — Reset scroll position on route change
+   Biar gak "hilang" di tengah halaman
+   ============================================================ */
+window.addEventListener("hashchange", function(){
+  setTimeout(function(){
+    window.scrollTo({ top: 0, behavior: "instant" });
+    relocateTopbar();
+  }, 100);
+});
+
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH FIX v27.2 AKTIF              ║");
+console.log("║  • Topbar relocated to body            ║");
+console.log("║  • QR multi-fallback + API online      ║");
+console.log("║  • Dashboard blank fix                 ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+     </script>
 </body>
 </html>

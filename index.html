@@ -11136,5 +11136,309 @@ console.log("💡 Debug: __DEBUG.info() · VarsmileAI.open() · AIBioGenerator.o
      📦 TOTAL: ~15.000+ baris kode
      🎨 by Varoo — 2026
      ═══════════════════════════════════════════════════════════════ -->
+     <script id="patchfix-v27-1">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH FIX v27.1 — Fix 3 Bug Mobile
+   1. Dashboard blank screen (auth race condition)
+   2. QR Code error di mobile
+   3. Topbar hilang saat scroll
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🔧 PATCH FIX v27.1 loading...");
+
+/* ============================================================
+   FIX #1 — DASHBOARD BLANK SCREEN
+   Root cause: Router resolve duluan sebelum Auth.current ready
+   di mobile (auth state async lebih lambat).
+   Solusi: Patch boot() supaya tunggu Auth selesai + force
+   re-resolve hash kalau blank.
+   ============================================================ */
+
+// Override Router.resolve supaya lebih toleran
+var _origResolve = window.Router && window.Router.resolve;
+if(window.Router && _origResolve){
+  window.Router.resolve = function(){
+    try{
+      var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+      var PROTECTED = ["/dashboard","/editor","/manage","/stats","/dev","/settings","/help","/explore","/store","/fitur-saya","/topup","/music","/notifikasi"];
+      // Kalau protected + belum auth + Auth masih init → tunggu
+      if(PROTECTED.indexOf(hashPath) !== -1 && !window.Auth.current && window.Auth._initialized === false){
+        console.log("⏳ Router: tunggu auth selesai dulu...");
+        var self = this;
+        setTimeout(function(){ self.resolve(); }, 300);
+        return;
+      }
+      return _origResolve.call(this);
+    }catch(e){
+      console.warn("Router.resolve patch:", e);
+      return _origResolve.call(this);
+    }
+  };
+  console.log("✅ Router.resolve patched");
+}
+
+// Setelah boot, force re-render kalau #app kosong
+function forceRenderIfBlank(){
+  try{
+    var app = document.getElementById("app");
+    if(!app) return;
+    var txt = (app.innerText || "").trim();
+    // Kalau app kosong atau cuma loading
+    if(txt.length < 10 || app.querySelector(".loader")){
+      if(window.Auth && window.Auth.current){
+        console.log("🔄 Force re-render dashboard...");
+        var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+        if(!hashPath || hashPath === "/" || hashPath === "/dashboard"){
+          if(window.PageDashboard) PageDashboard.render("");
+          else if(window.Router) Router.resolve();
+        }
+      }
+    }
+  }catch(e){}
+}
+
+// Force cek beberapa kali setelah boot
+setTimeout(forceRenderIfBlank, 2500);
+setTimeout(forceRenderIfBlank, 4500);
+setTimeout(forceRenderIfBlank, 7000);
+
+// Force hide loading yang stuck
+setTimeout(function(){
+  try{
+    var ov = document.getElementById("loading-overlay");
+    if(ov && !ov.classList.contains("hidden")){
+      console.log("⚠️ Force hide loading stuck");
+      ov.classList.add("hidden");
+    }
+  }catch(e){}
+}, 6000);
+
+
+/* ============================================================
+   FIX #2 — QR CODE ERROR DI MOBILE
+   Root cause: qrcode@1.5.3 kadang gagal load di mobile
+   (CDN issue / canvas 0x0 / race condition).
+   Solusi: Multi-CDN fallback + canvas explicit size +
+   pakai SVG fallback kalau canvas gagal.
+   ============================================================ */
+
+// Ensure QRCode library loaded dengan multi-fallback
+async function ensureQRCodeLoaded(){
+  if(typeof window.QRCode !== "undefined"){
+    console.log("✅ QRCode sudah loaded");
+    return true;
+  }
+  console.log("⏳ Loading QRCode library...");
+  var cdns = [
+    "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js",
+    "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+  ];
+  for(var i = 0; i < cdns.length; i++){
+    try{
+      await new Promise(function(resolve, reject){
+        var s = document.createElement("script");
+        s.src = cdns[i];
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+      if(typeof window.QRCode !== "undefined"){
+        console.log("✅ QRCode loaded from: " + cdns[i]);
+        return true;
+      }
+    }catch(e){ console.warn("CDN gagal:", cdns[i]); }
+  }
+  console.warn("❌ Semua CDN QRCode gagal");
+  return false;
+}
+
+// Override showQRModal supaya handle mobile dengan lebih baik
+if(window.showQRModal){
+  var _origShowQR = window.showQRModal;
+  window.showQRModal = async function(bio, url){
+    // Ensure lib loaded dulu
+    var loaded = await ensureQRCodeLoaded();
+    if(!loaded){
+      // Fallback: tampilkan URL manual + link ke external QR generator
+      openModal(
+        '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>' +
+        '<h3>⚠️ QR Code Unavailable</h3>' +
+        '<p style="font-size:13px;font-weight:600;margin-bottom:12px">QR library gagal load. Kamu bisa:</p>' +
+        '<div style="background:var(--cream);border:2px solid var(--ink);border-radius:10px;padding:12px;margin-bottom:12px">' +
+          '<div style="font-size:11px;font-weight:900;text-transform:uppercase;margin-bottom:6px">URL Bio Kamu:</div>' +
+          '<input value="' + url + '" readonly onclick="this.select()" style="text-align:center;font-family:monospace;font-size:11px;padding:10px"/>' +
+        '</div>' +
+        '<a href="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=' + encodeURIComponent(url) + '" target="_blank" class="btn btn-primary btn-block" style="text-decoration:none">🌐 Buka QR Generator Online</a>'
+      );
+      return;
+    }
+    // Panggil original dengan try-catch tambahan
+    try{
+      return await _origShowQR.call(this, bio, url);
+    }catch(e){
+      console.error("showQRModal error:", e);
+      toast("QR gagal generate. Coba lagi.", "error");
+    }
+  };
+  console.log("✅ showQRModal patched");
+}
+
+// Patch canvas QR supaya punya explicit size
+var _origGenQR = window.generateQRCustom;
+if(_origGenQR){
+  window.generateQRCustom = async function(canvasEl, text, opts){
+    try{
+      // Force canvas punya size
+      if(canvasEl && (!canvasEl.width || !canvasEl.height)){
+        canvasEl.width = 440;
+        canvasEl.height = 440;
+      }
+      // Force canvas display block
+      if(canvasEl) canvasEl.style.display = "block";
+      return await _origGenQR.call(this, canvasEl, text, opts);
+    }catch(e){
+      console.error("generateQRCustom error:", e);
+      // Fallback: pakai QRCode.toDataURL → img
+      if(typeof window.QRCode !== "undefined" && canvasEl && canvasEl.parentNode){
+        try{
+          var dataUrl = await QRCode.toDataURL(text, {
+            width: 440,
+            margin: 2,
+            color: { dark: (opts && opts.color) || "#0a0a0a", light: (opts && opts.bg) || "#ffffff" },
+            errorCorrectionLevel: "M"
+          });
+          var img = document.createElement("img");
+          img.src = dataUrl;
+          img.style.width = "220px";
+          img.style.height = "220px";
+          img.style.display = "block";
+          img.style.background = "#fff";
+          img.style.borderRadius = "6px";
+          canvasEl.parentNode.replaceChild(img, canvasEl);
+          return true;
+        }catch(e2){ console.error("Fallback QR error:", e2); }
+      }
+      throw e;
+    }
+  };
+  console.log("✅ generateQRCustom patched");
+}
+
+
+/* ============================================================
+   FIX #3 — TOPBAR HILANG SAAT SCROLL DI MOBILE
+   Root cause: position:sticky kadang gak jalan di mobile
+   (terutama iOS Safari & beberapa Android).
+   Solusi: Force position:fixed + tambah body padding-top.
+   ============================================================ */
+
+function fixTopbarPosition(){
+  try{
+    var topbar = document.querySelector(".lt-topbar");
+    if(!topbar) return;
+    var isMobile = window.innerWidth <= 768;
+    if(isMobile){
+      // Force fixed
+      topbar.style.position = "fixed";
+      topbar.style.top = "0";
+      topbar.style.left = "0";
+      topbar.style.right = "0";
+      topbar.style.width = "100%";
+      topbar.style.zIndex = "9999";
+      // Body padding biar konten gak ketutup
+      var h = topbar.offsetHeight || 56;
+      document.body.style.paddingTop = h + "px";
+      // Untuk public mode, reset padding
+      if(document.body.classList.contains("public-mode")){
+        document.body.style.paddingTop = "0";
+      }
+    } else {
+      // Desktop: kembalikan ke sticky
+      topbar.style.position = "";
+      topbar.style.top = "";
+      topbar.style.left = "";
+      topbar.style.right = "";
+      topbar.style.width = "";
+      topbar.style.zIndex = "";
+      document.body.style.paddingTop = "";
+    }
+  }catch(e){ console.warn("fixTopbarPosition:", e); }
+}
+
+// Run on load + resize
+setTimeout(fixTopbarPosition, 1500);
+window.addEventListener("resize", function(){ setTimeout(fixTopbarPosition, 200); });
+window.addEventListener("orientationchange", function(){ setTimeout(fixTopbarPosition, 400); });
+
+// Watch topbar (kalau re-render)
+try{
+  var topbarObs = new MutationObserver(function(){
+    fixTopbarPosition();
+  });
+  topbarObs.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+// CSS tambahan biar topbar gak flicker
+var style = document.createElement("style");
+style.textContent = [
+  "@media(max-width:768px){",
+  "  .lt-topbar{position:fixed !important;top:0 !important;left:0 !important;right:0 !important;width:100% !important;z-index:9999 !important}",
+  "  body:not(.public-mode){padding-top:56px !important}",
+  "  body.public-mode{padding-top:0 !important}",
+  "  .notif-dropdown{top:64px !important}",
+  "  .music-float-btn{top:70px !important}",
+  "}"
+].join("\n");
+document.head.appendChild(style);
+console.log("✅ Topbar fix applied");
+
+
+/* ============================================================
+   FIX #4 — EXTRA: Force hide loading + re-render dashboard
+   ============================================================ */
+
+// Force hide loading stuck (paling lama 8 detik)
+setTimeout(function(){
+  try{
+    var ov = document.getElementById("loading-overlay");
+    if(ov && !ov.classList.contains("hidden")){
+      console.log("⚠️ Loading stuck >8s, force hide");
+      ov.classList.add("hidden");
+    }
+  }catch(e){}
+}, 8000);
+
+// Kalau user buka URL dengan hash #/dashboard tapi blank, force resolve
+setTimeout(function(){
+  try{
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    var app = document.getElementById("app");
+    if(hashPath === "/dashboard" && app && (app.innerText || "").trim().length < 20){
+      console.log("🔄 Force re-render dashboard (blank detected)");
+      if(window.Auth && window.Auth.current && window.PageDashboard){
+        PageDashboard.render("");
+      } else if(window.Router){
+        Router.resolve();
+      }
+    }
+  }catch(e){}
+}, 3000);
+
+
+/* ============================================================
+   LOG
+   ============================================================ */
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH FIX v27.1 AKTIF              ║");
+console.log("║  • Dashboard blank fix                 ║");
+console.log("║  • QR Code mobile fix                  ║");
+console.log("║  • Topbar fixed position               ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+     </script>
 </body>
 </html>

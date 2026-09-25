@@ -13036,46 +13036,39 @@ body[data-warna="neo-gold"] .user-box{
 }
 </style>
    <!-- ═══════════════════════════════════════════════════════════
-     FINAL PATCH v5 — Varsmile AI + AI Bio + Emoji + QR + Back
-     by Varoo | TEMPEL SEBELUM </body>
+     FINAL PATCH v6 — Pixel Icons + Varsmile AI + AI Bio + QR
+     by Varoo
      ═══════════════════════════════════════════════════════════ -->
 
 <style id="finalpatch-css">
-/* ═══ SVG EMOJI ═══ */
-.svg-emoji{display:inline-flex !important;align-items:center !important;justify-content:center !important;width:1.15em !important;height:1.15em !important;max-width:1.3em !important;max-height:1.3em !important;vertical-align:-0.18em !important;flex-shrink:0 !important;overflow:visible !important}
-.svg-emoji svg{width:100% !important;height:100% !important;display:block !important;stroke:currentColor !important;fill:none !important;stroke-width:2 !important;stroke-linecap:round !important;stroke-linejoin:round !important}
-h1 .svg-emoji,h2 .svg-emoji,h3 .svg-emoji,h4 .svg-emoji{width:1.4em !important;height:1.4em !important}
-.btn .svg-emoji,.btn-sm .svg-emoji{width:1.05em !important;height:1.05em !important}
-.menu-item .svg-emoji,.feature-card .fi .svg-emoji{width:18px !important;height:18px !important}
-
-/* ═══ MODAL BACK BUTTON ═══ */
-.modal-back-btn{
-  position:absolute;
-  top:12px;
-  left:14px;
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background:#fff;
-  color:#0a0a0a;
-  border:2.5px solid #0a0a0a;
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  font-size:18px;
-  font-weight:900;
-  line-height:1;
-  padding:0;
-  box-shadow:2px 2px 0 #0a0a0a;
-  transition:transform .1s, box-shadow .1s;
-  z-index:10;
-  font-family:'Inter',sans-serif;
+/* ═══ PIXEL ICON ═══ */
+.px-icon{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:1.25em !important;
+  height:1.25em !important;
+  vertical-align:-0.22em !important;
+  flex-shrink:0 !important;
+  line-height:0 !important;
 }
+.px-icon svg{
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  shape-rendering:crispEdges !important;
+  image-rendering:pixelated !important;
+  image-rendering:crisp-edges !important;
+}
+h1 .px-icon,h2 .px-icon,h3 .px-icon,h4 .px-icon{width:1.5em !important;height:1.5em !important}
+.btn .px-icon,.btn-sm .px-icon{width:1.1em !important;height:1.1em !important}
+.menu-item .px-icon,.feature-card .fi .px-icon{width:20px !important;height:20px !important}
+
+/* ═══ MODAL BACK BTN ═══ */
+.modal-back-btn{position:absolute;top:12px;left:14px;width:32px;height:32px;border-radius:50%;background:#fff;color:#0a0a0a;border:2.5px solid #0a0a0a;display:grid;place-items:center;cursor:pointer;font-size:18px;font-weight:900;line-height:1;padding:0;box-shadow:2px 2px 0 #0a0a0a;transition:transform .1s, box-shadow .1s;z-index:10;font-family:'Inter',sans-serif}
 .modal-back-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#ffd700}
 .modal-back-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}
 .modal-back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-
-/* Modal adjust supaya ada ruang buat back btn */
 .modal{position:relative}
 .modal h3{padding-left:38px}
 
@@ -13122,32 +13115,9 @@ h1 .svg-emoji,h2 .svg-emoji,h3 .svg-emoji,h4 .svg-emoji{width:1.4em !important;h
 .vai-quota .vai-quota-num{font-family:monospace;font-weight:900;color:#0a0a0a}
 .vai-quota.warning .vai-quota-num{color:#ffd700}
 
-/* ═══ VARSMILE AI COUNTDOWN OVERLAY ═══ */
-.vai-countdown{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index:99998;
-  background:#0a0a0a;
-  color:#ffd700;
-  border:3px solid #ffd700;
-  border-radius:50%;
-  width:100px;
-  height:100px;
-  display:grid;
-  place-items:center;
-  font-family:'Press Start 2P',monospace;
-  font-size:32px;
-  font-weight:900;
-  box-shadow:0 0 40px rgba(255,215,0,.6), 6px 6px 0 rgba(255,215,0,.3);
-  animation:vaiCountdownPulse .5s ease-in-out infinite;
-  pointer-events:none;
-}
-@keyframes vaiCountdownPulse{
-  0%,100%{transform:translate(-50%,-50%) scale(1)}
-  50%{transform:translate(-50%,-50%) scale(1.1)}
-}
+/* ═══ VARSMILE AI COUNTDOWN ═══ */
+.vai-countdown{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99998;background:#0a0a0a;color:#ffd700;border:3px solid #ffd700;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;font-family:'Press Start 2P',monospace;font-size:32px;font-weight:900;box-shadow:0 0 40px rgba(255,215,0,.6),6px 6px 0 rgba(255,215,0,.3);animation:vaiCountdownPulse .5s ease-in-out infinite;pointer-events:none}
+@keyframes vaiCountdownPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
 
 /* ═══ AI BIO MODAL ═══ */
 .aib-modal{padding:4px}
@@ -13190,35 +13160,184 @@ h1 .svg-emoji,h2 .svg-emoji,h3 .svg-emoji,h4 .svg-emoji{width:1.4em !important;h
 
 <script id="finalpatch-js">
 /* ═══════════════════════════════════════════════════════════════
-   FINAL PATCH v5 — by Varoo
-   1. Varsmile AI (3 klik → 2s → open | 4 klik → close)
-   2. AI Bio Generator (Groq)
-   3. Emoji → SVG
-   4. QR (qrcodejs)
-   5. Auto Back Button di modal
+   FINAL PATCH v6 — by Varoo
    ═══════════════════════════════════════════════════════════════ */
 (function(){
 "use strict";
 
-console.log("🚀 Final Patch v5 loading...");
+console.log("🚀 Final Patch v6 loading...");
 
 var GROQ_API_KEY = "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";
 var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 var GROQ_MODEL = "openai/gpt-oss-120b";
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 1 — EMOJI → SVG
+   PIXEL ICON LIBRARY
+   ═══════════════════════════════════════════════════════════ */
+var PX_PAL = {
+  "Y":"#ffd700", "O":"#ff8c00", "R":"#ff2a2a", "P":"#ff69b4",
+  "U":"#a78bfa", "B":"#2563eb", "G":"#22c55e", "C":"#f0ebe0",
+  "W":"#ffffff", "K":"#0a0a0a", "D":"#d4af37", "S":"#00ffcc",
+  "N":"#1e293b", "M":"#ff00ff"
+};
+
+var PX_ICONS = {
+  star:["....YY....","...YYYY...","...YYYY...","..YYYYYY..",".YYYYYYYY.","YYYYYYYYYY","..YYYYYY..","..YYYYYY..",".YYY..YYY.",".YY....YY."],
+  heart:["..........",".RR....RR.","RRRRRRRRRR","RRRRRRRRRR","RRRRRRRRRR",".RRRRRRRR.","..RRRRRR..","...RRRR...","....RR....",".........."],
+  fire:["....Y.....","...YYY....","...YOY....","..YOOOY...","..YOOOY...",".YYOOOYY..",".YOOOOOY..","YYOOOOOYY.","..YYOOYY..","...YYYY..."],
+  crown:["..........","Y...Y...Y.","Y...Y...Y.","YY..Y..YY.","YYY.Y.YYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.",".........."],
+  gift:["...RR.....","..RRRR....",".RRRRRR...","YYYYYYYY..","YYRRRRYY..","YYRRRRYY..","YYRRRRYY..","YYRRRRYY..","YYYYYYYY..",".........."],
+  coin:["..YYYYYY..",".YYYYYYYY.","YYY....YYY","YYY.KK.YYY","YYY.KK.YYY","YYY.KK.YYY","YYY....YYY",".YYYYYYYY.","..YYYYYY..",".........."],
+  diamond:["..........","...UUUU...","..UUWWUU..",".UUWWWWUU.","UUWWWWWWUU",".UUWWWWUU.","..UUWWUU..","...UUUU...","....UU....",".........."],
+  user:["...BBBB...","..BBBBBB..","..BBBBBB..","..BBBBBB..","...BBBB...","..BBBBBB..",".BBBBBBBB.","BBBBBBBBBB","BBBBBBBBBB","BBBBBBBBBB"],
+  home:["....RR....","...RRRR...","..RRRRRR..",".RRRRRRRR.","RRRRRRRRRR","RRR....RRR","RRR.YY.RRR","RRR.YY.RRR","RRR.YY.RRR","RRRRRRRRRR"],
+  link:["..........","..BBBB....",".BB..BB...","BB....BBBB","BB....BBBB","BB....BBBB","BB....BBBB",".BB..BB...","..BBBB....",".........."],
+  check:["..........","........GG",".......GG.","......GG..",".....GG...","GG..GG....",".GGGG.....","..GG......","..........",".........."],
+  close:["..........","RR......RR",".RR....RR.","..RR..RR..","...RRRR...","...RRRR...","..RR..RR..",".RR....RR.","RR......RR",".........."],
+  plus:["..........","....GG....","....GG....","....GG....","GGGGGGGGGG","GGGGGGGGGG","....GG....","....GG....","....GG....",".........."],
+  lock:["...YYYY...","..YY..YY..","..YY..YY..","..YY..YY..","YYYYYYYYYY","YYYY..YYYY","YYYY..YYYY","YYYY..YYYY","YYYYYYYYYY","YYYYYYYYYY"],
+  mail:["..........","BBBBBBBBBB","B........B","BB......BB","B.BB..BB.B","B..BBBB..B","B...BB...B","B........B","BBBBBBBBBB",".........."],
+  bell:["...YY.....","..YYYY....","..YYYY....",".YYYYYY...",".YYYYYY...",".YYYYYY...","YYYYYYYYYY","YYYYYYYYYY","...YYYY...",".........."],
+  search:["..BBBB....",".BB..BB...","BB....BB..","BB....BB..","BB....BB..",".BB..BB...","..BBBB.BB.","......BBBB",".......BBB","........B."],
+  rocket:["...WW.....","..WKKW....",".WKKKKW...",".WKKKKW...",".WKKKKW...",".WKKKKW...","..WKKW....","...KK.....","...RR.....","...RR....."],
+  trophy:["..YYYYYY..",".YYYYYYYY.","YYY.YY.YYY","YYY.YY.YYY","YYY.YY.YYY",".YYYYYYYY.","...YYYY...","..YYYYYY..",".YYYYYYYY.","YYYYYYYYYY"],
+  sparkle:["..........","....Y.....","....Y.....","..YYYYY...",".YYYYYYY..","YYYYYYYYYY",".YYYYYYY..","..YYYYY...","....Y.....","....Y....."],
+  zap:[".....YYY..","....YYY...","...YYY....","..YYYYYY..",".YYYYYYY..","YYYYYYY...","...YYY....","..YYY.....",".YYY......",".YY......."],
+  eye:["..........","..BBBBBB..",".BB.WW.BB.","BB.WWWW.BB","BB.WWWW.BB","BB.WWWW.BB",".BB.WW.BB.","..BBBBBB..","..........",".........."],
+  edit:["..........","......GG..",".....GGY..","....GGY...","...GGY....","..GGY.....",".GGY......","YGY.......","YY........","Y........."],
+  trash:["..KKKKKK..","KKKKKKKKKK","..KKKKKK..","..K.KK.K..","..K.KK.K..","..K.KK.K..","..K.KK.K..","..K.KK.K..","..KKKKKK..",".........."],
+  folder:["..........","YYY.......","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.",".........."],
+  music:["......KKK.","......KKK.","......K.K.","......K.K.","..KKK.K.K.",".KKKKK.K.K",".KKKKK.K.K","..KKK..KKK","..........",".........."],
+  search2:["..BBBBBB..",".BB....BB.","BB......BB","BB..KK..BB","BB..KK..BB","BB......BB",".BB....BB.","..BBBBBB.B",".......BBB","........BB"],
+  tv:["KKKKKKKKKK","KWWWWWWWWK","KW.KK.KK.W","KWWWWWWWWK","KW.KK.KK.W","KWWWWWWWWK","KKKKKKKKKK","..KK..KK..","..........",".........."],
+  camera:["..........","..KKKKKK..","KKKKKKKKKK","KWWWWWWWWK","KW.WW..W.W","KW.WW..W.W","KW......WK","KWWWWWWWWK","KKKKKKKKKK",".........."],
+  play:["..........","..KKKK....","..KKKKK...","..KKKKKK..","..KKKKKKK.","..KKKKKK..","..KKKKK...","..KKKK....","..........",".........."],
+  clock:["...BBBB...","..BB..BB..",".B..YY..B.","B...YY...B","B...YY...B","B...Y....B",".B.......B","..BB..BB..","...BBBB...",".........."],
+  warn:["....YY....","...YYYY...","..YY..YY..",".YY.YY.YY.","YY..YY..YY","Y..YYYY..Y","YY.YYYY.YY","YY.YYYY.YY","YYYYYYYYYY","YYYYYYYYYY"],
+  info:["...BBBB...","..BBBBBB..",".BB.KK.BB.","BB..KK..BB","BB..KK..BB","BB..KK..BB",".BB.KK.BB.","..BBBBBB..","...BBBB...",".........."],
+  lock2:["...YYYY...","..YY..YY..","..YY..YY..","..YYYYYY..","YYYYYYYYYY","YYY..YYYYY","YYY..YYYYY","YYY..YYYYY","YYYYYYYYYY",".........."],
+  compass:["...BBBB...","..B..BB...",".B.YY..B..","B.YY....B.","B.Y.....B.","B.....YY.B","..B..YY.B.","...BBBB...","..........",".........."],
+  book:["..........",".BB....BB.","BBB....BBB","BBBB..BBBB","BBBBBBBBBB","BBBBBBBBBB","BBBB..BBBB","BBB....BBB",".BB....BB.",".........."],
+  moon:["...YYY....","..YYYYY...",".YYYYYYY..","YYYYYYY...","YYYYYY....","YYYYY.....","YYYYY.....",".YYYY.....","..YY......",".........."],
+  sun:["...YYYY...",".Y.YYYY.Y.","Y..YYYY..Y","..YYYYYY..","YYYYYYYYYY","YYYYYYYYYY","..YYYYYY..","Y..YYYY..Y",".Y.YYYY.Y.","...YYYY..."],
+  target:["...RRRR...","..R.KK.R..",".R.KKKK.R.","R.KK..KK.R","R.KK..KK.R","R.KK..KK.R",".R.KKKK.R.","..R.KK.R..","...RRRR...",".........."],
+  palette:["...MMMM...","..M.MM.M..",".M.MMMM.M.","M.MMMMMM.M","MMMM.MMMM.","MMMM.MMMM.",".MMMMMMMM.","..MMMMMM..","...MMMM...",".........."],
+  flag:["KK........","KK.YYYYY..","KK.YYYYYYY","KK.YYYYY..","KK.YYYYY..","KK........","KK........","KK........","KK........",".........."],
+  heart2:["..........",".RRRR.RRRR","RRRRRRRRRR","RRRRRRRRRR","RRRRRRRRRR",".RRRRRRRR.","..RRRRRR..","...RRRR...","....RR....",".........."]
+};
+
+/* Emoji → Pixel icon mapping */
+var EMOJI_MAP = {
+  "⭐":"star","🌟":"star","💫":"sparkle","✨":"sparkle",
+  "❤️":"heart","💖":"heart","💕":"heart","💗":"heart","💓":"heart",
+  "🔥":"fire","👑":"crown","🎁":"gift",
+  "👤":"user","👥":"user","🙂":"user","😊":"user","😄":"user",
+  "🏠":"home",
+  "🔗":"link","🌐":"link",
+  "✅":"check","✓":"check",
+  "❌":"close","✖":"close","✕":"close",
+  "➕":"plus","+":"plus",
+  "🔒":"lock","🔓":"lock2",
+  "📧":"mail","✉️":"mail","📩":"mail","📨":"mail",
+  "🔔":"bell","🔕":"bell",
+  "🔍":"search","🔎":"search",
+  "🚀":"rocket",
+  "🏆":"trophy","🥇":"trophy","🥈":"trophy","🥉":"trophy",
+  "💰":"coin","🪙":"coin","💵":"coin","💸":"coin","💴":"coin","💶":"coin","💷":"coin",
+  "💎":"diamond","💠":"diamond",
+  "⚡":"zap","🌩":"zap",
+  "👁️":"eye","👀":"eye","👁":"eye","👀":"eye",
+  "✏️":"edit","📝":"edit","✍️":"edit",
+  "🗑️":"trash","🗑":"trash","🚮":"trash",
+  "📁":"folder","📂":"folder","🗂️":"folder",
+  "🎵":"music","🎶":"music","🎼":"music",
+  "📺":"tv","📻":"tv",
+  "📷":"camera","📸":"camera","📹":"camera",
+  "▶️":"play","▶":"play","➡️":"play",
+  "⏰":"clock","⏱️":"clock","🕐":"clock","🕑":"clock","🕒":"clock","🕓":"clock","🕔":"clock","🕕":"clock","🕖":"clock","🕗":"clock","🕘":"clock","🕙":"clock","🕚":"clock","🕛":"clock",
+  "⚠️":"warn","⚠":"warn","🚨":"warn",
+  "ℹ️":"info","ℹ":"info",
+  "🌙":"moon","🌛":"moon","🌜":"moon",
+  "☀️":"sun","🌞":"sun",
+  "🎯":"target","🎪":"target",
+  "🎨":"palette","🖌️":"palette","🖍️":"palette",
+  "🧭":"compass",
+  "📖":"book","📚":"book","📕":"book","📗":"book","📘":"book","📙":"book",
+  "🇮🇩":"flag","🏁":"flag","🚩":"flag",
+  "📱":"user","📞":"user"
+};
+
+/* Render pixel SVG dari string art */
+function pxRender(name){
+  var art = PX_ICONS[name];
+  if(!art) return "";
+  var h = art.length;
+  var w = art[0].length;
+  var rects = "";
+  for(var y = 0; y < h; y++){
+    var row = art[y];
+    var x = 0;
+    while(x < w){
+      var c = row[x];
+      if(c === "." || c === " "){ x++; continue; }
+      var startX = x;
+      while(x < w && row[x] === c) x++;
+      var len = x - startX;
+      var color = PX_PAL[c] || c;
+      rects += '<rect x="' + startX + '" y="' + y + '" width="' + len + '" height="1" fill="' + color + '"/>';
+    }
+  }
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' + rects + '</svg>';
+}
+
+/* Override emojiToSvg */
+var _EMOJI_REGEX = /([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\uFE0F]|[\u2700-\u27BF])/gu;
+
+window.emojiToSvg = function(text, opts){
+  if(!text) return text;
+  return String(text).replace(_EMOJI_REGEX, function(match){
+    if(match === "\uFE0F") return "";
+    var name = EMOJI_MAP[match];
+    if(!name) return match;
+    var svg = pxRender(name);
+    if(!svg) return match;
+    return '<span class="px-icon">' + svg + '</span>';
+  });
+};
+
+/* Cleanup span.svg-emoji lama (kalau ada dari patch v5) */
+function cleanupOldEmoji(){
+  try{
+    var count = 0;
+    document.querySelectorAll("span.svg-emoji").forEach(function(el){
+      // Try to find original emoji from title/alt
+      var emoji = el.dataset.emoji || el.getAttribute("data-emoji") || "";
+      var text = emoji || "";
+      if(text){
+        el.parentNode.replaceChild(document.createTextNode(text), el);
+        count++;
+      } else {
+        el.remove();
+        count++;
+      }
+    });
+    if(count > 0) console.log("🧹 Cleaned " + count + " old emoji spans");
+  }catch(e){}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EMOJI REPLACER
    ═══════════════════════════════════════════════════════════ */
 var EmojiReplacer = {
   _skipTags: ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"],
-  _regex: /[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\u{2700}-\u{27BF}]/gu,
   init: function(){
     var self = this;
+    setTimeout(function(){ cleanupOldEmoji(); }, 500);
     setTimeout(function(){ self._walk(document.body); }, 1500);
     setTimeout(function(){ self._walk(document.body); }, 3500);
     var observer = new MutationObserver(function(muts){
       muts.forEach(function(m){
-        if(m.target && m.target.closest && m.target.closest(".svg-emoji")) return;
+        if(m.target && m.target.closest && m.target.closest(".px-icon")) return;
         if(m.target && self._skipTags.indexOf(m.target.tagName) !== -1) return;
         m.addedNodes.forEach(function(n){
           if(n.nodeType === 1){
@@ -13233,8 +13352,8 @@ var EmojiReplacer = {
   _walk: function(root){
     if(!root || root.nodeType !== 1) return;
     if(this._skipTags.indexOf(root.tagName) !== -1) return;
-    if(root.classList && root.classList.contains("svg-emoji")) return;
-    if(root.closest && root.closest(".svg-emoji")) return;
+    if(root.classList && root.classList.contains("px-icon")) return;
+    if(root.closest && root.closest(".px-icon")) return;
     var kids = Array.prototype.slice.call(root.childNodes || []);
     for(var i = 0; i < kids.length; i++){
       var k = kids[i];
@@ -13249,10 +13368,9 @@ var EmojiReplacer = {
       var parent = node.parentNode;
       if(!parent) return;
       if(this._skipTags.indexOf(parent.tagName) !== -1) return;
-      if(parent.closest && parent.closest(".svg-emoji")) return;
-      this._regex.lastIndex = 0;
-      if(!this._regex.test(txt)) return;
-      if(typeof window.emojiToSvg !== "function") return;
+      if(parent.closest && parent.closest(".px-icon")) return;
+      _EMOJI_REGEX.lastIndex = 0;
+      if(!_EMOJI_REGEX.test(txt)) return;
       var html = window.emojiToSvg(txt);
       if(!html || html === txt) return;
       var span = document.createElement("span");
@@ -13265,8 +13383,7 @@ var EmojiReplacer = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 2 — AUTO BACK BUTTON DI MODAL
-   Setiap .modal-back yang muncul, pastikan ada tombol back
+   MODAL BACK BUTTON
    ═══════════════════════════════════════════════════════════ */
 var ModalBackInjector = {
   BACK_SVG: '<svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
@@ -13281,18 +13398,14 @@ var ModalBackInjector = {
         });
       });
     });
-    try{
-      observer.observe(document.body, { childList: true, subtree: true });
-      console.log("✅ ModalBackInjector aktif");
-    }catch(e){}
+    try{ observer.observe(document.body, { childList: true, subtree: true }); }catch(e){}
   },
   injectInto: function(modalBack){
     try{
       var modal = modalBack.querySelector(".modal");
       if(!modal) return;
       if(modal.querySelector(".modal-back-btn")) return;
-      if(modal.querySelector("#aib-modal-root")) return; // skip AI Bio modal (dia udah punya)
-      
+      if(modal.querySelector("#aib-modal-root")) return;
       var btn = document.createElement("button");
       btn.className = "modal-back-btn";
       btn.type = "button";
@@ -13302,14 +13415,13 @@ var ModalBackInjector = {
         if(window.Sound && Sound.click) Sound.click();
         modalBack.remove();
       });
-      
       modal.insertBefore(btn, modal.firstChild);
-    }catch(e){ console.warn("injectBackBtn:", e); }
+    }catch(e){}
   }
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 3 — VARSMILE AI (trigger 3 klik → 2s → open | 4 klik close)
+   VARSMILE AI (3 klik → 2s → open | 4 klik → close)
    ═══════════════════════════════════════════════════════════ */
 var VarsmileAI = {
   _panel: null, _history: [], _typing: false,
@@ -13339,22 +13451,13 @@ var VarsmileAI = {
     }catch(e){}
   },
   
-  /* Handle klik Varsmile */
   handleVarsmileClick: function(){
     var self = this;
     this._clickCount++;
-    console.log("🖱️ Varsmile click #" + this._clickCount);
-    
-    if(this._clickTimer){ clearTimeout(this._clickTimer); }
-    
-    // Reset counter setelah 1.5s idle
-    this._clickTimer = setTimeout(function(){
-      self._clickCount = 0;
-    }, 1500);
-    
-    // 3x klik → countdown 2s → open
+    if(this._clickTimer) clearTimeout(this._clickTimer);
+    this._clickTimer = setTimeout(function(){ self._clickCount = 0; }, 1500);
     if(this._clickCount === 3){
-      if(this._panel && document.body.contains(this._panel)) return; // udah kebuka
+      if(this._panel && document.body.contains(this._panel)) return;
       this.showCountdown(2);
       this._openTimer = setTimeout(function(){
         self.hideCountdown();
@@ -13362,8 +13465,6 @@ var VarsmileAI = {
         self.open();
       }, 2000);
     }
-    
-    // 4x klik → cancel + close
     if(this._clickCount >= 4){
       if(this._openTimer){ clearTimeout(this._openTimer); this._openTimer = null; }
       this.hideCountdown();
@@ -13380,25 +13481,19 @@ var VarsmileAI = {
     el.textContent = sec;
     document.body.appendChild(el);
     this._countdownEl = el;
-    
     var current = sec;
     var iv = setInterval(function(){
       current--;
       if(current > 0 && self._countdownEl){
         self._countdownEl.textContent = current;
         if(window.Sound && Sound.tick) Sound.tick();
-      } else {
-        clearInterval(iv);
-      }
+      } else { clearInterval(iv); }
     }, 1000);
     if(window.Sound && Sound.tick) Sound.tick();
   },
   
   hideCountdown: function(){
-    if(this._countdownEl){
-      try{ this._countdownEl.remove(); }catch(e){}
-      this._countdownEl = null;
-    }
+    if(this._countdownEl){ try{ this._countdownEl.remove(); }catch(e){} this._countdownEl = null; }
   },
   
   open: function(){
@@ -13427,16 +13522,13 @@ var VarsmileAI = {
     if(chk.remaining === -1) html += '∞ pesan unlimited';
     else html += '💬 <span class="vai-quota-num">' + chk.remaining + '</span>/' + chk.limit + ' pesan hari ini';
     html += '</div></div>';
-    
     var wrap = document.createElement("div");
     wrap.innerHTML = html;
     this._panel = wrap.firstChild;
     document.body.appendChild(this._panel);
     this.renderHistory();
     this.bindEvents();
-    
     if(window.Sound && Sound.success) Sound.success();
-    
     setTimeout(function(){
       var inp = document.getElementById("vai-input");
       if(inp) inp.focus();
@@ -13458,7 +13550,7 @@ var VarsmileAI = {
     if(!body) return;
     if(this._history.length === 0){
       var name = (window.Auth && Auth.current && Auth.current.name) || "Kreator";
-      body.innerHTML = '<div class="vai-msg from-ai"><div class="vai-icon">' + this._svg() + '</div><div class="vai-bubble">Hai <b>' + this._escape(name) + '</b>! Aku Varsmile AI 🤖\n\nAku bisa bantu:\n• Bikin bio otomatis\n• Saran tema & style\n• Fix error\n• Jawab pertanyaan soal Varlinkbio\n\nKetik apa aja, atau pilih saran di bawah ya!</div></div>';
+      body.innerHTML = '<div class="vai-msg from-ai"><div class="vai-icon">' + this._svg() + '</div><div class="vai-bubble">Hai <b>' + this._escape(name) + '</b>! Aku Varsmile AI\n\nAku bisa bantu:\n• Bikin bio otomatis\n• Saran tema & style\n• Fix error\n• Jawab pertanyaan soal Varlinkbio\n\nKetik apa aja, atau pilih saran di bawah ya!</div></div>';
       this.renderSuggestions(["Bikin bio buat aku", "Gimana cara ganti tema?", "Beda plan Starter & Pro?", "Fitur baru apa aja?"]);
       return;
     }
@@ -13539,7 +13631,7 @@ var VarsmileAI = {
       this.updateQuota();
     }catch(e){
       console.warn("VarsmileAI error:", e);
-      this._history.push({ role: "assistant", content: "Aduh, aku error 😵 Coba lagi ya." });
+      this._history.push({ role: "assistant", content: "Aduh, aku error. Coba lagi ya." });
     }
     var typing = document.getElementById("vai-typing-msg");
     if(typing) typing.remove();
@@ -13577,17 +13669,17 @@ var VarsmileAI = {
     }
     var data = await response.json();
     var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-    return reply || "Maaf, aku gak bisa jawab sekarang 😅";
+    return reply || "Maaf, aku gak bisa jawab sekarang.";
   },
   
   fallbackReply: function(text){
     var t = (text || "").toLowerCase();
     if(t.indexOf("bikin bio") !== -1 || t.indexOf("buat bio") !== -1) return 'Oke! Ceritain:\n1. Kamu jualan apa?\n2. Target audience siapa?\n3. Vibe yang diinginkan?\n\nAku bantu bikin 💪';
-    if(t.indexOf("tema") !== -1) return 'Buka **Editor** → **Tema Warna** → pilih → **Simpan** ✅';
+    if(t.indexOf("tema") !== -1) return 'Buka Editor → Tema Warna → pilih → Simpan';
     if(t.indexOf("plan") !== -1) return 'Plan:\n• Free — Rp 0\n• Starter — Rp 5.000 PERMANEN\n• Pro — Rp 1.000+/hari\n• Ultimate — Rp 6.000+/hari';
     if(t.indexOf("error") !== -1) return 'Coba:\n1. Refresh\n2. Clear cache\n3. Chat admin WA';
-    if(t.indexOf("hai") !== -1 || t.indexOf("halo") !== -1) return 'Hai! 👋 Ada yang bisa aku bantu?';
-    return 'Hmm, coba tanya lebih spesifik ya 😅';
+    if(t.indexOf("hai") !== -1 || t.indexOf("halo") !== -1) return 'Hai! Ada yang bisa aku bantu?';
+    return 'Hmm, coba tanya lebih spesifik ya.';
   },
   
   _escape: function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); },
@@ -13603,62 +13695,32 @@ var VarsmileAI = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 4 — AI BIO GENERATOR
+   AI BIO GENERATOR
    ═══════════════════════════════════════════════════════════ */
 var AIBioGenerator = {
-  _generating: false,
-  _style: "santai",
+  _generating: false, _style: "santai",
   
   open: function(){
     if(!window.Auth || !Auth.current){
       if(window.toast) toast("Login dulu","error");
       return;
     }
-    
-    var styleBtns = [
-      { id: "santai", label: "Santai" },
-      { id: "formal", label: "Formal" },
-      { id: "lucu", label: "Lucu" }
-    ];
-    
+    var styleBtns = [{ id: "santai", label: "Santai" },{ id: "formal", label: "Formal" },{ id: "lucu", label: "Lucu" }];
     var styleHTML = "";
     styleBtns.forEach(function(b){
       styleHTML += '<div class="aib-style-btn ' + (b.id === "santai" ? "active" : "") + '" data-style="' + b.id + '">' + b.label + '</div>';
     });
-    
     var html = '<div class="aib-modal" id="aib-modal-root">';
     html += '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
-    html += '<div class="aib-hero">';
-    html += '<div style="font-size:44px;margin-bottom:6px">✨</div>';
-    html += '<h3>AI Bio Generator</h3>';
-    html += '<p>Ceritain tentang kamu → AI bikin bio + link otomatis</p>';
-    html += '</div>';
-    
-    html += '<div class="aib-field">';
-    html += '<label>Ceritakan tentang kamu</label>';
-    html += '<textarea id="aib-input" placeholder="Contoh: aku jualan kue rumahan enak murah, sistem PO, area jakarta"></textarea>';
-    html += '</div>';
-    
-    html += '<div class="aib-field">';
-    html += '<label>Gaya bahasa</label>';
-    html += '<div class="aib-style-row">' + styleHTML + '</div>';
-    html += '</div>';
-    
+    html += '<div class="aib-hero"><div style="font-size:44px;margin-bottom:6px">✨</div><h3>AI Bio Generator</h3><p>Ceritain tentang kamu → AI bikin bio + link otomatis</p></div>';
+    html += '<div class="aib-field"><label>Ceritakan tentang kamu</label><textarea id="aib-input" placeholder="Contoh: aku jualan kue rumahan enak murah, sistem PO, area jakarta"></textarea></div>';
+    html += '<div class="aib-field"><label>Gaya bahasa</label><div class="aib-style-row">' + styleHTML + '</div></div>';
     html += '<button class="aib-btn-primary" id="aib-generate">✨ Generate Bio</button>';
-    
-    html += '<div class="aib-loading" id="aib-loading">';
-    html += '<div class="aib-spinner"></div>';
-    html += '<div class="aib-loading-text">AI sedang mikir...</div>';
-    html += '</div>';
-    
+    html += '<div class="aib-loading" id="aib-loading"><div class="aib-spinner"></div><div class="aib-loading-text">AI sedang mikir...</div></div>';
     html += '<div class="aib-result" id="aib-result"></div>';
-    
     html += '</div>';
-    
     var m = window.openModal ? window.openModal(html) : null;
     if(!m) return;
-    
-    // Style picker
     var self = this;
     m.querySelectorAll("[data-style]").forEach(function(btn){
       btn.addEventListener("click", function(){
@@ -13667,15 +13729,10 @@ var AIBioGenerator = {
         self._style = btn.dataset.style;
       });
     });
-    
-    // Generate button
     var genBtn = m.querySelector("#aib-generate");
     if(genBtn) genBtn.addEventListener("click", function(){
       var input = m.querySelector("#aib-input").value.trim();
-      if(!input || input.length < 5){
-        if(window.toast) toast("Ceritakan dulu min 5 karakter","error");
-        return;
-      }
+      if(!input || input.length < 5){ if(window.toast) toast("Ceritakan dulu min 5 karakter","error"); return; }
       self._generate(m, input);
     });
   },
@@ -13683,152 +13740,92 @@ var AIBioGenerator = {
   _generate: async function(m, userInput){
     if(this._generating) return;
     this._generating = true;
-    
     var genBtn = m.querySelector("#aib-generate");
     var loading = m.querySelector("#aib-loading");
     var result = m.querySelector("#aib-result");
-    
     if(genBtn) genBtn.disabled = true;
     if(loading) loading.classList.add("show");
     if(result) result.classList.remove("show");
-    
     try{
       var data = await this._askGroq(userInput, this._style);
       this._renderResult(m, data);
     }catch(e){
       console.error("AIBioGenerator:", e);
       if(result){
-        result.innerHTML = '<div style="background:#ff2a2a;color:#fff;border:2px solid #0a0a0a;border-radius:8px;padding:12px;font-size:12px;font-weight:700">❌ ' + (window.esc ? esc(e.message) : e.message) + '</div>';
+        result.innerHTML = '<div style="background:#ff2a2a;color:#fff;border:2px solid #0a0a0a;border-radius:8px;padding:12px;font-size:12px;font-weight:700">Gagal: ' + (window.esc ? esc(e.message) : e.message) + '</div>';
         result.classList.add("show");
       }
-      if(window.toast) toast("Gagal generate: " + e.message, "error");
     }
-    
     if(genBtn) genBtn.disabled = false;
     if(loading) loading.classList.remove("show");
     this._generating = false;
   },
   
   _askGroq: async function(userInput, style){
-    if(!GROQ_API_KEY || GROQ_API_KEY.trim() === ""){
-      return this._fallback(userInput);
-    }
-    
-    var sysPrompt = 'Kamu AI asisten Varlinkbio. Bikin bio in-bio dari deskripsi user.\n\n' +
-      'OUTPUT HARUS JSON VALID (tanpa markdown, tanpa penjelasan):\n' +
-      '{\n' +
-      '  "bio": "max 60 karakter, diawali 1 emoji",\n' +
-      '  "links": [\n' +
-      '    {"label": "WhatsApp Order", "url": "https://wa.me/"},\n' +
-      '    {"label": "Instagram", "url": "https://instagram.com/"},\n' +
-      '    {"label": "Katalog", "url": "#"},\n' +
-      '    {"label": "Testimoni", "url": "#"}\n' +
-      '  ],\n' +
-      '  "tema": "neo-pink",\n' +
-      '  "style": "minimalist"\n' +
-      '}\n\n' +
-      'ATURAN:\n' +
-      '- Bio: max 60 char, 1 emoji di awal\n' +
-      '- Links: 3-4 link relevan dengan bisnis user\n' +
-      '- Tema: pilih dari "neo-cream","neo-midnight","neo-dark","neo-blue","neo-rose","neo-pink","neo-green","neo-purple","neo-orange","neo-ocean","neo-coffee","neo-sunset","neo-galaxy","neo-neon","neo-retro","neo-sakura","neo-gold"\n' +
-      '- Style: pilih dari "brutalism","minimalist","glassmorphism","material","gaming","vintage","cyberpunk","aurora","retro","cosmic","anime"\n' +
-      '- Gaya bahasa: ' + style + '\n' +
-      '- OUTPUT HANYA JSON.';
-    
+    if(!GROQ_API_KEY || GROQ_API_KEY.trim() === "") return this._fallback(userInput);
+    var sysPrompt = 'Kamu AI asisten Varlinkbio. Bikin bio in-bio dari deskripsi user.\n\nOUTPUT HARUS JSON VALID:\n{"bio":"max 60 char, diawali emoji","links":[{"label":"WhatsApp","url":"https://wa.me/"},{"label":"Instagram","url":"https://instagram.com/"},{"label":"Katalog","url":"#"},{"label":"Testimoni","url":"#"}],"tema":"neo-pink","style":"minimalist"}\n\nTema: neo-cream,neo-midnight,neo-dark,neo-blue,neo-rose,neo-pink,neo-green,neo-purple,neo-orange,neo-ocean,neo-coffee,neo-sunset,neo-galaxy,neo-neon,neo-retro,neo-sakura,neo-gold\nStyle: brutalism,minimalist,glassmorphism,material,gaming,vintage,cyberpunk,aurora,retro,cosmic,anime\nGaya bahasa: ' + style + '\nOUTPUT HANYA JSON.';
     var response = await fetch(GROQ_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_API_KEY },
       body: JSON.stringify({
         model: GROQ_MODEL,
-        messages: [
-          { role: "system", content: sysPrompt },
-          { role: "user", content: 'Deskripsi user: "' + userInput + '"' }
-        ],
-        max_tokens: 600,
-        temperature: 0.7,
-        response_format: { type: "json_object" }
+        messages: [{ role: "system", content: sysPrompt }, { role: "user", content: 'Deskripsi: "' + userInput + '"' }],
+        max_tokens: 600, temperature: 0.7, response_format: { type: "json_object" }
       })
     });
-    
     if(!response.ok){
       if(response.status === 429) return this._fallback(userInput);
       throw new Error("Groq HTTP " + response.status);
     }
-    
     var data = await response.json();
     var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
     if(!content) throw new Error("Empty response");
-    
-    var parsed;
-    try{ parsed = JSON.parse(content); }
-    catch(e){ throw new Error("AI kasih format salah, coba lagi"); }
-    
-    return parsed;
+    try{ return JSON.parse(content); }
+    catch(e){ throw new Error("AI kasih format salah"); }
   },
   
   _fallback: function(userInput){
     var input = (userInput || "").toLowerCase();
-    var KATEGORI = {
-      kuliner: { kw: ["kue","cake","roti","catering","makanan","bakery","kuliner"], bio: "🍰 Homemade & Fresh | Order Now", links: ["WhatsApp Order","Instagram","Katalog Menu","Testimoni"], tema: "neo-pink", style: "minimalist" },
+    var K = {
+      kuliner: { kw: ["kue","cake","roti","catering","makanan","bakery"], bio: "🍰 Homemade & Fresh | Order Now", links: ["WhatsApp Order","Instagram","Katalog Menu","Testimoni"], tema: "neo-pink", style: "minimalist" },
       fashion: { kw: ["baju","fashion","outfit","hijab","tas","sepatu"], bio: "👗 Style & Trend | Ready Stock", links: ["WhatsApp","Shopee","Instagram","Katalog"], tema: "neo-purple", style: "material" },
-      freelance: { kw: ["freelance","desain","developer","jasa","programmer"], bio: "💼 Ready for Project | Fast Response", links: ["Portfolio","WhatsApp","Email","LinkedIn"], tema: "neo-blue", style: "minimalist" },
-      musisi: { kw: ["musisi","penyanyi","band","dj","music"], bio: "🎵 New Single Out Now!", links: ["Spotify","YouTube","Instagram","TikTok"], tema: "neo-galaxy", style: "glassmorphism" },
-      gaming: { kw: ["gaming","gamer","streamer","esports"], bio: "🎮 Streamer | Live Setiap Hari", links: ["YouTube","Twitch","Discord","Instagram"], tema: "neo-neon", style: "gaming" }
+      freelance: { kw: ["freelance","desain","developer","jasa"], bio: "💼 Ready for Project | Fast Response", links: ["Portfolio","WhatsApp","Email","LinkedIn"], tema: "neo-blue", style: "minimalist" },
+      musisi: { kw: ["musisi","penyanyi","band","dj"], bio: "🎵 New Single Out Now!", links: ["Spotify","YouTube","Instagram","TikTok"], tema: "neo-galaxy", style: "glassmorphism" },
+      gaming: { kw: ["gaming","gamer","streamer"], bio: "🎮 Streamer | Live Setiap Hari", links: ["YouTube","Twitch","Discord","Instagram"], tema: "neo-neon", style: "gaming" }
     };
     var matched = null;
-    for(var k in KATEGORI){
-      for(var i = 0; i < KATEGORI[k].kw.length; i++){
-        if(input.indexOf(KATEGORI[k].kw[i]) !== -1){ matched = KATEGORI[k]; break; }
+    for(var k in K){
+      for(var i = 0; i < K[k].kw.length; i++){
+        if(input.indexOf(K[k].kw[i]) !== -1){ matched = K[k]; break; }
       }
       if(matched) break;
     }
     if(!matched) matched = { bio: "✨ Kreator Hebat | Link di Bawah", links: ["WhatsApp","Instagram","Portfolio","Kontak"], tema: "neo-cream", style: "brutalism" };
-    
-    return {
-      bio: matched.bio,
-      links: matched.links.map(function(l){ return { label: l, url: "#" }; }),
-      tema: matched.tema,
-      style: matched.style
-    };
+    return { bio: matched.bio, links: matched.links.map(function(l){ return { label: l, url: "#" }; }), tema: matched.tema, style: matched.style };
   },
   
   _renderResult: function(m, data){
     var result = m.querySelector("#aib-result");
     if(!result) return;
-    
     var linksHTML = "";
     (data.links || []).forEach(function(l){
       linksHTML += '<li>' + (window.esc ? esc(l.label || "") : l.label) + ' <span>' + (window.esc ? esc(l.url || "") : l.url) + '</span></li>';
     });
-    
     var html = '<div class="aib-result-label">📝 Bio Rekomendasi:</div>';
     html += '<div class="aib-result-bio">' + (window.esc ? esc(data.bio || "") : data.bio) + '</div>';
     html += '<div class="aib-result-label">🔗 Link:</div>';
     html += '<ul class="aib-result-links">' + linksHTML + '</ul>';
-    html += '<div class="aib-result-tags">';
-    html += '<span class="aib-tag aib-tag-tema">🎨 ' + (window.esc ? esc(data.tema || "neo-cream") : data.tema) + '</span>';
-    html += '<span class="aib-tag aib-tag-style">🎮 ' + (window.esc ? esc(data.style || "brutalism") : data.style) + '</span>';
-    html += '</div>';
-    html += '<div class="aib-result-actions">';
-    html += '<button class="aib-btn-apply" id="aib-apply">✅ Pakai Bio Ini</button>';
-    html += '<button class="aib-btn-retry" id="aib-retry">🔄 Generate Ulang</button>';
-    html += '</div>';
-    
+    html += '<div class="aib-result-tags"><span class="aib-tag aib-tag-tema">🎨 ' + (window.esc ? esc(data.tema || "neo-cream") : data.tema) + '</span><span class="aib-tag aib-tag-style">🎮 ' + (window.esc ? esc(data.style || "brutalism") : data.style) + '</span></div>';
+    html += '<div class="aib-result-actions"><button class="aib-btn-apply" id="aib-apply">✅ Pakai Bio Ini</button><button class="aib-btn-retry" id="aib-retry">🔄 Generate Ulang</button></div>';
     result.innerHTML = html;
     result.classList.add("show");
-    
     var self = this;
-    
-    // Apply button
     var applyBtn = result.querySelector("#aib-apply");
     if(applyBtn) applyBtn.addEventListener("click", function(){
       self._applyToDraft(data);
-      // Tutup modal
       var mb = result.closest(".modal-back");
       if(mb) mb.remove();
     });
-    
-    // Retry button
     var retryBtn = result.querySelector("#aib-retry");
     if(retryBtn) retryBtn.addEventListener("click", function(){
       var input = m.querySelector("#aib-input").value.trim();
@@ -13839,54 +13836,31 @@ var AIBioGenerator = {
   _applyToDraft: function(data){
     try{
       if(!window.STATE) return;
-      
       if(!STATE.draft){
-        if(window.PageEditor && PageEditor.newDraft){
-          STATE.draft = PageEditor.newDraft();
-        } else {
-          STATE.draft = {
-            id: null, slug: "", name: "", bio: "", profile: "", banner: "",
-            bannerType: "image", logos: [], animation: "none",
-            links: [], theme: "neo-cream", lock: "", allowDirectory: true,
-            stats: { views: 0, clicks: {}, daily: {} }
-          };
-        }
+        if(window.PageEditor && PageEditor.newDraft) STATE.draft = PageEditor.newDraft();
+        else STATE.draft = { id: null, slug: "", name: "", bio: "", profile: "", banner: "", bannerType: "image", logos: [], animation: "none", links: [], theme: "neo-cream", lock: "", allowDirectory: true, stats: { views: 0, clicks: {}, daily: {} } };
       }
-      
       if(data.bio) STATE.draft.bio = data.bio;
       if(data.tema) STATE.draft.theme = data.tema;
-      
       if(data.links && data.links.length){
         STATE.draft.links = data.links.map(function(l){
-          return {
-            label: l.label || "Link",
-            url: l.url || "#",
-            type: (window.LinkTypes && LinkTypes.detect) ? LinkTypes.detect(l.url) : "classic",
-            color: "", thumb: "", active: true,
-            featPosX: 50, featPosY: 50, featZoom: 1, featPadding: 10, featRatio: "16:9"
-          };
+          return { label: l.label || "Link", url: l.url || "#", type: (window.LinkTypes && LinkTypes.detect) ? LinkTypes.detect(l.url) : "classic", color: "", thumb: "", active: true, featPosX: 50, featPosY: 50, featZoom: 1, featPadding: 10, featRatio: "16:9" };
         });
       }
-      
-      if(window.toast) toast("✅ AI Bio diterapkan ke Editor!","success");
+      if(window.toast) toast("AI Bio diterapkan ke Editor!","success");
       if(window.Sound && Sound.tada) Sound.tada();
-      
-      // Kalau gak di editor, arahkan ke editor
       var hash = location.hash || "";
       if(hash.indexOf("/editor") === -1){
         if(window.Router) Router.navigate("/editor");
       } else {
         if(window.PageEditor && PageEditor.render) PageEditor.render();
       }
-    }catch(e){
-      console.warn("applyToDraft:", e);
-      if(window.toast) toast("Gagal apply: " + e.message, "error");
-    }
+    }catch(e){ console.warn("applyToDraft:", e); }
   }
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MODUL 5 — QR CODE (qrcodejs)
+   QR CODE (qrcodejs)
    ═══════════════════════════════════════════════════════════ */
 var QRCODEJS_CDNS = [
   "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
@@ -13922,36 +13896,26 @@ setTimeout(loadQRCodeJS, 500);
 window.showQRModal = async function(bio, url){
   var loaded = await loadQRCodeJS();
   if(!loaded){ return showQRModalFallback(bio, url); }
-  
   var bioName = (bio && bio.name) || "Bio";
   var safeFileName = bioName.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-  
   var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
-  html += '<h3>📱 QR Code</h3>';
+  html += '<h3>QR Code</h3>';
   html += '<p style="font-size:13px;margin-bottom:14px;font-weight:600;text-align:center">Scan untuk buka bio kamu</p>';
   html += '<div style="text-align:center"><div style="display:inline-block;padding:16px;background:#fff;border:3px solid #0a0a0a;border-radius:14px;box-shadow:6px 6px 0 #0a0a0a"><div id="qr-render-target" style="display:inline-block;line-height:0"></div></div></div>';
   html += '<div style="margin-top:14px;padding:10px 12px;background:#f0ebe0;border:1.5px solid #0a0a0a;border-radius:8px;font-family:monospace;font-size:11.5px;word-break:break-all;text-align:center;font-weight:600">' + (window.esc ? esc(url) : url) + '</div>';
   html += '<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">';
-  html += '<button id="qr-dl-v5" class="btn btn-primary btn-block">⬇️ Download QR (PNG)</button>';
-  html += '<button id="qr-copy-v5" class="btn btn-block" style="background:#f0ebe0">📋 Copy Link Bio</button>';
+  html += '<button id="qr-dl-v6" class="btn btn-primary btn-block">⬇️ Download QR (PNG)</button>';
+  html += '<button id="qr-copy-v6" class="btn btn-block" style="background:#f0ebe0">📋 Copy Link Bio</button>';
   html += '</div>';
-  
   var m = window.openModal ? window.openModal(html) : null;
   if(!m) return;
-  
   var qrTarget = m.querySelector("#qr-render-target");
   try{
     qrTarget.innerHTML = "";
-    new window.QRCode(qrTarget, {
-      text: url, width: 220, height: 220,
-      colorDark: "#0a0a0a", colorLight: "#ffffff",
-      correctLevel: window.QRCode.CorrectLevel.H
-    });
+    new window.QRCode(qrTarget, { text: url, width: 220, height: 220, colorDark: "#0a0a0a", colorLight: "#ffffff", correctLevel: window.QRCode.CorrectLevel.H });
   }catch(e){ qrTarget.innerHTML = '<div style="padding:20px;color:#ff2a2a;font-weight:700;font-size:12px">QR gagal</div>'; }
-  
   if(window.Sound && Sound.tada) Sound.tada();
-  
-  var dlBtn = m.querySelector("#qr-dl-v5");
+  var dlBtn = m.querySelector("#qr-dl-v6");
   if(dlBtn) dlBtn.addEventListener("click", function(){
     try{
       var canvas = qrTarget.querySelector("canvas");
@@ -13964,11 +13928,10 @@ window.showQRModal = async function(bio, url){
       a.href = dataUrl;
       a.download = "varlinkbio-qr-" + safeFileName + ".png";
       document.body.appendChild(a); a.click(); a.remove();
-      if(window.toast) toast("QR didownload! ✅","success");
+      if(window.toast) toast("QR didownload!","success");
     }catch(e){ if(window.toast) toast("Gagal: " + e.message,"error"); }
   });
-  
-  var copyBtn = m.querySelector("#qr-copy-v5");
+  var copyBtn = m.querySelector("#qr-copy-v6");
   if(copyBtn) copyBtn.addEventListener("click", function(){
     try{
       if(navigator.clipboard) navigator.clipboard.writeText(url).then(function(){ if(window.toast) toast("Link disalin!","success"); });
@@ -13979,10 +13942,7 @@ window.showQRModal = async function(bio, url){
 
 function showQRModalFallback(bio, url){
   var apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=10&data=" + encodeURIComponent(url);
-  var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
-  html += '<h3>📱 QR Code</h3>';
-  html += '<div style="text-align:center"><img src="' + apiUrl + '" width="240" height="240" style="background:#fff;border-radius:6px" alt="QR"/></div>';
-  html += '<div style="margin-top:14px"><a href="' + apiUrl + '" download="qr.png" target="_blank" class="btn btn-primary btn-block" style="text-decoration:none;display:flex;justify-content:center;gap:6px">⬇️ Download QR</a></div>';
+  var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button><h3>QR Code</h3><div style="text-align:center"><img src="' + apiUrl + '" width="240" height="240" style="background:#fff;border-radius:6px" alt="QR"/></div><div style="margin-top:14px"><a href="' + apiUrl + '" download="qr.png" target="_blank" class="btn btn-primary btn-block" style="text-decoration:none;display:flex;justify-content:center">⬇️ Download QR</a></div>';
   window.openModal && window.openModal(html);
 }
 
@@ -13992,50 +13952,30 @@ function showQRModalFallback(bio, url){
 function hookVarsmile(){
   var vs = document.getElementById("varsmile-char");
   if(!vs) return;
-  if(vs.dataset.aiHooked === "v5") return;
-  
-  // Clean up hook lama
-  vs.dataset.aiHooked = "v5";
-  
-  // Kalau ada event listener lama, kita gak bisa remove tanpa ref,
-  // jadi kita pakai flag: stop propagation di capture phase
+  if(vs.dataset.aiHooked === "v6") return;
+  vs.dataset.aiHooked = "v6";
   var handler = function(e){
-    // Cancel semua handler lama
     e.stopImmediatePropagation();
     e.preventDefault();
     VarsmileAI.handleVarsmileClick();
   };
-  
-  vs.addEventListener("click", handler, true); // capture phase — eksekusi duluan
+  vs.addEventListener("click", handler, true);
   vs.addEventListener("touchend", function(e){
-    // Cegah double-trigger di mobile
     if(e.cancelable) e.preventDefault();
     VarsmileAI.handleVarsmileClick();
   }, true);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   INJECT TOMBOL "AI BIO" KE EDITOR TOOLBAR
+   INJECT TOMBOL "AI BIO" DI EDITOR
    ═══════════════════════════════════════════════════════════ */
 function injectAIBioButton(){
   try{
-    // Cek kalau di editor
     var hashPath = (location.hash.slice(1) || "/").split("?")[0];
     if(hashPath !== "/editor") return;
-    
-    // Cari toolbar editor
-    var toolbars = document.querySelectorAll("div[style*='max-width:1180px']");
-    if(!toolbars.length) return;
-    
-    var toolbar = toolbars[0].querySelector("div[style*='display:flex']");
-    if(!toolbar) return;
-    
     if(document.getElementById("btn-ai-bio")) return;
-    
-    // Cari tombol Simpan untuk disisipkan sebelum
     var saveBtn = document.getElementById("btn-save");
     if(!saveBtn) return;
-    
     var aiBtn = document.createElement("button");
     aiBtn.className = "btn btn-sm btn-purple";
     aiBtn.id = "btn-ai-bio";
@@ -14047,43 +13987,100 @@ function injectAIBioButton(){
       if(window.Sound && Sound.click) Sound.click();
       AIBioGenerator.open();
     });
-    
     saveBtn.parentNode.insertBefore(aiBtn, saveBtn);
-    console.log("✅ Tombol AI Bio di-inject ke editor");
-  }catch(e){ console.warn("injectAIBioButton:", e); }
+    console.log("✅ Tombol AI Bio di-inject");
+  }catch(e){}
 }
+
+/* ═══════════════════════════════════════════════════════════
+   GESTURE RECOVERY VARSMILE
+   ═══════════════════════════════════════════════════════════ */
+var GestureRecovery = {
+  _seq: [], _lastTs: 0, _threshold: 50, _maxTime: 500, _seqTimeout: 4000,
+  _touchStartY: 0, _touchStartX: 0, _touchStartTime: 0, _wheelLast: 0,
+  init: function(){
+    var self = this;
+    document.addEventListener("touchstart", function(e){
+      if(e.touches.length !== 1) return;
+      self._touchStartY = e.touches[0].clientY;
+      self._touchStartX = e.touches[0].clientX;
+      self._touchStartTime = Date.now();
+    }, { passive: true });
+    document.addEventListener("touchend", function(e){
+      if(!e.changedTouches || e.changedTouches.length !== 1) return;
+      var endY = e.changedTouches[0].clientY;
+      var endX = e.changedTouches[0].clientX;
+      var dt = Date.now() - self._touchStartTime;
+      var dy = endY - self._touchStartY;
+      var dx = endX - self._touchStartX;
+      if(Math.abs(dy) < self._threshold) return;
+      if(Math.abs(dx) > Math.abs(dy) * 0.6) return;
+      if(dt > self._maxTime) return;
+      if(dy < 0) self._addSwipe("up");
+      else self._addSwipe("down");
+    }, { passive: true });
+    document.addEventListener("wheel", function(e){
+      var now = Date.now();
+      if(now - self._wheelLast < 200) return;
+      self._wheelLast = now;
+      if(e.deltaY < -30) self._addSwipe("up");
+      else if(e.deltaY > 30) self._addSwipe("down");
+    }, { passive: true });
+  },
+  _addSwipe: function(dir){
+    var now = Date.now();
+    if(now - this._lastTs > this._seqTimeout) this._seq = [];
+    this._lastTs = now;
+    this._seq.push(dir);
+    if(this._seq.length > 4) this._seq = this._seq.slice(-4);
+    if(this._seq.length >= 4){
+      var l4 = this._seq.slice(-4);
+      if(l4[0] === "up" && l4[1] === "up" && l4[2] === "down" && l4[3] === "down"){
+        this._trigger();
+        this._seq = [];
+      }
+    }
+  },
+  _trigger: function(){
+    try{
+      var vs = document.getElementById("varsmile-char");
+      if(window.Varsmile){
+        window.Varsmile.hide && window.Varsmile.hide();
+        setTimeout(function(){ window.Varsmile.init(); }, 100);
+      }
+      if(window.STATE) STATE.varsmileEnabled = true;
+      if(window.toast) toast("Varsmile balik lagi!","success");
+      if(window.Sound && Sound.tada) Sound.tada();
+      if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
+    }catch(e){}
+  }
+};
 
 /* ═══════════════════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════════════════ */
 function initAll(){
-  try{ EmojiReplacer.init(); }catch(e){ console.warn("EmojiReplacer:", e); }
-  try{ ModalBackInjector.init(); }catch(e){ console.warn("ModalBackInjector:", e); }
-  
+  try{ EmojiReplacer.init(); }catch(e){}
+  try{ ModalBackInjector.init(); }catch(e){}
+  try{ GestureRecovery.init(); }catch(e){}
   hookVarsmile();
   setInterval(hookVarsmile, 2000);
-  
-  // Cek tombol AI Bio di editor
   setInterval(injectAIBioButton, 2000);
-  
-  // Watch kalau editor render baru
-  var editorObserver = new MutationObserver(function(){
-    injectAIBioButton();
-  });
-  try{ editorObserver.observe(document.body, { childList: true, subtree: true }); }catch(e){}
-  
+  var obs = new MutationObserver(function(){ injectAIBioButton(); });
+  try{ obs.observe(document.body, { childList: true, subtree: true }); }catch(e){}
   window.VarsmileAI = VarsmileAI;
   window.AIBioGenerator = AIBioGenerator;
   window.EmojiReplacer = EmojiReplacer;
-  
+  window.pxRender = pxRender;
   console.log("╔════════════════════════════════════════╗");
-  console.log("║  ✅ FINAL PATCH v5 AKTIF               ║");
+  console.log("║  ✅ FINAL PATCH v6 AKTIF               ║");
+  console.log("║  • Pixel Icons (custom SVG)            ║");
   console.log("║  • Varsmile AI: 3 klik → 2s → buka     ║");
-  console.log("║                 4 klik → tutup         ║");
+  console.log("║  • 4 klik → tutup                      ║");
   console.log("║  • AI Bio: tombol ✨ di editor         ║");
-  console.log("║  • Emoji → SVG auto-convert            ║");
   console.log("║  • QR pakai qrcodejs                   ║");
-  console.log("║  • Auto back button di semua modal     ║");
+  console.log("║  • Back button otomatis di modal       ║");
+  console.log("║  • Gesture ⬆️⬆️⬇️⬇️ restore Varsmile    ║");
   console.log("╚════════════════════════════════════════╝");
 }
 
@@ -14091,7 +14088,7 @@ var attempts = 0;
 var check = setInterval(function(){
   attempts++;
   if(attempts > 50){ clearInterval(check); initAll(); return; }
-  if(window.emojiToSvg && window.Auth && window.FB && window.STATE){
+  if(window.Auth && window.FB && window.STATE){
     clearInterval(check);
     setTimeout(initAll, 500);
   }
@@ -14099,6 +14096,6 @@ var check = setInterval(function(){
 
 })();
 </script>
-<!-- ═══ END FINAL PATCH v5 ═══ -->
+<!-- ═══ END FINAL PATCH v6 ═══ -->
 </body>
-   </html>
+</html>

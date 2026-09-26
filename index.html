@@ -17077,5 +17077,675 @@ setTimeout(initPartB, 2000);
 
 })();
    </script>
+   <script id="finalpatch-v71">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7.1 — Nuke semua handler Varsmile lama + rebuild
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("💥 Patch v7.1 — NUKING old Varsmile handlers...");
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 1 — HAPUS SEMUA INTERVAL DARI PATCH LAMA
+   ═══════════════════════════════════════════════════════════ */
+// Simpan referensi global interval setter lama
+try{
+  // Patch interval di window untuk stop semua yang jalan
+  var _oldSetInterval = window.setInterval;
+  window.__v71_oldIntervals = [];
+  var _newSetInterval = function(fn, ms){
+    var id = _oldSetInterval.call(window, fn, ms);
+    window.__v71_oldIntervals.push(id);
+    return id;
+  };
+  // Kita gak override global (bahaya), cukup track yang v7.1 bikin
+}catch(e){}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 2 — HAPUS TOTAL VARSMILE DARI DOM
+   ═══════════════════════════════════════════════════════════ */
+function nukeVarsmile(){
+  try{
+    // Hapus elemen
+    ["varsmile-char","varsmile-close-btn","varsmile-road"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.remove();
+    });
+    
+    // Hapus bubble & dust
+    document.querySelectorAll(".varsmile-bubble, .varsmile-dust, .vai-panel, .vai-countdown, .vtut-overlay, .vtut-progress, .vtut-counter").forEach(function(el){
+      el.remove();
+    });
+    
+    console.log("🗑️ Varsmile DOM cleaned");
+  }catch(e){ console.warn("nukeVarsmile:", e); }
+}
+
+nukeVarsmile();
+setTimeout(nukeVarsmile, 500);
+setTimeout(nukeVarsmile, 1500);
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 3 — KILL GESTURE RECOVERY (⬆️⬆️⬇️⬇️)
+   ═══════════════════════════════════════════════════════════ */
+try{
+  if(window.GestureRecovery){
+    window.GestureRecovery._seq = [];
+    window.GestureRecovery._trigger = function(){ 
+      console.log("🚫 Gesture disabled");
+    };
+    window.GestureRecovery._addSwipe = function(){ /* noop */ };
+    console.log("✅ GestureRecovery disabled");
+  }
+}catch(e){}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 4 — KILL HANDLER KLIK LAMA (3x, 4x, 2x klik)
+   ═══════════════════════════════════════════════════════════ */
+try{
+  if(window.VarsmileAI){
+    // Override handleVarsmileClick → noop
+    window.VarsmileAI.handleVarsmileClick = function(){
+      console.log("🚫 Old VarsmileAI click handler disabled");
+    };
+    window.VarsmileAI.showCountdown = function(){ /* noop */ };
+    window.VarsmileAI.hideCountdown = function(){ /* noop */ };
+    console.log("✅ Old VarsmileAI click handlers disabled");
+  }
+}catch(e){}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 5 — REBUILD VARSMILE DARI NOL
+   ═══════════════════════════════════════════════════════════ */
+var VS_STATE = {
+  el: null,
+  closeBtn: null,
+  dragging: false,
+  startX: 0,
+  startY: 0,
+  startLeft: 0,
+  startTop: 0,
+  moved: false,
+  clickStartTime: 0,
+  _hidden: false
+};
+
+/* CSS untuk Varsmile (force) */
+var vsCSS = document.createElement("style");
+vsCSS.textContent = [
+  "#varsmile-char{",
+  "  position:fixed !important;",
+  "  width:72px !important;",
+  "  height:88px !important;",
+  "  z-index:99997 !important;",
+  "  pointer-events:auto !important;",
+  "  cursor:grab !important;",
+  "  touch-action:none !important;",
+  "  user-select:none !important;",
+  "  -webkit-user-select:none !important;",
+  "  transition:filter .3s !important;",
+  "  image-rendering:pixelated !important;",
+  "}",
+  "#varsmile-char.dragging{",
+  "  cursor:grabbing !important;",
+  "  filter:drop-shadow(0 0 25px rgba(255,215,0,.9)) !important;",
+  "  transform:scale(1.1) !important;",
+  "}",
+  "#varsmile-char .varsmile-svg{",
+  "  width:100% !important;",
+  "  height:100% !important;",
+  "  display:block !important;",
+  "  filter:drop-shadow(3px 3px 0 rgba(0,0,0,.4)) !important;",
+  "}",
+  "#varsmile-char.move-up .varsmile-svg{animation:vsMoveUp71 .6s ease-out !important}",
+  "#varsmile-char.move-down .varsmile-svg{animation:vsMoveDown71 .6s ease-out !important}",
+  "#varsmile-char.move-side .varsmile-svg{animation:vsMoveSide71 .6s ease-out !important}",
+  "@keyframes vsMoveUp71{0%{transform:translateY(0) rotate(0)}40%{transform:translateY(-25px) rotate(-12deg)}100%{transform:translateY(0) rotate(0)}}",
+  "@keyframes vsMoveDown71{0%{transform:translateY(0) scaleY(1)}40%{transform:translateY(15px) scaleY(.88) scaleX(1.08)}100%{transform:translateY(0) scaleY(1)}}",
+  "@keyframes vsMoveSide71{0%{transform:translateX(0) rotate(0)}40%{transform:translateX(-18px) rotate(-8deg)}100%{transform:translateX(0) rotate(0)}}",
+  "#varsmile-close-btn{",
+  "  position:fixed !important;",
+  "  width:28px !important;",
+  "  height:28px !important;",
+  "  border-radius:50% !important;",
+  "  background:#ff2a2a !important;",
+  "  color:#fff !important;",
+  "  border:2.5px solid #0a0a0a !important;",
+  "  display:grid !important;",
+  "  place-items:center !important;",
+  "  font-size:16px !important;",
+  "  font-weight:900 !important;",
+  "  cursor:pointer !important;",
+  "  box-shadow:2px 2px 0 #0a0a0a !important;",
+  "  padding:0 !important;",
+  "  line-height:1 !important;",
+  "  z-index:99999 !important;",
+  "  font-family:'Inter',sans-serif !important;",
+  "  transition:transform .15s, box-shadow .15s !important;",
+  "}",
+  "#varsmile-close-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#cc0000}",
+  "#varsmile-close-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}"
+].join("\n");
+document.head.appendChild(vsCSS);
+
+/* SVG Varsmile (fallback) */
+function getVarsmileSVG(){
+  if(window.VARSMILE_SVG) return window.VARSMILE_SVG;
+  return '<svg viewBox="0 0 16 17" class="varsmile-svg" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="3" y="1" width="10" height="1" fill="#0a0a0a"/>' +
+    '<rect x="2" y="2" width="12" height="1" fill="#0a0a0a"/>' +
+    '<rect x="1" y="3" width="14" height="7" fill="#0a0a0a"/>' +
+    '<rect x="2" y="10" width="12" height="1" fill="#0a0a0a"/>' +
+    '<rect x="3" y="11" width="10" height="1" fill="#0a0a0a"/>' +
+    '<rect x="2" y="3" width="12" height="7" fill="#ffd700"/>' +
+    '<rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/>' +
+    '<rect x="4" y="5" width="1" height="1" fill="#ffffff"/>' +
+    '<rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/>' +
+    '<rect x="10" y="5" width="1" height="1" fill="#ffffff"/>' +
+    '<rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/>' +
+    '<rect x="5" y="7" width="1" height="1" fill="#0a0a0a"/>' +
+    '<rect x="10" y="7" width="1" height="1" fill="#0a0a0a"/>' +
+    '<rect x="5" y="12" width="6" height="1" fill="#0a0a0a"/>' +
+    '<rect x="4" y="13" width="8" height="3" fill="#0a0a0a"/>' +
+    '<rect x="5" y="13" width="6" height="2" fill="#2563eb"/>' +
+    '<rect x="3" y="13" width="1" height="2" fill="#0a0a0a"/>' +
+    '<rect x="12" y="13" width="1" height="2" fill="#0a0a0a"/>' +
+    '<rect x="6" y="16" width="1" height="1" fill="#0a0a0a"/>' +
+    '<rect x="9" y="16" width="1" height="1" fill="#0a0a0a"/>' +
+  '</svg>';
+}
+
+function buildVarsmile(){
+  try{
+    // Skip di public bio
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath.startsWith("/u/")) return;
+    
+    // Skip kalau user gak login
+    if(!window.Auth || !Auth.current) return;
+    
+    // Skip kalau di-hide user
+    var isHidden = false;
+    try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
+    if(isHidden){ VS_STATE._hidden = true; return; }
+    VS_STATE._hidden = false;
+    
+    // Skip kalau udah ada
+    if(VS_STATE.el && document.body.contains(VS_STATE.el)) return;
+    
+    // Cleanup dulu
+    var old = document.getElementById("varsmile-char");
+    if(old) old.remove();
+    
+    // Buat elemen
+    var vs = document.createElement("div");
+    vs.id = "varsmile-char";
+    vs.className = "facing-right";
+    vs.innerHTML = getVarsmileSVG();
+    
+    // Restore posisi atau default
+    var savedPos = null;
+    try{
+      var raw = localStorage.getItem("varlinkbio_varsmile_pos");
+      if(raw) savedPos = JSON.parse(raw);
+    }catch(e){}
+    
+    if(savedPos && savedPos.left && savedPos.top){
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var left = Math.max(4, Math.min(vw - 76, savedPos.left));
+      var top = Math.max(4, Math.min(vh - 92, savedPos.top));
+      vs.style.left = left + "px";
+      vs.style.top = top + "px";
+    } else {
+      vs.style.right = "16px";
+      vs.style.bottom = "16px";
+    }
+    
+    document.body.appendChild(vs);
+    VS_STATE.el = vs;
+    
+    // Attach drag
+    attachDragHandlers(vs);
+    
+    // Attach click → AI page
+    attachClickHandler(vs);
+    
+    // Attach close button
+    attachCloseButton(vs);
+    
+    console.log("✅ Varsmile rebuilt");
+  }catch(e){ console.warn("buildVarsmile:", e); }
+}
+
+/* ─── DRAG HANDLERS ─── */
+function attachDragHandlers(vs){
+  VS_STATE.dragging = false;
+  VS_STATE.moved = false;
+  
+  function onStart(e){
+    if(e.button && e.button !== 0) return; // skip right-click
+    var touch = e.touches ? e.touches[0] : e;
+    
+    VS_STATE.dragging = true;
+    VS_STATE.moved = false;
+    VS_STATE.startX = touch.clientX;
+    VS_STATE.startY = touch.clientY;
+    VS_STATE.clickStartTime = Date.now();
+    
+    var rect = vs.getBoundingClientRect();
+    VS_STATE.startLeft = rect.left;
+    VS_STATE.startTop = rect.top;
+    
+    // Konversi dari right/bottom ke left/top
+    vs.style.right = "auto";
+    vs.style.bottom = "auto";
+    vs.style.left = rect.left + "px";
+    vs.style.top = rect.top + "px";
+    
+    vs.classList.add("dragging");
+    vs.style.transition = "none";
+  }
+  
+  function onMove(e){
+    if(!VS_STATE.dragging) return;
+    if(e.cancelable) e.preventDefault();
+    
+    var touch = e.touches ? e.touches[0] : e;
+    var dx = touch.clientX - VS_STATE.startX;
+    var dy = touch.clientY - VS_STATE.startY;
+    
+    if(Math.abs(dx) > 5 || Math.abs(dy) > 5) VS_STATE.moved = true;
+    
+    var newLeft = VS_STATE.startLeft + dx;
+    var newTop = VS_STATE.startTop + dy;
+    
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var vsW = vs.offsetWidth || 72;
+    var vsH = vs.offsetHeight || 88;
+    
+    newLeft = Math.max(4, Math.min(vw - vsW - 4, newLeft));
+    newTop = Math.max(4, Math.min(vh - vsH - 4, newTop));
+    
+    vs.style.left = newLeft + "px";
+    vs.style.top = newTop + "px";
+  }
+  
+  function onEnd(e){
+    if(!VS_STATE.dragging) return;
+    
+    var wasMoved = VS_STATE.moved;
+    VS_STATE.dragging = false;
+    vs.classList.remove("dragging");
+    vs.style.transition = "";
+    
+    if(!wasMoved) return;
+    
+    // Deteksi arah
+    var rect = vs.getBoundingClientRect();
+    var dx = rect.left - VS_STATE.startLeft;
+    var dy = rect.top - VS_STATE.startTop;
+    
+    var animClass = "move-side";
+    if(dy < -30) animClass = "move-up";
+    else if(dy > 30) animClass = "move-down";
+    else if(Math.abs(dx) > 20) animClass = "move-side";
+    
+    vs.classList.add(animClass);
+    setTimeout(function(){
+      if(vs) vs.classList.remove(animClass);
+    }, 600);
+    
+    if(window.Sound && Sound.tick) Sound.tick();
+    
+    // Save posisi
+    try{
+      localStorage.setItem("varlinkbio_varsmile_pos", JSON.stringify({
+        left: rect.left, top: rect.top
+      }));
+    }catch(e){}
+    
+    // Update posisi close btn
+    updateCloseBtnPosition();
+  }
+  
+  // Mouse
+  vs.addEventListener("mousedown", onStart);
+  document.addEventListener("mousemove", onMove);
+  document.addEventListener("mouseup", onEnd);
+  
+  // Touch
+  vs.addEventListener("touchstart", onStart, { passive: false });
+  document.addEventListener("touchmove", onMove, { passive: false });
+  document.addEventListener("touchend", onEnd);
+  document.addEventListener("touchcancel", onEnd);
+}
+
+/* ─── CLICK HANDLER → AI PAGE ─── */
+function attachClickHandler(vs){
+  vs.addEventListener("click", function(e){
+    // Skip kalau abis drag
+    if(VS_STATE.moved){ VS_STATE.moved = false; return; }
+    if(VS_STATE.dragging) return;
+    
+    // Cek durasi klik (biar gak keburu drag)
+    var dur = Date.now() - VS_STATE.clickStartTime;
+    if(dur > 500) return;
+    
+    e.stopPropagation();
+    e.preventDefault();
+    
+    if(window.Sound && Sound.click) Sound.click();
+    
+    // Buka AI page
+    if(window.Router) Router.navigate("/varsmile-ai");
+  }, true);
+}
+
+/* ─── CLOSE BUTTON ─── */
+function attachCloseButton(vs){
+  // Hapus yang lama
+  var old = document.getElementById("varsmile-close-btn");
+  if(old) old.remove();
+  
+  var btn = document.createElement("button");
+  btn.id = "varsmile-close-btn";
+  btn.type = "button";
+  btn.innerHTML = "×";
+  btn.title = "Hapus Varsmile";
+  document.body.appendChild(btn);
+  VS_STATE.closeBtn = btn;
+  
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Hide Varsmile
+    try{ localStorage.setItem("varlinkbio_varsmile_hidden", "1"); }catch(e){}
+    VS_STATE._hidden = true;
+    
+    // Hapus dari DOM
+    if(VS_STATE.el){
+      try{ VS_STATE.el.remove(); }catch(err){}
+      VS_STATE.el = null;
+    }
+    try{ btn.remove(); }catch(err){}
+    VS_STATE.closeBtn = null;
+    
+    // Update show button di topbar
+    setTimeout(updateShowBtn, 100);
+    
+    if(window.toast) toast("Varsmile dihapus. Munculin lagi dari tombol 🤖 di topbar","info");
+    if(window.Sound && Sound.bip) Sound.bip();
+  });
+  
+  updateCloseBtnPosition();
+}
+
+function updateCloseBtnPosition(){
+  if(!VS_STATE.closeBtn || !VS_STATE.el) return;
+  var rect = VS_STATE.el.getBoundingClientRect();
+  VS_STATE.closeBtn.style.left = (rect.left + rect.width - 18) + "px";
+  VS_STATE.closeBtn.style.top = (rect.top - 6) + "px";
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 6 — TOMBOL SHOW VARSMILE DI TOPBAR
+   ═══════════════════════════════════════════════════════════ */
+function updateShowBtn(){
+  var actions = document.querySelector(".lt-topbar .lt-actions");
+  if(!actions) return;
+  
+  var isHidden = false;
+  try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
+  
+  var existing = document.getElementById("btn-show-varsmile");
+  
+  if(!isHidden){
+    if(existing) existing.remove();
+    return;
+  }
+  
+  if(existing) return;
+  
+  var btn = document.createElement("button");
+  btn.className = "lt-badge show-varsmile";
+  btn.id = "btn-show-varsmile";
+  btn.title = "Munculin Varsmile";
+  btn.innerHTML = "🤖";
+  btn.style.cssText = "background:#ffd700;color:#0a0a0a;padding:6px 10px;font-size:14px;";
+  
+  var menuBtn = actions.querySelector("#btn-drawer-open");
+  if(menuBtn) actions.insertBefore(btn, menuBtn);
+  else actions.appendChild(btn);
+  
+  btn.addEventListener("click", function(){
+    try{ localStorage.removeItem("varlinkbio_varsmile_hidden"); }catch(e){}
+    VS_STATE._hidden = false;
+    btn.remove();
+    buildVarsmile();
+    if(window.toast) toast("Varsmile muncul lagi!","success");
+    if(window.Sound && Sound.tada) Sound.tada();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 7 — INIT LOOP
+   ═══════════════════════════════════════════════════════════ */
+function initLoop(){
+  // Build kalau belum ada
+  if(!VS_STATE.el || !document.body.contains(VS_STATE.el)){
+    buildVarsmile();
+  }
+  
+  // Update posisi close button
+  if(VS_STATE.el && VS_STATE.closeBtn){
+    updateCloseBtnPosition();
+  }
+  
+  // Update show button
+  updateShowBtn();
+}
+
+// Loop terus
+setInterval(initLoop, 1500);
+setTimeout(initLoop, 300);
+
+// Re-init saat route change
+window.addEventListener("hashchange", function(){
+  setTimeout(initLoop, 500);
+});
+
+// Force build setelah 3s
+setTimeout(function(){
+  if(!VS_STATE.el) buildVarsmile();
+}, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   EXPOSE
+   ═══════════════════════════════════════════════════════════ */
+window.VarsmileV71 = {
+  rebuild: buildVarsmile,
+  nuke: nukeVarsmile,
+  state: VS_STATE
+};
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v7.1 AKTIF                   ║");
+console.log("║  • Gesture ⬆️⬆️⬇️⬇️ DIMATIIN            ║");
+console.log("║  • Klik 3x/4x/2x DIMATIIN              ║");
+console.log("║  • Klik 1x → AI page                   ║");
+console.log("║  • Tombol X → hapus real               ║");
+console.log("║  • Drag works (beneran)                ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+</script>
+   <script id="finalpatch-v72-intro">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7.2 — AUTO TRIGGER INTRO VARSMILE
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🎬 Patch v7.2 — Intro auto trigger...");
+
+/* ═══════════════════════════════════════════════════════════
+   FUNGSI CEK & PLAY INTRO
+   ═══════════════════════════════════════════════════════════ */
+function shouldPlayIntro(){
+  try{
+    if(localStorage.getItem("varlinkbio_intro_shown") === "1") return false;
+  }catch(e){}
+  
+  // Skip di public bio
+  var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+  if(hashPath.startsWith("/u/")) return false;
+  
+  // Skip di login/register
+  if(hashPath === "/login" || hashPath === "/register" || hashPath === "/verify") return false;
+  
+  return true;
+}
+
+function triggerIntro(callback){
+  // Tunggu VarsmileIntro siap
+  var attempts = 0;
+  var checkInterval = setInterval(function(){
+    attempts++;
+    if(attempts > 50){
+      clearInterval(checkInterval);
+      console.warn("⏱️ Intro timeout — VarsmileIntro gak ready");
+      if(callback) callback();
+      return;
+    }
+    
+    if(window.VarsmileIntro && typeof window.VarsmileIntro.play === "function"){
+      clearInterval(checkInterval);
+      
+      if(!shouldPlayIntro()){
+        console.log("⏭️ Intro di-skip (udah pernah / halaman khusus)");
+        if(callback) callback();
+        return;
+      }
+      
+      console.log("🎬 Playing intro...");
+      
+      // Sembunyikan Varsmile dulu sampai intro selesai
+      var vs = document.getElementById("varsmile-char");
+      if(vs) vs.style.display = "none";
+      var closeBtn = document.getElementById("varsmile-close-btn");
+      if(closeBtn) closeBtn.style.display = "none";
+      
+      window.VarsmileIntro.play(function(){
+        console.log("✅ Intro selesai");
+        
+        // Tampilkan Varsmile kembali
+        var vs2 = document.getElementById("varsmile-char");
+        if(vs2) vs2.style.display = "";
+        var closeBtn2 = document.getElementById("varsmile-close-btn");
+        if(closeBtn2) closeBtn2.style.display = "";
+        
+        if(callback) callback();
+      });
+    }
+  }, 200);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AUTO TRIGGER — SAAT BOOT
+   ═══════════════════════════════════════════════════════════ */
+function autoTrigger(){
+  // Tunggu dependencies
+  var attempts = 0;
+  var checkDeps = setInterval(function(){
+    attempts++;
+    if(attempts > 60){
+      clearInterval(checkDeps);
+      console.warn("⏱️ Deps timeout");
+      return;
+    }
+    
+    if(window.Auth && window.Auth._initialized && window.VarsmileIntro){
+      clearInterval(checkDeps);
+      
+      // Delay 1.5s biar dashboard sempet render dulu
+      setTimeout(function(){
+        triggerIntro();
+      }, 1500);
+    }
+  }, 250);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRIGGER SAAT USER LOGIN (kalau belum pernah liat intro)
+   ═══════════════════════════════════════════════════════════ */
+function watchLogin(){
+  // Watch kalau user baru login
+  if(window.Auth && Auth.current){
+    // Udah login saat boot
+    return;
+  }
+  
+  var checkLogin = setInterval(function(){
+    if(window.Auth && Auth.current){
+      clearInterval(checkLogin);
+      // Tunggu dashboard render
+      setTimeout(function(){
+        if(shouldPlayIntro()) triggerIntro();
+      }, 2000);
+    }
+  }, 500);
+  
+  // Timeout 30s
+  setTimeout(function(){ clearInterval(checkLogin); }, 30000);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRIGGER SAAT PINDAH KE DASHBOARD
+   ═══════════════════════════════════════════════════════════ */
+var lastTriggered = false;
+function watchHashChange(){
+  window.addEventListener("hashchange", function(){
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    
+    if(hashPath === "/dashboard" && shouldPlayIntro() && !lastTriggered){
+      setTimeout(function(){
+        lastTriggered = true;
+        triggerIntro();
+      }, 1200);
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(autoTrigger, 2000);
+setTimeout(watchLogin, 2500);
+setTimeout(watchHashChange, 3000);
+
+// Expose manual trigger
+window.triggerIntroManual = function(){
+  try{ localStorage.removeItem("varlinkbio_intro_shown"); }catch(e){}
+  if(window.VarsmileIntro) window.VarsmileIntro._played = false;
+  triggerIntro();
+  console.log("🎬 Intro manual triggered");
+};
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v7.2 AKTIF                   ║");
+console.log("║  • Intro auto-trigger on boot          ║");
+console.log("║  • Intro auto-trigger on login         ║");
+console.log("║  • Intro auto-trigger on /dashboard    ║");
+console.log("╚════════════════════════════════════════╝");
+console.log("💡 Manual: triggerIntroManual()");
+console.log("💡 Reset: VarsmileIntro.reset() + reload");
+
+})();
+   </script>
 </body>
 </html>

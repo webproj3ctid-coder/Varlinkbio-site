@@ -14984,5 +14984,2098 @@ console.log("╚═════════════════════�
 
 })();
 </script>
+   <style id="finalpatch-v7-css">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7 — CSS LENGKAP
+   Intro + Drag + AI Page + Music Modes + Tutorial
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. INTRO VARSMILE — BOLA BASKET
+   ═══════════════════════════════════════════════════════════ */
+.vintro-overlay{
+  position:fixed;inset:0;z-index:99998;
+  background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 50%,#0a0a0a 100%);
+  display:grid;place-items:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s ease;
+  overflow:hidden;
+}
+.vintro-overlay.active{opacity:1;pointer-events:auto}
+.vintro-overlay.fade-out{opacity:0;pointer-events:none}
+
+.vintro-stage{
+  position:relative;
+  width:100%;height:100%;
+  display:grid;place-items:center;
+}
+
+.vintro-varsmile{
+  position:absolute;
+  width:120px;height:146px;
+  opacity:0;transform:scale(.3);
+  transition:opacity .5s ease, transform .8s cubic-bezier(.34,1.56,.64,1);
+  filter:drop-shadow(0 0 30px rgba(255,215,0,.6));
+  z-index:5;
+}
+.vintro-varsmile.visible{opacity:1}
+.vintro-varsmile.grow{transform:scale(1.6)}
+
+.vintro-ball{
+  position:absolute;
+  width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#ff8c00,#cc5500 70%,#8b3600);
+  border:3px solid #0a0a0a;
+  box-shadow:inset -8px -8px 12px rgba(0,0,0,.4), inset 6px 6px 10px rgba(255,255,255,.2);
+  opacity:0;transform:scale(.3);z-index:4;
+}
+.vintro-ball::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border-top:2px solid #0a0a0a;border-bottom:2px solid #0a0a0a;
+}
+.vintro-ball::after{
+  content:'';position:absolute;top:0;bottom:0;left:50%;width:2px;
+  background:#0a0a0a;transform:translateX(-50%);
+}
+.vintro-ball.spawn{opacity:1;animation:vintroBallSpawn .8s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes vintroBallSpawn{
+  0%{transform:scale(.3) translateY(0)}
+  50%{transform:scale(1.3) translateY(-30px)}
+  100%{transform:scale(1) translateY(0)}
+}
+.vintro-ball.throw{animation:vintroBallThrow 1.2s cubic-bezier(.4,0,.6,1) forwards}
+@keyframes vintroBallThrow{
+  0%{transform:scale(1) translate(0,0);opacity:1}
+  30%{transform:scale(.6) translate(-20px,80px) rotate(180deg);opacity:1}
+  70%{transform:scale(1.5) translate(10px,-40px) rotate(360deg);opacity:1}
+  100%{transform:scale(15) translate(0,0) rotate(540deg);opacity:1}
+}
+
+.vintro-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:10}
+.vintro-flash.active{animation:vintroFlash .6s ease-out forwards}
+@keyframes vintroFlash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+
+.vintro-loading{
+  position:absolute;bottom:15%;left:50%;transform:translateX(-50%);
+  color:#ffd700;font-family:'JetBrains Mono',monospace;
+  font-size:12px;font-weight:900;letter-spacing:2px;
+  text-transform:uppercase;opacity:0;transition:opacity .3s;z-index:6;
+}
+.vintro-loading.show{opacity:.7}
+.vintro-loading::after{
+  content:'';display:inline-block;width:20px;text-align:left;
+  animation:vintroDots 1.4s steps(4) infinite;
+}
+@keyframes vintroDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+
+/* ═══════════════════════════════════════════════════════════
+   2. VARSMILE DRAG & DROP
+   ═══════════════════════════════════════════════════════════ */
+#varsmile-char{
+  cursor:grab !important;
+  touch-action:none !important;
+  user-select:none !important;
+  -webkit-user-select:none !important;
+  pointer-events:auto !important;
+  transition:left .35s cubic-bezier(.34,1.56,.64,1),
+             top .35s cubic-bezier(.34,1.56,.64,1),
+             filter .3s !important;
+}
+#varsmile-char.dragging{
+  cursor:grabbing !important;
+  transition:none !important;
+  z-index:99999 !important;
+  filter:drop-shadow(0 0 25px rgba(255,215,0,.9)) !important;
+  transform:scale(1.1) !important;
+}
+
+/* Animasi arah gerakan */
+#varsmile-char.move-up .varsmile-svg{animation:vsMoveUp .6s ease-out}
+#varsmile-char.move-down .varsmile-svg{animation:vsMoveDown .6s ease-out}
+#varsmile-char.move-side .varsmile-svg{animation:vsMoveSide .6s ease-out}
+
+@keyframes vsMoveUp{
+  0%{transform:translateY(0) rotate(0)}
+  40%{transform:translateY(-25px) rotate(-12deg)}
+  100%{transform:translateY(0) rotate(0)}
+}
+@keyframes vsMoveDown{
+  0%{transform:translateY(0) scaleY(1)}
+  40%{transform:translateY(15px) scaleY(.88) scaleX(1.08)}
+  100%{transform:translateY(0) scaleY(1)}
+}
+@keyframes vsMoveSide{
+  0%{transform:translateX(0) rotate(0)}
+  40%{transform:translateX(-18px) rotate(-8deg)}
+  100%{transform:translateX(0) rotate(0)}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. TOMBOL X HAPUS VARSMILE + SHOW BUTTON
+   ═══════════════════════════════════════════════════════════ */
+.varsmile-close-btn{
+  position:fixed;z-index:99999;
+  width:28px;height:28px;border-radius:50%;
+  background:#ff2a2a;color:#fff;
+  border:2.5px solid #0a0a0a;
+  display:grid;place-items:center;
+  font-size:16px;font-weight:900;
+  cursor:pointer;
+  box-shadow:2px 2px 0 #0a0a0a;
+  padding:0;line-height:1;
+  transition:transform .15s, box-shadow .15s, opacity .3s;
+  font-family:'Inter',sans-serif;
+  opacity:1;
+}
+.varsmile-close-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#cc0000}
+.varsmile-close-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}
+.varsmile-close-btn.hidden{opacity:0;pointer-events:none}
+
+.lt-badge.show-varsmile{
+  background:#ffd700;color:#0a0a0a;
+  padding:6px 10px;font-size:14px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. VARSMILE AI — HALAMAN BARU
+   ═══════════════════════════════════════════════════════════ */
+.vai-page{
+  min-height:100vh;background:var(--cream,#f0ebe0);
+  padding:20px 18px 60px;
+  display:flex;flex-direction:column;
+}
+.vai-page-hero{
+  text-align:center;padding:20px 0 24px;
+  border-bottom:3px solid #0a0a0a;margin-bottom:20px;
+}
+.vai-page-hero .vai-page-avatar{
+  width:80px;height:80px;border-radius:50%;
+  background:#ffd700;border:3px solid #0a0a0a;
+  display:grid;place-items:center;margin:0 auto 12px;
+  box-shadow:5px 5px 0 #ff2a2a;overflow:hidden;
+}
+.vai-page-hero .vai-page-avatar svg{width:100%;height:100%}
+.vai-page-hero h1{
+  font-size:24px;font-weight:900;text-transform:uppercase;
+  letter-spacing:-.5px;margin-bottom:6px;color:#0a0a0a;
+}
+.vai-page-hero p{font-size:13px;font-weight:600;color:#555}
+.vai-page-hero .vai-page-status{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#22c55e;color:#fff;
+  padding:4px 12px;border-radius:999px;
+  font-size:11px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;margin-top:10px;
+  border:2px solid #0a0a0a;
+  box-shadow:2px 2px 0 #0a0a0a;
+}
+.vai-page-hero .vai-page-status .vai-page-dot{
+  width:8px;height:8px;border-radius:50%;background:#fff;
+  animation:vaiPageDot 1.5s ease-in-out infinite;
+}
+@keyframes vaiPageDot{0%,100%{opacity:1}50%{opacity:.4}}
+
+.vai-page-body{
+  flex:1;max-width:720px;width:100%;margin:0 auto;
+  display:flex;flex-direction:column;gap:12px;
+  padding-bottom:20px;
+}
+.vai-page-msg{
+  display:flex;gap:10px;max-width:100%;
+  animation:vaiPageMsgIn .25s ease;
+}
+@keyframes vaiPageMsgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.vai-page-msg.from-ai{align-self:flex-start;flex-direction:row}
+.vai-page-msg.from-user{align-self:flex-end;flex-direction:row-reverse}
+.vai-page-msg .vai-page-bubble{
+  padding:12px 16px;border-radius:14px;
+  font-size:14px;line-height:1.55;font-weight:600;
+  max-width:calc(100% - 50px);word-break:break-word;
+  white-space:pre-wrap;
+}
+.vai-page-msg.from-ai .vai-page-bubble{
+  background:#fff;border:2.5px solid #0a0a0a;
+  border-bottom-left-radius:4px;
+  box-shadow:3px 3px 0 #0a0a0a;color:#0a0a0a;
+}
+.vai-page-msg.from-user .vai-page-bubble{
+  background:#0a0a0a;color:#ffd700;
+  border:2.5px solid #0a0a0a;
+  border-bottom-right-radius:4px;
+  box-shadow:3px 3px 0 #ffd700;
+}
+.vai-page-msg .vai-page-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:#ffd700;border:2.5px solid #0a0a0a;
+  display:grid;place-items:center;
+  flex-shrink:0;overflow:hidden;
+}
+.vai-page-msg .vai-page-icon svg{width:100%;height:100%}
+
+.vai-page-typing{
+  display:flex;gap:4px;padding:14px 18px;
+  background:#fff;border:2.5px solid #0a0a0a;
+  border-radius:14px;border-bottom-left-radius:4px;
+  width:fit-content;box-shadow:3px 3px 0 #0a0a0a;
+}
+.vai-page-typing span{
+  width:7px;height:7px;border-radius:50%;
+  background:#555;animation:vaiPageTyping 1.2s infinite;
+}
+.vai-page-typing span:nth-child(2){animation-delay:.2s}
+.vai-page-typing span:nth-child(3){animation-delay:.4s}
+@keyframes vaiPageTyping{
+  0%,60%,100%{transform:translateY(0);opacity:.4}
+  30%{transform:translateY(-5px);opacity:1}
+}
+
+.vai-page-suggestions{
+  display:flex;gap:8px;flex-wrap:wrap;
+  justify-content:center;margin:20px auto 0;
+  max-width:720px;padding:0 4px;
+}
+.vai-page-sugg{
+  padding:10px 16px;
+  background:#fff;border:2.5px solid #0a0a0a;
+  border-radius:999px;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;color:#0a0a0a;
+  box-shadow:3px 3px 0 #0a0a0a;
+  transition:transform .1s;font-family:inherit;
+}
+.vai-page-sugg:hover{transform:translate(-1px,-1px);background:#ffd700}
+
+.vai-page-input-wrap{
+  position:sticky;bottom:0;
+  padding-top:20px;
+  background:linear-gradient(180deg,transparent,var(--cream,#f0ebe0) 25%);
+  margin-top:auto;
+}
+.vai-page-input{
+  display:flex;gap:10px;align-items:flex-end;
+  background:#fff;border:3px solid #0a0a0a;
+  border-radius:14px;padding:10px 12px;
+  box-shadow:5px 5px 0 #0a0a0a;
+  max-width:720px;margin:0 auto;
+}
+.vai-page-input textarea{
+  flex:1;min-height:44px;max-height:120px;
+  padding:10px 12px;font-size:14px;font-weight:600;
+  border:2px solid #0a0a0a;border-radius:10px;
+  background:#f0ebe0;resize:none;font-family:inherit;
+  outline:none;line-height:1.4;color:#0a0a0a;
+}
+.vai-page-input textarea:focus{box-shadow:2px 2px 0 #0a0a0a}
+.vai-page-input .vai-page-send{
+  width:48px;height:48px;border-radius:12px;
+  background:#0a0a0a;color:#ffd700;
+  border:2.5px solid #0a0a0a;
+  display:grid;place-items:center;
+  cursor:pointer;flex-shrink:0;
+  box-shadow:3px 3px 0 #ffd700;padding:0;
+  transition:transform .1s;
+}
+.vai-page-input .vai-page-send:hover{transform:translate(-1px,-1px)}
+.vai-page-input .vai-page-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.vai-page-input .vai-page-send svg{width:20px;height:20px}
+
+.vai-page-quota{
+  text-align:center;margin-top:12px;
+  font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:#888;padding-bottom:10px;
+}
+.vai-page-quota.warning{color:#ff2a2a}
+
+/* ═══════════════════════════════════════════════════════════
+   5. MUSIC PLAYER — FIX (in-browser only)
+   ═══════════════════════════════════════════════════════════ */
+.music-float-btn{
+  position:fixed;
+  top:76px;right:14px;
+  z-index:99995;
+  width:48px;height:48px;
+  border-radius:50%;
+  background:#0a0a0a;
+  color:#22c55e;
+  border:2.5px solid #22c55e;
+  box-shadow:3px 3px 0 #22c55e;
+  display:grid;place-items:center;
+  cursor:pointer;font-size:20px;
+  transition:transform .15s, box-shadow .15s;
+  user-select:none;padding:0;
+  pointer-events:auto;
+}
+.music-float-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #22c55e}
+.music-float-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #22c55e}
+.music-float-btn.playing{
+  color:#22c55e;
+  animation:musicBtnPulse 1.8s ease-in-out infinite;
+}
+@keyframes musicBtnPulse{
+  0%,100%{box-shadow:3px 3px 0 #22c55e, 0 0 0 rgba(34,197,94,.5)}
+  50%{box-shadow:3px 3px 0 #22c55e, 0 0 20px rgba(34,197,94,.9)}
+}
+.music-float-btn:not(.playing){
+  color:#888;
+  border-color:#888;
+  box-shadow:3px 3px 0 #888;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. MUSIC MODE PICKER (Custom UI)
+   ═══════════════════════════════════════════════════════════ */
+.music-mode-picker{
+  background:#fff;
+  border:2.5px solid #0a0a0a;
+  border-radius:12px;
+  padding:14px;
+  box-shadow:3px 3px 0 #0a0a0a;
+  margin-bottom:14px;
+}
+.music-mode-picker h4{
+  font-size:12px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:12px;color:#0a0a0a;
+  display:flex;align-items:center;gap:8px;
+}
+.music-mode-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:8px;
+}
+.music-mode-btn{
+  padding:14px 10px;
+  border:2.5px solid #0a0a0a;
+  border-radius:10px;
+  background:#fff;
+  font-weight:900;font-size:12px;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;
+  box-shadow:3px 3px 0 #0a0a0a;
+  transition:all .15s;
+  text-align:center;
+  font-family:inherit;
+  display:flex;flex-direction:column;
+  align-items:center;gap:6px;
+  color:#0a0a0a;
+}
+.music-mode-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #0a0a0a}
+.music-mode-btn.active{
+  background:#ffd700;
+  box-shadow:0 0 0 3px #ffd700, 3px 3px 0 #0a0a0a;
+}
+.music-mode-btn .mmb-icon{font-size:24px;line-height:1}
+.music-mode-btn .mmb-label{font-size:11px}
+.music-mode-btn .mmb-desc{
+  font-size:9.5px;font-weight:600;color:#555;
+  text-transform:none;letter-spacing:0;line-height:1.3;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. TUTORIAL VARSMILE — SPOTLIGHT
+   ═══════════════════════════════════════════════════════════ */
+.vtut-overlay{position:fixed;inset:0;z-index:99995;pointer-events:none;opacity:0;transition:opacity .4s ease}
+.vtut-overlay.active{opacity:1;pointer-events:auto}
+.vtut-dark-bg{position:absolute;inset:0;background:rgba(10,10,10,.75);pointer-events:auto}
+
+.vtut-spotlight{
+  position:absolute;border-radius:12px;
+  box-shadow:0 0 0 9999px rgba(10,10,10,.75), 0 0 40px rgba(255,215,0,.6), 0 0 0 4px #ffd700, 0 0 0 8px #0a0a0a;
+  transition:all .5s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;z-index:1;background:transparent;
+}
+.vtut-spotlight::before{
+  content:'';position:absolute;inset:-20px;
+  border:3px dashed #ffd700;border-radius:18px;
+  animation:vtutPulse 1.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes vtutPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.6}}
+
+.vtut-varsmile{
+  position:absolute;width:72px;height:88px;
+  pointer-events:none;z-index:3;
+  transition:all .8s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 0 20px rgba(255,215,0,.8));
+}
+.vtut-varsmile svg{width:100%;height:100%;display:block}
+.vtut-varsmile.bounce svg{animation:vtutBounce .8s ease-in-out infinite}
+@keyframes vtutBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.vtut-bubble{
+  position:absolute;background:#fff;
+  border:3px solid #0a0a0a;border-radius:14px;
+  padding:14px 18px;font-family:'Inter',sans-serif;
+  font-size:14px;font-weight:700;color:#0a0a0a;
+  box-shadow:5px 5px 0 #ffd700, 0 0 0 4px #0a0a0a;
+  max-width:340px;line-height:1.5;z-index:4;pointer-events:auto;
+  animation:vtutBubbleIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes vtutBubbleIn{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.vtut-bubble::after{content:'';position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid #0a0a0a}
+.vtut-bubble::before{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:10px solid #fff;z-index:1}
+.vtut-bubble h4{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#0a0a0a;display:flex;align-items:center;gap:8px}
+.vtut-bubble p{font-size:13px;font-weight:600;line-height:1.55;color:#333}
+.vtut-bubble p b{color:#0a0a0a;font-weight:900}
+
+.vtut-next-btn{
+  margin-top:12px;width:100%;padding:10px 14px;
+  background:#0a0a0a;color:#ffd700;
+  border:2.5px solid #0a0a0a;border-radius:10px;
+  font-weight:900;font-size:12.5px;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;
+  box-shadow:3px 3px 0 #ffd700;transition:transform .1s;
+  font-family:inherit;
+}
+.vtut-next-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #ffd700}
+.vtut-next-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #ffd700}
+
+.vtut-skip-btn{
+  margin-top:6px;width:100%;padding:8px 14px;
+  background:transparent;color:#888;
+  border:2px solid #888;border-radius:10px;
+  font-weight:700;font-size:11px;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;font-family:inherit;
+  transition:all .15s;
+}
+.vtut-skip-btn:hover{background:#888;color:#fff}
+
+.vtut-tap-hint{position:absolute;z-index:2;pointer-events:none;animation:vtutTapHint 1.2s ease-in-out infinite}
+.vtut-tap-hint-icon{
+  width:48px;height:48px;background:#ffd700;
+  border:3px solid #0a0a0a;border-radius:50%;
+  display:grid;place-items:center;
+  box-shadow:0 0 0 4px #ffd700, 0 0 0 8px rgba(255,215,0,.3);
+  font-size:24px;
+}
+@keyframes vtutTapHint{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.85);opacity:.7}}
+
+.vtut-progress{
+  position:fixed;top:0;left:0;right:0;height:6px;
+  background:rgba(10,10,10,.3);z-index:99999;
+  pointer-events:none;display:none;
+}
+.vtut-progress.active{display:block}
+.vtut-progress-fill{
+  height:100%;background:linear-gradient(90deg,#ffd700,#ff8c00);
+  width:0%;transition:width .4s ease;box-shadow:0 0 10px #ffd700;
+}
+
+.vtut-counter{
+  position:fixed;top:16px;right:16px;
+  background:#0a0a0a;color:#ffd700;
+  border:3px solid #ffd700;border-radius:999px;
+  padding:8px 16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;font-weight:900;letter-spacing:1px;
+  z-index:99999;display:none;
+  box-shadow:3px 3px 0 rgba(255,215,0,.3);
+}
+.vtut-counter.active{display:block}
+
+.vtut-confetti{position:fixed;inset:0;z-index:100000;pointer-events:none;overflow:hidden}
+.vtut-confetti-piece{position:absolute;top:-20px;width:10px;height:14px;animation:vtutFall 3s linear infinite}
+@keyframes vtutFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.3}}
+
+.vtut-target{position:relative !important;z-index:99996 !important}
+</style>
+   <script id="finalpatch-v7-js-a">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7 — JS PART A
+   1. Intro Varsmile (bola basket)
+   2. Varsmile Drag & Drop
+   3. Tombol X hapus + Show button
+   4. Varsmile AI halaman baru
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🚀 Patch v7-A loading...");
+
+var GROQ_KEY = "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";
+var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+var GROQ_MODEL = "openai/gpt-oss-120b";
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — INTRO VARSMILE (BOLA BASKET)
+   ═══════════════════════════════════════════════════════════ */
+var VarsmileIntro = {
+  _overlay: null, _playing: false, _played: false,
+  
+  shouldPlay: function(){
+    if(this._played) return false;
+    try{
+      if(localStorage.getItem("varlinkbio_intro_shown") === "1") return false;
+    }catch(e){}
+    return true;
+  },
+  
+  play: function(callback){
+    if(this._playing || !this.shouldPlay()){
+      if(callback) callback();
+      return;
+    }
+    this._playing = true;
+    
+    try{
+      this._overlay = document.createElement("div");
+      this._overlay.className = "vintro-overlay active";
+      this._overlay.innerHTML = 
+        '<div class="vintro-stage">' +
+          '<div class="vintro-ball" id="vintro-ball"></div>' +
+          '<div class="vintro-varsmile" id="vintro-varsmile">' + (window.VARSMILE_SVG || '') + '</div>' +
+          '<div class="vintro-loading" id="vintro-loading">Memuat</div>' +
+          '<div class="vintro-flash" id="vintro-flash"></div>' +
+        '</div>';
+      document.body.appendChild(this._overlay);
+      
+      var vsEl = document.getElementById("vintro-varsmile");
+      var ballEl = document.getElementById("vintro-ball");
+      var loadingEl = document.getElementById("vintro-loading");
+      var flashEl = document.getElementById("vintro-flash");
+      var self = this;
+      
+      setTimeout(function(){
+        vsEl.classList.add("visible");
+        if(window.Sound && Sound.tada) Sound.tada();
+      }, 200);
+      
+      setTimeout(function(){
+        vsEl.classList.add("grow");
+      }, 1000);
+      
+      setTimeout(function(){
+        vsEl.style.opacity = "0";
+        vsEl.style.transform = "scale(2.5)";
+        setTimeout(function(){
+          ballEl.classList.add("spawn");
+          if(window.Sound && Sound.bip) Sound.bip();
+        }, 300);
+      }, 1600);
+      
+      setTimeout(function(){
+        ballEl.classList.add("throw");
+        if(window.Sound && Sound.zap) Sound.zap();
+        loadingEl.classList.add("show");
+      }, 2600);
+      
+      setTimeout(function(){
+        flashEl.classList.add("active");
+        if(window.Sound && Sound.success) Sound.success();
+      }, 3400);
+      
+      setTimeout(function(){
+        self._overlay.classList.add("fade-out");
+        self._overlay.classList.remove("active");
+      }, 4000);
+      
+      setTimeout(function(){
+        try{ self._overlay.remove(); }catch(e){}
+        self._overlay = null;
+        self._playing = false;
+        self._played = true;
+        try{ localStorage.setItem("varlinkbio_intro_shown", "1"); }catch(e){}
+        if(callback && typeof callback === "function") callback();
+      }, 4500);
+      
+    }catch(e){
+      console.warn("VarsmileIntro.play:", e);
+      this._playing = false;
+      if(callback) callback();
+    }
+  },
+  
+  reset: function(){
+    try{ localStorage.removeItem("varlinkbio_intro_shown"); }catch(e){}
+    this._played = false;
+  }
+};
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — VARSMILE DRAG & DROP
+   ═══════════════════════════════════════════════════════════ */
+var VarsmileDrag = {
+  _el: null, _isDragging: false,
+  _startX: 0, _startY: 0,
+  _startLeft: 0, _startTop: 0,
+  _moved: false, _attached: false,
+  
+  init: function(){
+    var self = this;
+    setInterval(function(){ self._attach(); }, 1500);
+    setTimeout(function(){ self._attach(); }, 500);
+  },
+  
+  _attach: function(){
+    var vs = document.getElementById("varsmile-char");
+    if(!vs) return;
+    if(vs.dataset.dragAttached === "1") return;
+    vs.dataset.dragAttached = "1";
+    
+    var self = this;
+    this._el = vs;
+    
+    // Position absolute dari awal
+    var rect = vs.getBoundingClientRect();
+    vs.style.right = "auto";
+    vs.style.bottom = "auto";
+    vs.style.left = rect.left + "px";
+    vs.style.top = rect.top + "px";
+    
+    // Restore saved position
+    this.restorePosition();
+    
+    // Mouse events
+    vs.addEventListener("mousedown", function(e){ self._onStart(e); });
+    document.addEventListener("mousemove", function(e){ self._onMove(e); });
+    document.addEventListener("mouseup", function(e){ self._onEnd(e); });
+    
+    // Touch events
+    vs.addEventListener("touchstart", function(e){ self._onStart(e); }, { passive: false });
+    document.addEventListener("touchmove", function(e){ self._onMove(e); }, { passive: false });
+    document.addEventListener("touchend", function(e){ self._onEnd(e); });
+    
+    console.log("✅ Varsmile drag attached");
+  },
+  
+  _onStart: function(e){
+    if(!this._el) return;
+    var touch = e.touches ? e.touches[0] : e;
+    this._isDragging = true;
+    this._moved = false;
+    this._startX = touch.clientX;
+    this._startY = touch.clientY;
+    
+    var rect = this._el.getBoundingClientRect();
+    this._startLeft = rect.left;
+    this._startTop = rect.top;
+    
+    this._el.classList.add("dragging");
+  },
+  
+  _onMove: function(e){
+    if(!this._isDragging || !this._el) return;
+    if(e.cancelable) e.preventDefault();
+    
+    var touch = e.touches ? e.touches[0] : e;
+    var dx = touch.clientX - this._startX;
+    var dy = touch.clientY - this._startY;
+    
+    if(Math.abs(dx) > 5 || Math.abs(dy) > 5) this._moved = true;
+    
+    var newLeft = this._startLeft + dx;
+    var newTop = this._startTop + dy;
+    
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var vsW = this._el.offsetWidth || 72;
+    var vsH = this._el.offsetHeight || 88;
+    
+    newLeft = Math.max(4, Math.min(vw - vsW - 4, newLeft));
+    newTop = Math.max(4, Math.min(vh - vsH - 4, newTop));
+    
+    this._el.style.left = newLeft + "px";
+    this._el.style.top = newTop + "px";
+  },
+  
+  _onEnd: function(e){
+    if(!this._isDragging || !this._el) return;
+    
+    var self = this;
+    this._isDragging = false;
+    this._el.classList.remove("dragging");
+    
+    if(!this._moved) return;
+    
+    var rect = this._el.getBoundingClientRect();
+    var dx = rect.left - this._startLeft;
+    var dy = rect.top - this._startTop;
+    
+    var animClass = "move-side";
+    if(dy < -30) animClass = "move-up";
+    else if(dy > 30) animClass = "move-down";
+    else if(Math.abs(dx) > 20) animClass = "move-side";
+    
+    this._el.classList.add(animClass);
+    setTimeout(function(){
+      if(self._el) self._el.classList.remove(animClass);
+    }, 600);
+    
+    if(window.Sound && Sound.tick) Sound.tick();
+    
+    try{
+      localStorage.setItem("varlinkbio_varsmile_pos", JSON.stringify({
+        left: rect.left, top: rect.top
+      }));
+    }catch(e){}
+  },
+  
+  restorePosition: function(){
+    try{
+      var saved = localStorage.getItem("varlinkbio_varsmile_pos");
+      if(!saved) return;
+      var pos = JSON.parse(saved);
+      var vs = document.getElementById("varsmile-char");
+      if(!vs) return;
+      if(pos.left && pos.top){
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var vsW = vs.offsetWidth || 72;
+        var vsH = vs.offsetHeight || 88;
+        pos.left = Math.max(4, Math.min(vw - vsW - 4, pos.left));
+        pos.top = Math.max(4, Math.min(vh - vsH - 4, pos.top));
+        vs.style.left = pos.left + "px";
+        vs.style.top = pos.top + "px";
+        vs.style.right = "auto";
+        vs.style.bottom = "auto";
+      }
+    }catch(e){}
+  }
+};
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — TOMBOL X HAPUS + TOMBOL SHOW VARSMILE
+   ═══════════════════════════════════════════════════════════ */
+var VarsmileControls = {
+  _posTimer: null,
+  
+  init: function(){
+    var self = this;
+    setInterval(function(){
+      self.attachCloseBtn();
+      self.updateShowBtn();
+    }, 1500);
+    setTimeout(function(){ self.attachCloseBtn(); }, 800);
+    setTimeout(function(){ self.updateShowBtn(); }, 1200);
+  },
+  
+  attachCloseBtn: function(){
+    var vs = document.getElementById("varsmile-char");
+    if(!vs){
+      var existing = document.getElementById("varsmile-close-btn");
+      if(existing) existing.classList.add("hidden");
+      return;
+    }
+    
+    var btn = document.getElementById("varsmile-close-btn");
+    if(!btn){
+      btn = document.createElement("button");
+      btn.id = "varsmile-close-btn";
+      btn.className = "varsmile-close-btn";
+      btn.type = "button";
+      btn.innerHTML = "×";
+      btn.title = "Hapus Varsmile";
+      document.body.appendChild(btn);
+      
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        
+        if(window.Varsmile && window.Varsmile.hide) window.Varsmile.hide();
+        try{ localStorage.setItem("varlinkbio_varsmile_hidden", "1"); }catch(e){}
+        if(window.STATE) STATE.varsmileEnabled = false;
+        
+        btn.classList.add("hidden");
+        if(window.toast) toast("Varsmile dihapus. Munculin lagi dari tombol 🤖 di menu","info");
+        if(window.Sound && Sound.bip) Sound.bip();
+      });
+    }
+    
+    // Update position relative to Varsmile
+    var rect = vs.getBoundingClientRect();
+    if(rect.width === 0 || rect.height === 0){
+      btn.classList.add("hidden");
+      return;
+    }
+    btn.classList.remove("hidden");
+    btn.style.left = (rect.left + rect.width - 18) + "px";
+    btn.style.top = (rect.top - 6) + "px";
+  },
+  
+  updateShowBtn: function(){
+    var actions = document.querySelector(".lt-topbar .lt-actions");
+    if(!actions) return;
+    
+    var isHidden = false;
+    try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
+    
+    var existing = document.getElementById("btn-show-varsmile");
+    
+    // Kalau Varsmile gak di-hide, hapus tombol show
+    if(!isHidden){
+      if(existing) existing.remove();
+      return;
+    }
+    
+    // Kalau udah ada, skip
+    if(existing) return;
+    
+    var btn = document.createElement("button");
+    btn.className = "lt-badge show-varsmile";
+    btn.id = "btn-show-varsmile";
+    btn.title = "Munculin Varsmile";
+    btn.innerHTML = "🤖";
+    
+    var menuBtn = actions.querySelector("#btn-drawer-open");
+    if(menuBtn) actions.insertBefore(btn, menuBtn);
+    else actions.appendChild(btn);
+    
+    btn.addEventListener("click", function(){
+      try{ localStorage.removeItem("varlinkbio_varsmile_hidden"); }catch(e){}
+      if(window.STATE) STATE.varsmileEnabled = true;
+      if(window.Varsmile){
+        window.Varsmile.hide && window.Varsmile.hide();
+        setTimeout(function(){ window.Varsmile.init(); }, 100);
+      }
+      btn.remove();
+      if(window.toast) toast("Varsmile muncul lagi!","success");
+      if(window.Sound && Sound.tada) Sound.tada();
+    });
+  }
+};
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — VARSMILE AI HALAMAN BARU (#/varsmile-ai)
+   ═══════════════════════════════════════════════════════════ */
+var VarsmileAIPage = {
+  _history: [], _typing: false,
+  
+  checkLimit: function(){
+    var plan = (window.STATE && STATE.plan) || { features: { aiChatLimit: 25 } };
+    var limit = (plan.features && plan.features.aiChatLimit) || 25;
+    if(limit === -1) return { ok: true, remaining: -1, limit: -1 };
+    var usage = (window.STATE && STATE.aiChatUsage) || { count: 0, lastDate: "" };
+    var today = new Date().toISOString().slice(0,10);
+    if(usage.lastDate !== today){ usage.count = 0; usage.lastDate = today; }
+    var remaining = limit - usage.count;
+    return { ok: remaining > 0, remaining: remaining, limit: limit };
+  },
+  
+  addUsage: async function(){
+    var usage = (window.STATE && STATE.aiChatUsage) || { count: 0, lastDate: "" };
+    var today = new Date().toISOString().slice(0,10);
+    if(usage.lastDate !== today){ usage.count = 1; usage.lastDate = today; }
+    else { usage.count = (usage.count || 0) + 1; }
+    if(window.STATE) STATE.aiChatUsage = usage;
+    try{
+      if(window.Auth && Auth.current && window.FB){
+        await FB.db.collection("users").doc(Auth.current.uid).update({ aiChatUsage: usage });
+      }
+    }catch(e){}
+  },
+  
+  render: function(){
+    if(!window.Auth || !Auth.current) return (window.Router ? Router.navigate("/login") : null);
+    
+    var app = document.getElementById("app");
+    if(!app) return;
+    
+    var chk = this.checkLimit();
+    var name = (window.Auth && Auth.current && Auth.current.name) || "Kreator";
+    
+    var html = (window.renderTopbar ? renderTopbar() : "");
+    html += '<div class="vai-page">';
+    html += '<div class="vai-page-hero">';
+    html += '<div class="vai-page-avatar">' + this._svg() + '</div>';
+    html += '<h1>Varsmile AI</h1>';
+    html += '<p>Asisten pribadimu — siap bantu 24/7</p>';
+    html += '<div class="vai-page-status"><span class="vai-page-dot"></span> Online</div>';
+    html += '</div>';
+    html += '<div class="vai-page-body" id="vai-page-body"></div>';
+    html += '<div class="vai-page-suggestions" id="vai-page-sug"></div>';
+    html += '<div class="vai-page-input-wrap">';
+    html += '<div class="vai-page-input">';
+    html += '<textarea id="vai-page-input" placeholder="Ketik pesan..." rows="1"></textarea>';
+    html += '<button class="vai-page-send" id="vai-page-send">' + this._icon('send') + '</button>';
+    html += '</div>';
+    html += '<div class="vai-page-quota' + (chk.remaining <= 3 && chk.remaining !== -1 ? ' warning' : '') + '" id="vai-page-quota">';
+    if(chk.remaining === -1) html += '∞ pesan unlimited';
+    else html += '💬 ' + chk.remaining + '/' + chk.limit + ' pesan hari ini';
+    html += '</div></div>';
+    html += '</div>';
+    
+    app.innerHTML = html;
+    
+    if(window.bindTopbar) bindTopbar();
+    
+    this._history = [];
+    this.renderHistory();
+    this.bindEvents();
+    
+    setTimeout(function(){
+      var inp = document.getElementById("vai-page-input");
+      if(inp) inp.focus();
+    }, 300);
+  },
+  
+  renderHistory: function(){
+    var body = document.getElementById("vai-page-body");
+    if(!body) return;
+    
+    if(this._history.length === 0){
+      var name = (window.Auth && Auth.current && Auth.current.name) || "Kreator";
+      body.innerHTML = '<div class="vai-page-msg from-ai"><div class="vai-page-icon">' + this._svg() + '</div><div class="vai-page-bubble">Hai <b>' + this._escape(name) + '</b>! Aku Varsmile AI\n\nAku bisa bantu:\n• Bikin bio otomatis\n• Saran tema & style\n• Fix error\n• Jawab pertanyaan soal Varlinkbio\n\nKetik apa aja, atau pilih saran di bawah ya!</div></div>';
+      this.renderSuggestions(["Bikin bio buat aku", "Gimana cara ganti tema?", "Beda plan Starter & Pro?", "Fitur baru apa aja?"]);
+      return;
+    }
+    
+    var h = "";
+    var self = this;
+    this._history.forEach(function(msg){
+      if(msg.role === "user"){
+        h += '<div class="vai-page-msg from-user"><div class="vai-page-bubble">' + self._escape(msg.content) + '</div></div>';
+      } else {
+        h += '<div class="vai-page-msg from-ai"><div class="vai-page-icon">' + self._svg() + '</div><div class="vai-page-bubble">' + self._formatAI(msg.content) + '</div></div>';
+      }
+    });
+    body.innerHTML = h;
+    body.scrollTop = body.scrollHeight;
+  },
+  
+  renderSuggestions: function(list){
+    var sug = document.getElementById("vai-page-sug");
+    if(!sug) return;
+    if(!list || !list.length){ sug.innerHTML = ""; return; }
+    
+    var self = this;
+    var h = "";
+    list.forEach(function(s){
+      h += '<button class="vai-page-sugg" data-sugg="' + self._escape(s) + '">' + self._escape(s) + '</button>';
+    });
+    sug.innerHTML = h;
+    sug.querySelectorAll("[data-sugg]").forEach(function(btn){
+      btn.addEventListener("click", function(){ self.sendMessage(btn.dataset.sugg); });
+    });
+  },
+  
+  bindEvents: function(){
+    var self = this;
+    var sendBtn = document.getElementById("vai-page-send");
+    if(sendBtn) sendBtn.addEventListener("click", function(){ self.handleSend(); });
+    var input = document.getElementById("vai-page-input");
+    if(input){
+      input.addEventListener("keydown", function(e){
+        if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); self.handleSend(); }
+      });
+    }
+  },
+  
+  handleSend: function(){
+    var input = document.getElementById("vai-page-input");
+    if(!input) return;
+    var txt = input.value.trim();
+    if(!txt) return;
+    input.value = "";
+    this.sendMessage(txt);
+  },
+  
+  sendMessage: async function(text){
+    if(!text || this._typing) return;
+    var chk = this.checkLimit();
+    if(!chk.ok){
+      if(window.toast) toast("Limit chat habis! Upgrade plan dulu.","error");
+      return;
+    }
+    
+    this._history.push({ role: "user", content: text });
+    this.renderHistory();
+    
+    var body = document.getElementById("vai-page-body");
+    if(body){
+      var typingEl = document.createElement("div");
+      typingEl.className = "vai-page-msg from-ai";
+      typingEl.id = "vai-page-typing";
+      typingEl.innerHTML = '<div class="vai-page-icon">' + this._svg() + '</div><div class="vai-page-typing"><span></span><span></span><span></span></div>';
+      body.appendChild(typingEl);
+      body.scrollTop = body.scrollHeight;
+    }
+    
+    this._typing = true;
+    var sendBtn = document.getElementById("vai-page-send");
+    if(sendBtn) sendBtn.disabled = true;
+    
+    try{
+      var reply = await this.askGroq(text);
+      this._history.push({ role: "assistant", content: reply });
+      await this.addUsage();
+      this.updateQuota();
+    }catch(e){
+      console.warn("VarsmileAIPage error:", e);
+      this._history.push({ role: "assistant", content: "Aduh, aku error. Coba lagi ya." });
+    }
+    
+    var typing = document.getElementById("vai-page-typing");
+    if(typing) typing.remove();
+    this._typing = false;
+    if(sendBtn) sendBtn.disabled = false;
+    this.renderHistory();
+    this.renderSuggestions(["Bikin bio", "Fitur apa aja?", "Cara upgrade plan", "Bantuan"]);
+  },
+  
+  updateQuota: function(){
+    var quota = document.getElementById("vai-page-quota");
+    if(!quota) return;
+    var chk = this.checkLimit();
+    if(chk.remaining === -1){
+      quota.className = "vai-page-quota";
+      quota.innerHTML = "∞ pesan unlimited";
+      return;
+    }
+    quota.className = "vai-page-quota" + (chk.remaining <= 3 ? " warning" : "");
+    quota.innerHTML = '💬 ' + chk.remaining + '/' + chk.limit + ' pesan hari ini';
+  },
+  
+  askGroq: async function(userText){
+    var plan = (window.STATE && STATE.plan) || { name: "Free" };
+    var ctx = 'User context:\n- Nama: ' + ((window.Auth && Auth.current && Auth.current.name) || "User") + '\n- Plan: ' + plan.name + '\n- Kredit: ' + ((window.STATE && STATE.kredit) || 0) + '\n- Halaman: /varsmile-ai';
+    
+    var sysPrompt = 'Kamu Varsmile AI — asisten Varlinkbio yang ramah, santai, bahasa Indonesia gaul.\n\nBantu user soal:\n- Bikin bio\n- Tema, style, warna\n- Fitur (Music, Analytics, Featured Link)\n- Plan & pricing\n- Troubleshooting\n- Chat santai\n\nATURAN:\n- Jawab SINGKAT (max 150 kata)\n- Pakai emoji secukupnya\n- Kalau tidak tahu → arahkan ke Help\n- JANGAN bocorin API key\n\n' + ctx;
+    
+    var messages = [{ role: "system", content: sysPrompt }];
+    var recent = this._history.slice(-10);
+    recent.forEach(function(m){ messages.push({ role: m.role, content: m.content }); });
+    
+    try{
+      var response = await fetch(GROQ_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + GROQ_KEY
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: messages,
+          max_tokens: 400,
+          temperature: 0.75
+        })
+      });
+      
+      if(!response.ok){
+        if(response.status === 429) return this.fallbackReply(userText);
+        if(response.status === 401) return "🔑 AI key expired. " + this.fallbackReply(userText);
+        throw new Error("HTTP " + response.status);
+      }
+      
+      var data = await response.json();
+      var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      return reply || "Maaf, aku gak bisa jawab sekarang.";
+    }catch(e){
+      console.warn("Groq error:", e);
+      return this.fallbackReply(userText);
+    }
+  },
+  
+  fallbackReply: function(text){
+    var t = (text || "").toLowerCase();
+    if(t.indexOf("bikin bio") !== -1 || t.indexOf("buat bio") !== -1) return 'Oke! Ceritain:\n1. Kamu jualan apa?\n2. Target audience siapa?\n3. Vibe yang diinginkan?\n\nAku bantu bikin 💪';
+    if(t.indexOf("tema") !== -1) return 'Buka **Editor** → **Tema Warna** → pilih → **Simpan**';
+    if(t.indexOf("plan") !== -1) return 'Plan:\n• Free — Rp 0\n• Starter — Rp 5.000 PERMANEN\n• Pro — Rp 1.000+/hari\n• Ultimate — Rp 6.000+/hari';
+    if(t.indexOf("error") !== -1) return 'Coba:\n1. Refresh\n2. Clear cache\n3. Chat admin WA';
+    if(t.indexOf("hai") !== -1 || t.indexOf("halo") !== -1) return 'Hai! 👋 Ada yang bisa aku bantu?';
+    return 'Hmm, coba tanya lebih spesifik ya.';
+  },
+  
+  _escape: function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); },
+  _formatAI: function(txt){ if(!txt) return ""; var s = this._escape(txt); s = s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"); s = s.replace(/\n/g, "<br>"); return s; },
+  _svg: function(){ return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/></svg>'; },
+  _icon: function(name){
+    var icons = {
+      send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    };
+    return icons[name] || "";
+  }
+};
+
+
+/* ═══════════════════════════════════════════════════════════
+   REGISTER ROUTE /varsmile-ai
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(window.Router && Router.on){
+    Router.on("/varsmile-ai", function(){ VarsmileAIPage.render(); });
+    console.log("✅ Route /varsmile-ai registered");
+  }
+}, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   HOOK VARSMILE — 1x KLIK BUKA AI PAGE
+   ═══════════════════════════════════════════════════════════ */
+function hookVarsmileClick(){
+  var vs = document.getElementById("varsmile-char");
+  if(!vs) return;
+  if(vs.dataset.aiNavHooked === "1") return;
+  vs.dataset.aiNavHooked = "1";
+  
+  var startX = 0, startY = 0, startTime = 0;
+  
+  vs.addEventListener("pointerdown", function(e){
+    startX = e.clientX;
+    startY = e.clientY;
+    startTime = Date.now();
+  });
+  
+  vs.addEventListener("pointerup", function(e){
+    var dx = Math.abs(e.clientX - startX);
+    var dy = Math.abs(e.clientY - startY);
+    var dt = Date.now() - startTime;
+    
+    // Kalau geser > 10px atau lama > 500ms → dianggap drag, bukan klik
+    if(dx > 10 || dy > 10 || dt > 500) return;
+    
+    // 1x klik → buka AI page
+    e.stopPropagation();
+    e.preventDefault();
+    
+    if(window.Sound && Sound.click) Sound.click();
+    if(window.Router) Router.navigate("/varsmile-ai");
+  }, true);
+  
+  console.log("✅ Varsmile click → AI page hooked");
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+function initPartA(){
+  VarsmileDrag.init();
+  VarsmileControls.init();
+  
+  setInterval(hookVarsmileClick, 2000);
+  setTimeout(hookVarsmileClick, 800);
+  
+  window.VarsmileIntro = VarsmileIntro;
+  window.VarsmileDrag = VarsmileDrag;
+  window.VarsmileAIPage = VarsmileAIPage;
+  
+  console.log("╔════════════════════════════════════════╗");
+  console.log("║  ✅ PATCH v7-A AKTIF                   ║");
+  console.log("║  • Intro bola basket                   ║");
+  console.log("║  • Varsmile drag & drop                ║");
+  console.log("║  • Tombol X + show di topbar           ║");
+  console.log("║  • Varsmile AI page (#/varsmile-ai)    ║");
+  console.log("╚════════════════════════════════════════╝");
+}
+
+setTimeout(initPartA, 2000);
+
+})();
+   </script>
+   <script id="finalpatch-v7-js-b">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7 — JS PART B
+   5. Music Player fix + Mode Picker
+   6. Tutorial Varsmile (spotlight)
+   7. Fix Editor Exit + Explore
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🚀 Patch v7-B loading...");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — MUSIC PLAYER FIX + MODE PICKER
+   ═══════════════════════════════════════════════════════════ */
+var MusicModeManager = {
+  PREF_KEY: "varlinkbio_music_mode_pref",
+  
+  getMode: function(){
+    try{
+      var raw = localStorage.getItem(this.PREF_KEY);
+      if(!raw) return "tetap"; // default
+      var parsed = JSON.parse(raw);
+      if(parsed && ["tetap","auto","acak"].indexOf(parsed.mode) !== -1){
+        return parsed.mode;
+      }
+    }catch(e){}
+    return "tetap";
+  },
+  
+  setMode: function(mode){
+    try{
+      localStorage.setItem(this.PREF_KEY, JSON.stringify({
+        mode: mode,
+        updatedAt: Date.now()
+      }));
+    }catch(e){}
+    
+    // Sync ke STATE + Firestore
+    if(window.STATE){
+      STATE.musicPref = STATE.musicPref || {};
+      STATE.musicPref.mode = mode;
+    }
+    if(window.Auth && Auth.current && window.FB){
+      try{
+        FB.db.collection("users").doc(Auth.current.uid).update({
+          "musicPref.mode": mode
+        });
+      }catch(e){}
+    }
+  }
+};
+
+/* Rebuild MusicPlayer dengan mode support */
+setTimeout(function(){
+  // Cari MusicPlayer yang ada
+  if(!window.MusicPlayer){
+    console.warn("⚠️ MusicPlayer belum ada");
+    return;
+  }
+  
+  var MP = window.MusicPlayer;
+  
+  // Override _onEnded handler
+  if(MP._audio){
+    // Reset handlers dulu
+    try{
+      MP._audio.onended = null;
+    }catch(e){}
+    
+    MP._audio.addEventListener("ended", async function(){
+      try{
+        var mode = MusicModeManager.getMode();
+        console.log("🎵 Music ended, mode:", mode);
+        
+        if(mode === "tetap"){
+          // Ulang lagu yang sama
+          MP._audio.currentTime = 0;
+          MP._audio.play().catch(function(){});
+          return;
+        }
+        
+        if(mode === "auto"){
+          // Auto pindah ke lagu berikutnya
+          var queue = [];
+          try{
+            var raw = localStorage.getItem("varlinkbio_playlist_pref");
+            if(raw){
+              var p = JSON.parse(raw);
+              if(p && Array.isArray(p.queue)) queue = p.queue;
+            }
+          }catch(e){}
+          
+          if(!queue.length){
+            // Kalau gak ada playlist, ulang lagu yang sama
+            MP._audio.currentTime = 0;
+            MP._audio.play().catch(function(){});
+            return;
+          }
+          
+          var currentId = MP._current ? MP._current.id : null;
+          var curIdx = queue.indexOf(currentId);
+          var nextIdx = (curIdx === -1) ? 0 : ((curIdx + 1) % queue.length);
+          var nextId = queue[nextIdx];
+          
+          // Load lagu berikutnya dari MusicLibrary
+          if(window.MusicLibrary){
+            var nextMusic = await MusicLibrary.getById(nextId);
+            if(nextMusic && nextMusic.url){
+              MP._current = nextMusic;
+              MP._audio.src = nextMusic.url;
+              MP._audio.play().catch(function(){});
+              console.log("🎵 Auto next:", nextMusic.title);
+            }
+          }
+          return;
+        }
+        
+        if(mode === "acak"){
+          // Pilih lagu acak dari playlist
+          var queue2 = [];
+          try{
+            var raw2 = localStorage.getItem("varlinkbio_playlist_pref");
+            if(raw2){
+              var p2 = JSON.parse(raw2);
+              if(p2 && Array.isArray(p2.queue)) queue2 = p2.queue;
+            }
+          }catch(e){}
+          
+          if(!queue2.length){
+            MP._audio.currentTime = 0;
+            MP._audio.play().catch(function(){});
+            return;
+          }
+          
+          var currentId2 = MP._current ? MP._current.id : null;
+          var candidates = queue2.filter(function(id){ return id !== currentId2; });
+          if(!candidates.length) candidates = queue2;
+          var pickId = candidates[Math.floor(Math.random() * candidates.length)];
+          
+          if(window.MusicLibrary){
+            var pickMusic = await MusicLibrary.getById(pickId);
+            if(pickMusic && pickMusic.url){
+              MP._current = pickMusic;
+              MP._audio.src = pickMusic.url;
+              MP._audio.play().catch(function(){});
+              console.log("🎵 Shuffle:", pickMusic.title);
+            }
+          }
+          return;
+        }
+      }catch(e){
+        console.warn("music ended handler:", e);
+      }
+    });
+    
+    // Set loop berdasarkan mode
+    MP._audio.loop = (MusicModeManager.getMode() === "tetap");
+  }
+  
+  console.log("✅ MusicPlayer mode handler attached");
+}, 3000);
+
+/* Patch page music — tambah mode picker */
+function patchPageMusic(){
+  var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+  if(hashPath !== "/music") return;
+  
+  var page = document.querySelector(".music-picker-page");
+  if(!page) return;
+  if(page.querySelector(".music-mode-picker")) return;
+  
+  // Cari tempat insert (sebelum list)
+  var listWrap = document.getElementById("music-list-wrap");
+  if(!listWrap) return;
+  
+  var currentMode = MusicModeManager.getMode();
+  
+  var modeHTML = 
+    '<div class="music-mode-picker">' +
+      '<h4>🎵 Mode Pemutaran</h4>' +
+      '<div class="music-mode-grid">' +
+        '<button class="music-mode-btn ' + (currentMode === "tetap" ? "active" : "") + '" data-mode="tetap">' +
+          '<div class="mmb-icon">🔂</div>' +
+          '<div class="mmb-label">Lagu Tetap</div>' +
+          '<div class="mmb-desc">Ulang lagu ini terus</div>' +
+        '</button>' +
+        '<button class="music-mode-btn ' + (currentMode === "auto" ? "active" : "") + '" data-mode="auto">' +
+          '<div class="mmb-icon">➡️</div>' +
+          '<div class="mmb-label">Auto Pindah</div>' +
+          '<div class="mmb-desc">Habis → lagu berikutnya</div>' +
+        '</button>' +
+        '<button class="music-mode-btn ' + (currentMode === "acak" ? "active" : "") + '" data-mode="acak">' +
+          '<div class="mmb-icon">🔀</div>' +
+          '<div class="mmb-label">Acak</div>' +
+          '<div class="mmb-desc">Random urutan lagu</div>' +
+        '</button>' +
+      '</div>' +
+    '</div>';
+  
+  listWrap.insertAdjacentHTML("beforebegin", modeHTML);
+  
+  // Bind
+  var picker = page.querySelector(".music-mode-picker");
+  picker.querySelectorAll("[data-mode]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var mode = btn.dataset.mode;
+      MusicModeManager.setMode(mode);
+      
+      // Update UI
+      picker.querySelectorAll("[data-mode]").forEach(function(b){
+        b.classList.toggle("active", b.dataset.mode === mode);
+      });
+      
+      // Update audio loop
+      if(window.MusicPlayer && MusicPlayer._audio){
+        MusicPlayer._audio.loop = (mode === "tetap");
+      }
+      
+      var labels = { tetap: "Lagu Tetap 🔂", auto: "Auto Pindah ➡️", acak: "Acak 🔀" };
+      if(window.toast) toast("Mode: " + labels[mode], "success");
+      if(window.Sound && Sound.click) Sound.click();
+    });
+  });
+  
+  console.log("✅ Music mode picker injected");
+}
+
+/* Auto-inject saat buka /music */
+setInterval(patchPageMusic, 2000);
+
+/* Fix music player biar gak tembus browser — hapus dari AudioContext lain */
+setTimeout(function(){
+  if(!window.MusicPlayer) return;
+  
+  // Pastikan audio volume 0.5 max
+  if(MusicPlayer._audio){
+    MusicPlayer._audio.volume = 0.5;
+    MusicPlayer._audio.preload = "auto";
+  }
+  
+  // Stop audio pas halaman hidden (biar gak jalan di background)
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden){
+      // Optional: pause music saat tab hidden
+      // (skip dulu biar user masih denger kalau pindah tab)
+    }
+  });
+  
+  console.log("✅ Music player volume fixed");
+}, 4000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — TUTORIAL VARSMILE
+   ═══════════════════════════════════════════════════════════ */
+var TUTORIAL_STEPS = [
+  { id: "welcome", target: null, title: "Hai! Aku Varsmile", text: "Aku bakal nuntun kamu keliling Varlinkbio! Tutorial ini 100% interaktif — kamu harus **tap** objek yang aku tunjuk ya. Siap?", action: "next", position: "center" },
+  { id: "profile", target: ".dash-hero h2", title: "Ini Profilmu", text: "Nama kamu bakal muncul di sini. Setiap kali kamu login, sapaan bakal menyesuaikan nama akunmu.", action: "tap", position: "bottom", requiresTap: ".dash-hero h2" },
+  { id: "kredit", target: "#btn-kredit-top, .lt-badge.kredit", title: "Kredit Kamu", text: "Kredit = mata uang buat beli fitur. Tap badge ini buat lihat & top up kredit kamu.", action: "tap", position: "bottom", requiresTap: "#btn-kredit-top, .lt-badge.kredit" },
+  { id: "sound", target: "#sound-toggle-btn, .lt-badge.sound", title: "Sound Toggle", text: "Tap ini buat nyalain/matiin suara 8-bit Varlinkbio. Klik terus biar seru!", action: "tap", position: "bottom", requiresTap: "#sound-toggle-btn, .lt-badge.sound" },
+  { id: "kredit-banner", target: ".kredit-banner", title: "Banner Kredit", text: "Banner ini nunjukin kredit & tombol buat nonton iklan atau top up. **Nonton iklan = +25 kredit gratis!**", action: "next", position: "bottom" },
+  { id: "plan", target: ".dash-plan-card", title: "Plan Kamu", text: "Ini status plan kamu. **Free** bisa upgrade ke **Starter (Rp 5.000 permanen!)**, **Pro**, atau **Ultimate**.", action: "next", position: "bottom" },
+  { id: "btn-bikin", target: "#btn-bikin", title: "Bikin Bio Pertama", text: "Tap tombol ini buat bikin bio pertamamu! Kamu bakal masuk ke editor.", action: "tap", position: "top", requiresTap: "#btn-bikin" }
+];
+
+var VarsmileTutorial = {
+  _step: 0, _overlay: null, _darkBg: null, _spotlight: null,
+  _bubble: null, _varsmile: null, _tapHint: null,
+  _progress: null, _counter: null, _active: false,
+  _onFinish: null, _cleanupTap: null,
+  
+  start: function(options){
+    if(this._active) return;
+    options = options || {};
+    this._onFinish = options.onFinish || null;
+    this._step = 0;
+    this._active = true;
+    
+    var realVarsmile = document.getElementById("varsmile-char");
+    if(realVarsmile) realVarsmile.style.display = "none";
+    
+    var closeBtn = document.getElementById("varsmile-close-btn");
+    if(closeBtn) closeBtn.style.display = "none";
+    
+    this._build();
+    this._render();
+    
+    console.log("🎓 Tutorial Varsmile started");
+    if(window.Sound && Sound.tada) Sound.tada();
+  },
+  
+  _build: function(){
+    var self = this;
+    this._overlay = document.createElement("div");
+    this._overlay.className = "vtut-overlay";
+    this._overlay.id = "vtut-overlay";
+    
+    this._darkBg = document.createElement("div");
+    this._darkBg.className = "vtut-dark-bg";
+    this._overlay.appendChild(this._darkBg);
+    
+    this._spotlight = document.createElement("div");
+    this._spotlight.className = "vtut-spotlight";
+    this._spotlight.style.display = "none";
+    this._overlay.appendChild(this._spotlight);
+    
+    this._tapHint = document.createElement("div");
+    this._tapHint.className = "vtut-tap-hint";
+    this._tapHint.style.display = "none";
+    this._tapHint.innerHTML = '<div class="vtut-tap-hint-icon">👆</div>';
+    this._overlay.appendChild(this._tapHint);
+    
+    this._varsmile = document.createElement("div");
+    this._varsmile.className = "vtut-varsmile bounce";
+    this._varsmile.innerHTML = (window.VARSMILE_SVG || this._getFallbackSvg());
+    this._overlay.appendChild(this._varsmile);
+    
+    this._bubble = document.createElement("div");
+    this._bubble.className = "vtut-bubble";
+    this._overlay.appendChild(this._bubble);
+    
+    document.body.appendChild(this._overlay);
+    
+    this._progress = document.createElement("div");
+    this._progress.className = "vtut-progress";
+    this._progress.innerHTML = '<div class="vtut-progress-fill"></div>';
+    document.body.appendChild(this._progress);
+    
+    this._counter = document.createElement("div");
+    this._counter.className = "vtut-counter";
+    document.body.appendChild(this._counter);
+    
+    this._darkBg.addEventListener("click", function(e){
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    
+    setTimeout(function(){
+      self._overlay.classList.add("active");
+      self._progress.classList.add("active");
+      self._counter.classList.add("active");
+    }, 100);
+  },
+  
+  _render: function(){
+    var step = TUTORIAL_STEPS[this._step];
+    if(!step) return this._finish();
+    
+    var total = TUTORIAL_STEPS.length;
+    var cur = this._step + 1;
+    var pct = (cur / total) * 100;
+    
+    var fill = this._progress.querySelector(".vtut-progress-fill");
+    if(fill) fill.style.width = pct + "%";
+    
+    this._counter.textContent = cur + " / " + total;
+    
+    var targetEl = null;
+    if(step.target){
+      targetEl = this._findElement(step.target);
+    }
+    
+    if(targetEl){
+      this._positionAtTarget(targetEl, step);
+    } else {
+      this._positionCenter(step);
+    }
+    
+    this._renderBubble(step);
+    
+    if(step.requiresTap){
+      this._setupTapRequirement(step.requiresTap, step);
+    }
+    
+    if(targetEl){
+      this._autoScroll(targetEl);
+    }
+  },
+  
+  _renderBubble: function(step){
+    var total = TUTORIAL_STEPS.length;
+    var cur = this._step + 1;
+    var isLast = cur === total;
+    
+    var html = '<h4>🤖 Varsmile</h4>';
+    html += '<p>' + this._formatText(step.text) + '</p>';
+    
+    if(step.action === "tap"){
+      html += '<div style="margin-top:10px;padding:8px 12px;background:#fffbe6;border:2px solid #ffd700;border-radius:8px;font-size:11.5px;font-weight:700;color:#0a0a0a;text-align:center">👆 Tap objek yang ditunjuk</div>';
+    } else {
+      html += '<button class="vtut-next-btn" id="vtut-next">' + (isLast ? "🎉 Selesai" : "Lanjut →") + '</button>';
+    }
+    
+    if(!isLast){
+      html += '<button class="vtut-skip-btn" id="vtut-skip">Lewati Tutorial</button>';
+    }
+    
+    this._bubble.innerHTML = html;
+    
+    var self = this;
+    var nextBtn = this._bubble.querySelector("#vtut-next");
+    if(nextBtn) nextBtn.addEventListener("click", function(){
+      if(window.Sound && Sound.click) Sound.click();
+      self._next();
+    });
+    
+    var skipBtn = this._bubble.querySelector("#vtut-skip");
+    if(skipBtn) skipBtn.addEventListener("click", function(){
+      if(confirm("Yakin mau skip tutorial?")){ self._finish(true); }
+    });
+  },
+  
+  _formatText: function(text){
+    return text.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+  },
+  
+  _findElement: function(selector){
+    var selectors = selector.split(",").map(function(s){ return s.trim(); });
+    for(var i = 0; i < selectors.length; i++){
+      var el = document.querySelector(selectors[i]);
+      if(el) return el;
+    }
+    return null;
+  },
+  
+  _positionAtTarget: function(targetEl, step){
+    var rect = targetEl.getBoundingClientRect();
+    var pad = 12;
+    
+    this._spotlight.style.display = "block";
+    this._spotlight.style.left = (rect.left - pad) + "px";
+    this._spotlight.style.top = (rect.top - pad) + "px";
+    this._spotlight.style.width = (rect.width + pad*2) + "px";
+    this._spotlight.style.height = (rect.height + pad*2) + "px";
+    
+    var vsW = 72, vsH = 88;
+    var bubbleW = 340, bubbleH = 250;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    
+    var bubbleX, bubbleY, vsX, vsY;
+    
+    if(step.position === "top"){
+      bubbleX = Math.max(16, Math.min(vw - bubbleW - 16, cx - bubbleW/2));
+      bubbleY = Math.max(16, rect.top - bubbleH - 30);
+      vsX = Math.max(16, Math.min(vw - vsW - 16, cx + rect.width/2 + 20));
+      vsY = Math.max(16, bubbleY + 40);
+    } else if(step.position === "bottom"){
+      bubbleX = Math.max(16, Math.min(vw - bubbleW - 16, cx - bubbleW/2));
+      bubbleY = Math.min(vh - bubbleH - 16, rect.bottom + 30);
+      vsX = Math.max(16, Math.min(vw - vsW - 16, cx + rect.width/2 + 20));
+      vsY = Math.max(16, bubbleY - vsH + 20);
+    } else {
+      bubbleX = Math.max(16, Math.min(vw - bubbleW - 16, cx - bubbleW/2));
+      bubbleY = Math.min(vh - bubbleH - 16, cy + 60);
+      vsX = Math.max(16, Math.min(vw - vsW - 16, cx - vsW/2));
+      vsY = cy - vsH - 20;
+    }
+    
+    vsX = Math.max(16, Math.min(vw - vsW - 16, vsX));
+    vsY = Math.max(16, Math.min(vh - vsH - 16, vsY));
+    
+    this._varsmile.style.left = vsX + "px";
+    this._varsmile.style.top = vsY + "px";
+    
+    this._bubble.style.left = bubbleX + "px";
+    this._bubble.style.top = bubbleY + "px";
+    this._bubble.style.transform = "none";
+    
+    if(step.requiresTap){
+      this._tapHint.style.display = "block";
+      this._tapHint.style.left = (cx - 24) + "px";
+      this._tapHint.style.top = (cy - 24) + "px";
+    } else {
+      this._tapHint.style.display = "none";
+    }
+  },
+  
+  _positionCenter: function(step){
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var bubbleW = 360;
+    var bubbleH = 280;
+    var vsW = 72;
+    var vsH = 88;
+    
+    this._spotlight.style.display = "none";
+    this._tapHint.style.display = "none";
+    
+    var bubbleX = (vw - bubbleW) / 2;
+    var bubbleY = (vh - bubbleH) / 2 + 40;
+    var vsX = (vw - vsW) / 2;
+    var vsY = bubbleY - vsH - 10;
+    
+    this._varsmile.style.left = Math.max(16, vsX) + "px";
+    this._varsmile.style.top = Math.max(16, vsY) + "px";
+    
+    this._bubble.style.left = Math.max(16, bubbleX) + "px";
+    this._bubble.style.top = Math.max(16, bubbleY) + "px";
+    this._bubble.style.transform = "none";
+  },
+  
+  _autoScroll: function(targetEl){
+    var rect = targetEl.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var pad = 120;
+    var needsScroll = rect.top < pad || rect.bottom > (vh - pad);
+    if(!needsScroll) return;
+    
+    try{
+      targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      var self = this;
+      setTimeout(function(){
+        var step = TUTORIAL_STEPS[self._step];
+        if(step && step.target){
+          var el = self._findElement(step.target);
+          if(el) self._positionAtTarget(el, step);
+        }
+      }, 800);
+    }catch(e){
+      var targetY = window.scrollY + rect.top - (vh / 2) + (rect.height / 2);
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+      var self2 = this;
+      setTimeout(function(){
+        var step = TUTORIAL_STEPS[self2._step];
+        if(step && step.target){
+          var el = self2._findElement(step.target);
+          if(el) self2._positionAtTarget(el, step);
+        }
+      }, 800);
+    }
+  },
+  
+  _setupTapRequirement: function(selector, step){
+    var self = this;
+    var targets = selector.split(",").map(function(s){ return s.trim(); });
+    
+    var cleanupList = [];
+    var timeoutId = null;
+    
+    function handleTap(e){
+      e.preventDefault();
+      e.stopPropagation();
+      
+      console.log("👆 User tapped: " + step.id);
+      if(window.Sound && Sound.success) Sound.success();
+      
+      cleanup();
+      setTimeout(function(){ self._next(); }, 400);
+    }
+    
+    function cleanup(){
+      cleanupList.forEach(function(item){
+        try{ item.el.removeEventListener(item.type, item.fn, true); }catch(e){}
+      });
+      cleanupList = [];
+      if(timeoutId) clearTimeout(timeoutId);
+    }
+    
+    targets.forEach(function(sel){
+      var el = document.querySelector(sel);
+      if(el){
+        el.addEventListener("click", handleTap, true);
+        cleanupList.push({ el: el, type: "click", fn: handleTap });
+        var preventTouch = function(e){ if(e.cancelable) e.preventDefault(); };
+        el.addEventListener("touchstart", preventTouch, { passive: false, capture: true });
+        cleanupList.push({ el: el, type: "touchstart", fn: preventTouch });
+      }
+    });
+    
+    timeoutId = setTimeout(function(){
+      console.log("⏱️ Tap timeout, auto-next");
+      cleanup();
+      self._next();
+    }, 30000);
+    
+    this._cleanupTap = cleanup;
+  },
+  
+  _next: function(){
+    if(this._cleanupTap){
+      try{ this._cleanupTap(); }catch(e){}
+      this._cleanupTap = null;
+    }
+    
+    this._step++;
+    if(this._step >= TUTORIAL_STEPS.length){
+      this._finish();
+    } else {
+      this._render();
+    }
+  },
+  
+  _finish: async function(skipped){
+    var self = this;
+    
+    if(this._cleanupTap){
+      try{ this._cleanupTap(); }catch(e){}
+      this._cleanupTap = null;
+    }
+    
+    if(!skipped) this._confetti();
+    
+    if(this._overlay) this._overlay.classList.remove("active");
+    if(this._progress) this._progress.classList.remove("active");
+    if(this._counter) this._counter.classList.remove("active");
+    
+    setTimeout(function(){
+      try{ self._overlay && self._overlay.remove(); }catch(e){}
+      try{ self._progress && self._progress.remove(); }catch(e){}
+      try{ self._counter && self._counter.remove(); }catch(e){}
+      
+      var realVarsmile = document.getElementById("varsmile-char");
+      if(realVarsmile) realVarsmile.style.display = "";
+      
+      var closeBtn = document.getElementById("varsmile-close-btn");
+      if(closeBtn) closeBtn.style.display = "";
+      
+      self._active = false;
+      self._overlay = null;
+      self._progress = null;
+      self._counter = null;
+      
+      try{ if(window.Auth && Auth.markTutorialDone) Auth.markTutorialDone(); }catch(e){}
+      if(self._onFinish) try{ self._onFinish(skipped); }catch(e){}
+      
+      if(!skipped){
+        if(window.Sound && Sound.tada) Sound.tada();
+        if(window.toast) toast("🎉 Tutorial selesai! Selamat berkarya!","success");
+      } else {
+        if(window.toast) toast("Tutorial di-skip","info");
+      }
+    }, 500);
+  },
+  
+  _confetti: function(){
+    try{
+      var colors = ["#ffd700","#ff2a2a","#22c55e","#2563eb","#ff69b4","#a78bfa","#ff8c00"];
+      var container = document.createElement("div");
+      container.className = "vtut-confetti";
+      for(var i = 0; i < 80; i++){
+        var piece = document.createElement("div");
+        piece.className = "vtut-confetti-piece";
+        piece.style.left = Math.random() * 100 + "%";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = (Math.random() * 0.5) + "s";
+        piece.style.animationDuration = (2.5 + Math.random() * 1.5) + "s";
+        piece.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+        container.appendChild(piece);
+      }
+      document.body.appendChild(container);
+      setTimeout(function(){ try{ container.remove(); }catch(e){} }, 4000);
+    }catch(e){}
+  },
+  
+  _getFallbackSvg: function(){
+    return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/></svg>';
+  }
+};
+
+/* Hook tombol "Ulangi Tutorial" */
+function hookReplayTutorial(){
+  var rt = document.getElementById("btn-replay-tutorial");
+  if(!rt) return;
+  if(rt.dataset.vtutHooked === "1") return;
+  rt.dataset.vtutHooked = "1";
+  
+  var newBtn = rt.cloneNode(true);
+  rt.parentNode.replaceChild(newBtn, rt);
+  
+  newBtn.addEventListener("click", function(){
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/dashboard"){
+      if(window.Router) Router.navigate("/dashboard");
+      setTimeout(function(){ VarsmileTutorial.start(); }, 800);
+    } else {
+      VarsmileTutorial.start();
+    }
+  });
+}
+
+/* Auto start kalau user baru */
+function checkAutoStart(){
+  try{
+    if(!window.Auth || !Auth.current) return;
+    if(Auth.current.tutorialShown) return;
+    
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/dashboard") return;
+    
+    var checkEl = setInterval(function(){
+      if(document.querySelector(".dash-hero h2")){
+        clearInterval(checkEl);
+        setTimeout(function(){ VarsmileTutorial.start(); }, 1500);
+      }
+    }, 500);
+    
+    setTimeout(function(){ clearInterval(checkEl); }, 10000);
+  }catch(e){}
+}
+
+setInterval(hookReplayTutorial, 2000);
+setTimeout(checkAutoStart, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 7 — FIX KELUAR EDITOR + EXPLORE
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Fix Keluar Editor ─── */
+setTimeout(function(){
+  if(!window.Router) return;
+  
+  var _origNavigate = window.Router.navigate;
+  var _bypassConfirm = false;
+  
+  window.Router.navigate = function(path){
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    
+    if(hashPath === "/editor" && path !== "/editor" && !_bypassConfirm){
+      if(window.STATE && STATE.draft && STATE.draft.name){
+        var isSaved = STATE.draft.id && STATE.draft.updatedAt;
+        var msg = isSaved 
+          ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan"
+          : "⚠️ Bio belum pernah disimpan!\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan";
+        
+        var choice = confirm(msg);
+        
+        if(choice){
+          _bypassConfirm = true;
+          try{
+            if(window.PageEditor && window.PageEditor.save){
+              var result = window.PageEditor.save();
+              if(result && typeof result.then === "function"){
+                result.then(function(){
+                  _bypassConfirm = false;
+                  _origNavigate.call(window.Router, path);
+                }).catch(function(e){
+                  _bypassConfirm = false;
+                  setTimeout(function(){ _origNavigate.call(window.Router, path); }, 200);
+                });
+              } else {
+                setTimeout(function(){
+                  _bypassConfirm = false;
+                  _origNavigate.call(window.Router, path);
+                }, 800);
+              }
+              return;
+            }
+          }catch(e){}
+          
+          _bypassConfirm = false;
+          _origNavigate.call(this, path);
+          return;
+        } else {
+          _bypassConfirm = true;
+          setTimeout(function(){
+            _bypassConfirm = false;
+            _origNavigate.call(window.Router, path);
+          }, 50);
+          return;
+        }
+      }
+    }
+    
+    return _origNavigate.call(this, path);
+  };
+  
+  console.log("✅ Router.navigate editor-exit patched");
+}, 2000);
+
+/* Patch tombol back dashboard */
+setTimeout(function(){
+  setInterval(function(){
+    var backBtn = document.getElementById("btn-back-dashboard");
+    if(!backBtn) return;
+    if(backBtn.dataset.v7 === "1") return;
+    backBtn.dataset.v7 = "1";
+    
+    var newBtn = backBtn.cloneNode(true);
+    backBtn.parentNode.replaceChild(newBtn, backBtn);
+    
+    newBtn.addEventListener("click", function(){
+      var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+      
+      if(hashPath === "/editor" && window.STATE && STATE.draft && STATE.draft.name){
+        var isSaved = STATE.draft.id && STATE.draft.updatedAt;
+        var msg = isSaved 
+          ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan"
+          : "⚠️ Bio belum pernah disimpan!\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan";
+        
+        var choice = confirm(msg);
+        
+        if(choice){
+          if(window.PageEditor && window.PageEditor.save){
+            try{
+              var result = window.PageEditor.save();
+              if(result && typeof result.then === "function"){
+                result.then(function(){
+                  if(window.Router) Router.navigate("/dashboard");
+                }).catch(function(){
+                  if(window.Router) Router.navigate("/dashboard");
+                });
+              } else {
+                setTimeout(function(){
+                  if(window.Router) Router.navigate("/dashboard");
+                }, 900);
+              }
+              return;
+            }catch(e){}
+          }
+        }
+        if(window.Router) Router.navigate("/dashboard");
+      } else {
+        if(window.Router) Router.navigate("/dashboard");
+      }
+    });
+  }, 2000);
+  
+  console.log("✅ Back button patched");
+}, 2500);
+
+/* ─── Fix Explore Bio (no composite index) ─── */
+setTimeout(function(){
+  if(!window.Store) return;
+  
+  window.Store.listDirectory = async function(filter, search){
+    filter = filter || "all";
+    search = search || "";
+    
+    try{
+      var snap = await FB.db.collection("bios").limit(200).get();
+      var arr = [];
+      
+      snap.forEach(function(d){
+        var data = d.data();
+        if(data.allowDirectory !== true) return;
+        if(filter !== "all" && data.ownerPlan !== filter) return;
+        
+        if(search){
+          var q = search.toLowerCase();
+          var hay = ((data.name || "") + " " + (data.bio || "") + " " + (data.slug || "")).toLowerCase();
+          if(hay.indexOf(q) === -1) return;
+        }
+        
+        arr.push(Object.assign({ id: d.id }, data));
+      });
+      
+      var planOrder = { ultimate: 0, developer: 0, pro: 1, starter: 2, free: 3 };
+      arr.sort(function(a, b){
+        var pa = planOrder[a.ownerPlan] != null ? planOrder[a.ownerPlan] : 4;
+        var pb = planOrder[b.ownerPlan] != null ? planOrder[b.ownerPlan] : 4;
+        if(pa !== pb) return pa - pb;
+        return ((b.stats && b.stats.views) || 0) - ((a.stats && a.stats.views) || 0);
+      });
+      
+      STATE.directory = arr;
+      console.log("✅ Explore loaded: " + arr.length + " bios (scanned: " + snap.size + ")");
+      return arr;
+    }catch(e){
+      console.error("❌ listDirectory error:", e);
+      STATE.directory = [];
+      return [];
+    }
+  };
+  
+  console.log("✅ Store.listDirectory patched");
+}, 3000);
+
+/* Patch Explore page render + recovery */
+setTimeout(function(){
+  setInterval(function(){
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/explore") return;
+    
+    var wrap = document.getElementById("explore-grid");
+    if(!wrap) return;
+    
+    var txt = (wrap.innerText || "").trim();
+    if(txt === "⏳ Memuat..."){
+      console.warn("⚠️ Explore stuck — force reload");
+      if(window.PageExplore && window.PageExplore.loadGrid){
+        window.PageExplore.loadGrid();
+      }
+    }
+  }, 3000);
+}, 3500);
+
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+function initPartB(){
+  window.MusicModeManager = MusicModeManager;
+  window.VarsmileTutorial = VarsmileTutorial;
+  
+  console.log("╔════════════════════════════════════════╗");
+  console.log("║  ✅ PATCH v7-B AKTIF                   ║");
+  console.log("║  • Music modes: Tetap/Auto/Acak        ║");
+  console.log("║  • Music player fix                    ║");
+  console.log("║  • Tutorial Varsmile                   ║");
+  console.log("║  • Fix Editor Exit + Explore           ║");
+  console.log("╚════════════════════════════════════════╝");
+  console.log("💡 Test: VarsmileTutorial.start()");
+}
+
+setTimeout(initPartB, 2000);
+
+})();
+   </script>
 </body>
 </html>

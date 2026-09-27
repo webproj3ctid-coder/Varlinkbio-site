@@ -18086,5 +18086,840 @@ console.log("╚═════════════════════�
 
 })();
    </script>
+       <!-- ═══════════════════════════════════════════════════════════════
+     PATCH FIX-CEPAT v8.0 — DRAG + CUSTOM THEME + EMOJI + VARSMile
+     by Varoo | Fix 4 bug utama
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv8-css">
+/* ─── Varsmile: matiin SEMUA animasi lama ─── */
+#varsmile-char{
+  position:fixed !important;
+  width:72px !important;height:88px !important;
+  z-index:99997 !important;
+  pointer-events:auto !important;
+  cursor:grab !important;
+  touch-action:none !important;
+  user-select:none !important;
+  -webkit-user-select:none !important;
+  -webkit-tap-highlight-color:transparent !important;
+  transition:none !important;
+  animation:none !important;
+  image-rendering:pixelated !important;
+}
+#varsmile-char *,
+#varsmile-char .varsmile-svg,
+#varsmile-char .vs-leg-left,
+#varsmile-char .vs-leg-right{
+  animation:none !important;
+  transition:none !important;
+  transform:none !important;
+}
+#varsmile-char.dragging{
+  cursor:grabbing !important;
+  filter:drop-shadow(0 0 20px rgba(255,215,0,.9)) !important;
+}
+#varsmile-char.walking-out,
+#varsmile-char.walking-in,
+#varsmile-char.hide-bottom,
+#varsmile-char.peek-bottom,
+#varsmile-char.walking,
+#varsmile-char.tired,
+#varsmile-char.talking,
+#varsmile-char.idle-pos,
+#varsmile-char.move-up,
+#varsmile-char.move-down,
+#varsmile-char.move-side{
+  animation:none !important;
+  transition:none !important;
+}
+/* Jalanan & debu: hapus total */
+.varsmile-road,
+.varsmile-dust{display:none !important}
+
+/* ─── Tombol Custom Theme di editor ─── */
+#btn-custom-theme{
+  background:#a78bfa !important;
+  color:#fff !important;
+  border:2.5px solid #0a0a0a !important;
+  box-shadow:2px 2px 0 #0a0a0a !important;
+}
+#btn-custom-theme:hover{
+  transform:translate(-1px,-1px) !important;
+  box-shadow:3px 3px 0 #0a0a0a !important;
+}
+
+/* ─── Music button: jangan nabrak varsmile ─── */
+.music-float-btn{
+  top:76px !important;
+  right:14px !important;
+  z-index:99990 !important;
+  pointer-events:auto !important;
+}
+
+/* ─── Emoji Lucide ─── */
+.lucide-emoji{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:1em;height:1em;
+  vertical-align:-0.15em;
+  margin:0 1px;
+}
+.lucide-emoji svg{
+  width:100%;height:100%;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+span[data-emoji-v75]{display:contents !important}
+</style>
+
+<script id="fixv8-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH FIX-CEPAT v8.0
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🔧 FIX-CEPAT v8.0 loading...","color:#ffd700;font-weight:bold");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — KILL SEMUA INTERVAL & HANDLER VARSMILE LAMA
+   ═══════════════════════════════════════════════════════════ */
+function killAllVarsmileHandlers(){
+  try{
+    // Matiin method Varsmile lama (v28, v29, v7.3)
+    if(window.Varsmile){
+      window.Varsmile.init = function(){};
+      window.Varsmile.startLoop = function(){};
+      window.Varsmile.startLoginMode = function(){};
+      window.Varsmile.runAway3D = function(){ return Promise.resolve(); };
+      window.Varsmile.hide = function(){
+        this._active = false;
+        if(this._tipTimer){ clearInterval(this._tipTimer); this._tipTimer = null; }
+        if(this._el){ try{ this._el.remove(); }catch(e){} this._el = null; }
+        if(this._bubbleEl){ try{ this._bubbleEl.remove(); }catch(e){} this._bubbleEl = null; }
+        if(this._roadEl){ try{ this._roadEl.remove(); }catch(e){} this._roadEl = null; }
+      };
+      if(window.Varsmile._tipTimer){
+        clearInterval(window.Varsmile._tipTimer);
+        window.Varsmile._tipTimer = null;
+      }
+      window.Varsmile._active = false;
+    }
+    if(window.VarsmileV73){
+      window.VarsmileV73.rebuild = function(){};
+      window.VarsmileV73.nuke = function(){};
+    }
+    if(window.VarsmileV74){
+      window.VarsmileV74.killLoop = function(){};
+      window.VarsmileV74.patchElement = function(){};
+    }
+    if(window.StepsSound){
+      window.StepsSound.stopWalking = function(){};
+      window.StepsSound.startWalking = function(){};
+    }
+  }catch(e){}
+}
+killAllVarsmileHandlers();
+setTimeout(killAllVarsmileHandlers, 500);
+setTimeout(killAllVarsmileHandlers, 2000);
+
+/* Hapus jalanan & debu yang nyangkut */
+function cleanupRoadDust(){
+  document.querySelectorAll(".varsmile-road, .varsmile-dust").forEach(function(el){
+    try{ el.remove(); }catch(e){}
+  });
+}
+setInterval(cleanupRoadDust, 3000);
+cleanupRoadDust();
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — VARSMILE DRAG FINAL (Pointer Events, sekali setup)
+   ═══════════════════════════════════════════════════════════ */
+var VarsmileDrag = {
+  _setup: false,
+  _el: null,
+  _drag: false,
+  _moved: false,
+  _startX: 0,
+  _startY: 0,
+  _startL: 0,
+  _startT: 0,
+  _startTime: 0,
+
+  ensure(){
+    var el = document.getElementById("varsmile-char");
+    if(!el){
+      // Coba buat baru kalau perlu
+      this._maybeCreate();
+      return;
+    }
+    if(this._el === el && this._setup && document.body.contains(el)) return;
+
+    // Element baru → pasang drag
+    this._el = el;
+    this._setup = false;
+    this._attach(el);
+  },
+
+  _maybeCreate(){
+    try{
+      if(!window.Auth || !Auth.current) return;
+      var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+      if(hashPath.startsWith("/u/")) return;
+      if(!window.STATE || STATE.varsmileEnabled === false) return;
+
+      // Kalau udah ada, skip
+      if(document.getElementById("varsmile-char")) return;
+
+      var svg = (window.VARSMILE_SVG) ? window.VARSMILE_SVG :
+        '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' +
+        '<rect x="3" y="1" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="2" width="12" height="1" fill="#0a0a0a"/>' +
+        '<rect x="1" y="3" width="14" height="7" fill="#0a0a0a"/><rect x="2" y="10" width="12" height="1" fill="#0a0a0a"/>' +
+        '<rect x="3" y="11" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="3" width="12" height="7" fill="#ffd700"/>' +
+        '<rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="4" y="5" width="1" height="1" fill="#ffffff"/>' +
+        '<rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="1" height="1" fill="#ffffff"/>' +
+        '<rect x="3" y="7" width="1" height="1" fill="#ff69b4"/><rect x="12" y="7" width="1" height="1" fill="#ff69b4"/>' +
+        '<rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="7" width="1" height="1" fill="#0a0a0a"/>' +
+        '<rect x="10" y="7" width="1" height="1" fill="#0a0a0a"/><rect x="5" y="12" width="6" height="1" fill="#0a0a0a"/>' +
+        '<rect x="4" y="13" width="8" height="3" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/>' +
+        '<rect x="3" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="3" y="14" width="1" height="1" fill="#ffd700"/>' +
+        '<rect x="12" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="12" y="14" width="1" height="1" fill="#ffd700"/>' +
+        '<rect x="6" y="16" width="1" height="1" fill="#0a0a0a" class="vs-leg-left"/>' +
+        '<rect x="9" y="16" width="1" height="1" fill="#0a0a0a" class="vs-leg-right"/></svg>';
+
+      var el = document.createElement("div");
+      el.id = "varsmile-char";
+      el.className = "facing-right";
+      el.innerHTML = svg;
+      el.style.right = "16px";
+      el.style.bottom = "16px";
+      document.body.appendChild(el);
+
+      // Restore posisi
+      try{
+        var pos = localStorage.getItem("varlinkbio_varsmile_pos");
+        if(pos){
+          var p = JSON.parse(pos);
+          if(p && typeof p.left === "number" && typeof p.top === "number"){
+            var vw = window.innerWidth, vh = window.innerHeight;
+            el.style.left = Math.max(4, Math.min(vw - 76, p.left)) + "px";
+            el.style.top = Math.max(4, Math.min(vh - 92, p.top)) + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+          }
+        }
+      }catch(e){}
+    }catch(e){ console.warn("_maybeCreate:", e); }
+  },
+
+  _attach(el){
+    if(this._setup) return;
+    this._setup = true;
+    var self = this;
+
+    el.style.cursor = "grab";
+    el.style.touchAction = "none";
+    el.style.userSelect = "none";
+    el.style.webkitUserSelect = "none";
+    el.style.pointerEvents = "auto";
+
+    /* ─── POINTER DOWN ─── */
+    function onDown(e){
+      // Skip klik kanan
+      if(e.pointerType === "mouse" && e.button !== 0) return;
+      // Skip kalau dari bubble
+      if(e.target && e.target.closest && e.target.closest(".varsmile-bubble")) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      self._drag = true;
+      self._moved = false;
+      self._startX = e.clientX;
+      self._startY = e.clientY;
+      self._startTime = Date.now();
+
+      var r = el.getBoundingClientRect();
+      self._startL = r.left;
+      self._startT = r.top;
+
+      el.style.right = "auto";
+      el.style.bottom = "auto";
+      el.style.left = r.left + "px";
+      el.style.top = r.top + "px";
+
+      el.classList.add("dragging");
+      try{ el.setPointerCapture(e.pointerId); }catch(err){}
+
+      document.addEventListener("pointermove", onMove, { passive: false });
+      document.addEventListener("pointerup", onUp);
+      document.addEventListener("pointercancel", onUp);
+    }
+
+    /* ─── POINTER MOVE ─── */
+    function onMove(e){
+      if(!self._drag) return;
+      e.preventDefault();
+      var dx = e.clientX - self._startX;
+      var dy = e.clientY - self._startY;
+
+      if(Math.abs(dx) > 4 || Math.abs(dy) > 4) self._moved = true;
+
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var w = el.offsetWidth || 72;
+      var h = el.offsetHeight || 88;
+
+      var nl = Math.max(4, Math.min(vw - w - 4, self._startL + dx));
+      var nt = Math.max(4, Math.min(vh - h - 4, self._startT + dy));
+
+      el.style.left = nl + "px";
+      el.style.top = nt + "px";
+    }
+
+    /* ─── POINTER UP ─── */
+    function onUp(e){
+      if(!self._drag) return;
+      self._drag = false;
+      el.classList.remove("dragging");
+
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerup", onUp);
+      document.removeEventListener("pointercancel", onUp);
+
+      try{ el.releasePointerCapture(e.pointerId); }catch(err){}
+
+      if(!self._moved){
+        // Klik = buka Varsmile AI
+        var elapsed = Date.now() - self._startTime;
+        if(elapsed < 400){
+          try{
+            if(window.Sound && Sound.click) Sound.click();
+            if(window.Router) Router.navigate("/varsmile-ai");
+          }catch(err){}
+        }
+        return;
+      }
+
+      // Simpan posisi
+      var r = el.getBoundingClientRect();
+      try{
+        localStorage.setItem("varlinkbio_varsmile_pos", JSON.stringify({
+          left: r.left, top: r.top
+        }));
+      }catch(err){}
+
+      if(window.Sound && Sound.tick) Sound.tick();
+    }
+
+    el.addEventListener("pointerdown", onDown);
+    console.log("✅ Varsmile drag attached (pointer events)");
+  }
+};
+
+/* Init + re-check kalau element diganti */
+VarsmileDrag.ensure();
+setInterval(function(){ VarsmileDrag.ensure(); }, 2000);
+window.addEventListener("resize", function(){
+  // Reposisi kalau keluar dari viewport
+  var el = document.getElementById("varsmile-char");
+  if(!el) return;
+  var r = el.getBoundingClientRect();
+  var vw = window.innerWidth, vh = window.innerHeight;
+  if(r.left < 0 || r.left > vw - 40 || r.top < 0 || r.top > vh - 40){
+    el.style.left = "auto";
+    el.style.top = "auto";
+    el.style.right = "16px";
+    el.style.bottom = "16px";
+  }
+});
+
+window.VarsmileDrag = VarsmileDrag;
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — TOMBOL DRAG DI PREVIEW EDITOR (fix numpuk listener)
+   ═══════════════════════════════════════════════════════════ */
+var ButtonDrag = {
+  _iframe: null,
+  _setup: false,
+
+  ensure(){
+    var frame = document.getElementById("prev-frame");
+    if(!frame) return;
+    if(this._iframe === frame && this._setup && frame.dataset.fixAttached === "1") return;
+
+    // Reset kalau iframe ganti
+    this._iframe = frame;
+    this._setup = false;
+    this._attach(frame);
+  },
+
+  _attach(frame){
+    var self = this;
+
+    // Tunggu iframe loaded
+    function setup(){
+      try{
+        var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        if(!doc) return;
+
+        var links = doc.querySelectorAll(".bio-link[data-idx]");
+        if(!links.length) return;
+
+        self._setup = true;
+        frame.dataset.fixAttached = "1";
+
+        links.forEach(function(link){
+          self._attachOne(link, doc);
+        });
+
+        console.log("✅ Button drag attached:", links.length, "tombol");
+      }catch(e){
+        console.warn("ButtonDrag._attach:", e);
+      }
+    }
+
+    // Coba langsung + fallback onload
+    setTimeout(setup, 300);
+    setTimeout(setup, 1000);
+
+    if(!frame.dataset.fixLoadBound){
+      frame.dataset.fixLoadBound = "1";
+      frame.addEventListener("load", function(){
+        frame.dataset.fixAttached = "0";
+        self._setup = false;
+        setTimeout(setup, 200);
+      });
+    }
+  },
+
+  _attachOne(link, doc){
+    if(link.dataset.dragAttached === "1") return;
+    link.dataset.dragAttached = "1";
+
+    var idx = link.dataset.idx;
+    var dragging = false;
+    var moved = false;
+    var startX = 0, startY = 0;
+    var startTX = 0, startTY = 0;
+    var startTime = 0;
+
+    // Baca posisi tersimpan
+    try{
+      if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+        var l = STATE.draft.links[idx];
+        startTX = l.btnDragX || 0;
+        startTY = l.btnDragY || 0;
+        if(startTX || startTY){
+          link.style.transform = "translate(" + startTX + "px, " + startTY + "px)";
+        }
+      }
+    }catch(e){}
+
+    link.style.cursor = "grab";
+    link.style.userSelect = "none";
+    link.style.touchAction = "none";
+
+    function onDown(e){
+      if(e.button !== undefined && e.button !== 0 && e.pointerType === "mouse") return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      dragging = true;
+      moved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      startTime = Date.now();
+
+      // Re-read posisi
+      try{
+        if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+          var l = STATE.draft.links[idx];
+          startTX = l.btnDragX || 0;
+          startTY = l.btnDragY || 0;
+        }
+      }catch(err){}
+
+      link.style.cursor = "grabbing";
+      link.style.zIndex = "999";
+      link.style.opacity = "0.85";
+
+      try{ link.setPointerCapture(e.pointerId); }catch(err){}
+
+      doc.addEventListener("pointermove", onMove, { passive: false });
+      doc.addEventListener("pointerup", onUp);
+      doc.addEventListener("pointercancel", onUp);
+    }
+
+    function onMove(e){
+      if(!dragging) return;
+      e.preventDefault();
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      if(Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+
+      var nx = startTX + dx;
+      var ny = startTY + dy;
+      link.style.transform = "translate(" + nx + "px, " + ny + "px)";
+    }
+
+    function onUp(e){
+      if(!dragging) return;
+      dragging = false;
+      link.style.cursor = "grab";
+      link.style.zIndex = "";
+      link.style.opacity = "";
+
+      doc.removeEventListener("pointermove", onMove);
+      doc.removeEventListener("pointerup", onUp);
+      doc.removeEventListener("pointercancel", onUp);
+
+      try{ link.releasePointerCapture(e.pointerId); }catch(err){}
+
+      // Kalau cuma klik (gak gerak) → block link click
+      if(!moved){
+        // Klik di dalam iframe → jangan trigger navigasi
+        return;
+      }
+
+      // Simpan
+      var m = link.style.transform.match(/translate\((-?[\d.]+)px,\s*(-?[\d.]+)px\)/);
+      if(m){
+        var fx = parseFloat(m[1]);
+        var fy = parseFloat(m[2]);
+        try{
+          if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+            STATE.draft.links[idx].btnDragX = fx;
+            STATE.draft.links[idx].btnDragY = fy;
+          }
+        }catch(err){}
+        if(window.toast) toast("Posisi tombol disimpan ✓","success");
+      }
+      if(window.Sound && Sound.click) Sound.click();
+    }
+
+    link.addEventListener("pointerdown", onDown);
+  }
+};
+
+ButtonDrag.ensure();
+setInterval(function(){ ButtonDrag.ensure(); }, 2000);
+window.ButtonDrag = ButtonDrag;
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — FORCE INJECT TOMBOL CUSTOM THEME
+   ═══════════════════════════════════════════════════════════ */
+function forceInjectCustomThemeBtn(){
+  try{
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/editor") return;
+
+    // Kalau tombol udah ada, skip
+    if(document.getElementById("btn-custom-theme")) return;
+
+    // Cari save button
+    var saveBtn = document.getElementById("btn-save");
+    if(!saveBtn) return;
+
+    var btn = document.createElement("button");
+    btn.className = "btn btn-sm";
+    btn.id = "btn-custom-theme";
+    btn.type = "button";
+    btn.innerHTML = "🎨 Custom Theme";
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(window.Sound && Sound.click) Sound.click();
+
+      if(typeof window.openCustomThemeBuilder === "function"){
+        window.openCustomThemeBuilder(null);
+      } else {
+        // Fallback: panggil manual
+        if(window.toast) toast("Custom Theme Builder loading...","info");
+        setTimeout(function(){
+          if(typeof window.openCustomThemeBuilder === "function"){
+            window.openCustomThemeBuilder(null);
+          } else {
+            if(window.toast) toast("Gagal buka. Coba refresh halaman.","error");
+          }
+        }, 500);
+      }
+    });
+
+    saveBtn.parentNode.insertBefore(btn, saveBtn);
+    console.log("✅ Tombol Custom Theme di-inject");
+  }catch(e){ console.warn("forceInjectCustomThemeBtn:", e); }
+}
+
+setInterval(forceInjectCustomThemeBtn, 1000);
+window.addEventListener("hashchange", function(){
+  setTimeout(forceInjectCustomThemeBtn, 500);
+});
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — EXTEND EMOJI MAP + FALLBACK PINTAR
+   ═══════════════════════════════════════════════════════════ */
+function extendEmojiMapV8(){
+  if(!window.EMOJI_TO_LUCIDE) return;
+
+  var extra = {
+    // Brand & Social (fallback)
+    "🔵":"circle","🟢":"circle","🟡":"circle","🟠":"circle","🔴":"circle",
+    "🟣":"circle","🟤":"circle","⚫":"circle","⚪":"circle",
+    // Arrow & direction
+    "⬆️":"arrow-up","⬇️":"arrow-down","⬅️":"arrow-left","➡️":"arrow-right",
+    "↗️":"arrow-up-right","↘️":"arrow-down-right","↙️":"arrow-down-left","↖️":"arrow-up-left",
+    "🔄":"refresh-cw","🔃":"refresh-cw","🔀":"shuffle","🔁":"repeat","🔂":"repeat-1",
+    // Media
+    "📽️":"film","📺":"tv","📻":"radio","🎙️":"mic","🎚️":"sliders",
+    "🎛️":"sliders","📸":"camera","📷":"camera","🎞️":"film",
+    // Shapes
+    "🔷":"diamond","🔶":"diamond","💠":"diamond","⭐":"star","🌟":"star",
+    "✨":"sparkles","💫":"sparkles","⚡":"zap","🔥":"flame",
+    // File & folder
+    "📁":"folder","📂":"folder-open","📄":"file","📃":"file","📋":"clipboard",
+    "📌":"pin","📍":"map-pin","🔗":"link","⛓️":"link","🖇️":"paperclip",
+    // Brand icons
+    "💳":"credit-card","💰":"coins","💵":"banknote","💴":"banknote",
+    "💶":"banknote","💷":"banknote","💸":"banknote","🪙":"circle-dollar-sign",
+    // Common UI
+    "⭐":"star","❤️":"heart","💔":"heart-crack","💖":"heart","💗":"heart",
+    "✅":"check-circle","❌":"x-circle","⚠️":"alert-triangle","ℹ️":"info",
+    "❓":"help-circle","❗":"alert-circle","🚫":"ban","🔞":"alert-octagon",
+    "🔒":"lock","🔓":"unlock","🔑":"key","🛡️":"shield","⚔️":"swords",
+    // Tools
+    "🔧":"wrench","🔨":"hammer","⚒️":"hammer","🛠️":"wrench","⚙️":"settings",
+    "🧰":"toolbox","🪛":"wrench","🪚":"saw","🔩":"bolt",
+    // Food (common)
+    "🍕":"pizza","🍔":"hamburger","🍟":"french-fries","☕":"coffee","🍵":"tea",
+    "🍺":"beer","🍷":"wine","🍰":"cake-slice","🎂":"cake","🍪":"cookie",
+    "🍩":"donut","🍫":"chocolate","🍿":"popcorn","🍎":"apple","🍊":"orange",
+    "🍌":"banana","🍇":"grape","🍓":"strawberry","🥑":"avocado","🍅":"tomato",
+    // Nature
+    "🌞":"sun","🌙":"moon","⭐":"star","🌊":"waves","🔥":"flame",
+    "❄️":"snowflake","☀️":"sun","🌧️":"cloud-rain","⛅":"cloud-sun","🌈":"rainbow",
+    "🌲":"tree-pine","🌳":"tree-deciduous","🌴":"palm-tree","🌸":"flower",
+    "🌹":"flower","🌺":"flower","🌻":"flower","🍀":"clover","🌿":"leaf",
+    // People
+    "👤":"user","👥":"users","👨":"user","👩":"user","🧑":"user","👶":"baby",
+    "😀":"smile","😃":"smile","😄":"smile","😁":"smile","😊":"smile","🙂":"smile",
+    "😉":"smile","😍":"heart","🥰":"heart","😎":"glasses","🤓":"glasses",
+    "😢":"frown","😭":"frown","😡":"angry","😱":"shocked","🤔":"thinking",
+    "👍":"thumbs-up","👎":"thumbs-down","👌":"check","✌️":"check","✋":"hand",
+    "👋":"hand","🙏":"hand-heart","💪":"dumbbell","🤝":"handshake",
+    // Objects
+    "💡":"lightbulb","🔔":"bell","📢":"megaphone","📣":"megaphone",
+    "🎵":"music","🎶":"music","🎤":"mic","🎧":"headphones","🎸":"guitar",
+    "🎹":"piano","🥁":"drum","🎺":"music","🎻":"music",
+    "📱":"smartphone","💻":"laptop","🖥️":"monitor","⌨️":"keyboard","🖱️":"mouse",
+    "🎮":"gamepad-2","🕹️":"gamepad-2","🎯":"target","🎲":"dice-6",
+    "🎨":"palette","🖌️":"brush","🖍️":"pencil","✏️":"pencil","🖊️":"pen",
+    "📚":"library","📖":"book-open","📕":"book","📗":"book","📘":"book","📙":"book",
+    "📝":"file-edit","📋":"clipboard-list","📊":"bar-chart-3","📈":"trending-up",
+    "📉":"trending-down","🗓️":"calendar","📅":"calendar","⏰":"clock","⏱️":"timer",
+    "⏳":"hourglass","⌛":"hourglass","🕐":"clock",
+    // Symbols
+    "✔️":"check","☑️":"check-square","✖️":"x","➖":"minus","➕":"plus","➗":"divide",
+    "♾️":"infinity","🔱":"anchor","⚜️":"flower","©️":"copyright","®️":"copyright",
+    "™️":"copyright"
+  };
+
+  Object.assign(window.EMOJI_TO_LUCIDE, extra);
+  console.log("✅ Emoji map extended: +" + Object.keys(extra).length);
+}
+
+/* Fallback pintar per Unicode range */
+function guessEmojiIcon(codePoint){
+  var cp = codePoint;
+  // Smileys
+  if(cp >= 0x1F600 && cp <= 0x1F64F) return "smile";
+  // People & body
+  if(cp >= 0x1F464 && cp <= 0x1F487) return "user";
+  // Animals
+  if(cp >= 0x1F400 && cp <= 0x1F43F) return "paw-print";
+  // Food
+  if(cp >= 0x1F345 && cp <= 0x1F37F) return "utensils";
+  // Transport
+  if(cp >= 0x1F680 && cp <= 0x1F6FF) return "car";
+  // Objects
+  if(cp >= 0x1F4A0 && cp <= 0x1F4FF) return "package";
+  // Symbols
+  if(cp >= 0x1F500 && cp <= 0x1F5FF) return "sparkles";
+  // Supplemental symbols
+  if(cp >= 0x1F900 && cp <= 0x1F9FF) return "circle-dot";
+  // Extended symbols
+  if(cp >= 0x1FA00 && cp <= 0x1FAFF) return "circle-dot";
+  // Misc symbols
+  if(cp >= 0x2600 && cp <= 0x27BF) return "star";
+  // Dingbats
+  if(cp >= 0x2700 && cp <= 0x27BF) return "check";
+  // Geometric shapes
+  if(cp >= 0x25A0 && cp <= 0x25FF) return "square";
+  // Arrows
+  if(cp >= 0x2190 && cp <= 0x21FF) return "arrow-right";
+  // Default
+  return "circle-dot";
+}
+
+function installEmojiV8(){
+  if(!window.emojiToSvg || window.__emojiV8) return;
+  window.__emojiV8 = true;
+
+  var REGEX = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base}|\uFE0F|\u200D)+/gu;
+
+  window.emojiToSvg = function(text, opts){
+    if(!text) return text;
+    return String(text).replace(REGEX, function(match){
+      if(match === "\uFE0F" || match === "\uFE0E" || match === "\u200D") return "";
+
+      var name = window.EMOJI_TO_LUCIDE && window.EMOJI_TO_LUCIDE[match];
+      if(!name){
+        var cp = match.codePointAt(0);
+        name = guessEmojiIcon(cp);
+      }
+      if(!name) return match;
+
+      var svg = window.renderLucideIcon ? window.renderLucideIcon(name) : null;
+      if(!svg) return match;
+
+      return '<span class="lucide-emoji">' + svg + '</span>';
+    });
+  };
+  console.log("✅ Emoji v8 installed");
+}
+
+/* Force reconvert semua text node */
+function reconvertEmojiV8(){
+  try{
+    if(!window.emojiToSvg) return;
+    var SKIP = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS","IFRAME"];
+    var RE = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base})/u;
+
+    // Hapus span emoji lama
+    document.querySelectorAll("span.lucide-emoji, span[data-emoji-v75]").forEach(function(el){
+      var parent = el.parentNode;
+      if(parent){
+        parent.replaceChild(document.createTextNode(el.textContent || ""), el);
+      }
+    });
+
+    var count = 0;
+    function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(SKIP.indexOf(root.tagName) !== -1) return;
+      if(root.classList && root.classList.contains("lucide-emoji")) return;
+
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      for(var i = 0; i < kids.length; i++){
+        var k = kids[i];
+        if(k.nodeType === 3){
+          var txt = k.nodeValue;
+          if(!txt) continue;
+          RE.lastIndex = 0;
+          if(!RE.test(txt)) continue;
+          try{
+            var html = window.emojiToSvg(txt);
+            if(html && html !== txt){
+              var span = document.createElement("span");
+              span.style.display = "contents";
+              span.innerHTML = html;
+              k.parentNode.replaceChild(span, k);
+              count++;
+            }
+          }catch(e){}
+        } else if(k.nodeType === 1 && k.tagName !== "IFRAME"){
+          walk(k);
+        }
+      }
+    }
+    walk(document.body);
+    if(count > 0) console.log("🎨 Emoji converted:", count, "nodes");
+  }catch(e){ console.warn("reconvertEmojiV8:", e); }
+}
+
+setTimeout(function(){
+  extendEmojiMapV8();
+  installEmojiV8();
+  setTimeout(reconvertEmojiV8, 500);
+  setTimeout(reconvertEmojiV8, 2000);
+  setTimeout(reconvertEmojiV8, 5000);
+}, 3500);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — CLEANUP INTERVAL LAMA YANG NUMPUK
+   ═══════════════════════════════════════════════════════════ */
+// Override semua patch lama biar gak nge-clone & nge-attach terus
+setTimeout(function(){
+  try{
+    // Patch v7.4 patch element — disable
+    if(window.VarsmileV74 && window.VarsmileV74.patchElement){
+      window.VarsmileV74.patchElement = function(){};
+    }
+    // Patch v7.3 rebuild — disable
+    if(window.VarsmileV73 && window.VarsmileV73.rebuild){
+      window.VarsmileV73.rebuild = function(){};
+    }
+    // Patch v7.6 inject button — disable
+    if(window.injectCustomThemeButton){
+      window.injectCustomThemeButton = function(){};
+    }
+    // Patch enhance drag — disable
+    if(window.enhanceLinkDragSortable){
+      window.enhanceLinkDragSortable = function(){};
+    }
+    // Patch preview button drag — disable
+    if(window.enablePreviewButtonDrag){
+      window.enablePreviewButtonDrag = function(){};
+    }
+  }catch(e){}
+  console.log("🧹 Patch lama di-disable");
+}, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 7 — FIX MUSIC BUTTON POSITION (biar gak nabrak)
+   ═══════════════════════════════════════════════════════════ */
+function fixMusicBtnPos(){
+  var btn = document.getElementById("music-float-btn");
+  if(!btn) return;
+  btn.style.top = "76px";
+  btn.style.right = "14px";
+  btn.style.zIndex = "99990";
+}
+setInterval(fixMusicBtnPos, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   EXPOSE + LOG
+   ═══════════════════════════════════════════════════════════ */
+window.VarsmileDrag = VarsmileDrag;
+window.ButtonDrag = ButtonDrag;
+window.forceInjectCustomThemeBtn = forceInjectCustomThemeBtn;
+window.reconvertEmojiV8 = reconvertEmojiV8;
+
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ FIX-CEPAT v8.0 AKTIF               ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Varsmile drag (pointer)             ║","color:#22c55e");
+  console.log("%c║  • Tombol drag (preview)               ║","color:#22c55e");
+  console.log("%c║  • Custom Theme button force inject    ║","color:#22c55e");
+  console.log("%c║  • Emoji extended + fallback           ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+}, 1000);
+
+})();
+</script>
+<!-- ═══ END PATCH FIX-CEPAT v8.0 ═══ -->
 </body>
    </html>

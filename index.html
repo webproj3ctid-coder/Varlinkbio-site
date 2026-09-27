@@ -13035,1959 +13035,9 @@ body[data-warna="neo-gold"] .user-box{
   border-color:#d4af37 !important;
 }
 </style>
-   <!-- ═══════════════════════════════════════════════════════════
-     FINAL PATCH v6 — Pixel Icons + Varsmile AI + AI Bio + QR
-     by Varoo
-     ═══════════════════════════════════════════════════════════ -->
-
-<style id="finalpatch-css">
-/* ═══ PIXEL ICON ═══ */
-.px-icon{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  width:1.25em !important;
-  height:1.25em !important;
-  vertical-align:-0.22em !important;
-  flex-shrink:0 !important;
-  line-height:0 !important;
-}
-.px-icon svg{
-  width:100% !important;
-  height:100% !important;
-  display:block !important;
-  shape-rendering:crispEdges !important;
-  image-rendering:pixelated !important;
-  image-rendering:crisp-edges !important;
-}
-h1 .px-icon,h2 .px-icon,h3 .px-icon,h4 .px-icon{width:1.5em !important;height:1.5em !important}
-.btn .px-icon,.btn-sm .px-icon{width:1.1em !important;height:1.1em !important}
-.menu-item .px-icon,.feature-card .fi .px-icon{width:20px !important;height:20px !important}
-
-/* ═══ MODAL BACK BTN ═══ */
-.modal-back-btn{position:absolute;top:12px;left:14px;width:32px;height:32px;border-radius:50%;background:#fff;color:#0a0a0a;border:2.5px solid #0a0a0a;display:grid;place-items:center;cursor:pointer;font-size:18px;font-weight:900;line-height:1;padding:0;box-shadow:2px 2px 0 #0a0a0a;transition:transform .1s, box-shadow .1s;z-index:10;font-family:'Inter',sans-serif}
-.modal-back-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#ffd700}
-.modal-back-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}
-.modal-back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.modal{position:relative}
-.modal h3{padding-left:38px}
-
-/* ═══ VARSMILE AI PANEL ═══ */
-.vai-panel{position:fixed;bottom:120px;right:16px;z-index:99990;width:min(380px,calc(100vw - 32px));max-height:min(560px,75vh);background:#fff;border:3px solid #0a0a0a;border-radius:16px;box-shadow:8px 8px 0 #0a0a0a;overflow:hidden;display:flex;flex-direction:column;font-family:'Inter',sans-serif;animation:vaiSlide .3s cubic-bezier(.34,1.56,.64,1)}
-@keyframes vaiSlide{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.vai-panel.hide{animation:vaiSlideOut .25s ease forwards}
-@keyframes vaiSlideOut{to{opacity:0;transform:translateY(20px) scale(.95)}}
-.vai-head{background:linear-gradient(135deg,#0a0a0a,#2a2a2a);color:#ffd700;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #ffd700}
-.vai-head .vai-avatar{width:38px;height:38px;border-radius:50%;background:#ffd700;border:2px solid #0a0a0a;display:grid;place-items:center;font-size:18px;flex-shrink:0;overflow:hidden}
-.vai-head .vai-avatar svg{width:100%;height:100%}
-.vai-head-info{flex:1;min-width:0}
-.vai-head-info b{display:block;font-size:13.5px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
-.vai-head-info span{font-size:10.5px;font-weight:700;opacity:.75}
-.vai-head .vai-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);color:#ffd700;border:2px solid #ffd700;display:grid;place-items:center;cursor:pointer;flex-shrink:0;padding:0}
-.vai-head .vai-close svg{width:14px;height:14px}
-.vai-body{flex:1;overflow-y:auto;padding:12px;background:#f0ebe0;display:flex;flex-direction:column;gap:10px}
-.vai-msg{display:flex;gap:8px;max-width:100%;animation:vaiMsgIn .2s ease}
-@keyframes vaiMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.vai-msg.from-ai{align-self:flex-start;flex-direction:row}
-.vai-msg.from-user{align-self:flex-end;flex-direction:row-reverse}
-.vai-msg .vai-bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5;font-weight:600;max-width:calc(100% - 40px);word-break:break-word;white-space:pre-wrap}
-.vai-msg.from-ai .vai-bubble{background:#fff;border:2px solid #0a0a0a;border-bottom-left-radius:4px;box-shadow:2px 2px 0 #0a0a0a;color:#0a0a0a}
-.vai-msg.from-user .vai-bubble{background:#0a0a0a;color:#ffd700;border:2px solid #0a0a0a;border-bottom-right-radius:4px;box-shadow:2px 2px 0 #ffd700}
-.vai-msg .vai-icon{width:30px;height:30px;border-radius:50%;background:#ffd700;border:2px solid #0a0a0a;display:grid;place-items:center;font-size:14px;flex-shrink:0;overflow:hidden}
-.vai-msg .vai-icon svg{width:100%;height:100%}
-.vai-typing{display:flex;gap:3px;padding:12px 14px;background:#fff;border:2px solid #0a0a0a;border-radius:12px;border-bottom-left-radius:4px;width:fit-content;box-shadow:2px 2px 0 #0a0a0a}
-.vai-typing span{width:6px;height:6px;border-radius:50%;background:#555;animation:vaiTyping 1.2s infinite}
-.vai-typing span:nth-child(2){animation-delay:.2s}
-.vai-typing span:nth-child(3){animation-delay:.4s}
-@keyframes vaiTyping{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
-.vai-suggestions{padding:8px 12px;background:#f0ebe0;display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;border-top:2px solid #e8e2d5}
-.vai-sugg-btn{padding:6px 10px;background:#fff;border:2px solid #0a0a0a;border-radius:999px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;color:#0a0a0a;box-shadow:2px 2px 0 #0a0a0a;transition:transform .1s}
-.vai-sugg-btn:hover{transform:translate(-1px,-1px);background:#ffd700}
-.vai-foot{padding:10px 12px;background:#fff;border-top:3px solid #0a0a0a;display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
-.vai-foot textarea{flex:1;min-height:40px;max-height:100px;padding:10px 12px;font-size:13px;font-weight:600;border:2px solid #0a0a0a;border-radius:10px;background:#f0ebe0;resize:none;font-family:inherit;box-shadow:none;line-height:1.4}
-.vai-foot textarea:focus{box-shadow:2px 2px 0 #0a0a0a;outline:none}
-.vai-foot .vai-send{width:42px;height:42px;border-radius:10px;background:#0a0a0a;color:#ffd700;border:2px solid #0a0a0a;display:grid;place-items:center;cursor:pointer;flex-shrink:0;box-shadow:2px 2px 0 #ffd700;padding:0;transition:transform .1s}
-.vai-foot .vai-send:hover{transform:translate(-1px,-1px)}
-.vai-foot .vai-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.vai-foot .vai-send svg{width:18px;height:18px}
-.vai-quota{padding:6px 12px;background:#e8e2d5;border-top:2px solid #0a0a0a;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#555;text-align:center;flex-shrink:0}
-.vai-quota.warning{background:#ff2a2a;color:#fff}
-.vai-quota .vai-quota-num{font-family:monospace;font-weight:900;color:#0a0a0a}
-.vai-quota.warning .vai-quota-num{color:#ffd700}
-
-/* ═══ VARSMILE AI COUNTDOWN ═══ */
-.vai-countdown{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99998;background:#0a0a0a;color:#ffd700;border:3px solid #ffd700;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;font-family:'Press Start 2P',monospace;font-size:32px;font-weight:900;box-shadow:0 0 40px rgba(255,215,0,.6),6px 6px 0 rgba(255,215,0,.3);animation:vaiCountdownPulse .5s ease-in-out infinite;pointer-events:none}
-@keyframes vaiCountdownPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
-
-/* ═══ AI BIO MODAL ═══ */
-.aib-modal{padding:4px}
-.aib-hero{text-align:center;padding:10px 0 16px}
-.aib-hero h3{font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:-.3px;margin-bottom:6px;color:#0a0a0a}
-.aib-hero p{font-size:12.5px;font-weight:600;color:#555;line-height:1.5}
-.aib-field{margin-bottom:14px}
-.aib-field label{display:block;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#0a0a0a}
-.aib-field textarea,.aib-field select{width:100%;padding:11px 13px;font-size:13px;font-weight:600;border:2.5px solid #0a0a0a;border-radius:10px;background:#f0ebe0;font-family:inherit;outline:none;color:#0a0a0a}
-.aib-field textarea{min-height:90px;resize:vertical;line-height:1.5}
-.aib-field textarea:focus,.aib-field select:focus{box-shadow:3px 3px 0 #0a0a0a}
-.aib-style-row{display:flex;gap:6px;margin-bottom:14px}
-.aib-style-btn{flex:1;padding:10px 6px;text-align:center;border:2.5px solid #0a0a0a;border-radius:10px;background:#fff;font-weight:900;font-size:11px;text-transform:uppercase;cursor:pointer;box-shadow:2px 2px 0 #0a0a0a;transition:transform .1s}
-.aib-style-btn.active{background:#ffd700}
-.aib-style-btn:hover{transform:translate(-1px,-1px)}
-.aib-btn-primary{width:100%;padding:14px;background:#0a0a0a;color:#fff;border:2.5px solid #0a0a0a;border-radius:10px;font-weight:900;font-size:13.5px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:3px 3px 0 #ffd700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
-.aib-btn-primary:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #ffd700}
-.aib-btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.aib-result{margin-top:14px;background:#f0ebe0;border:2.5px solid #0a0a0a;border-radius:12px;padding:14px;display:none;box-shadow:3px 3px 0 #0a0a0a}
-.aib-result.show{display:block}
-.aib-result-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#555}
-.aib-result-bio{font-size:14px;font-weight:800;line-height:1.5;margin-bottom:12px;color:#0a0a0a;padding:10px 12px;background:#fff;border:2px solid #0a0a0a;border-radius:8px}
-.aib-result-links{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
-.aib-result-links li{font-size:12.5px;font-weight:700;padding:8px 12px;background:#fff;border:2px solid #0a0a0a;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.aib-result-links li span{color:#555;font-size:11px;font-family:monospace;word-break:break-all}
-.aib-result-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.aib-tag{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:900;border:2px solid #0a0a0a;text-transform:uppercase;letter-spacing:.3px}
-.aib-tag-tema{background:#0a0a0a;color:#ffd700}
-.aib-tag-style{background:#a78bfa;color:#fff}
-.aib-result-actions{display:flex;gap:8px}
-.aib-result-actions button{flex:1;padding:12px;font-size:12.5px;font-weight:900;text-transform:uppercase;border:2.5px solid #0a0a0a;border-radius:10px;cursor:pointer;box-shadow:3px 3px 0 #0a0a0a;font-family:inherit}
-.aib-btn-apply{background:#22c55e;color:#fff}
-.aib-btn-retry{background:#fff;color:#0a0a0a}
-.aib-loading{text-align:center;padding:20px;display:none}
-.aib-loading.show{display:block}
-.aib-spinner{width:40px;height:40px;border:4px solid #0a0a0a;border-top-color:transparent;border-radius:50%;animation:aibSpin .7s linear infinite;margin:0 auto 12px}
-@keyframes aibSpin{to{transform:rotate(360deg)}}
-.aib-loading-text{font-size:12px;font-weight:700;color:#0a0a0a;text-transform:uppercase;letter-spacing:.5px}
-</style>
-
-<script id="finalpatch-js">
-/* ═══════════════════════════════════════════════════════════════
-   FINAL PATCH v6 — by Varoo
-   ═══════════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-
-console.log("🚀 Final Patch v6 loading...");
-
-var GROQ_API_KEY = "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";
-var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-var GROQ_MODEL = "openai/gpt-oss-120b";
-
+   <style id="finalpatch-v73-css">
 /* ═══════════════════════════════════════════════════════════
-   PIXEL ICON LIBRARY
-   ═══════════════════════════════════════════════════════════ */
-var PX_PAL = {
-  "Y":"#ffd700", "O":"#ff8c00", "R":"#ff2a2a", "P":"#ff69b4",
-  "U":"#a78bfa", "B":"#2563eb", "G":"#22c55e", "C":"#f0ebe0",
-  "W":"#ffffff", "K":"#0a0a0a", "D":"#d4af37", "S":"#00ffcc",
-  "N":"#1e293b", "M":"#ff00ff"
-};
-
-var PX_ICONS = {
-  star:["....YY....","...YYYY...","...YYYY...","..YYYYYY..",".YYYYYYYY.","YYYYYYYYYY","..YYYYYY..","..YYYYYY..",".YYY..YYY.",".YY....YY."],
-  heart:["..........",".RR....RR.","RRRRRRRRRR","RRRRRRRRRR","RRRRRRRRRR",".RRRRRRRR.","..RRRRRR..","...RRRR...","....RR....",".........."],
-  fire:["....Y.....","...YYY....","...YOY....","..YOOOY...","..YOOOY...",".YYOOOYY..",".YOOOOOY..","YYOOOOOYY.","..YYOOYY..","...YYYY..."],
-  crown:["..........","Y...Y...Y.","Y...Y...Y.","YY..Y..YY.","YYY.Y.YYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.",".........."],
-  gift:["...RR.....","..RRRR....",".RRRRRR...","YYYYYYYY..","YYRRRRYY..","YYRRRRYY..","YYRRRRYY..","YYRRRRYY..","YYYYYYYY..",".........."],
-  coin:["..YYYYYY..",".YYYYYYYY.","YYY....YYY","YYY.KK.YYY","YYY.KK.YYY","YYY.KK.YYY","YYY....YYY",".YYYYYYYY.","..YYYYYY..",".........."],
-  diamond:["..........","...UUUU...","..UUWWUU..",".UUWWWWUU.","UUWWWWWWUU",".UUWWWWUU.","..UUWWUU..","...UUUU...","....UU....",".........."],
-  user:["...BBBB...","..BBBBBB..","..BBBBBB..","..BBBBBB..","...BBBB...","..BBBBBB..",".BBBBBBBB.","BBBBBBBBBB","BBBBBBBBBB","BBBBBBBBBB"],
-  home:["....RR....","...RRRR...","..RRRRRR..",".RRRRRRRR.","RRRRRRRRRR","RRR....RRR","RRR.YY.RRR","RRR.YY.RRR","RRR.YY.RRR","RRRRRRRRRR"],
-  link:["..........","..BBBB....",".BB..BB...","BB....BBBB","BB....BBBB","BB....BBBB","BB....BBBB",".BB..BB...","..BBBB....",".........."],
-  check:["..........","........GG",".......GG.","......GG..",".....GG...","GG..GG....",".GGGG.....","..GG......","..........",".........."],
-  close:["..........","RR......RR",".RR....RR.","..RR..RR..","...RRRR...","...RRRR...","..RR..RR..",".RR....RR.","RR......RR",".........."],
-  plus:["..........","....GG....","....GG....","....GG....","GGGGGGGGGG","GGGGGGGGGG","....GG....","....GG....","....GG....",".........."],
-  lock:["...YYYY...","..YY..YY..","..YY..YY..","..YY..YY..","YYYYYYYYYY","YYYY..YYYY","YYYY..YYYY","YYYY..YYYY","YYYYYYYYYY","YYYYYYYYYY"],
-  mail:["..........","BBBBBBBBBB","B........B","BB......BB","B.BB..BB.B","B..BBBB..B","B...BB...B","B........B","BBBBBBBBBB",".........."],
-  bell:["...YY.....","..YYYY....","..YYYY....",".YYYYYY...",".YYYYYY...",".YYYYYY...","YYYYYYYYYY","YYYYYYYYYY","...YYYY...",".........."],
-  search:["..BBBB....",".BB..BB...","BB....BB..","BB....BB..","BB....BB..",".BB..BB...","..BBBB.BB.","......BBBB",".......BBB","........B."],
-  rocket:["...WW.....","..WKKW....",".WKKKKW...",".WKKKKW...",".WKKKKW...",".WKKKKW...","..WKKW....","...KK.....","...RR.....","...RR....."],
-  trophy:["..YYYYYY..",".YYYYYYYY.","YYY.YY.YYY","YYY.YY.YYY","YYY.YY.YYY",".YYYYYYYY.","...YYYY...","..YYYYYY..",".YYYYYYYY.","YYYYYYYYYY"],
-  sparkle:["..........","....Y.....","....Y.....","..YYYYY...",".YYYYYYY..","YYYYYYYYYY",".YYYYYYY..","..YYYYY...","....Y.....","....Y....."],
-  zap:[".....YYY..","....YYY...","...YYY....","..YYYYYY..",".YYYYYYY..","YYYYYYY...","...YYY....","..YYY.....",".YYY......",".YY......."],
-  eye:["..........","..BBBBBB..",".BB.WW.BB.","BB.WWWW.BB","BB.WWWW.BB","BB.WWWW.BB",".BB.WW.BB.","..BBBBBB..","..........",".........."],
-  edit:["..........","......GG..",".....GGY..","....GGY...","...GGY....","..GGY.....",".GGY......","YGY.......","YY........","Y........."],
-  trash:["..KKKKKK..","KKKKKKKKKK","..KKKKKK..","..K.KK.K..","..K.KK.K..","..K.KK.K..","..K.KK.K..","..K.KK.K..","..KKKKKK..",".........."],
-  folder:["..........","YYY.......","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.","YYYYYYYYY.",".........."],
-  music:["......KKK.","......KKK.","......K.K.","......K.K.","..KKK.K.K.",".KKKKK.K.K",".KKKKK.K.K","..KKK..KKK","..........",".........."],
-  search2:["..BBBBBB..",".BB....BB.","BB......BB","BB..KK..BB","BB..KK..BB","BB......BB",".BB....BB.","..BBBBBB.B",".......BBB","........BB"],
-  tv:["KKKKKKKKKK","KWWWWWWWWK","KW.KK.KK.W","KWWWWWWWWK","KW.KK.KK.W","KWWWWWWWWK","KKKKKKKKKK","..KK..KK..","..........",".........."],
-  camera:["..........","..KKKKKK..","KKKKKKKKKK","KWWWWWWWWK","KW.WW..W.W","KW.WW..W.W","KW......WK","KWWWWWWWWK","KKKKKKKKKK",".........."],
-  play:["..........","..KKKK....","..KKKKK...","..KKKKKK..","..KKKKKKK.","..KKKKKK..","..KKKKK...","..KKKK....","..........",".........."],
-  clock:["...BBBB...","..BB..BB..",".B..YY..B.","B...YY...B","B...YY...B","B...Y....B",".B.......B","..BB..BB..","...BBBB...",".........."],
-  warn:["....YY....","...YYYY...","..YY..YY..",".YY.YY.YY.","YY..YY..YY","Y..YYYY..Y","YY.YYYY.YY","YY.YYYY.YY","YYYYYYYYYY","YYYYYYYYYY"],
-  info:["...BBBB...","..BBBBBB..",".BB.KK.BB.","BB..KK..BB","BB..KK..BB","BB..KK..BB",".BB.KK.BB.","..BBBBBB..","...BBBB...",".........."],
-  lock2:["...YYYY...","..YY..YY..","..YY..YY..","..YYYYYY..","YYYYYYYYYY","YYY..YYYYY","YYY..YYYYY","YYY..YYYYY","YYYYYYYYYY",".........."],
-  compass:["...BBBB...","..B..BB...",".B.YY..B..","B.YY....B.","B.Y.....B.","B.....YY.B","..B..YY.B.","...BBBB...","..........",".........."],
-  book:["..........",".BB....BB.","BBB....BBB","BBBB..BBBB","BBBBBBBBBB","BBBBBBBBBB","BBBB..BBBB","BBB....BBB",".BB....BB.",".........."],
-  moon:["...YYY....","..YYYYY...",".YYYYYYY..","YYYYYYY...","YYYYYY....","YYYYY.....","YYYYY.....",".YYYY.....","..YY......",".........."],
-  sun:["...YYYY...",".Y.YYYY.Y.","Y..YYYY..Y","..YYYYYY..","YYYYYYYYYY","YYYYYYYYYY","..YYYYYY..","Y..YYYY..Y",".Y.YYYY.Y.","...YYYY..."],
-  target:["...RRRR...","..R.KK.R..",".R.KKKK.R.","R.KK..KK.R","R.KK..KK.R","R.KK..KK.R",".R.KKKK.R.","..R.KK.R..","...RRRR...",".........."],
-  palette:["...MMMM...","..M.MM.M..",".M.MMMM.M.","M.MMMMMM.M","MMMM.MMMM.","MMMM.MMMM.",".MMMMMMMM.","..MMMMMM..","...MMMM...",".........."],
-  flag:["KK........","KK.YYYYY..","KK.YYYYYYY","KK.YYYYY..","KK.YYYYY..","KK........","KK........","KK........","KK........",".........."],
-  heart2:["..........",".RRRR.RRRR","RRRRRRRRRR","RRRRRRRRRR","RRRRRRRRRR",".RRRRRRRR.","..RRRRRR..","...RRRR...","....RR....",".........."]
-};
-
-/* Emoji → Pixel icon mapping */
-var EMOJI_MAP = {
-  "⭐":"star","🌟":"star","💫":"sparkle","✨":"sparkle",
-  "❤️":"heart","💖":"heart","💕":"heart","💗":"heart","💓":"heart",
-  "🔥":"fire","👑":"crown","🎁":"gift",
-  "👤":"user","👥":"user","🙂":"user","😊":"user","😄":"user",
-  "🏠":"home",
-  "🔗":"link","🌐":"link",
-  "✅":"check","✓":"check",
-  "❌":"close","✖":"close","✕":"close",
-  "➕":"plus","+":"plus",
-  "🔒":"lock","🔓":"lock2",
-  "📧":"mail","✉️":"mail","📩":"mail","📨":"mail",
-  "🔔":"bell","🔕":"bell",
-  "🔍":"search","🔎":"search",
-  "🚀":"rocket",
-  "🏆":"trophy","🥇":"trophy","🥈":"trophy","🥉":"trophy",
-  "💰":"coin","🪙":"coin","💵":"coin","💸":"coin","💴":"coin","💶":"coin","💷":"coin",
-  "💎":"diamond","💠":"diamond",
-  "⚡":"zap","🌩":"zap",
-  "👁️":"eye","👀":"eye","👁":"eye","👀":"eye",
-  "✏️":"edit","📝":"edit","✍️":"edit",
-  "🗑️":"trash","🗑":"trash","🚮":"trash",
-  "📁":"folder","📂":"folder","🗂️":"folder",
-  "🎵":"music","🎶":"music","🎼":"music",
-  "📺":"tv","📻":"tv",
-  "📷":"camera","📸":"camera","📹":"camera",
-  "▶️":"play","▶":"play","➡️":"play",
-  "⏰":"clock","⏱️":"clock","🕐":"clock","🕑":"clock","🕒":"clock","🕓":"clock","🕔":"clock","🕕":"clock","🕖":"clock","🕗":"clock","🕘":"clock","🕙":"clock","🕚":"clock","🕛":"clock",
-  "⚠️":"warn","⚠":"warn","🚨":"warn",
-  "ℹ️":"info","ℹ":"info",
-  "🌙":"moon","🌛":"moon","🌜":"moon",
-  "☀️":"sun","🌞":"sun",
-  "🎯":"target","🎪":"target",
-  "🎨":"palette","🖌️":"palette","🖍️":"palette",
-  "🧭":"compass",
-  "📖":"book","📚":"book","📕":"book","📗":"book","📘":"book","📙":"book",
-  "🇮🇩":"flag","🏁":"flag","🚩":"flag",
-  "📱":"user","📞":"user"
-};
-
-/* Render pixel SVG dari string art */
-function pxRender(name){
-  var art = PX_ICONS[name];
-  if(!art) return "";
-  var h = art.length;
-  var w = art[0].length;
-  var rects = "";
-  for(var y = 0; y < h; y++){
-    var row = art[y];
-    var x = 0;
-    while(x < w){
-      var c = row[x];
-      if(c === "." || c === " "){ x++; continue; }
-      var startX = x;
-      while(x < w && row[x] === c) x++;
-      var len = x - startX;
-      var color = PX_PAL[c] || c;
-      rects += '<rect x="' + startX + '" y="' + y + '" width="' + len + '" height="1" fill="' + color + '"/>';
-    }
-  }
-  return '<svg viewBox="0 0 ' + w + ' ' + h + '" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' + rects + '</svg>';
-}
-
-/* Override emojiToSvg */
-var _EMOJI_REGEX = /([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\uFE0F]|[\u2700-\u27BF])/gu;
-
-window.emojiToSvg = function(text, opts){
-  if(!text) return text;
-  return String(text).replace(_EMOJI_REGEX, function(match){
-    if(match === "\uFE0F") return "";
-    var name = EMOJI_MAP[match];
-    if(!name) return match;
-    var svg = pxRender(name);
-    if(!svg) return match;
-    return '<span class="px-icon">' + svg + '</span>';
-  });
-};
-
-/* Cleanup span.svg-emoji lama (kalau ada dari patch v5) */
-function cleanupOldEmoji(){
-  try{
-    var count = 0;
-    document.querySelectorAll("span.svg-emoji").forEach(function(el){
-      // Try to find original emoji from title/alt
-      var emoji = el.dataset.emoji || el.getAttribute("data-emoji") || "";
-      var text = emoji || "";
-      if(text){
-        el.parentNode.replaceChild(document.createTextNode(text), el);
-        count++;
-      } else {
-        el.remove();
-        count++;
-      }
-    });
-    if(count > 0) console.log("🧹 Cleaned " + count + " old emoji spans");
-  }catch(e){}
-}
-
-/* ═══════════════════════════════════════════════════════════
-   EMOJI REPLACER
-   ═══════════════════════════════════════════════════════════ */
-var EmojiReplacer = {
-  _skipTags: ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"],
-  init: function(){
-    var self = this;
-    setTimeout(function(){ cleanupOldEmoji(); }, 500);
-    setTimeout(function(){ self._walk(document.body); }, 1500);
-    setTimeout(function(){ self._walk(document.body); }, 3500);
-    var observer = new MutationObserver(function(muts){
-      muts.forEach(function(m){
-        if(m.target && m.target.closest && m.target.closest(".px-icon")) return;
-        if(m.target && self._skipTags.indexOf(m.target.tagName) !== -1) return;
-        m.addedNodes.forEach(function(n){
-          if(n.nodeType === 1){
-            if(self._skipTags.indexOf(n.tagName) !== -1) return;
-            self._walk(n);
-          } else if(n.nodeType === 3){ self._convertTextNode(n); }
-        });
-      });
-    });
-    try{ observer.observe(document.body, { childList: true, subtree: true }); }catch(e){}
-  },
-  _walk: function(root){
-    if(!root || root.nodeType !== 1) return;
-    if(this._skipTags.indexOf(root.tagName) !== -1) return;
-    if(root.classList && root.classList.contains("px-icon")) return;
-    if(root.closest && root.closest(".px-icon")) return;
-    var kids = Array.prototype.slice.call(root.childNodes || []);
-    for(var i = 0; i < kids.length; i++){
-      var k = kids[i];
-      if(k.nodeType === 3) this._convertTextNode(k);
-      else if(k.nodeType === 1) this._walk(k);
-    }
-  },
-  _convertTextNode: function(node){
-    try{
-      var txt = node.nodeValue;
-      if(!txt || txt.length === 0) return;
-      var parent = node.parentNode;
-      if(!parent) return;
-      if(this._skipTags.indexOf(parent.tagName) !== -1) return;
-      if(parent.closest && parent.closest(".px-icon")) return;
-      _EMOJI_REGEX.lastIndex = 0;
-      if(!_EMOJI_REGEX.test(txt)) return;
-      var html = window.emojiToSvg(txt);
-      if(!html || html === txt) return;
-      var span = document.createElement("span");
-      span.style.display = "contents";
-      span.setAttribute("data-emoji-converted", "1");
-      span.innerHTML = html;
-      node.parentNode.replaceChild(span, node);
-    }catch(e){}
-  }
-};
-
-/* ═══════════════════════════════════════════════════════════
-   MODAL BACK BUTTON
-   ═══════════════════════════════════════════════════════════ */
-var ModalBackInjector = {
-  BACK_SVG: '<svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
-  init: function(){
-    var self = this;
-    var observer = new MutationObserver(function(muts){
-      muts.forEach(function(m){
-        m.addedNodes.forEach(function(n){
-          if(n.nodeType === 1 && n.classList && n.classList.contains("modal-back")){
-            setTimeout(function(){ self.injectInto(n); }, 30);
-          }
-        });
-      });
-    });
-    try{ observer.observe(document.body, { childList: true, subtree: true }); }catch(e){}
-  },
-  injectInto: function(modalBack){
-    try{
-      var modal = modalBack.querySelector(".modal");
-      if(!modal) return;
-      if(modal.querySelector(".modal-back-btn")) return;
-      if(modal.querySelector("#aib-modal-root")) return;
-      var btn = document.createElement("button");
-      btn.className = "modal-back-btn";
-      btn.type = "button";
-      btn.innerHTML = this.BACK_SVG;
-      btn.setAttribute("aria-label", "Kembali");
-      btn.addEventListener("click", function(){
-        if(window.Sound && Sound.click) Sound.click();
-        modalBack.remove();
-      });
-      modal.insertBefore(btn, modal.firstChild);
-    }catch(e){}
-  }
-};
-
-/* ═══════════════════════════════════════════════════════════
-   VARSMILE AI (3 klik → 2s → open | 4 klik → close)
-   ═══════════════════════════════════════════════════════════ */
-var VarsmileAI = {
-  _panel: null, _history: [], _typing: false,
-  _clickCount: 0, _clickTimer: null, _openTimer: null, _countdownEl: null,
-  
-  checkLimit: function(){
-    var plan = (window.STATE && STATE.plan) || { features:{ aiChatLimit: 25 } };
-    var limit = (plan.features && plan.features.aiChatLimit) || 25;
-    if(limit === -1) return { ok: true, remaining: -1, limit: -1 };
-    var usage = (window.STATE && STATE.aiChatUsage) || { count: 0, lastDate: "" };
-    var today = new Date().toISOString().slice(0,10);
-    if(usage.lastDate !== today){ usage.count = 0; usage.lastDate = today; }
-    var remaining = limit - usage.count;
-    return { ok: remaining > 0, remaining: remaining, limit: limit };
-  },
-  
-  addUsage: async function(){
-    var usage = (window.STATE && STATE.aiChatUsage) || { count: 0, lastDate: "" };
-    var today = new Date().toISOString().slice(0,10);
-    if(usage.lastDate !== today){ usage.count = 1; usage.lastDate = today; }
-    else { usage.count = (usage.count || 0) + 1; }
-    if(window.STATE) STATE.aiChatUsage = usage;
-    try{
-      if(window.Auth && Auth.current && window.FB){
-        await FB.db.collection("users").doc(Auth.current.uid).update({ aiChatUsage: usage });
-      }
-    }catch(e){}
-  },
-  
-  handleVarsmileClick: function(){
-    var self = this;
-    this._clickCount++;
-    if(this._clickTimer) clearTimeout(this._clickTimer);
-    this._clickTimer = setTimeout(function(){ self._clickCount = 0; }, 1500);
-    if(this._clickCount === 3){
-      if(this._panel && document.body.contains(this._panel)) return;
-      this.showCountdown(2);
-      this._openTimer = setTimeout(function(){
-        self.hideCountdown();
-        self._clickCount = 0;
-        self.open();
-      }, 2000);
-    }
-    if(this._clickCount >= 4){
-      if(this._openTimer){ clearTimeout(this._openTimer); this._openTimer = null; }
-      this.hideCountdown();
-      this._clickCount = 0;
-      if(this._panel){ this.close(); }
-    }
-  },
-  
-  showCountdown: function(sec){
-    var self = this;
-    this.hideCountdown();
-    var el = document.createElement("div");
-    el.className = "vai-countdown";
-    el.textContent = sec;
-    document.body.appendChild(el);
-    this._countdownEl = el;
-    var current = sec;
-    var iv = setInterval(function(){
-      current--;
-      if(current > 0 && self._countdownEl){
-        self._countdownEl.textContent = current;
-        if(window.Sound && Sound.tick) Sound.tick();
-      } else { clearInterval(iv); }
-    }, 1000);
-    if(window.Sound && Sound.tick) Sound.tick();
-  },
-  
-  hideCountdown: function(){
-    if(this._countdownEl){ try{ this._countdownEl.remove(); }catch(e){} this._countdownEl = null; }
-  },
-  
-  open: function(){
-    if(!window.Auth || !Auth.current){
-      if(window.toast) toast("Login dulu ya","error");
-      return;
-    }
-    if(this._panel && document.body.contains(this._panel)){
-      this._panel.remove();
-      this._panel = null;
-    }
-    var chk = this.checkLimit();
-    var html = '<div class="vai-panel" id="vai-panel">';
-    html += '<div class="vai-head">';
-    html += '<div class="vai-avatar">' + this._svg() + '</div>';
-    html += '<div class="vai-head-info"><b>Varsmile AI</b><span>' + (this._typing ? 'Sedang mikir...' : 'Online · Siap bantu') + '</span></div>';
-    html += '<button class="vai-close" id="vai-close">' + this._icon('x') + '</button>';
-    html += '</div>';
-    html += '<div class="vai-body" id="vai-body"></div>';
-    html += '<div class="vai-suggestions" id="vai-sug"></div>';
-    html += '<div class="vai-foot">';
-    html += '<textarea id="vai-input" placeholder="Ketik pesan..." rows="1"></textarea>';
-    html += '<button class="vai-send" id="vai-send">' + this._icon('send') + '</button>';
-    html += '</div>';
-    html += '<div class="vai-quota' + (chk.remaining <= 3 && chk.remaining !== -1 ? ' warning' : '') + '" id="vai-quota">';
-    if(chk.remaining === -1) html += '∞ pesan unlimited';
-    else html += '💬 <span class="vai-quota-num">' + chk.remaining + '</span>/' + chk.limit + ' pesan hari ini';
-    html += '</div></div>';
-    var wrap = document.createElement("div");
-    wrap.innerHTML = html;
-    this._panel = wrap.firstChild;
-    document.body.appendChild(this._panel);
-    this.renderHistory();
-    this.bindEvents();
-    if(window.Sound && Sound.success) Sound.success();
-    setTimeout(function(){
-      var inp = document.getElementById("vai-input");
-      if(inp) inp.focus();
-    }, 300);
-  },
-  
-  close: function(){
-    if(this._panel){
-      this._panel.classList.add("hide");
-      var p = this._panel;
-      setTimeout(function(){ try{ p.remove(); }catch(e){} }, 250);
-      this._panel = null;
-      if(window.Sound && Sound.click) Sound.click();
-    }
-  },
-  
-  renderHistory: function(){
-    var body = document.getElementById("vai-body");
-    if(!body) return;
-    if(this._history.length === 0){
-      var name = (window.Auth && Auth.current && Auth.current.name) || "Kreator";
-      body.innerHTML = '<div class="vai-msg from-ai"><div class="vai-icon">' + this._svg() + '</div><div class="vai-bubble">Hai <b>' + this._escape(name) + '</b>! Aku Varsmile AI\n\nAku bisa bantu:\n• Bikin bio otomatis\n• Saran tema & style\n• Fix error\n• Jawab pertanyaan soal Varlinkbio\n\nKetik apa aja, atau pilih saran di bawah ya!</div></div>';
-      this.renderSuggestions(["Bikin bio buat aku", "Gimana cara ganti tema?", "Beda plan Starter & Pro?", "Fitur baru apa aja?"]);
-      return;
-    }
-    var h = "";
-    var self = this;
-    this._history.forEach(function(msg){
-      if(msg.role === "user"){
-        h += '<div class="vai-msg from-user"><div class="vai-bubble">' + self._escape(msg.content) + '</div></div>';
-      } else {
-        h += '<div class="vai-msg from-ai"><div class="vai-icon">' + self._svg() + '</div><div class="vai-bubble">' + self._formatAI(msg.content) + '</div></div>';
-      }
-    });
-    body.innerHTML = h;
-    body.scrollTop = body.scrollHeight;
-  },
-  
-  renderSuggestions: function(list){
-    var sug = document.getElementById("vai-sug");
-    if(!sug) return;
-    if(!list || !list.length){ sug.innerHTML = ""; return; }
-    var self = this;
-    var h = "";
-    list.forEach(function(s){ h += '<button class="vai-sugg-btn" data-sugg="' + self._escape(s) + '">' + self._escape(s) + '</button>'; });
-    sug.innerHTML = h;
-    sug.querySelectorAll("[data-sugg]").forEach(function(btn){
-      btn.addEventListener("click", function(){ self.sendMessage(btn.dataset.sugg); });
-    });
-  },
-  
-  bindEvents: function(){
-    var self = this;
-    var closeBtn = document.getElementById("vai-close");
-    if(closeBtn) closeBtn.addEventListener("click", function(){ self.close(); });
-    var sendBtn = document.getElementById("vai-send");
-    if(sendBtn) sendBtn.addEventListener("click", function(){ self.handleSend(); });
-    var input = document.getElementById("vai-input");
-    if(input){
-      input.addEventListener("keydown", function(e){
-        if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); self.handleSend(); }
-      });
-    }
-  },
-  
-  handleSend: function(){
-    var input = document.getElementById("vai-input");
-    if(!input) return;
-    var txt = input.value.trim();
-    if(!txt) return;
-    input.value = "";
-    this.sendMessage(txt);
-  },
-  
-  sendMessage: async function(text){
-    if(!text || this._typing) return;
-    var chk = this.checkLimit();
-    if(!chk.ok){
-      if(window.toast) toast("Limit chat habis! Upgrade plan dulu.","error");
-      return;
-    }
-    this._history.push({ role: "user", content: text });
-    this.renderHistory();
-    var body = document.getElementById("vai-body");
-    if(body){
-      var typingEl = document.createElement("div");
-      typingEl.className = "vai-msg from-ai";
-      typingEl.id = "vai-typing-msg";
-      typingEl.innerHTML = '<div class="vai-icon">' + this._svg() + '</div><div class="vai-typing"><span></span><span></span><span></span></div>';
-      body.appendChild(typingEl);
-      body.scrollTop = body.scrollHeight;
-    }
-    this._typing = true;
-    var sendBtn = document.getElementById("vai-send");
-    if(sendBtn) sendBtn.disabled = true;
-    try{
-      var reply = await this.askGroq(text);
-      this._history.push({ role: "assistant", content: reply });
-      await this.addUsage();
-      this.updateQuota();
-    }catch(e){
-      console.warn("VarsmileAI error:", e);
-      this._history.push({ role: "assistant", content: "Aduh, aku error. Coba lagi ya." });
-    }
-    var typing = document.getElementById("vai-typing-msg");
-    if(typing) typing.remove();
-    this._typing = false;
-    if(sendBtn) sendBtn.disabled = false;
-    this.renderHistory();
-    this.renderSuggestions(["Bikin bio", "Fitur apa aja?", "Cara upgrade plan", "Bantuan"]);
-  },
-  
-  updateQuota: function(){
-    var quota = document.getElementById("vai-quota");
-    if(!quota) return;
-    var chk = this.checkLimit();
-    if(chk.remaining === -1){ quota.className = "vai-quota"; quota.innerHTML = "∞ pesan unlimited"; return; }
-    quota.className = "vai-quota" + (chk.remaining <= 3 ? " warning" : "");
-    quota.innerHTML = '💬 <span class="vai-quota-num">' + chk.remaining + '</span>/' + chk.limit + ' pesan hari ini';
-  },
-  
-  askGroq: async function(userText){
-    if(!GROQ_API_KEY || GROQ_API_KEY.trim() === "") return this.fallbackReply(userText);
-    var plan = (window.STATE && STATE.plan) || { name: "Free" };
-    var ctx = 'User context:\n- Nama: ' + ((window.Auth && Auth.current && Auth.current.name) || "User") + '\n- Plan: ' + plan.name + '\n- Kredit: ' + ((window.STATE && STATE.kredit) || 0) + '\n- Halaman: ' + (location.hash || "#/dashboard");
-    var sysPrompt = 'Kamu Varsmile AI — asisten Varlinkbio yang ramah, santai, bahasa Indonesia gaul.\n\nBantu user soal:\n- Bikin bio\n- Tema, style, warna\n- Fitur (Music, Analytics, Featured Link)\n- Plan & pricing\n- Troubleshooting\n- Chat santai\n\nATURAN:\n- Jawab SINGKAT (max 150 kata)\n- Pakai emoji secukupnya\n- Kalau tidak tahu → arahkan ke Help\n- JANGAN bocorin API key\n\n' + ctx;
-    var messages = [{ role: "system", content: sysPrompt }];
-    var recent = this._history.slice(-10);
-    recent.forEach(function(m){ messages.push({ role: m.role, content: m.content }); });
-    var response = await fetch(GROQ_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_API_KEY },
-      body: JSON.stringify({ model: GROQ_MODEL, messages: messages, max_tokens: 400, temperature: 0.75 })
-    });
-    if(!response.ok){
-      if(response.status === 429) return this.fallbackReply(userText);
-      throw new Error("HTTP " + response.status);
-    }
-    var data = await response.json();
-    var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-    return reply || "Maaf, aku gak bisa jawab sekarang.";
-  },
-  
-  fallbackReply: function(text){
-    var t = (text || "").toLowerCase();
-    if(t.indexOf("bikin bio") !== -1 || t.indexOf("buat bio") !== -1) return 'Oke! Ceritain:\n1. Kamu jualan apa?\n2. Target audience siapa?\n3. Vibe yang diinginkan?\n\nAku bantu bikin 💪';
-    if(t.indexOf("tema") !== -1) return 'Buka Editor → Tema Warna → pilih → Simpan';
-    if(t.indexOf("plan") !== -1) return 'Plan:\n• Free — Rp 0\n• Starter — Rp 5.000 PERMANEN\n• Pro — Rp 1.000+/hari\n• Ultimate — Rp 6.000+/hari';
-    if(t.indexOf("error") !== -1) return 'Coba:\n1. Refresh\n2. Clear cache\n3. Chat admin WA';
-    if(t.indexOf("hai") !== -1 || t.indexOf("halo") !== -1) return 'Hai! Ada yang bisa aku bantu?';
-    return 'Hmm, coba tanya lebih spesifik ya.';
-  },
-  
-  _escape: function(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); },
-  _formatAI: function(txt){ if(!txt) return ""; var s = this._escape(txt); s = s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"); s = s.replace(/\n/g, "<br>"); return s; },
-  _svg: function(){ return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/></svg>'; },
-  _icon: function(name){
-    var icons = {
-      x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
-      send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
-    };
-    return icons[name] || "";
-  }
-};
-
-/* ═══════════════════════════════════════════════════════════
-   AI BIO GENERATOR
-   ═══════════════════════════════════════════════════════════ */
-var AIBioGenerator = {
-  _generating: false, _style: "santai",
-  
-  open: function(){
-    if(!window.Auth || !Auth.current){
-      if(window.toast) toast("Login dulu","error");
-      return;
-    }
-    var styleBtns = [{ id: "santai", label: "Santai" },{ id: "formal", label: "Formal" },{ id: "lucu", label: "Lucu" }];
-    var styleHTML = "";
-    styleBtns.forEach(function(b){
-      styleHTML += '<div class="aib-style-btn ' + (b.id === "santai" ? "active" : "") + '" data-style="' + b.id + '">' + b.label + '</div>';
-    });
-    var html = '<div class="aib-modal" id="aib-modal-root">';
-    html += '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
-    html += '<div class="aib-hero"><div style="font-size:44px;margin-bottom:6px">✨</div><h3>AI Bio Generator</h3><p>Ceritain tentang kamu → AI bikin bio + link otomatis</p></div>';
-    html += '<div class="aib-field"><label>Ceritakan tentang kamu</label><textarea id="aib-input" placeholder="Contoh: aku jualan kue rumahan enak murah, sistem PO, area jakarta"></textarea></div>';
-    html += '<div class="aib-field"><label>Gaya bahasa</label><div class="aib-style-row">' + styleHTML + '</div></div>';
-    html += '<button class="aib-btn-primary" id="aib-generate">✨ Generate Bio</button>';
-    html += '<div class="aib-loading" id="aib-loading"><div class="aib-spinner"></div><div class="aib-loading-text">AI sedang mikir...</div></div>';
-    html += '<div class="aib-result" id="aib-result"></div>';
-    html += '</div>';
-    var m = window.openModal ? window.openModal(html) : null;
-    if(!m) return;
-    var self = this;
-    m.querySelectorAll("[data-style]").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        m.querySelectorAll("[data-style]").forEach(function(x){ x.classList.remove("active"); });
-        btn.classList.add("active");
-        self._style = btn.dataset.style;
-      });
-    });
-    var genBtn = m.querySelector("#aib-generate");
-    if(genBtn) genBtn.addEventListener("click", function(){
-      var input = m.querySelector("#aib-input").value.trim();
-      if(!input || input.length < 5){ if(window.toast) toast("Ceritakan dulu min 5 karakter","error"); return; }
-      self._generate(m, input);
-    });
-  },
-  
-  _generate: async function(m, userInput){
-    if(this._generating) return;
-    this._generating = true;
-    var genBtn = m.querySelector("#aib-generate");
-    var loading = m.querySelector("#aib-loading");
-    var result = m.querySelector("#aib-result");
-    if(genBtn) genBtn.disabled = true;
-    if(loading) loading.classList.add("show");
-    if(result) result.classList.remove("show");
-    try{
-      var data = await this._askGroq(userInput, this._style);
-      this._renderResult(m, data);
-    }catch(e){
-      console.error("AIBioGenerator:", e);
-      if(result){
-        result.innerHTML = '<div style="background:#ff2a2a;color:#fff;border:2px solid #0a0a0a;border-radius:8px;padding:12px;font-size:12px;font-weight:700">Gagal: ' + (window.esc ? esc(e.message) : e.message) + '</div>';
-        result.classList.add("show");
-      }
-    }
-    if(genBtn) genBtn.disabled = false;
-    if(loading) loading.classList.remove("show");
-    this._generating = false;
-  },
-  
-  _askGroq: async function(userInput, style){
-    if(!GROQ_API_KEY || GROQ_API_KEY.trim() === "") return this._fallback(userInput);
-    var sysPrompt = 'Kamu AI asisten Varlinkbio. Bikin bio in-bio dari deskripsi user.\n\nOUTPUT HARUS JSON VALID:\n{"bio":"max 60 char, diawali emoji","links":[{"label":"WhatsApp","url":"https://wa.me/"},{"label":"Instagram","url":"https://instagram.com/"},{"label":"Katalog","url":"#"},{"label":"Testimoni","url":"#"}],"tema":"neo-pink","style":"minimalist"}\n\nTema: neo-cream,neo-midnight,neo-dark,neo-blue,neo-rose,neo-pink,neo-green,neo-purple,neo-orange,neo-ocean,neo-coffee,neo-sunset,neo-galaxy,neo-neon,neo-retro,neo-sakura,neo-gold\nStyle: brutalism,minimalist,glassmorphism,material,gaming,vintage,cyberpunk,aurora,retro,cosmic,anime\nGaya bahasa: ' + style + '\nOUTPUT HANYA JSON.';
-    var response = await fetch(GROQ_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_API_KEY },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{ role: "system", content: sysPrompt }, { role: "user", content: 'Deskripsi: "' + userInput + '"' }],
-        max_tokens: 600, temperature: 0.7, response_format: { type: "json_object" }
-      })
-    });
-    if(!response.ok){
-      if(response.status === 429) return this._fallback(userInput);
-      throw new Error("Groq HTTP " + response.status);
-    }
-    var data = await response.json();
-    var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-    if(!content) throw new Error("Empty response");
-    try{ return JSON.parse(content); }
-    catch(e){ throw new Error("AI kasih format salah"); }
-  },
-  
-  _fallback: function(userInput){
-    var input = (userInput || "").toLowerCase();
-    var K = {
-      kuliner: { kw: ["kue","cake","roti","catering","makanan","bakery"], bio: "🍰 Homemade & Fresh | Order Now", links: ["WhatsApp Order","Instagram","Katalog Menu","Testimoni"], tema: "neo-pink", style: "minimalist" },
-      fashion: { kw: ["baju","fashion","outfit","hijab","tas","sepatu"], bio: "👗 Style & Trend | Ready Stock", links: ["WhatsApp","Shopee","Instagram","Katalog"], tema: "neo-purple", style: "material" },
-      freelance: { kw: ["freelance","desain","developer","jasa"], bio: "💼 Ready for Project | Fast Response", links: ["Portfolio","WhatsApp","Email","LinkedIn"], tema: "neo-blue", style: "minimalist" },
-      musisi: { kw: ["musisi","penyanyi","band","dj"], bio: "🎵 New Single Out Now!", links: ["Spotify","YouTube","Instagram","TikTok"], tema: "neo-galaxy", style: "glassmorphism" },
-      gaming: { kw: ["gaming","gamer","streamer"], bio: "🎮 Streamer | Live Setiap Hari", links: ["YouTube","Twitch","Discord","Instagram"], tema: "neo-neon", style: "gaming" }
-    };
-    var matched = null;
-    for(var k in K){
-      for(var i = 0; i < K[k].kw.length; i++){
-        if(input.indexOf(K[k].kw[i]) !== -1){ matched = K[k]; break; }
-      }
-      if(matched) break;
-    }
-    if(!matched) matched = { bio: "✨ Kreator Hebat | Link di Bawah", links: ["WhatsApp","Instagram","Portfolio","Kontak"], tema: "neo-cream", style: "brutalism" };
-    return { bio: matched.bio, links: matched.links.map(function(l){ return { label: l, url: "#" }; }), tema: matched.tema, style: matched.style };
-  },
-  
-  _renderResult: function(m, data){
-    var result = m.querySelector("#aib-result");
-    if(!result) return;
-    var linksHTML = "";
-    (data.links || []).forEach(function(l){
-      linksHTML += '<li>' + (window.esc ? esc(l.label || "") : l.label) + ' <span>' + (window.esc ? esc(l.url || "") : l.url) + '</span></li>';
-    });
-    var html = '<div class="aib-result-label">📝 Bio Rekomendasi:</div>';
-    html += '<div class="aib-result-bio">' + (window.esc ? esc(data.bio || "") : data.bio) + '</div>';
-    html += '<div class="aib-result-label">🔗 Link:</div>';
-    html += '<ul class="aib-result-links">' + linksHTML + '</ul>';
-    html += '<div class="aib-result-tags"><span class="aib-tag aib-tag-tema">🎨 ' + (window.esc ? esc(data.tema || "neo-cream") : data.tema) + '</span><span class="aib-tag aib-tag-style">🎮 ' + (window.esc ? esc(data.style || "brutalism") : data.style) + '</span></div>';
-    html += '<div class="aib-result-actions"><button class="aib-btn-apply" id="aib-apply">✅ Pakai Bio Ini</button><button class="aib-btn-retry" id="aib-retry">🔄 Generate Ulang</button></div>';
-    result.innerHTML = html;
-    result.classList.add("show");
-    var self = this;
-    var applyBtn = result.querySelector("#aib-apply");
-    if(applyBtn) applyBtn.addEventListener("click", function(){
-      self._applyToDraft(data);
-      var mb = result.closest(".modal-back");
-      if(mb) mb.remove();
-    });
-    var retryBtn = result.querySelector("#aib-retry");
-    if(retryBtn) retryBtn.addEventListener("click", function(){
-      var input = m.querySelector("#aib-input").value.trim();
-      if(input) self._generate(m, input);
-    });
-  },
-  
-  _applyToDraft: function(data){
-    try{
-      if(!window.STATE) return;
-      if(!STATE.draft){
-        if(window.PageEditor && PageEditor.newDraft) STATE.draft = PageEditor.newDraft();
-        else STATE.draft = { id: null, slug: "", name: "", bio: "", profile: "", banner: "", bannerType: "image", logos: [], animation: "none", links: [], theme: "neo-cream", lock: "", allowDirectory: true, stats: { views: 0, clicks: {}, daily: {} } };
-      }
-      if(data.bio) STATE.draft.bio = data.bio;
-      if(data.tema) STATE.draft.theme = data.tema;
-      if(data.links && data.links.length){
-        STATE.draft.links = data.links.map(function(l){
-          return { label: l.label || "Link", url: l.url || "#", type: (window.LinkTypes && LinkTypes.detect) ? LinkTypes.detect(l.url) : "classic", color: "", thumb: "", active: true, featPosX: 50, featPosY: 50, featZoom: 1, featPadding: 10, featRatio: "16:9" };
-        });
-      }
-      if(window.toast) toast("AI Bio diterapkan ke Editor!","success");
-      if(window.Sound && Sound.tada) Sound.tada();
-      var hash = location.hash || "";
-      if(hash.indexOf("/editor") === -1){
-        if(window.Router) Router.navigate("/editor");
-      } else {
-        if(window.PageEditor && PageEditor.render) PageEditor.render();
-      }
-    }catch(e){ console.warn("applyToDraft:", e); }
-  }
-};
-
-/* ═══════════════════════════════════════════════════════════
-   QR CODE (qrcodejs)
-   ═══════════════════════════════════════════════════════════ */
-var QRCODEJS_CDNS = [
-  "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
-  "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js",
-  "https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js"
-];
-var _qrLibLoading = null;
-function loadQRCodeJS(){
-  if(window.QRCode && typeof window.QRCode === "function") return Promise.resolve(true);
-  if(_qrLibLoading) return _qrLibLoading;
-  _qrLibLoading = new Promise(function(resolve){
-    var i = 0;
-    function tryNext(){
-      if(i >= QRCODEJS_CDNS.length){ _qrLibLoading = null; resolve(false); return; }
-      var url = QRCODEJS_CDNS[i++];
-      var s = document.createElement("script");
-      s.src = url; s.async = true;
-      var timer = setTimeout(function(){ try{ s.remove(); }catch(e){} tryNext(); }, 4000);
-      s.onload = function(){
-        clearTimeout(timer);
-        if(window.QRCode && typeof window.QRCode === "function") resolve(true);
-        else tryNext();
-      };
-      s.onerror = function(){ clearTimeout(timer); tryNext(); };
-      document.head.appendChild(s);
-    }
-    tryNext();
-  });
-  return _qrLibLoading;
-}
-setTimeout(loadQRCodeJS, 500);
-
-window.showQRModal = async function(bio, url){
-  var loaded = await loadQRCodeJS();
-  if(!loaded){ return showQRModalFallback(bio, url); }
-  var bioName = (bio && bio.name) || "Bio";
-  var safeFileName = bioName.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-  var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>';
-  html += '<h3>QR Code</h3>';
-  html += '<p style="font-size:13px;margin-bottom:14px;font-weight:600;text-align:center">Scan untuk buka bio kamu</p>';
-  html += '<div style="text-align:center"><div style="display:inline-block;padding:16px;background:#fff;border:3px solid #0a0a0a;border-radius:14px;box-shadow:6px 6px 0 #0a0a0a"><div id="qr-render-target" style="display:inline-block;line-height:0"></div></div></div>';
-  html += '<div style="margin-top:14px;padding:10px 12px;background:#f0ebe0;border:1.5px solid #0a0a0a;border-radius:8px;font-family:monospace;font-size:11.5px;word-break:break-all;text-align:center;font-weight:600">' + (window.esc ? esc(url) : url) + '</div>';
-  html += '<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">';
-  html += '<button id="qr-dl-v6" class="btn btn-primary btn-block">⬇️ Download QR (PNG)</button>';
-  html += '<button id="qr-copy-v6" class="btn btn-block" style="background:#f0ebe0">📋 Copy Link Bio</button>';
-  html += '</div>';
-  var m = window.openModal ? window.openModal(html) : null;
-  if(!m) return;
-  var qrTarget = m.querySelector("#qr-render-target");
-  try{
-    qrTarget.innerHTML = "";
-    new window.QRCode(qrTarget, { text: url, width: 220, height: 220, colorDark: "#0a0a0a", colorLight: "#ffffff", correctLevel: window.QRCode.CorrectLevel.H });
-  }catch(e){ qrTarget.innerHTML = '<div style="padding:20px;color:#ff2a2a;font-weight:700;font-size:12px">QR gagal</div>'; }
-  if(window.Sound && Sound.tada) Sound.tada();
-  var dlBtn = m.querySelector("#qr-dl-v6");
-  if(dlBtn) dlBtn.addEventListener("click", function(){
-    try{
-      var canvas = qrTarget.querySelector("canvas");
-      var img = qrTarget.querySelector("img");
-      var dataUrl = null;
-      if(canvas && canvas.toDataURL) dataUrl = canvas.toDataURL("image/png");
-      else if(img && img.src && img.src.indexOf("data:image") === 0) dataUrl = img.src;
-      if(!dataUrl){ if(window.toast) toast("Gagal convert QR","error"); return; }
-      var a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = "varlinkbio-qr-" + safeFileName + ".png";
-      document.body.appendChild(a); a.click(); a.remove();
-      if(window.toast) toast("QR didownload!","success");
-    }catch(e){ if(window.toast) toast("Gagal: " + e.message,"error"); }
-  });
-  var copyBtn = m.querySelector("#qr-copy-v6");
-  if(copyBtn) copyBtn.addEventListener("click", function(){
-    try{
-      if(navigator.clipboard) navigator.clipboard.writeText(url).then(function(){ if(window.toast) toast("Link disalin!","success"); });
-      else { var ta = document.createElement("textarea"); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); if(window.toast) toast("Link disalin!","success"); }
-    }catch(e){}
-  });
-};
-
-function showQRModalFallback(bio, url){
-  var apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=10&data=" + encodeURIComponent(url);
-  var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button><h3>QR Code</h3><div style="text-align:center"><img src="' + apiUrl + '" width="240" height="240" style="background:#fff;border-radius:6px" alt="QR"/></div><div style="margin-top:14px"><a href="' + apiUrl + '" download="qr.png" target="_blank" class="btn btn-primary btn-block" style="text-decoration:none;display:flex;justify-content:center">⬇️ Download QR</a></div>';
-  window.openModal && window.openModal(html);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   HOOK VARSMILE — 3 klik / 4 klik
-   ═══════════════════════════════════════════════════════════ */
-function hookVarsmile(){
-  var vs = document.getElementById("varsmile-char");
-  if(!vs) return;
-  if(vs.dataset.aiHooked === "v6") return;
-  vs.dataset.aiHooked = "v6";
-  var handler = function(e){
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    VarsmileAI.handleVarsmileClick();
-  };
-  vs.addEventListener("click", handler, true);
-  vs.addEventListener("touchend", function(e){
-    if(e.cancelable) e.preventDefault();
-    VarsmileAI.handleVarsmileClick();
-  }, true);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   INJECT TOMBOL "AI BIO" DI EDITOR
-   ═══════════════════════════════════════════════════════════ */
-function injectAIBioButton(){
-  try{
-    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-    if(hashPath !== "/editor") return;
-    if(document.getElementById("btn-ai-bio")) return;
-    var saveBtn = document.getElementById("btn-save");
-    if(!saveBtn) return;
-    var aiBtn = document.createElement("button");
-    aiBtn.className = "btn btn-sm btn-purple";
-    aiBtn.id = "btn-ai-bio";
-    aiBtn.type = "button";
-    aiBtn.style.background = "#a78bfa";
-    aiBtn.style.color = "#fff";
-    aiBtn.innerHTML = "✨ AI Bio";
-    aiBtn.addEventListener("click", function(){
-      if(window.Sound && Sound.click) Sound.click();
-      AIBioGenerator.open();
-    });
-    saveBtn.parentNode.insertBefore(aiBtn, saveBtn);
-    console.log("✅ Tombol AI Bio di-inject");
-  }catch(e){}
-}
-
-/* ═══════════════════════════════════════════════════════════
-   GESTURE RECOVERY VARSMILE
-   ═══════════════════════════════════════════════════════════ */
-var GestureRecovery = {
-  _seq: [], _lastTs: 0, _threshold: 50, _maxTime: 500, _seqTimeout: 4000,
-  _touchStartY: 0, _touchStartX: 0, _touchStartTime: 0, _wheelLast: 0,
-  init: function(){
-    var self = this;
-    document.addEventListener("touchstart", function(e){
-      if(e.touches.length !== 1) return;
-      self._touchStartY = e.touches[0].clientY;
-      self._touchStartX = e.touches[0].clientX;
-      self._touchStartTime = Date.now();
-    }, { passive: true });
-    document.addEventListener("touchend", function(e){
-      if(!e.changedTouches || e.changedTouches.length !== 1) return;
-      var endY = e.changedTouches[0].clientY;
-      var endX = e.changedTouches[0].clientX;
-      var dt = Date.now() - self._touchStartTime;
-      var dy = endY - self._touchStartY;
-      var dx = endX - self._touchStartX;
-      if(Math.abs(dy) < self._threshold) return;
-      if(Math.abs(dx) > Math.abs(dy) * 0.6) return;
-      if(dt > self._maxTime) return;
-      if(dy < 0) self._addSwipe("up");
-      else self._addSwipe("down");
-    }, { passive: true });
-    document.addEventListener("wheel", function(e){
-      var now = Date.now();
-      if(now - self._wheelLast < 200) return;
-      self._wheelLast = now;
-      if(e.deltaY < -30) self._addSwipe("up");
-      else if(e.deltaY > 30) self._addSwipe("down");
-    }, { passive: true });
-  },
-  _addSwipe: function(dir){
-    var now = Date.now();
-    if(now - this._lastTs > this._seqTimeout) this._seq = [];
-    this._lastTs = now;
-    this._seq.push(dir);
-    if(this._seq.length > 4) this._seq = this._seq.slice(-4);
-    if(this._seq.length >= 4){
-      var l4 = this._seq.slice(-4);
-      if(l4[0] === "up" && l4[1] === "up" && l4[2] === "down" && l4[3] === "down"){
-        this._trigger();
-        this._seq = [];
-      }
-    }
-  },
-  _trigger: function(){
-    try{
-      var vs = document.getElementById("varsmile-char");
-      if(window.Varsmile){
-        window.Varsmile.hide && window.Varsmile.hide();
-        setTimeout(function(){ window.Varsmile.init(); }, 100);
-      }
-      if(window.STATE) STATE.varsmileEnabled = true;
-      if(window.toast) toast("Varsmile balik lagi!","success");
-      if(window.Sound && Sound.tada) Sound.tada();
-      if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
-    }catch(e){}
-  }
-};
-
-/* ═══════════════════════════════════════════════════════════
-   INIT
-   ═══════════════════════════════════════════════════════════ */
-function initAll(){
-  try{ EmojiReplacer.init(); }catch(e){}
-  try{ ModalBackInjector.init(); }catch(e){}
-  try{ GestureRecovery.init(); }catch(e){}
-  hookVarsmile();
-  setInterval(hookVarsmile, 2000);
-  setInterval(injectAIBioButton, 2000);
-  var obs = new MutationObserver(function(){ injectAIBioButton(); });
-  try{ obs.observe(document.body, { childList: true, subtree: true }); }catch(e){}
-  window.VarsmileAI = VarsmileAI;
-  window.AIBioGenerator = AIBioGenerator;
-  window.EmojiReplacer = EmojiReplacer;
-  window.pxRender = pxRender;
-  console.log("╔════════════════════════════════════════╗");
-  console.log("║  ✅ FINAL PATCH v6 AKTIF               ║");
-  console.log("║  • Pixel Icons (custom SVG)            ║");
-  console.log("║  • Varsmile AI: 3 klik → 2s → buka     ║");
-  console.log("║  • 4 klik → tutup                      ║");
-  console.log("║  • AI Bio: tombol ✨ di editor         ║");
-  console.log("║  • QR pakai qrcodejs                   ║");
-  console.log("║  • Back button otomatis di modal       ║");
-  console.log("║  • Gesture ⬆️⬆️⬇️⬇️ restore Varsmile    ║");
-  console.log("╚════════════════════════════════════════╝");
-}
-
-var attempts = 0;
-var check = setInterval(function(){
-  attempts++;
-  if(attempts > 50){ clearInterval(check); initAll(); return; }
-  if(window.Auth && window.FB && window.STATE){
-    clearInterval(check);
-    setTimeout(initAll, 500);
-  }
-}, 200);
-
-})();
-</script>
-<!-- ═══ END FINAL PATCH v6 ═══ -->
-   <script id="finalpatch-fix-v61">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v6.1 — FIX VARSMILE CLICK + 4x KLIK HIDE
-   ═══════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-
-console.log("🔧 Patch v6.1 loading...");
-
-/* ─── FIX #1: Force pointer-events auto di Varsmile ─── */
-var style = document.createElement("style");
-style.textContent = [
-  "#varsmile-char{",
-  "  pointer-events:auto !important;",
-  "  cursor:pointer !important;",
-  "  user-select:none !important;",
-  "  -webkit-user-select:none !important;",
-  "  -webkit-tap-highlight-color:transparent !important;",
-  "  touch-action:manipulation !important;",
-  "}",
-  "#varsmile-char *{",
-  "  pointer-events:auto !important;",
-  "  user-select:none !important;",
-  "  -webkit-user-select:none !important;",
-  "}"
-].join("\n");
-document.head.appendChild(style);
-console.log("✅ CSS pointer-events applied");
-
-/* ─── FIX #2: Override VarsmileAI handler ─── */
-function fixVarsmileHandler(){
-  var vs = document.getElementById("varsmile-char");
-  if(!vs) return;
-  if(vs.dataset.fixV61 === "1") return;
-  vs.dataset.fixV61 = "1";
-  
-  // Force pointer-events via inline style
-  vs.style.pointerEvents = "auto";
-  vs.style.cursor = "pointer";
-  
-  // Reset semua handler lama dengan clone
-  var newVs = vs.cloneNode(true);
-  vs.parentNode.replaceChild(newVs, vs);
-  vs = newVs;
-  vs.dataset.fixV61 = "1";
-  vs.style.pointerEvents = "auto";
-  vs.style.cursor = "pointer";
-  
-  // Attach handler baru — pakai pointerdown biar lebih reliable
-  var clickCount = 0;
-  var clickTimer = null;
-  var openTimer = null;
-  
-  function handleClick(e){
-    if(e){ 
-      e.preventDefault(); 
-      e.stopPropagation(); 
-    }
-    
-    clickCount++;
-    console.log("🖱️ Varsmile click #" + clickCount);
-    
-    // Reset counter 1.5s setelah klik terakhir
-    if(clickTimer) clearTimeout(clickTimer);
-    clickTimer = setTimeout(function(){ 
-      clickCount = 0; 
-    }, 1500);
-    
-    // ═══ 3x KLIK → tunggu 2s → buka Varsmile AI ═══
-    if(clickCount === 3){
-      console.log("🎯 3 klik → AI akan buka dalam 2s");
-      
-      // Cancel kalau udah ada timer lain
-      if(openTimer) clearTimeout(openTimer);
-      
-      // Show countdown
-      showCountdownV61(2);
-      
-      openTimer = setTimeout(function(){
-        hideCountdownV61();
-        clickCount = 0;
-        console.log("🤖 Opening Varsmile AI...");
-        if(window.VarsmileAI && window.VarsmileAI.open){
-          window.VarsmileAI.open();
-        } else {
-          if(window.toast) toast("Varsmile AI belum siap","error");
-        }
-      }, 2000);
-    }
-    
-    // ═══ 4x KLIK → Varsmile HILANG total ═══
-    if(clickCount >= 4){
-      console.log("🎯 4 klik → Varsmile hilang");
-      
-      if(openTimer){ clearTimeout(openTimer); openTimer = null; }
-      hideCountdownV61();
-      clickCount = 0;
-      
-      // Tutup AI panel kalau kebuka
-      if(window.VarsmileAI && window.VarsmileAI._panel){
-        window.VarsmileAI.close && window.VarsmileAI.close();
-      }
-      
-      // HIDE Varsmile (bukan close AI)
-      hideVarsmile();
-    }
-  }
-  
-  // Attach ke pointerdown (lebih reliable di mobile)
-  vs.addEventListener("pointerdown", handleClick, true);
-  
-  // Fallback touchstart
-  vs.addEventListener("touchstart", function(e){
-    if(e.cancelable) e.preventDefault();
-  }, { passive: false });
-  
-  // Fallback click (desktop)
-  vs.addEventListener("click", function(e){
-    // Skip kalau pointerdown udah handle
-    if(e.detail === 0) return;
-  }, true);
-  
-  console.log("✅ Varsmile handler reattached");
-}
-
-/* ─── COUNTDOWN ─── */
-var _cdEl = null;
-function showCountdownV61(sec){
-  hideCountdownV61();
-  var el = document.createElement("div");
-  el.className = "vai-countdown";
-  el.textContent = sec;
-  el.style.cssText = "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99998;background:#0a0a0a;color:#ffd700;border:3px solid #ffd700;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;font-family:'Press Start 2P',monospace;font-size:32px;font-weight:900;box-shadow:0 0 40px rgba(255,215,0,.6);pointer-events:none;animation:vaiCountdownPulse .5s ease-in-out infinite";
-  document.body.appendChild(el);
-  _cdEl = el;
-  var current = sec;
-  var iv = setInterval(function(){
-    current--;
-    if(current > 0 && _cdEl){
-      _cdEl.textContent = current;
-      if(window.Sound && Sound.tick) Sound.tick();
-    } else {
-      clearInterval(iv);
-    }
-  }, 1000);
-  if(window.Sound && Sound.tick) Sound.tick();
-}
-
-function hideCountdownV61(){
-  if(_cdEl){ 
-    try{ _cdEl.remove(); }catch(e){} 
-    _cdEl = null; 
-  }
-}
-
-/* ─── HIDE VARSMILE ─── */
-function hideVarsmile(){
-  try{
-    var vs = document.getElementById("varsmile-char");
-    if(!vs) return;
-    
-    // Fade out + remove
-    vs.style.transition = "transform .3s ease, opacity .3s ease";
-    vs.style.transform = "scale(0.5) translateY(20px)";
-    vs.style.opacity = "0";
-    
-    setTimeout(function(){
-      if(vs.parentNode) vs.parentNode.removeChild(vs);
-    }, 300);
-    
-    // Disable STATE
-    if(window.STATE) STATE.varsmileEnabled = false;
-    
-    // Feedback
-    if(window.toast) toast("Varsmile hilang. Swipe ⬆️⬆️⬇️⬇️ untuk munculin lagi","info");
-    if(window.Sound && Sound.bip) Sound.bip();
-    
-    // Vibrate di mobile
-    if(navigator.vibrate) navigator.vibrate([30, 30, 30]);
-    
-    console.log("👋 Varsmile hidden");
-  }catch(e){ console.warn("hideVarsmile:", e); }
-}
-
-/* ─── FIX #3: Update GestureRecovery biar enable STATE lagi ─── */
-setTimeout(function(){
-  if(window.GestureRecovery){
-    var _origTrigger = window.GestureRecovery._trigger;
-    window.GestureRecovery._trigger = function(){
-      // Enable STATE dulu
-      if(window.STATE) STATE.varsmileEnabled = true;
-      
-      try{
-        var vs = document.getElementById("varsmile-char");
-        if(!vs){
-          // Varsmile dihapus, re-init
-          if(window.Varsmile){
-            window.Varsmile.hide && window.Varsmile.hide();
-            setTimeout(function(){
-              window.Varsmile.init();
-              // Re-fix handler setelah init
-              setTimeout(fixVarsmileHandler, 200);
-              setTimeout(fixVarsmileHandler, 800);
-            }, 100);
-          }
-        } else {
-          // Udah ada, panggil orig
-          if(_origTrigger) _origTrigger.call(window.GestureRecovery);
-        }
-        
-        if(window.toast) toast("Varsmile balik lagi!","success");
-        if(window.Sound && Sound.tada) Sound.tada();
-        if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
-      }catch(e){ console.warn("gesture trigger:", e); }
-    };
-    console.log("✅ GestureRecovery patched");
-  }
-}, 1500);
-
-/* ─── RUN: Fix handler berkala ─── */
-setTimeout(fixVarsmileHandler, 1000);
-setTimeout(fixVarsmileHandler, 2500);
-setTimeout(fixVarsmileHandler, 5000);
-
-// Watch kalau Varsmile di-render ulang
-var obs = new MutationObserver(function(muts){
-  muts.forEach(function(m){
-    m.addedNodes.forEach(function(n){
-      if(n.nodeType === 1 && n.id === "varsmile-char"){
-        setTimeout(fixVarsmileHandler, 100);
-      }
-    });
-  });
-});
-try{ obs.observe(document.body, { childList: true, subtree: true }); }catch(e){}
-
-// Cek berkala
-setInterval(fixVarsmileHandler, 3000);
-
-console.log("╔════════════════════════════════════════╗");
-console.log("║  ✅ PATCH v6.1 AKTIF                   ║");
-console.log("║  • Varsmile bisa diklik                ║");
-console.log("║  • 3x klik → 2s → AI buka              ║");
-console.log("║  • 4x klik → Varsmile HILANG           ║");
-console.log("║  • Swipe ⬆️⬆️⬇️⬇️ → Varsmile balik       ║");
-console.log("╚════════════════════════════════════════╝");
-
-})();
-   </script>
-   <script id="finalpatch-v62-lucide">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v6.2 — Ganti Pixel Icon ke Lucide Icon
-   ═══════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-
-console.log("🎨 Patch v6.2 (Lucide) loading...");
-
-/* ─── LOAD LUCIDE CDN ─── */
-var LUCIDE_CDNS = [
-  "https://unpkg.com/lucide@latest/dist/umd/lucide.js",
-  "https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js",
-  "https://cdnjs.cloudflare.com/ajax/libs/lucide/0.454.0/lucide.min.js"
-];
-
-var _lucideLoading = null;
-function loadLucide(){
-  if(window.lucide && window.lucide.icons) return Promise.resolve(true);
-  if(_lucideLoading) return _lucideLoading;
-  _lucideLoading = new Promise(function(resolve){
-    var i = 0;
-    function tryNext(){
-      if(i >= LUCIDE_CDNS.length){
-        console.warn("❌ Semua CDN Lucide gagal");
-        _lucideLoading = null;
-        resolve(false);
-        return;
-      }
-      var url = LUCIDE_CDNS[i++];
-      var s = document.createElement("script");
-      s.src = url;
-      s.async = true;
-      var timer = setTimeout(function(){
-        try{ s.remove(); }catch(e){}
-        tryNext();
-      }, 5000);
-      s.onload = function(){
-        clearTimeout(timer);
-        if(window.lucide && window.lucide.icons){
-          console.log("✅ Lucide loaded: " + url);
-          resolve(true);
-        } else {
-          tryNext();
-        }
-      };
-      s.onerror = function(){
-        clearTimeout(timer);
-        tryNext();
-      };
-      document.head.appendChild(s);
-    }
-    tryNext();
-  });
-  return _lucideLoading;
-}
-
-/* Preload */
-loadLucide();
-
-/* ═══════════════════════════════════════════════════════════
-   MAP EMOJI → LUCIDE ICON NAME
-   ═══════════════════════════════════════════════════════════ */
-var EMOJI_TO_LUCIDE = {
-  /* Stars & Sparkle */
-  "⭐":"star","🌟":"star","💫":"sparkles","✨":"sparkles",
-  /* Hearts */
-  "❤️":"heart","💖":"heart","💕":"heart","💗":"heart","💓":"heart","💘":"heart",
-  /* Fire & Power */
-  "🔥":"flame","⚡":"zap","💥":"zap",
-  /* Crowns & Trophy */
-  "👑":"crown","🏆":"trophy","🥇":"award","🥈":"medal","🥉":"medal","🏅":"medal","🎖️":"medal",
-  /* Gift & Money */
-  "🎁":"gift","💰":"coins","🪙":"circle-dollar-sign","💵":"banknote","💸":"banknote","💴":"banknote","💶":"banknote","💷":"banknote","💎":"gem","💠":"gem",
-  /* Users */
-  "👤":"user","👥":"users","🙂":"smile","😊":"smile","😄":"smile","😁":"smile","😎":"smile",
-  /* Home */
-  "🏠":"home","🏡":"home",
-  /* Links */
-  "🔗":"link","🌐":"globe","📎":"paperclip",
-  /* Status */
-  "✅":"check-circle-2","✓":"check","✔️":"check","❌":"x-circle","❎":"x-circle","✖":"x","✕":"x",
-  "➕":"plus-circle","➕️":"plus-circle",
-  "⚠️":"alert-triangle","⚠":"alert-triangle","🚨":"siren",
-  "ℹ️":"info","ℹ":"info","❓":"help-circle","❔":"help-circle","❗":"alert-circle","❕":"alert-circle",
-  "🚫":"ban","❌️":"x-circle",
-  /* Lock */
-  "🔒":"lock","🔓":"unlock","🔐":"shield-check","🔑":"key","🗝️":"key",
-  /* Mail & Notif */
-  "📧":"mail","✉️":"mail","📩":"mail","📨":"mail","💌":"mail","🔔":"bell","🔕":"bell-off","📢":"megaphone","📣":"megaphone",
-  /* Search */
-  "🔍":"search","🔎":"search","🔍️":"search",
-  /* Rocket */
-  "🚀":"rocket","🛸":"rocket",
-  /* Edit */
-  "✏️":"pencil","📝":"file-edit","✍️":"pen-line","📄":"file","📋":"clipboard-list","📊":"bar-chart-3","📈":"trending-up","📉":"trending-down",
-  /* Trash */
-  "🗑️":"trash-2","🗑":"trash-2","🚮":"trash-2",
-  /* Folder & File */
-  "📁":"folder","📂":"folder-open","🗂️":"folder-tree","💾":"save","📦":"package",
-  /* Music */
-  "🎵":"music","🎶":"music-2","🎼":"music-4","🎧":"headphones","🎤":"mic","🎹":"piano",
-  /* Media */
-  "📺":"tv","📻":"radio","📷":"camera","📸":"camera","📹":"video","🎬":"film","🎥":"video",
-  "▶️":"play","▶":"play","⏸️":"pause","⏹️":"square","⏺️":"circle","🖼️":"image",
-  /* Clock */
-  "⏰":"alarm-clock","⏱️":"timer","⏳":"hourglass","📅":"calendar","🕐":"clock","🕑":"clock","🕒":"clock","🕓":"clock","🕔":"clock","🕕":"clock","🕖":"clock","🕗":"clock","🕘":"clock","🕙":"clock","🕚":"clock","🕛":"clock",
-  /* Nature */
-  "🌙":"moon","🌛":"moon","🌜":"moon","☀️":"sun","🌞":"sun","🌈":"rainbow","🍀":"clover","🌸":"flower-2","🌺":"flower","🌻":"flower","🌹":"flower-2","🌷":"flower-2",
-  /* Target */
-  "🎯":"target","🎪":"tent-tree","🎨":"palette","🖌️":"brush","🖍️":"pencil","🧭":"compass",
-  /* Books */
-  "📖":"book-open","📚":"library","📕":"book","📗":"book","📘":"book","📙":"book",
-  /* Misc */
-  "💡":"lightbulb","🔮":"sparkles","💻":"laptop","📱":"smartphone","📞":"phone","📟":"smartphone",
-  "🎮":"gamepad-2","🕹️":"joystick","🎲":"dice-6","🎯️":"target",
-  "💬":"message-circle","💭":"message-square","🗨️":"message-circle","🗯️":"message-square",
-  "📤":"upload","📥":"download","⬆️":"arrow-up","⬇️":"arrow-down","⬅️":"arrow-left","➡️":"arrow-right","↩️":"corner-up-left","↪️":"corner-up-right",
-  "↻":"rotate-cw","↺":"rotate-ccw","🔄":"refresh-cw","🔃":"refresh-cw",
-  "⚙️":"settings","🔧":"wrench","🔨":"hammer","🛠️":"wrench","⚒️":"hammer",
-  "📌":"pin","📍":"map-pin","🏷️":"tag","🎫":"ticket","🏁":"flag","🚩":"flag","🇮🇩":"flag",
-  "💯":"badge-check","🎉":"party-popper","🎊":"party-popper",
-  "🙏":"hand-heart","👍":"thumbs-up","👎":"thumbs-down","💪":"dumbbell","🤝":"handshake",
-  "👋":"hand","👆":"pointer","👇":"pointer","👉":"pointer","👈":"pointer",
-  "🟢":"circle-dot","🔴":"circle-dot","🟡":"circle-dot","🔵":"circle-dot","⚪":"circle","⚫":"circle-dot",
-  "☕":"coffee","🍕":"pizza","🍔":"sandwich","🍰":"cake-slice","🍪":"cookie",
-  "🎭":"drama","🎓":"graduation-cap","🏢":"building","🏦":"building-2","🏥":"hospital","🏪":"store",
-  "🚗":"car","🚕":"car","🚙":"car-front","✈️":"plane","🚁":"helicopter",
-  "🗺️":"map","🧳":"luggage","🌍":"globe","🌎":"globe","🌏":"globe"
-};
-
-/* ═══════════════════════════════════════════════════════════
-   RENDER LUCIDE ICON → SVG STRING
-   ═══════════════════════════════════════════════════════════ */
-function pascalCase(str){
-  return String(str || "").split("-").map(function(s){
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }).join("");
-}
-
-function renderLucideIcon(name){
-  if(!window.lucide || !window.lucide.icons) return "";
-  var pascalName = pascalCase(name);
-  var iconNode = window.lucide.icons[pascalName];
-  if(!iconNode) return "";
-  
-  var inner = "";
-  // iconNode = [["tag", {attrs}], ...]
-  for(var i = 0; i < iconNode.length; i++){
-    var item = iconNode[i];
-    if(!item || !item[0]) continue;
-    var tag = item[0];
-    var attrs = item[1] || {};
-    var attrStr = "";
-    var keys = Object.keys(attrs);
-    for(var j = 0; j < keys.length; j++){
-      var k = keys[j];
-      var v = String(attrs[k]);
-      v = v.replace(/"/g, "&quot;");
-      attrStr += " " + k + '="' + v + '"';
-    }
-    inner += "<" + tag + attrStr + "></" + tag + ">";
-  }
-  
-  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
-}
-
-/* ═══════════════════════════════════════════════════════════
-   OVERRIDE emojiToSvg → Pakai Lucide
-   ═══════════════════════════════════════════════════════════ */
-var _EMOJI_REGEX = /([\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\uFE0F]|[\u2700-\u27BF])/gu;
-
-window.emojiToSvg = function(text, opts){
-  if(!text) return text;
-  return String(text).replace(_EMOJI_REGEX, function(match){
-    if(match === "\uFE0F") return "";
-    var name = EMOJI_TO_LUCIDE[match];
-    if(!name){
-      // Fallback: kalau gak ada map, tampilkan emoji asli
-      return match;
-    }
-    var svg = renderLucideIcon(name);
-    if(!svg) return match;
-    return '<span class="lucide-emoji">' + svg + '</span>';
-  });
-};
-
-/* ═══════════════════════════════════════════════════════════
-   CSS BUAT .lucide-emoji
-   ═══════════════════════════════════════════════════════════ */
-var styleEl = document.createElement("style");
-styleEl.id = "lucide-emoji-style";
-styleEl.textContent = [
-  ".lucide-emoji{",
-  "  display:inline-flex !important;",
-  "  align-items:center !important;",
-  "  justify-content:center !important;",
-  "  width:1.15em !important;",
-  "  height:1.15em !important;",
-  "  vertical-align:-0.2em !important;",
-  "  flex-shrink:0 !important;",
-  "  line-height:0 !important;",
-  "  color:currentColor !important;",
-  "}",
-  ".lucide-emoji svg{",
-  "  width:100% !important;",
-  "  height:100% !important;",
-  "  display:block !important;",
-  "  stroke:currentColor !important;",
-  "}",
-  "h1 .lucide-emoji,h2 .lucide-emoji,h3 .lucide-emoji,h4 .lucide-emoji{",
-  "  width:1.35em !important;",
-  "  height:1.35em !important;",
-  "}",
-  ".btn .lucide-emoji,.btn-sm .lucide-emoji{",
-  "  width:1.05em !important;",
-  "  height:1.05em !important;",
-  "}",
-  ".menu-item .lucide-emoji,.feature-card .fi .lucide-emoji{",
-  "  width:18px !important;",
-  "  height:18px !important;",
-  "}",
-  /* Hide pixel icons lama */
-  ".px-icon{display:none !important;}"
-].join("\n");
-document.head.appendChild(styleEl);
-
-/* ═══════════════════════════════════════════════════════════
-   CLEANUP PIXEL ICON YANG UDAH RENDERED + RE-CONVERT KE LUCIDE
-   ═══════════════════════════════════════════════════════════ */
-function cleanupAndReconvert(){
-  try{
-    // Hapus semua wrapper .px-icon yang ada
-    var oldIcons = document.querySelectorAll(".px-icon");
-    oldIcons.forEach(function(el){
-      // Ambil emoji asli dari title atau data attribute
-      var emoji = el.dataset.emoji || el.getAttribute("data-emoji") || el.textContent || "";
-      
-      if(emoji){
-        var newSvg = window.emojiToSvg(emoji);
-        if(newSvg && newSvg !== emoji){
-          var span = document.createElement("span");
-          span.style.display = "contents";
-          span.setAttribute("data-emoji-converted", "2");
-          span.innerHTML = newSvg;
-          el.parentNode.replaceChild(span, el);
-          return;
-        }
-      }
-      // Fallback: hapus aja
-      if(el.parentNode) el.parentNode.removeChild(el);
-    });
-    
-    // Hapus span dengan data-emoji-converted="1" (pixel lama)
-    var oldConverted = document.querySelectorAll('span[data-emoji-converted="1"]');
-    oldConverted.forEach(function(el){
-      if(el.parentNode) el.parentNode.removeChild(el);
-    });
-    
-    console.log("🧹 Cleanup selesai: " + (oldIcons.length + oldConverted.length) + " element");
-  }catch(e){
-    console.warn("cleanupAndReconvert:", e);
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   FORCE WALK SEMUA TEXT NODE LAGI
-   ═══════════════════════════════════════════════════════════ */
-function forceReconvert(){
-  try{
-    if(!window.EmojiReplacer) return;
-    
-    // Reset semua text nodes
-    var skipTags = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"];
-    
-    function walk(root){
-      if(!root || root.nodeType !== 1) return;
-      if(skipTags.indexOf(root.tagName) !== -1) return;
-      if(root.classList && (root.classList.contains("lucide-emoji") || root.classList.contains("px-icon"))) return;
-      if(root.closest && (root.closest(".lucide-emoji") || root.closest(".px-icon"))) return;
-      
-      var kids = Array.prototype.slice.call(root.childNodes || []);
-      for(var i = 0; i < kids.length; i++){
-        var k = kids[i];
-        if(k.nodeType === 3){
-          try{
-            var txt = k.nodeValue;
-            if(!txt) continue;
-            _EMOJI_REGEX.lastIndex = 0;
-            if(!_EMOJI_REGEX.test(txt)) continue;
-            var html = window.emojiToSvg(txt);
-            if(html && html !== txt){
-              var span = document.createElement("span");
-              span.style.display = "contents";
-              span.setAttribute("data-emoji-converted", "2");
-              span.innerHTML = html;
-              k.parentNode.replaceChild(span, k);
-            }
-          }catch(e){}
-        } else if(k.nodeType === 1){
-          walk(k);
-        }
-      }
-    }
-    
-    walk(document.body);
-    console.log("🔄 Force reconvert done");
-  }catch(e){ console.warn("forceReconvert:", e); }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   INIT — Jalankan setelah Lucide loaded
-   ═══════════════════════════════════════════════════════════ */
-loadLucide().then(function(loaded){
-  if(!loaded){
-    console.warn("⚠️ Lucide gagal load, fallback ke emoji asli");
-    return;
-  }
-  
-  console.log("✅ Lucide ready, mulai convert emoji...");
-  
-  // Step 1: Cleanup pixel lama
-  setTimeout(cleanupAndReconvert, 800);
-  
-  // Step 2: Force walk semua text node
-  setTimeout(forceReconvert, 1500);
-  setTimeout(forceReconvert, 3000);
-  
-  // Step 3: Mutation observer buat element baru
-  try{
-    var obs = new MutationObserver(function(muts){
-      muts.forEach(function(m){
-        m.addedNodes.forEach(function(n){
-          if(n.nodeType === 1){
-            if(n.classList && (n.classList.contains("lucide-emoji") || n.classList.contains("px-icon"))) return;
-            // Trigger re-walk nanti (batched)
-          }
-        });
-      });
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-  }catch(e){}
-  
-  console.log("╔════════════════════════════════════════╗");
-  console.log("║  ✅ PATCH v6.2 (LUCIDE) AKTIF          ║");
-  console.log("║  • Emoji → Lucide icons                ║");
-  console.log("║  • Pixel icon lama dihapus             ║");
-  console.log("╚════════════════════════════════════════╝");
-});
-
-/* Expose debug */
-window.renderLucideIcon = renderLucideIcon;
-window.EMOJI_TO_LUCIDE = EMOJI_TO_LUCIDE;
-
-})();
-   </script>
-   <script id="finalpatch-v63-combined">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v6.3 — GABUNGAN
-   • Speaker icons Lucide
-   • Groq key baru + 401 handler
-   • Confirm keluar editor
-   ═══════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-
-var GROQ_KEY = "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";
-var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-var GROQ_MODEL = "openai/gpt-oss-120b";
-
-console.log("🔧 Patch v6.3 (combined) loading...");
-
-/* ═══════════════════════════════════════════════════════════
-   FIX #1 — SPEAKER & MUSIC ICONS
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  if(!window.EMOJI_TO_LUCIDE) return;
-  
-  Object.assign(window.EMOJI_TO_LUCIDE, {
-    "🔊":"volume-2","🔉":"volume-1","🔈":"volume","🔇":"volume-x",
-    "🎵":"music","🎶":"music-2","🎧":"headphones","🎤":"mic",
-    "🎹":"piano","📻":"radio","🔔":"bell","🔕":"bell-off",
-    "📢":"megaphone","📣":"megaphone"
-  });
-  console.log("✅ Speaker/music icons ditambah");
-  
-  // Re-walk buat convert emoji yang muncul
-  if(!window.emojiToSvg) return;
-  setTimeout(function(){
-    var skipTags = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"];
-    var regex = /[\u{1F300}-\u{1F9FF}]|[\u{1F500}-\u{1F5FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]/u;
-    
-    function walk(root){
-      if(!root || root.nodeType !== 1) return;
-      if(skipTags.indexOf(root.tagName) !== -1) return;
-      if(root.classList && (root.classList.contains("lucide-emoji") || root.classList.contains("px-icon"))) return;
-      if(root.closest && (root.closest(".lucide-emoji") || root.closest(".px-icon"))) return;
-      
-      var kids = Array.prototype.slice.call(root.childNodes || []);
-      for(var i = 0; i < kids.length; i++){
-        var k = kids[i];
-        if(k.nodeType === 3){
-          var txt = k.nodeValue;
-          if(!txt || !regex.test(txt)) continue;
-          try{
-            var html = window.emojiToSvg(txt);
-            if(html && html !== txt){
-              var span = document.createElement("span");
-              span.style.display = "contents";
-              span.setAttribute("data-emoji-converted","3");
-              span.innerHTML = html;
-              k.parentNode.replaceChild(span, k);
-            }
-          }catch(e){}
-        } else if(k.nodeType === 1){
-          walk(k);
-        }
-      }
-    }
-    walk(document.body);
-    console.log("🔄 Speaker icons reconverted");
-  }, 500);
-}, 3000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX #2 — VARSMILE AI (pakai key baru)
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  if(!window.VarsmileAI) return;
-  
-  window.VarsmileAI.askGroq = async function(userText){
-    var plan = (window.STATE && STATE.plan) || { name: "Free" };
-    var ctx = 'User context:\n- Nama: ' + ((window.Auth && Auth.current && Auth.current.name) || "User") + '\n- Plan: ' + plan.name + '\n- Kredit: ' + ((window.STATE && STATE.kredit) || 0) + '\n- Halaman: ' + (location.hash || "#/dashboard");
-    
-    var sysPrompt = 'Kamu Varsmile AI — asisten Varlinkbio yang ramah, santai, bahasa Indonesia gaul.\n\nBantu user soal:\n- Bikin bio\n- Tema, style, warna\n- Fitur (Music, Analytics, Featured Link)\n- Plan & pricing\n- Troubleshooting\n- Chat santai\n\nATURAN:\n- Jawab SINGKAT (max 150 kata)\n- Pakai emoji secukupnya\n- Kalau tidak tahu → arahkan ke Help\n- JANGAN bocorin API key\n\n' + ctx;
-    
-    var messages = [{ role: "system", content: sysPrompt }];
-    var recent = this._history.slice(-10);
-    recent.forEach(function(m){ messages.push({ role: m.role, content: m.content }); });
-    
-    try{
-      var response = await fetch(GROQ_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
-        body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: messages,
-          max_tokens: 400,
-          temperature: 0.75
-        })
-      });
-      
-      if(!response.ok){
-        console.warn("Groq HTTP " + response.status + " — fallback");
-        return this.fallbackReply(userText);
-      }
-      
-      var data = await response.json();
-      var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-      return reply || "Maaf, aku gak bisa jawab sekarang.";
-    }catch(e){
-      console.warn("Groq error:", e);
-      return this.fallbackReply(userText);
-    }
-  };
-  console.log("✅ VarsmileAI patched (key baru)");
-}, 2000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX #3 — AI BIO GENERATOR (pakai key baru)
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  if(!window.AIBioGenerator) return;
-  
-  window.AIBioGenerator._askGroq = async function(userInput, style){
-    var sysPrompt = 'Kamu AI asisten Varlinkbio. Bikin bio in-bio dari deskripsi user.\n\nOUTPUT HARUS JSON VALID:\n{"bio":"max 60 char, diawali emoji","links":[{"label":"WhatsApp","url":"https://wa.me/"},{"label":"Instagram","url":"https://instagram.com/"},{"label":"Katalog","url":"#"},{"label":"Testimoni","url":"#"}],"tema":"neo-pink","style":"minimalist"}\n\nTema: neo-cream,neo-midnight,neo-dark,neo-blue,neo-rose,neo-pink,neo-green,neo-purple,neo-orange,neo-ocean,neo-coffee,neo-sunset,neo-galaxy,neo-neon,neo-retro,neo-sakura,neo-gold\nStyle: brutalism,minimalist,glassmorphism,material,gaming,vintage,cyberpunk,aurora,retro,cosmic,anime\nGaya bahasa: ' + style + '\nOUTPUT HANYA JSON.';
-    
-    try{
-      var response = await fetch(GROQ_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
-        body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: [
-            { role: "system", content: sysPrompt },
-            { role: "user", content: 'Deskripsi: "' + userInput + '"' }
-          ],
-          max_tokens: 600,
-          temperature: 0.7,
-          response_format: { type: "json_object" }
-        })
-      });
-      
-      if(!response.ok){
-        console.warn("Groq HTTP " + response.status + " — fallback template");
-        return this._fallback(userInput);
-      }
-      
-      var data = await response.json();
-      var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-      if(!content) throw new Error("Empty response");
-      
-      try{
-        return JSON.parse(content);
-      }catch(e){
-        throw new Error("AI format salah");
-      }
-    }catch(e){
-      console.warn("AIBio error:", e);
-      return this._fallback(userInput);
-    }
-  };
-  console.log("✅ AIBioGenerator patched (key baru)");
-}, 2000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX #4 — CONFIRM KELUAR EDITOR
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  if(!window.Router) return;
-  
-  var _origNavigate = window.Router.navigate;
-  var _confirming = false;
-  
-  window.Router.navigate = function(path){
-    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-    
-    // Cek kalau keluar dari editor
-    if(hashPath === "/editor" && path !== "/editor" && !_confirming){
-      if(window.STATE && STATE.draft && STATE.draft.name){
-        _confirming = true;
-        
-        var hasId = !!STATE.draft.id;
-        var isSaved = hasId && STATE.draft.updatedAt;
-        
-        // Cek perubahan signifikan
-        var msg = isSaved 
-          ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan"
-          : "⚠️ Bio belum pernah disimpan!\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan";
-        
-        var choice = confirm(msg);
-        _confirming = false;
-        
-        if(choice){
-          // Save dulu
-          try{
-            if(window.PageEditor && window.PageEditor.save){
-              window.PageEditor.save();
-              setTimeout(function(){
-                _origNavigate.call(window.Router, path);
-              }, 800);
-              return;
-            }
-          }catch(e){ console.warn("save:", e); }
-        }
-        // Cancel → keluar tanpa save (langsung)
-      }
-    }
-    
-    return _origNavigate.call(this, path);
-  };
-  
-  console.log("✅ Router navigate patched");
-  
-  // Patch juga untuk tombol back editor
-  setTimeout(function(){
-    var backBtn = document.getElementById("btn-back-dashboard");
-    if(backBtn){
-      // Clone buat hapus listener lama
-      var newBtn = backBtn.cloneNode(true);
-      backBtn.parentNode.replaceChild(newBtn, backBtn);
-      
-      newBtn.addEventListener("click", function(){
-        var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-        if(hashPath === "/editor" && window.STATE && STATE.draft && STATE.draft.name){
-          var isSaved = STATE.draft.id && STATE.draft.updatedAt;
-          var msg = isSaved 
-            ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan\n• Cancel = Keluar tanpa simpan"
-            : "⚠️ Bio belum disimpan!\n\n• OK = Simpan dulu\n• Cancel = Keluar tanpa simpan";
-          
-          var choice = confirm(msg);
-          if(choice){
-            if(window.PageEditor && window.PageEditor.save){
-              window.PageEditor.save();
-              setTimeout(function(){
-                window.Router.navigate("/dashboard");
-              }, 800);
-              return;
-            }
-          }
-        }
-        window.Router.navigate("/dashboard");
-      });
-      console.log("✅ Back button patched");
-    }
-  }, 3000);
-}, 2000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   TEST KEY BARU
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  fetch(GROQ_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [{ role: "user", content: "test" }],
-      max_tokens: 5
-    })
-  }).then(function(r){
-    if(r.ok){
-      console.log("%c✅ GROQ KEY VALID!","color:#22c55e;font-weight:bold;font-size:14px");
-      if(window.toast) setTimeout(function(){ toast("🔑 AI siap dipakai!","success"); }, 2500);
-    } else if(r.status === 401){
-      console.error("%c❌ GROQ KEY INVALID (401)","color:#ff2a2a;font-weight:bold;font-size:14px");
-      console.log("%c📌 Sementara: pakai fallback rule-based","color:#22c55e;font-weight:bold");
-      if(window.toast) setTimeout(function(){ toast("AI key invalid — mode basic","error"); }, 2500);
-    } else if(r.status === 429){
-      console.warn("%c⚠️ Groq rate limit","color:#ffd700;font-weight:bold");
-    }
-  }).catch(function(e){ console.warn("Groq test:", e.message); });
-}, 4000);
-
-
-console.log("╔════════════════════════════════════════╗");
-console.log("║  ✅ PATCH v6.3 (GABUNGAN) AKTIF        ║");
-console.log("║  • Speaker icons Lucide                ║");
-console.log("║  • Groq key baru dipasang              ║");
-console.log("║  • Confirm keluar editor               ║");
-console.log("╚════════════════════════════════════════╝");
-
-})();
-</script>
-   <style id="finalpatch-v7-css">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v7 — CSS LENGKAP
-   Intro + Drag + AI Page + Music Modes + Tutorial
+   PATCH v7.3 — CSS LENGKAP
    ═══════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════
@@ -15062,38 +13112,41 @@ console.log("╚═════════════════════�
   text-transform:uppercase;opacity:0;transition:opacity .3s;z-index:6;
 }
 .vintro-loading.show{opacity:.7}
-.vintro-loading::after{
-  content:'';display:inline-block;width:20px;text-align:left;
-  animation:vintroDots 1.4s steps(4) infinite;
-}
-@keyframes vintroDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
 
 /* ═══════════════════════════════════════════════════════════
-   2. VARSMILE DRAG & DROP
+   2. VARSMILE — DRAG & DROP (clean)
    ═══════════════════════════════════════════════════════════ */
 #varsmile-char{
+  position:fixed !important;
+  width:72px !important;
+  height:88px !important;
+  z-index:99997 !important;
+  pointer-events:auto !important;
   cursor:grab !important;
   touch-action:none !important;
   user-select:none !important;
   -webkit-user-select:none !important;
-  pointer-events:auto !important;
-  transition:left .35s cubic-bezier(.34,1.56,.64,1),
-             top .35s cubic-bezier(.34,1.56,.64,1),
-             filter .3s !important;
+  -webkit-tap-highlight-color:transparent !important;
+  transition:filter .3s !important;
+  image-rendering:pixelated !important;
+  right:16px;
+  bottom:16px;
 }
 #varsmile-char.dragging{
   cursor:grabbing !important;
-  transition:none !important;
-  z-index:99999 !important;
   filter:drop-shadow(0 0 25px rgba(255,215,0,.9)) !important;
   transform:scale(1.1) !important;
+  z-index:99999 !important;
 }
-
-/* Animasi arah gerakan */
+#varsmile-char .varsmile-svg{
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  filter:drop-shadow(3px 3px 0 rgba(0,0,0,.4)) !important;
+}
 #varsmile-char.move-up .varsmile-svg{animation:vsMoveUp .6s ease-out}
 #varsmile-char.move-down .varsmile-svg{animation:vsMoveDown .6s ease-out}
 #varsmile-char.move-side .varsmile-svg{animation:vsMoveSide .6s ease-out}
-
 @keyframes vsMoveUp{
   0%{transform:translateY(0) rotate(0)}
   40%{transform:translateY(-25px) rotate(-12deg)}
@@ -15111,30 +13164,123 @@ console.log("╚═════════════════════�
 }
 
 /* ═══════════════════════════════════════════════════════════
-   3. TOMBOL X HAPUS VARSMILE + SHOW BUTTON
+   3. TUTORIAL VARSMILE — SPOTLIGHT + ANIMASI
    ═══════════════════════════════════════════════════════════ */
-.varsmile-close-btn{
-  position:fixed;z-index:99999;
-  width:28px;height:28px;border-radius:50%;
-  background:#ff2a2a;color:#fff;
-  border:2.5px solid #0a0a0a;
-  display:grid;place-items:center;
-  font-size:16px;font-weight:900;
-  cursor:pointer;
-  box-shadow:2px 2px 0 #0a0a0a;
-  padding:0;line-height:1;
-  transition:transform .15s, box-shadow .15s, opacity .3s;
-  font-family:'Inter',sans-serif;
-  opacity:1;
-}
-.varsmile-close-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#cc0000}
-.varsmile-close-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}
-.varsmile-close-btn.hidden{opacity:0;pointer-events:none}
+.vtut-overlay{position:fixed;inset:0;z-index:99995;pointer-events:none;opacity:0;transition:opacity .4s ease}
+.vtut-overlay.active{opacity:1;pointer-events:auto}
+.vtut-dark-bg{position:absolute;inset:0;background:rgba(10,10,10,.75);pointer-events:auto}
 
-.lt-badge.show-varsmile{
-  background:#ffd700;color:#0a0a0a;
-  padding:6px 10px;font-size:14px;
+.vtut-spotlight{
+  position:absolute;border-radius:12px;
+  box-shadow:0 0 0 9999px rgba(10,10,10,.75), 0 0 40px rgba(255,215,0,.6), 0 0 0 4px #ffd700, 0 0 0 8px #0a0a0a;
+  transition:all .5s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;z-index:1;background:transparent;
 }
+.vtut-spotlight::before{
+  content:'';position:absolute;inset:-20px;
+  border:3px dashed #ffd700;border-radius:18px;
+  animation:vtutPulse 1.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes vtutPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.6}}
+
+.vtut-varsmile{
+  position:absolute;width:72px;height:88px;
+  pointer-events:none;z-index:3;
+  transition:all .8s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 0 20px rgba(255,215,0,.8));
+}
+.vtut-varsmile svg{width:100%;height:100%;display:block}
+.vtut-varsmile.bounce svg{animation:vtutBounce .8s ease-in-out infinite}
+@keyframes vtutBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* Varsmile walk masuk */
+.vtut-varsmile.entering{
+  animation:vtutEnter .8s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes vtutEnter{
+  0%{opacity:0;transform:translateY(30px) scale(.5)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.vtut-bubble{
+  position:absolute;background:#fff;
+  border:3px solid #0a0a0a;border-radius:14px;
+  padding:14px 18px;font-family:'Inter',sans-serif;
+  font-size:14px;font-weight:700;color:#0a0a0a;
+  box-shadow:5px 5px 0 #ffd700, 0 0 0 4px #0a0a0a;
+  max-width:340px;line-height:1.5;z-index:4;pointer-events:auto;
+  animation:vtutBubbleIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes vtutBubbleIn{
+  from{opacity:0;transform:scale(.85) translateY(10px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+.vtut-bubble::after{content:'';position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid #0a0a0a}
+.vtut-bubble::before{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:10px solid #fff;z-index:1}
+.vtut-bubble h4{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#0a0a0a;display:flex;align-items:center;gap:8px}
+.vtut-bubble p{font-size:13px;font-weight:600;line-height:1.55;color:#333}
+.vtut-bubble p b{color:#0a0a0a;font-weight:900}
+
+.vtut-next-btn{
+  margin-top:12px;width:100%;padding:10px 14px;
+  background:#0a0a0a;color:#ffd700;
+  border:2.5px solid #0a0a0a;border-radius:10px;
+  font-weight:900;font-size:12.5px;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;
+  box-shadow:3px 3px 0 #ffd700;
+  transition:transform .1s;font-family:inherit;
+}
+.vtut-next-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #ffd700}
+.vtut-next-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #ffd700}
+
+.vtut-skip-btn{
+  margin-top:6px;width:100%;padding:8px 14px;
+  background:transparent;color:#888;
+  border:2px solid #888;border-radius:10px;
+  font-weight:700;font-size:11px;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;font-family:inherit;
+  transition:all .15s;
+}
+.vtut-skip-btn:hover{background:#888;color:#fff}
+
+.vtut-tap-hint{position:absolute;z-index:2;pointer-events:none;animation:vtutTapHint 1.2s ease-in-out infinite}
+.vtut-tap-hint-icon{
+  width:48px;height:48px;background:#ffd700;
+  border:3px solid #0a0a0a;border-radius:50%;
+  display:grid;place-items:center;
+  box-shadow:0 0 0 4px #ffd700, 0 0 0 8px rgba(255,215,0,.3);
+  font-size:24px;
+}
+@keyframes vtutTapHint{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.85);opacity:.7}}
+
+.vtut-progress{
+  position:fixed;top:0;left:0;right:0;height:6px;
+  background:rgba(10,10,10,.3);z-index:99999;
+  pointer-events:none;display:none;
+}
+.vtut-progress.active{display:block}
+.vtut-progress-fill{
+  height:100%;background:linear-gradient(90deg,#ffd700,#ff8c00);
+  width:0%;transition:width .4s ease;box-shadow:0 0 10px #ffd700;
+}
+
+.vtut-counter{
+  position:fixed;top:16px;right:16px;
+  background:#0a0a0a;color:#ffd700;
+  border:3px solid #ffd700;border-radius:999px;
+  padding:8px 16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;font-weight:900;letter-spacing:1px;
+  z-index:99999;display:none;
+  box-shadow:3px 3px 0 rgba(255,215,0,.3);
+}
+.vtut-counter.active{display:block}
+
+.vtut-confetti{position:fixed;inset:0;z-index:100000;pointer-events:none;overflow:hidden}
+.vtut-confetti-piece{position:absolute;top:-20px;width:10px;height:14px;animation:vtutFall 3s linear infinite}
+@keyframes vtutFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.3}}
+
+.vtut-target{position:relative !important;z-index:99996 !important}
 
 /* ═══════════════════════════════════════════════════════════
    4. VARSMILE AI — HALAMAN BARU
@@ -15288,12 +13434,12 @@ console.log("╚═════════════════════�
 .vai-page-quota.warning{color:#ff2a2a}
 
 /* ═══════════════════════════════════════════════════════════
-   5. MUSIC PLAYER — FIX (in-browser only)
+   5. MUSIC PLAYER (fix — in-browser only)
    ═══════════════════════════════════════════════════════════ */
 .music-float-btn{
   position:fixed;
   top:76px;right:14px;
-  z-index:99995;
+  z-index:99990;
   width:48px;height:48px;
   border-radius:50%;
   background:#0a0a0a;
@@ -15322,9 +13468,7 @@ console.log("╚═════════════════════�
   box-shadow:3px 3px 0 #888;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   6. MUSIC MODE PICKER (Custom UI)
-   ═══════════════════════════════════════════════════════════ */
+/* Music Mode Picker */
 .music-mode-picker{
   background:#fff;
   border:2.5px solid #0a0a0a;
@@ -15371,133 +13515,68 @@ console.log("╚═════════════════════�
   font-size:9.5px;font-weight:600;color:#555;
   text-transform:none;letter-spacing:0;line-height:1.3;
 }
-
+   </style>
+   <script id="finalpatch-v73-js-a">
 /* ═══════════════════════════════════════════════════════════
-   7. TUTORIAL VARSMILE — SPOTLIGHT
-   ═══════════════════════════════════════════════════════════ */
-.vtut-overlay{position:fixed;inset:0;z-index:99995;pointer-events:none;opacity:0;transition:opacity .4s ease}
-.vtut-overlay.active{opacity:1;pointer-events:auto}
-.vtut-dark-bg{position:absolute;inset:0;background:rgba(10,10,10,.75);pointer-events:auto}
-
-.vtut-spotlight{
-  position:absolute;border-radius:12px;
-  box-shadow:0 0 0 9999px rgba(10,10,10,.75), 0 0 40px rgba(255,215,0,.6), 0 0 0 4px #ffd700, 0 0 0 8px #0a0a0a;
-  transition:all .5s cubic-bezier(.34,1.56,.64,1);
-  pointer-events:none;z-index:1;background:transparent;
-}
-.vtut-spotlight::before{
-  content:'';position:absolute;inset:-20px;
-  border:3px dashed #ffd700;border-radius:18px;
-  animation:vtutPulse 1.5s ease-in-out infinite;pointer-events:none;
-}
-@keyframes vtutPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.6}}
-
-.vtut-varsmile{
-  position:absolute;width:72px;height:88px;
-  pointer-events:none;z-index:3;
-  transition:all .8s cubic-bezier(.4,0,.2,1);
-  filter:drop-shadow(0 0 20px rgba(255,215,0,.8));
-}
-.vtut-varsmile svg{width:100%;height:100%;display:block}
-.vtut-varsmile.bounce svg{animation:vtutBounce .8s ease-in-out infinite}
-@keyframes vtutBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-.vtut-bubble{
-  position:absolute;background:#fff;
-  border:3px solid #0a0a0a;border-radius:14px;
-  padding:14px 18px;font-family:'Inter',sans-serif;
-  font-size:14px;font-weight:700;color:#0a0a0a;
-  box-shadow:5px 5px 0 #ffd700, 0 0 0 4px #0a0a0a;
-  max-width:340px;line-height:1.5;z-index:4;pointer-events:auto;
-  animation:vtutBubbleIn .4s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes vtutBubbleIn{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.vtut-bubble::after{content:'';position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid #0a0a0a}
-.vtut-bubble::before{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:10px solid #fff;z-index:1}
-.vtut-bubble h4{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;color:#0a0a0a;display:flex;align-items:center;gap:8px}
-.vtut-bubble p{font-size:13px;font-weight:600;line-height:1.55;color:#333}
-.vtut-bubble p b{color:#0a0a0a;font-weight:900}
-
-.vtut-next-btn{
-  margin-top:12px;width:100%;padding:10px 14px;
-  background:#0a0a0a;color:#ffd700;
-  border:2.5px solid #0a0a0a;border-radius:10px;
-  font-weight:900;font-size:12.5px;text-transform:uppercase;
-  letter-spacing:.5px;cursor:pointer;
-  box-shadow:3px 3px 0 #ffd700;transition:transform .1s;
-  font-family:inherit;
-}
-.vtut-next-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #ffd700}
-.vtut-next-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #ffd700}
-
-.vtut-skip-btn{
-  margin-top:6px;width:100%;padding:8px 14px;
-  background:transparent;color:#888;
-  border:2px solid #888;border-radius:10px;
-  font-weight:700;font-size:11px;text-transform:uppercase;
-  letter-spacing:.5px;cursor:pointer;font-family:inherit;
-  transition:all .15s;
-}
-.vtut-skip-btn:hover{background:#888;color:#fff}
-
-.vtut-tap-hint{position:absolute;z-index:2;pointer-events:none;animation:vtutTapHint 1.2s ease-in-out infinite}
-.vtut-tap-hint-icon{
-  width:48px;height:48px;background:#ffd700;
-  border:3px solid #0a0a0a;border-radius:50%;
-  display:grid;place-items:center;
-  box-shadow:0 0 0 4px #ffd700, 0 0 0 8px rgba(255,215,0,.3);
-  font-size:24px;
-}
-@keyframes vtutTapHint{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.85);opacity:.7}}
-
-.vtut-progress{
-  position:fixed;top:0;left:0;right:0;height:6px;
-  background:rgba(10,10,10,.3);z-index:99999;
-  pointer-events:none;display:none;
-}
-.vtut-progress.active{display:block}
-.vtut-progress-fill{
-  height:100%;background:linear-gradient(90deg,#ffd700,#ff8c00);
-  width:0%;transition:width .4s ease;box-shadow:0 0 10px #ffd700;
-}
-
-.vtut-counter{
-  position:fixed;top:16px;right:16px;
-  background:#0a0a0a;color:#ffd700;
-  border:3px solid #ffd700;border-radius:999px;
-  padding:8px 16px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:12px;font-weight:900;letter-spacing:1px;
-  z-index:99999;display:none;
-  box-shadow:3px 3px 0 rgba(255,215,0,.3);
-}
-.vtut-counter.active{display:block}
-
-.vtut-confetti{position:fixed;inset:0;z-index:100000;pointer-events:none;overflow:hidden}
-.vtut-confetti-piece{position:absolute;top:-20px;width:10px;height:14px;animation:vtutFall 3s linear infinite}
-@keyframes vtutFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.3}}
-
-.vtut-target{position:relative !important;z-index:99996 !important}
-</style>
-   <script id="finalpatch-v7-js-a">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v7 — JS PART A
-   1. Intro Varsmile (bola basket)
-   2. Varsmile Drag & Drop
-   3. Tombol X hapus + Show button
-   4. Varsmile AI halaman baru
+   PATCH v7.3 — JS PART A
+   1. Nuke semua handler Varsmile lama
+   2. Intro Varsmile (auto-trigger)
+   3. Varsmile rebuild + drag & drop
+   4. Varsmile AI page (#/varsmile-ai)
+   5. Menu item "Varsmile AI" di drawer
+   6. Emoji auto-detect (semua Unicode → fallback generic)
    ═══════════════════════════════════════════════════════════ */
 (function(){
 "use strict";
 
-console.log("🚀 Patch v7-A loading...");
+console.log("🚀 Patch v7.3-A loading...");
 
 var GROQ_KEY = "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";
 var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 var GROQ_MODEL = "openai/gpt-oss-120b";
 
 /* ═══════════════════════════════════════════════════════════
-   PART 1 — INTRO VARSMILE (BOLA BASKET)
+   PART 1 — NUKE HANDLER LAMA
+   ═══════════════════════════════════════════════════════════ */
+function nukeVarsmile(){
+  try{
+    // Hapus semua elemen
+    ["varsmile-char","varsmile-close-btn","varsmile-road"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.remove();
+    });
+    document.querySelectorAll(".varsmile-bubble, .varsmile-dust, .vai-panel, .vai-countdown, .vtut-overlay, .vtut-progress, .vtut-counter, .vintro-overlay").forEach(function(el){
+      el.remove();
+    });
+  }catch(e){}
+}
+
+// Matikan gesture & handler lama
+try{
+  if(window.GestureRecovery){
+    window.GestureRecovery._trigger = function(){};
+    window.GestureRecovery._addSwipe = function(){};
+    window.GestureRecovery._seq = [];
+  }
+}catch(e){}
+
+try{
+  if(window.VarsmileAI){
+    window.VarsmileAI.handleVarsmileClick = function(){};
+    window.VarsmileAI.showCountdown = function(){};
+    window.VarsmileAI.hideCountdown = function(){};
+  }
+}catch(e){}
+
+nukeVarsmile();
+setTimeout(nukeVarsmile, 500);
+setTimeout(nukeVarsmile, 1500);
+
+console.log("🗑️ Handler lama di-nuke");
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — INTRO VARSMILE (BOLA BASKET)
    ═══════════════════════════════════════════════════════════ */
 var VarsmileIntro = {
   _overlay: null, _playing: false, _played: false,
@@ -15507,6 +13586,9 @@ var VarsmileIntro = {
     try{
       if(localStorage.getItem("varlinkbio_intro_shown") === "1") return false;
     }catch(e){}
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath.startsWith("/u/")) return false;
+    if(hashPath === "/login" || hashPath === "/register" || hashPath === "/verify") return false;
     return true;
   },
   
@@ -15518,12 +13600,18 @@ var VarsmileIntro = {
     this._playing = true;
     
     try{
+      // Sembunyiin Varsmile & close btn dulu
+      var vs = document.getElementById("varsmile-char");
+      if(vs) vs.style.display = "none";
+      var cb = document.getElementById("varsmile-close-btn");
+      if(cb) cb.style.display = "none";
+      
       this._overlay = document.createElement("div");
       this._overlay.className = "vintro-overlay active";
       this._overlay.innerHTML = 
         '<div class="vintro-stage">' +
           '<div class="vintro-ball" id="vintro-ball"></div>' +
-          '<div class="vintro-varsmile" id="vintro-varsmile">' + (window.VARSMILE_SVG || '') + '</div>' +
+          '<div class="vintro-varsmile" id="vintro-varsmile">' + (window.VARSMILE_SVG || this._getFallbackSvg()) + '</div>' +
           '<div class="vintro-loading" id="vintro-loading">Memuat</div>' +
           '<div class="vintro-flash" id="vintro-flash"></div>' +
         '</div>';
@@ -15575,6 +13663,13 @@ var VarsmileIntro = {
         self._playing = false;
         self._played = true;
         try{ localStorage.setItem("varlinkbio_intro_shown", "1"); }catch(e){}
+        
+        // Tampilkan Varsmile kembali
+        var vs2 = document.getElementById("varsmile-char");
+        if(vs2) vs2.style.display = "";
+        var cb2 = document.getElementById("varsmile-close-btn");
+        if(cb2) cb2.style.display = "";
+        
         if(callback && typeof callback === "function") callback();
       }, 4500);
       
@@ -15588,118 +13683,167 @@ var VarsmileIntro = {
   reset: function(){
     try{ localStorage.removeItem("varlinkbio_intro_shown"); }catch(e){}
     this._played = false;
+  },
+  
+  _getFallbackSvg: function(){
+    return '<svg viewBox="0 0 16 17" class="varsmile-svg" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="1" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="2" width="12" height="1" fill="#0a0a0a"/><rect x="1" y="3" width="14" height="7" fill="#0a0a0a"/><rect x="2" y="10" width="12" height="1" fill="#0a0a0a"/><rect x="3" y="11" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="4" y="5" width="1" height="1" fill="#ffffff"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="1" height="1" fill="#ffffff"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="12" width="6" height="1" fill="#0a0a0a"/><rect x="4" y="13" width="8" height="3" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/><rect x="3" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="12" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="6" y="16" width="1" height="1" fill="#0a0a0a"/><rect x="9" y="16" width="1" height="1" fill="#0a0a0a"/></svg>';
   }
 };
 
 
 /* ═══════════════════════════════════════════════════════════
-   PART 2 — VARSMILE DRAG & DROP
+   PART 3 — VARSMILE REBUILD + DRAG & DROP
    ═══════════════════════════════════════════════════════════ */
-var VarsmileDrag = {
-  _el: null, _isDragging: false,
-  _startX: 0, _startY: 0,
-  _startLeft: 0, _startTop: 0,
-  _moved: false, _attached: false,
+var VS = {
+  el: null,
+  dragging: false,
+  moved: false,
+  startX: 0, startY: 0,
+  startLeft: 0, startTop: 0,
+  clickStartTime: 0
+};
+
+function getVarsmileSVG(){
+  if(window.VARSMILE_SVG) return window.VARSMILE_SVG;
+  return VarsmileIntro._getFallbackSvg();
+}
+
+function buildVarsmile(){
+  try{
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath.startsWith("/u/")) return;
+    if(!window.Auth || !Auth.current) return;
+    
+    // Skip kalau di-hide
+    var isHidden = false;
+    try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
+    if(isHidden) return;
+    
+    // Skip kalau udah ada
+    if(VS.el && document.body.contains(VS.el)) return;
+    
+    // Cleanup dulu
+    var old = document.getElementById("varsmile-char");
+    if(old) old.remove();
+    
+    // Buat elemen
+    var vs = document.createElement("div");
+    vs.id = "varsmile-char";
+    vs.className = "facing-right";
+    vs.innerHTML = getVarsmileSVG();
+    
+    // Restore posisi
+    var savedPos = null;
+    try{
+      var raw = localStorage.getItem("varlinkbio_varsmile_pos");
+      if(raw) savedPos = JSON.parse(raw);
+    }catch(e){}
+    
+    if(savedPos && savedPos.left && savedPos.top){
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var left = Math.max(4, Math.min(vw - 76, savedPos.left));
+      var top = Math.max(4, Math.min(vh - 92, savedPos.top));
+      vs.style.left = left + "px";
+      vs.style.top = top + "px";
+      vs.style.right = "auto";
+      vs.style.bottom = "auto";
+    }
+    
+    document.body.appendChild(vs);
+    VS.el = vs;
+    
+    attachDrag(vs);
+    
+    console.log("✅ Varsmile rebuilt");
+  }catch(e){ console.warn("buildVarsmile:", e); }
+}
+
+function attachDrag(vs){
+  // Mouse
+  vs.addEventListener("mousedown", function(e){
+    if(e.button && e.button !== 0) return;
+    startDrag(e, e);
+  });
+  document.addEventListener("mousemove", function(e){ moveDrag(e); });
+  document.addEventListener("mouseup", function(e){ endDrag(e); });
   
-  init: function(){
-    var self = this;
-    setInterval(function(){ self._attach(); }, 1500);
-    setTimeout(function(){ self._attach(); }, 500);
-  },
+  // Touch
+  vs.addEventListener("touchstart", function(e){
+    if(e.touches.length !== 1) return;
+    startDrag(e, e.touches[0]);
+  }, { passive: false });
+  document.addEventListener("touchmove", function(e){
+    if(VS.dragging && e.cancelable) e.preventDefault();
+    moveDrag(e, e.touches ? e.touches[0] : e);
+  }, { passive: false });
+  document.addEventListener("touchend", function(e){ endDrag(e); });
+  document.addEventListener("touchcancel", function(e){ endDrag(e); });
   
-  _attach: function(){
-    var vs = document.getElementById("varsmile-char");
-    if(!vs) return;
-    if(vs.dataset.dragAttached === "1") return;
-    vs.dataset.dragAttached = "1";
+  function startDrag(e, touch){
+    if(!VS.el) return;
+    VS.dragging = true;
+    VS.moved = false;
+    VS.startX = touch.clientX;
+    VS.startY = touch.clientY;
+    VS.clickStartTime = Date.now();
     
-    var self = this;
-    this._el = vs;
+    var rect = VS.el.getBoundingClientRect();
+    VS.startLeft = rect.left;
+    VS.startTop = rect.top;
     
-    // Position absolute dari awal
-    var rect = vs.getBoundingClientRect();
-    vs.style.right = "auto";
-    vs.style.bottom = "auto";
-    vs.style.left = rect.left + "px";
-    vs.style.top = rect.top + "px";
+    VS.el.style.right = "auto";
+    VS.el.style.bottom = "auto";
+    VS.el.style.left = rect.left + "px";
+    VS.el.style.top = rect.top + "px";
     
-    // Restore saved position
-    this.restorePosition();
-    
-    // Mouse events
-    vs.addEventListener("mousedown", function(e){ self._onStart(e); });
-    document.addEventListener("mousemove", function(e){ self._onMove(e); });
-    document.addEventListener("mouseup", function(e){ self._onEnd(e); });
-    
-    // Touch events
-    vs.addEventListener("touchstart", function(e){ self._onStart(e); }, { passive: false });
-    document.addEventListener("touchmove", function(e){ self._onMove(e); }, { passive: false });
-    document.addEventListener("touchend", function(e){ self._onEnd(e); });
-    
-    console.log("✅ Varsmile drag attached");
-  },
+    VS.el.classList.add("dragging");
+  }
   
-  _onStart: function(e){
-    if(!this._el) return;
-    var touch = e.touches ? e.touches[0] : e;
-    this._isDragging = true;
-    this._moved = false;
-    this._startX = touch.clientX;
-    this._startY = touch.clientY;
+  function moveDrag(e, touch){
+    if(!VS.dragging || !VS.el) return;
+    if(!touch) touch = e.touches ? e.touches[0] : e;
+    if(!touch) return;
     
-    var rect = this._el.getBoundingClientRect();
-    this._startLeft = rect.left;
-    this._startTop = rect.top;
+    var dx = touch.clientX - VS.startX;
+    var dy = touch.clientY - VS.startY;
     
-    this._el.classList.add("dragging");
-  },
-  
-  _onMove: function(e){
-    if(!this._isDragging || !this._el) return;
-    if(e.cancelable) e.preventDefault();
+    if(Math.abs(dx) > 5 || Math.abs(dy) > 5) VS.moved = true;
     
-    var touch = e.touches ? e.touches[0] : e;
-    var dx = touch.clientX - this._startX;
-    var dy = touch.clientY - this._startY;
-    
-    if(Math.abs(dx) > 5 || Math.abs(dy) > 5) this._moved = true;
-    
-    var newLeft = this._startLeft + dx;
-    var newTop = this._startTop + dy;
+    var newLeft = VS.startLeft + dx;
+    var newTop = VS.startTop + dy;
     
     var vw = window.innerWidth;
     var vh = window.innerHeight;
-    var vsW = this._el.offsetWidth || 72;
-    var vsH = this._el.offsetHeight || 88;
+    var vsW = VS.el.offsetWidth || 72;
+    var vsH = VS.el.offsetHeight || 88;
     
     newLeft = Math.max(4, Math.min(vw - vsW - 4, newLeft));
     newTop = Math.max(4, Math.min(vh - vsH - 4, newTop));
     
-    this._el.style.left = newLeft + "px";
-    this._el.style.top = newTop + "px";
-  },
+    VS.el.style.left = newLeft + "px";
+    VS.el.style.top = newTop + "px";
+  }
   
-  _onEnd: function(e){
-    if(!this._isDragging || !this._el) return;
+  function endDrag(e){
+    if(!VS.dragging || !VS.el) return;
+    VS.dragging = false;
+    VS.el.classList.remove("dragging");
     
-    var self = this;
-    this._isDragging = false;
-    this._el.classList.remove("dragging");
+    if(!VS.moved) return;
     
-    if(!this._moved) return;
-    
-    var rect = this._el.getBoundingClientRect();
-    var dx = rect.left - this._startLeft;
-    var dy = rect.top - this._startTop;
+    var rect = VS.el.getBoundingClientRect();
+    var dx = rect.left - VS.startLeft;
+    var dy = rect.top - VS.startTop;
     
     var animClass = "move-side";
     if(dy < -30) animClass = "move-up";
     else if(dy > 30) animClass = "move-down";
     else if(Math.abs(dx) > 20) animClass = "move-side";
     
-    this._el.classList.add(animClass);
+    VS.el.classList.add(animClass);
     setTimeout(function(){
-      if(self._el) self._el.classList.remove(animClass);
+      if(VS.el) VS.el.classList.remove(animClass);
     }, 600);
     
     if(window.Sound && Sound.tick) Sound.tick();
@@ -15709,136 +13853,12 @@ var VarsmileDrag = {
         left: rect.left, top: rect.top
       }));
     }catch(e){}
-  },
-  
-  restorePosition: function(){
-    try{
-      var saved = localStorage.getItem("varlinkbio_varsmile_pos");
-      if(!saved) return;
-      var pos = JSON.parse(saved);
-      var vs = document.getElementById("varsmile-char");
-      if(!vs) return;
-      if(pos.left && pos.top){
-        var vw = window.innerWidth;
-        var vh = window.innerHeight;
-        var vsW = vs.offsetWidth || 72;
-        var vsH = vs.offsetHeight || 88;
-        pos.left = Math.max(4, Math.min(vw - vsW - 4, pos.left));
-        pos.top = Math.max(4, Math.min(vh - vsH - 4, pos.top));
-        vs.style.left = pos.left + "px";
-        vs.style.top = pos.top + "px";
-        vs.style.right = "auto";
-        vs.style.bottom = "auto";
-      }
-    }catch(e){}
   }
-};
+}
 
 
 /* ═══════════════════════════════════════════════════════════
-   PART 3 — TOMBOL X HAPUS + TOMBOL SHOW VARSMILE
-   ═══════════════════════════════════════════════════════════ */
-var VarsmileControls = {
-  _posTimer: null,
-  
-  init: function(){
-    var self = this;
-    setInterval(function(){
-      self.attachCloseBtn();
-      self.updateShowBtn();
-    }, 1500);
-    setTimeout(function(){ self.attachCloseBtn(); }, 800);
-    setTimeout(function(){ self.updateShowBtn(); }, 1200);
-  },
-  
-  attachCloseBtn: function(){
-    var vs = document.getElementById("varsmile-char");
-    if(!vs){
-      var existing = document.getElementById("varsmile-close-btn");
-      if(existing) existing.classList.add("hidden");
-      return;
-    }
-    
-    var btn = document.getElementById("varsmile-close-btn");
-    if(!btn){
-      btn = document.createElement("button");
-      btn.id = "varsmile-close-btn";
-      btn.className = "varsmile-close-btn";
-      btn.type = "button";
-      btn.innerHTML = "×";
-      btn.title = "Hapus Varsmile";
-      document.body.appendChild(btn);
-      
-      btn.addEventListener("click", function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        
-        if(window.Varsmile && window.Varsmile.hide) window.Varsmile.hide();
-        try{ localStorage.setItem("varlinkbio_varsmile_hidden", "1"); }catch(e){}
-        if(window.STATE) STATE.varsmileEnabled = false;
-        
-        btn.classList.add("hidden");
-        if(window.toast) toast("Varsmile dihapus. Munculin lagi dari tombol 🤖 di menu","info");
-        if(window.Sound && Sound.bip) Sound.bip();
-      });
-    }
-    
-    // Update position relative to Varsmile
-    var rect = vs.getBoundingClientRect();
-    if(rect.width === 0 || rect.height === 0){
-      btn.classList.add("hidden");
-      return;
-    }
-    btn.classList.remove("hidden");
-    btn.style.left = (rect.left + rect.width - 18) + "px";
-    btn.style.top = (rect.top - 6) + "px";
-  },
-  
-  updateShowBtn: function(){
-    var actions = document.querySelector(".lt-topbar .lt-actions");
-    if(!actions) return;
-    
-    var isHidden = false;
-    try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
-    
-    var existing = document.getElementById("btn-show-varsmile");
-    
-    // Kalau Varsmile gak di-hide, hapus tombol show
-    if(!isHidden){
-      if(existing) existing.remove();
-      return;
-    }
-    
-    // Kalau udah ada, skip
-    if(existing) return;
-    
-    var btn = document.createElement("button");
-    btn.className = "lt-badge show-varsmile";
-    btn.id = "btn-show-varsmile";
-    btn.title = "Munculin Varsmile";
-    btn.innerHTML = "🤖";
-    
-    var menuBtn = actions.querySelector("#btn-drawer-open");
-    if(menuBtn) actions.insertBefore(btn, menuBtn);
-    else actions.appendChild(btn);
-    
-    btn.addEventListener("click", function(){
-      try{ localStorage.removeItem("varlinkbio_varsmile_hidden"); }catch(e){}
-      if(window.STATE) STATE.varsmileEnabled = true;
-      if(window.Varsmile){
-        window.Varsmile.hide && window.Varsmile.hide();
-        setTimeout(function(){ window.Varsmile.init(); }, 100);
-      }
-      btn.remove();
-      if(window.toast) toast("Varsmile muncul lagi!","success");
-      if(window.Sound && Sound.tada) Sound.tada();
-    });
-  }
-};
-
-
-/* ═══════════════════════════════════════════════════════════
-   PART 4 — VARSMILE AI HALAMAN BARU (#/varsmile-ai)
+   PART 4 — VARSMILE AI PAGE (#/varsmile-ai)
    ═══════════════════════════════════════════════════════════ */
 var VarsmileAIPage = {
   _history: [], _typing: false,
@@ -15868,13 +13888,11 @@ var VarsmileAIPage = {
   },
   
   render: function(){
-    if(!window.Auth || !Auth.current) return (window.Router ? Router.navigate("/login") : null);
-    
+    if(!window.Auth || !Auth.current){ if(window.Router) Router.navigate("/login"); return; }
     var app = document.getElementById("app");
     if(!app) return;
     
     var chk = this.checkLimit();
-    var name = (window.Auth && Auth.current && Auth.current.name) || "Kreator";
     
     var html = (window.renderTopbar ? renderTopbar() : "");
     html += '<div class="vai-page">';
@@ -15894,11 +13912,9 @@ var VarsmileAIPage = {
     html += '<div class="vai-page-quota' + (chk.remaining <= 3 && chk.remaining !== -1 ? ' warning' : '') + '" id="vai-page-quota">';
     if(chk.remaining === -1) html += '∞ pesan unlimited';
     else html += '💬 ' + chk.remaining + '/' + chk.limit + ' pesan hari ini';
-    html += '</div></div>';
-    html += '</div>';
+    html += '</div></div></div>';
     
     app.innerHTML = html;
-    
     if(window.bindTopbar) bindTopbar();
     
     this._history = [];
@@ -15939,7 +13955,6 @@ var VarsmileAIPage = {
     var sug = document.getElementById("vai-page-sug");
     if(!sug) return;
     if(!list || !list.length){ sug.innerHTML = ""; return; }
-    
     var self = this;
     var h = "";
     list.forEach(function(s){
@@ -15975,10 +13990,7 @@ var VarsmileAIPage = {
   sendMessage: async function(text){
     if(!text || this._typing) return;
     var chk = this.checkLimit();
-    if(!chk.ok){
-      if(window.toast) toast("Limit chat habis! Upgrade plan dulu.","error");
-      return;
-    }
+    if(!chk.ok){ if(window.toast) toast("Limit chat habis! Upgrade plan dulu.","error"); return; }
     
     this._history.push({ role: "user", content: text });
     this.renderHistory();
@@ -16003,7 +14015,6 @@ var VarsmileAIPage = {
       await this.addUsage();
       this.updateQuota();
     }catch(e){
-      console.warn("VarsmileAIPage error:", e);
       this._history.push({ role: "assistant", content: "Aduh, aku error. Coba lagi ya." });
     }
     
@@ -16019,11 +14030,7 @@ var VarsmileAIPage = {
     var quota = document.getElementById("vai-page-quota");
     if(!quota) return;
     var chk = this.checkLimit();
-    if(chk.remaining === -1){
-      quota.className = "vai-page-quota";
-      quota.innerHTML = "∞ pesan unlimited";
-      return;
-    }
+    if(chk.remaining === -1){ quota.className = "vai-page-quota"; quota.innerHTML = "∞ pesan unlimited"; return; }
     quota.className = "vai-page-quota" + (chk.remaining <= 3 ? " warning" : "");
     quota.innerHTML = '💬 ' + chk.remaining + '/' + chk.limit + ' pesan hari ini';
   },
@@ -16031,7 +14038,6 @@ var VarsmileAIPage = {
   askGroq: async function(userText){
     var plan = (window.STATE && STATE.plan) || { name: "Free" };
     var ctx = 'User context:\n- Nama: ' + ((window.Auth && Auth.current && Auth.current.name) || "User") + '\n- Plan: ' + plan.name + '\n- Kredit: ' + ((window.STATE && STATE.kredit) || 0) + '\n- Halaman: /varsmile-ai';
-    
     var sysPrompt = 'Kamu Varsmile AI — asisten Varlinkbio yang ramah, santai, bahasa Indonesia gaul.\n\nBantu user soal:\n- Bikin bio\n- Tema, style, warna\n- Fitur (Music, Analytics, Featured Link)\n- Plan & pricing\n- Troubleshooting\n- Chat santai\n\nATURAN:\n- Jawab SINGKAT (max 150 kata)\n- Pakai emoji secukupnya\n- Kalau tidak tahu → arahkan ke Help\n- JANGAN bocorin API key\n\n' + ctx;
     
     var messages = [{ role: "system", content: sysPrompt }];
@@ -16041,21 +14047,13 @@ var VarsmileAIPage = {
     try{
       var response = await fetch(GROQ_ENDPOINT, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + GROQ_KEY
-        },
-        body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: messages,
-          max_tokens: 400,
-          temperature: 0.75
-        })
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
+        body: JSON.stringify({ model: GROQ_MODEL, messages: messages, max_tokens: 400, temperature: 0.75 })
       });
       
       if(!response.ok){
         if(response.status === 429) return this.fallbackReply(userText);
-        if(response.status === 401) return "🔑 AI key expired. " + this.fallbackReply(userText);
+        if(response.status === 401) return "🔑 " + this.fallbackReply(userText);
         throw new Error("HTTP " + response.status);
       }
       
@@ -16063,7 +14061,6 @@ var VarsmileAIPage = {
       var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
       return reply || "Maaf, aku gak bisa jawab sekarang.";
     }catch(e){
-      console.warn("Groq error:", e);
       return this.fallbackReply(userText);
     }
   },
@@ -16071,7 +14068,7 @@ var VarsmileAIPage = {
   fallbackReply: function(text){
     var t = (text || "").toLowerCase();
     if(t.indexOf("bikin bio") !== -1 || t.indexOf("buat bio") !== -1) return 'Oke! Ceritain:\n1. Kamu jualan apa?\n2. Target audience siapa?\n3. Vibe yang diinginkan?\n\nAku bantu bikin 💪';
-    if(t.indexOf("tema") !== -1) return 'Buka **Editor** → **Tema Warna** → pilih → **Simpan**';
+    if(t.indexOf("tema") !== -1) return 'Buka Editor → Tema Warna → pilih → Simpan';
     if(t.indexOf("plan") !== -1) return 'Plan:\n• Free — Rp 0\n• Starter — Rp 5.000 PERMANEN\n• Pro — Rp 1.000+/hari\n• Ultimate — Rp 6.000+/hari';
     if(t.indexOf("error") !== -1) return 'Coba:\n1. Refresh\n2. Clear cache\n3. Chat admin WA';
     if(t.indexOf("hai") !== -1 || t.indexOf("halo") !== -1) return 'Hai! 👋 Ada yang bisa aku bantu?';
@@ -16082,16 +14079,124 @@ var VarsmileAIPage = {
   _formatAI: function(txt){ if(!txt) return ""; var s = this._escape(txt); s = s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"); s = s.replace(/\n/g, "<br>"); return s; },
   _svg: function(){ return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="3" width="12" height="7" fill="#ffd700"/><rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/></svg>'; },
   _icon: function(name){
-    var icons = {
-      send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
-    };
+    var icons = { send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' };
     return icons[name] || "";
   }
 };
 
 
 /* ═══════════════════════════════════════════════════════════
-   REGISTER ROUTE /varsmile-ai
+   PART 5 — MENU ITEM "VARSMILE AI" DI DRAWER
+   ═══════════════════════════════════════════════════════════ */
+function addVarsmileAIMenu(){
+  var drawerPanel = document.querySelector(".lt-drawer-panel");
+  if(!drawerPanel) return;
+  if(document.getElementById("drawer-varsmile-ai")) return;
+  
+  // Cari "Music Saya" atau item apapun sebagai anchor
+  var anchor = drawerPanel.querySelector('[data-nav="/music"]')
+    || drawerPanel.querySelector('[data-nav="/store"]')
+    || drawerPanel.querySelector('[data-nav="/dashboard"]');
+  
+  if(!anchor) return;
+  
+  var item = document.createElement("div");
+  item.className = "menu-item";
+  item.id = "drawer-varsmile-ai";
+  item.style.background = "linear-gradient(135deg,#ffd700,#ff8c00)";
+  item.style.color = "#0a0a0a";
+  item.innerHTML = '🤖 Varsmile AI';
+  
+  item.addEventListener("click", function(){
+    var d = document.getElementById("lt-drawer");
+    if(d) d.classList.remove("open");
+    if(window.Router) Router.navigate("/varsmile-ai");
+  });
+  
+  anchor.parentNode.insertBefore(item, anchor.nextSibling);
+  console.log("✅ Menu Varsmile AI ditambah");
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — EMOJI AUTO-DETECT (semua Unicode)
+   ═══════════════════════════════════════════════════════════ */
+function extendEmojiMap(){
+  if(!window.EMOJI_TO_LUCIDE) return;
+  
+  // Fallback untuk emoji apapun yang gak ke-mapping
+  window.__EMOJI_FALLBACK = "circle-dot";
+  
+  // Patch emojiToSvg: kalau gak ada mapping, pakai fallback
+  var _origEmojiToSvg = window.emojiToSvg;
+  if(_origEmojiToSvg && !window.__emojiPatched){
+    window.__emojiPatched = true;
+    
+    var FULL_EMOJI_REGEX = /([\u{1F000}-\u{1FFFF}]|[\u{2600}-\u{27BF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FAFF}]|[\u{1F300}-\u{1F5FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{FE00}-\u{FE0F}]|[\u{200D}])/gu;
+    
+    window.emojiToSvg = function(text, opts){
+      if(!text) return text;
+      return String(text).replace(FULL_EMOJI_REGEX, function(match){
+        // Skip zero-width joiner & variation selector
+        if(match === "\uFE0F" || match === "\uFE0E" || match === "\u200D") return "";
+        
+        // Cek mapping manual dulu
+        var name = window.EMOJI_TO_LUCIDE[match];
+        
+        // Kalau gak ada → fallback generic
+        if(!name) name = window.__EMOJI_FALLBACK;
+        
+        var svg = window.renderLucideIcon ? window.renderLucideIcon(name) : null;
+        if(!svg) return match;
+        
+        return '<span class="lucide-emoji">' + svg + '</span>';
+      });
+    };
+    console.log("✅ Emoji auto-detect extended");
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   INIT LOOP
+   ═══════════════════════════════════════════════════════════ */
+function initLoop(){
+  buildVarsmile();
+  addVarsmileAIMenu();
+}
+
+setInterval(initLoop, 1500);
+setTimeout(initLoop, 300);
+setTimeout(initLoop, 1000);
+
+window.addEventListener("hashchange", function(){
+  setTimeout(initLoop, 500);
+});
+
+
+/* ═══════════════════════════════════════════════════════════
+   AUTO-TRIGGER INTRO
+   ═══════════════════════════════════════════════════════════ */
+function autoTriggerIntro(){
+  var attempts = 0;
+  var check = setInterval(function(){
+    attempts++;
+    if(attempts > 60){ clearInterval(check); return; }
+    
+    if(window.Auth && window.Auth._initialized){
+      clearInterval(check);
+      setTimeout(function(){
+        if(VarsmileIntro.shouldPlay()) VarsmileIntro.play();
+      }, 1500);
+    }
+  }, 250);
+}
+
+setTimeout(autoTriggerIntro, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   REGISTER ROUTE + EXTEND EMOJI
    ═══════════════════════════════════════════════════════════ */
 setTimeout(function(){
   if(window.Router && Router.on){
@@ -16100,342 +14205,119 @@ setTimeout(function(){
   }
 }, 2000);
 
-
-/* ═══════════════════════════════════════════════════════════
-   HOOK VARSMILE — 1x KLIK BUKA AI PAGE
-   ═══════════════════════════════════════════════════════════ */
-function hookVarsmileClick(){
-  var vs = document.getElementById("varsmile-char");
-  if(!vs) return;
-  if(vs.dataset.aiNavHooked === "1") return;
-  vs.dataset.aiNavHooked = "1";
-  
-  var startX = 0, startY = 0, startTime = 0;
-  
-  vs.addEventListener("pointerdown", function(e){
-    startX = e.clientX;
-    startY = e.clientY;
-    startTime = Date.now();
-  });
-  
-  vs.addEventListener("pointerup", function(e){
-    var dx = Math.abs(e.clientX - startX);
-    var dy = Math.abs(e.clientY - startY);
-    var dt = Date.now() - startTime;
-    
-    // Kalau geser > 10px atau lama > 500ms → dianggap drag, bukan klik
-    if(dx > 10 || dy > 10 || dt > 500) return;
-    
-    // 1x klik → buka AI page
-    e.stopPropagation();
-    e.preventDefault();
-    
-    if(window.Sound && Sound.click) Sound.click();
-    if(window.Router) Router.navigate("/varsmile-ai");
-  }, true);
-  
-  console.log("✅ Varsmile click → AI page hooked");
-}
+setTimeout(extendEmojiMap, 3000);
 
 
 /* ═══════════════════════════════════════════════════════════
-   INIT
+   EXPOSE
    ═══════════════════════════════════════════════════════════ */
-function initPartA(){
-  VarsmileDrag.init();
-  VarsmileControls.init();
-  
-  setInterval(hookVarsmileClick, 2000);
-  setTimeout(hookVarsmileClick, 800);
-  
-  window.VarsmileIntro = VarsmileIntro;
-  window.VarsmileDrag = VarsmileDrag;
-  window.VarsmileAIPage = VarsmileAIPage;
-  
-  console.log("╔════════════════════════════════════════╗");
-  console.log("║  ✅ PATCH v7-A AKTIF                   ║");
-  console.log("║  • Intro bola basket                   ║");
-  console.log("║  • Varsmile drag & drop                ║");
-  console.log("║  • Tombol X + show di topbar           ║");
-  console.log("║  • Varsmile AI page (#/varsmile-ai)    ║");
-  console.log("╚════════════════════════════════════════╝");
-}
+window.VarsmileIntro = VarsmileIntro;
+window.VarsmileAIPage = VarsmileAIPage;
+window.VarsmileV73 = {
+  rebuild: buildVarsmile,
+  nuke: nukeVarsmile,
+  addMenu: addVarsmileAIMenu,
+  triggerIntro: function(){ VarsmileIntro.reset(); VarsmileIntro.play(); }
+};
 
-setTimeout(initPartA, 2000);
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v7.3-A AKTIF                 ║");
+console.log("║  • Intro auto-trigger                  ║");
+console.log("║  • Varsmile drag & drop                ║");
+console.log("║  • AI page (/varsmile-ai)              ║");
+console.log("║  • Menu AI di drawer                   ║");
+console.log("║  • Emoji auto-detect (semua)           ║");
+console.log("╚════════════════════════════════════════╝");
 
 })();
    </script>
-   <script id="finalpatch-v7-js-b">
+   <script id="finalpatch-v73-js-b">
 /* ═══════════════════════════════════════════════════════════
-   PATCH v7 — JS PART B
-   5. Music Player fix + Mode Picker
-   6. Tutorial Varsmile (spotlight)
-   7. Fix Editor Exit + Explore
+   PATCH v7.3 — JS PART B
+   7. Tutorial Varsmile (objek mati = tombol "Lanjut")
+   8. Music Mode Picker + fix player
+   9. Fix Keluar Editor + Explore
    ═══════════════════════════════════════════════════════════ */
 (function(){
 "use strict";
 
-console.log("🚀 Patch v7-B loading...");
+console.log("🚀 Patch v7.3-B loading...");
 
 /* ═══════════════════════════════════════════════════════════
-   PART 5 — MUSIC PLAYER FIX + MODE PICKER
-   ═══════════════════════════════════════════════════════════ */
-var MusicModeManager = {
-  PREF_KEY: "varlinkbio_music_mode_pref",
-  
-  getMode: function(){
-    try{
-      var raw = localStorage.getItem(this.PREF_KEY);
-      if(!raw) return "tetap"; // default
-      var parsed = JSON.parse(raw);
-      if(parsed && ["tetap","auto","acak"].indexOf(parsed.mode) !== -1){
-        return parsed.mode;
-      }
-    }catch(e){}
-    return "tetap";
-  },
-  
-  setMode: function(mode){
-    try{
-      localStorage.setItem(this.PREF_KEY, JSON.stringify({
-        mode: mode,
-        updatedAt: Date.now()
-      }));
-    }catch(e){}
-    
-    // Sync ke STATE + Firestore
-    if(window.STATE){
-      STATE.musicPref = STATE.musicPref || {};
-      STATE.musicPref.mode = mode;
-    }
-    if(window.Auth && Auth.current && window.FB){
-      try{
-        FB.db.collection("users").doc(Auth.current.uid).update({
-          "musicPref.mode": mode
-        });
-      }catch(e){}
-    }
-  }
-};
-
-/* Rebuild MusicPlayer dengan mode support */
-setTimeout(function(){
-  // Cari MusicPlayer yang ada
-  if(!window.MusicPlayer){
-    console.warn("⚠️ MusicPlayer belum ada");
-    return;
-  }
-  
-  var MP = window.MusicPlayer;
-  
-  // Override _onEnded handler
-  if(MP._audio){
-    // Reset handlers dulu
-    try{
-      MP._audio.onended = null;
-    }catch(e){}
-    
-    MP._audio.addEventListener("ended", async function(){
-      try{
-        var mode = MusicModeManager.getMode();
-        console.log("🎵 Music ended, mode:", mode);
-        
-        if(mode === "tetap"){
-          // Ulang lagu yang sama
-          MP._audio.currentTime = 0;
-          MP._audio.play().catch(function(){});
-          return;
-        }
-        
-        if(mode === "auto"){
-          // Auto pindah ke lagu berikutnya
-          var queue = [];
-          try{
-            var raw = localStorage.getItem("varlinkbio_playlist_pref");
-            if(raw){
-              var p = JSON.parse(raw);
-              if(p && Array.isArray(p.queue)) queue = p.queue;
-            }
-          }catch(e){}
-          
-          if(!queue.length){
-            // Kalau gak ada playlist, ulang lagu yang sama
-            MP._audio.currentTime = 0;
-            MP._audio.play().catch(function(){});
-            return;
-          }
-          
-          var currentId = MP._current ? MP._current.id : null;
-          var curIdx = queue.indexOf(currentId);
-          var nextIdx = (curIdx === -1) ? 0 : ((curIdx + 1) % queue.length);
-          var nextId = queue[nextIdx];
-          
-          // Load lagu berikutnya dari MusicLibrary
-          if(window.MusicLibrary){
-            var nextMusic = await MusicLibrary.getById(nextId);
-            if(nextMusic && nextMusic.url){
-              MP._current = nextMusic;
-              MP._audio.src = nextMusic.url;
-              MP._audio.play().catch(function(){});
-              console.log("🎵 Auto next:", nextMusic.title);
-            }
-          }
-          return;
-        }
-        
-        if(mode === "acak"){
-          // Pilih lagu acak dari playlist
-          var queue2 = [];
-          try{
-            var raw2 = localStorage.getItem("varlinkbio_playlist_pref");
-            if(raw2){
-              var p2 = JSON.parse(raw2);
-              if(p2 && Array.isArray(p2.queue)) queue2 = p2.queue;
-            }
-          }catch(e){}
-          
-          if(!queue2.length){
-            MP._audio.currentTime = 0;
-            MP._audio.play().catch(function(){});
-            return;
-          }
-          
-          var currentId2 = MP._current ? MP._current.id : null;
-          var candidates = queue2.filter(function(id){ return id !== currentId2; });
-          if(!candidates.length) candidates = queue2;
-          var pickId = candidates[Math.floor(Math.random() * candidates.length)];
-          
-          if(window.MusicLibrary){
-            var pickMusic = await MusicLibrary.getById(pickId);
-            if(pickMusic && pickMusic.url){
-              MP._current = pickMusic;
-              MP._audio.src = pickMusic.url;
-              MP._audio.play().catch(function(){});
-              console.log("🎵 Shuffle:", pickMusic.title);
-            }
-          }
-          return;
-        }
-      }catch(e){
-        console.warn("music ended handler:", e);
-      }
-    });
-    
-    // Set loop berdasarkan mode
-    MP._audio.loop = (MusicModeManager.getMode() === "tetap");
-  }
-  
-  console.log("✅ MusicPlayer mode handler attached");
-}, 3000);
-
-/* Patch page music — tambah mode picker */
-function patchPageMusic(){
-  var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-  if(hashPath !== "/music") return;
-  
-  var page = document.querySelector(".music-picker-page");
-  if(!page) return;
-  if(page.querySelector(".music-mode-picker")) return;
-  
-  // Cari tempat insert (sebelum list)
-  var listWrap = document.getElementById("music-list-wrap");
-  if(!listWrap) return;
-  
-  var currentMode = MusicModeManager.getMode();
-  
-  var modeHTML = 
-    '<div class="music-mode-picker">' +
-      '<h4>🎵 Mode Pemutaran</h4>' +
-      '<div class="music-mode-grid">' +
-        '<button class="music-mode-btn ' + (currentMode === "tetap" ? "active" : "") + '" data-mode="tetap">' +
-          '<div class="mmb-icon">🔂</div>' +
-          '<div class="mmb-label">Lagu Tetap</div>' +
-          '<div class="mmb-desc">Ulang lagu ini terus</div>' +
-        '</button>' +
-        '<button class="music-mode-btn ' + (currentMode === "auto" ? "active" : "") + '" data-mode="auto">' +
-          '<div class="mmb-icon">➡️</div>' +
-          '<div class="mmb-label">Auto Pindah</div>' +
-          '<div class="mmb-desc">Habis → lagu berikutnya</div>' +
-        '</button>' +
-        '<button class="music-mode-btn ' + (currentMode === "acak" ? "active" : "") + '" data-mode="acak">' +
-          '<div class="mmb-icon">🔀</div>' +
-          '<div class="mmb-label">Acak</div>' +
-          '<div class="mmb-desc">Random urutan lagu</div>' +
-        '</button>' +
-      '</div>' +
-    '</div>';
-  
-  listWrap.insertAdjacentHTML("beforebegin", modeHTML);
-  
-  // Bind
-  var picker = page.querySelector(".music-mode-picker");
-  picker.querySelectorAll("[data-mode]").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      var mode = btn.dataset.mode;
-      MusicModeManager.setMode(mode);
-      
-      // Update UI
-      picker.querySelectorAll("[data-mode]").forEach(function(b){
-        b.classList.toggle("active", b.dataset.mode === mode);
-      });
-      
-      // Update audio loop
-      if(window.MusicPlayer && MusicPlayer._audio){
-        MusicPlayer._audio.loop = (mode === "tetap");
-      }
-      
-      var labels = { tetap: "Lagu Tetap 🔂", auto: "Auto Pindah ➡️", acak: "Acak 🔀" };
-      if(window.toast) toast("Mode: " + labels[mode], "success");
-      if(window.Sound && Sound.click) Sound.click();
-    });
-  });
-  
-  console.log("✅ Music mode picker injected");
-}
-
-/* Auto-inject saat buka /music */
-setInterval(patchPageMusic, 2000);
-
-/* Fix music player biar gak tembus browser — hapus dari AudioContext lain */
-setTimeout(function(){
-  if(!window.MusicPlayer) return;
-  
-  // Pastikan audio volume 0.5 max
-  if(MusicPlayer._audio){
-    MusicPlayer._audio.volume = 0.5;
-    MusicPlayer._audio.preload = "auto";
-  }
-  
-  // Stop audio pas halaman hidden (biar gak jalan di background)
-  document.addEventListener("visibilitychange", function(){
-    if(document.hidden){
-      // Optional: pause music saat tab hidden
-      // (skip dulu biar user masih denger kalau pindah tab)
-    }
-  });
-  
-  console.log("✅ Music player volume fixed");
-}, 4000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   PART 6 — TUTORIAL VARSMILE
+   PART 7 — TUTORIAL VARSMILE
+   
+   RULE:
+   - action "info" → highlight objek + tombol "Lanjut" aja
+   - action "tap"  → user HARUS tap objek (tombol/badge aktif)
    ═══════════════════════════════════════════════════════════ */
 var TUTORIAL_STEPS = [
-  { id: "welcome", target: null, title: "Hai! Aku Varsmile", text: "Aku bakal nuntun kamu keliling Varlinkbio! Tutorial ini 100% interaktif — kamu harus **tap** objek yang aku tunjuk ya. Siap?", action: "next", position: "center" },
-  { id: "profile", target: ".dash-hero h2", title: "Ini Profilmu", text: "Nama kamu bakal muncul di sini. Setiap kali kamu login, sapaan bakal menyesuaikan nama akunmu.", action: "tap", position: "bottom", requiresTap: ".dash-hero h2" },
-  { id: "kredit", target: "#btn-kredit-top, .lt-badge.kredit", title: "Kredit Kamu", text: "Kredit = mata uang buat beli fitur. Tap badge ini buat lihat & top up kredit kamu.", action: "tap", position: "bottom", requiresTap: "#btn-kredit-top, .lt-badge.kredit" },
-  { id: "sound", target: "#sound-toggle-btn, .lt-badge.sound", title: "Sound Toggle", text: "Tap ini buat nyalain/matiin suara 8-bit Varlinkbio. Klik terus biar seru!", action: "tap", position: "bottom", requiresTap: "#sound-toggle-btn, .lt-badge.sound" },
-  { id: "kredit-banner", target: ".kredit-banner", title: "Banner Kredit", text: "Banner ini nunjukin kredit & tombol buat nonton iklan atau top up. **Nonton iklan = +25 kredit gratis!**", action: "next", position: "bottom" },
-  { id: "plan", target: ".dash-plan-card", title: "Plan Kamu", text: "Ini status plan kamu. **Free** bisa upgrade ke **Starter (Rp 5.000 permanen!)**, **Pro**, atau **Ultimate**.", action: "next", position: "bottom" },
-  { id: "btn-bikin", target: "#btn-bikin", title: "Bikin Bio Pertama", text: "Tap tombol ini buat bikin bio pertamamu! Kamu bakal masuk ke editor.", action: "tap", position: "top", requiresTap: "#btn-bikin" }
+  {
+    id: "welcome",
+    target: null,
+    title: "Hai! Aku Varsmile",
+    text: "Aku bakal nuntun kamu keliling Varlinkbio! Tutorial singkat 7 langkah. Siap?",
+    action: "next",
+    position: "center"
+  },
+  {
+    id: "profile",
+    target: ".dash-hero h2",
+    title: "Ini Profilmu",
+    text: "Nama kamu bakal muncul di sini. Setiap login, sapaan bakal menyesuaikan nama akunmu.",
+    action: "info",       // ← objek mati (tulisan) = cukup Lanjut
+    position: "bottom"
+  },
+  {
+    id: "kredit-banner",
+    target: ".kredit-banner",
+    title: "Banner Kredit",
+    text: "Banner ini nunjukin kredit & tombol buat nonton iklan atau top up. **Nonton iklan = +25 kredit gratis!**",
+    action: "info",
+    position: "bottom"
+  },
+  {
+    id: "kredit-badge",
+    target: "#btn-kredit-top, .lt-badge.kredit",
+    title: "Kredit Kamu",
+    text: "Tap badge ini buat lihat & top up kredit kamu.",
+    action: "tap",        // ← objek aktif (badge) = user harus tap
+    position: "bottom",
+    requiresTap: "#btn-kredit-top, .lt-badge.kredit"
+  },
+  {
+    id: "sound",
+    target: "#sound-toggle-btn, .lt-badge.sound",
+    title: "Sound Toggle",
+    text: "Tap ini buat nyalain/matiin suara 8-bit Varlinkbio!",
+    action: "tap",
+    position: "bottom",
+    requiresTap: "#sound-toggle-btn, .lt-badge.sound"
+  },
+  {
+    id: "plan",
+    target: ".dash-plan-card",
+    title: "Plan Kamu",
+    text: "Ini status plan kamu. Free bisa upgrade ke Starter (Rp 5.000 permanen!), Pro, atau Ultimate.",
+    action: "info",
+    position: "bottom"
+  },
+  {
+    id: "btn-bikin",
+    target: "#btn-bikin",
+    title: "Bikin Bio Pertama",
+    text: "Tap tombol ini buat bikin bio pertamamu! Kamu bakal masuk ke editor.",
+    action: "tap",
+    position: "top",
+    requiresTap: "#btn-bikin"
+  }
 ];
 
 var VarsmileTutorial = {
-  _step: 0, _overlay: null, _darkBg: null, _spotlight: null,
+  _step: 0,
+  _overlay: null, _darkBg: null, _spotlight: null,
   _bubble: null, _varsmile: null, _tapHint: null,
-  _progress: null, _counter: null, _active: false,
-  _onFinish: null, _cleanupTap: null,
+  _progress: null, _counter: null,
+  _active: false, _onFinish: null, _cleanupTap: null,
   
   start: function(options){
     if(this._active) return;
@@ -16444,16 +14326,14 @@ var VarsmileTutorial = {
     this._step = 0;
     this._active = true;
     
-    var realVarsmile = document.getElementById("varsmile-char");
-    if(realVarsmile) realVarsmile.style.display = "none";
-    
-    var closeBtn = document.getElementById("varsmile-close-btn");
-    if(closeBtn) closeBtn.style.display = "none";
+    // Hide real Varsmile
+    var realVs = document.getElementById("varsmile-char");
+    if(realVs) realVs.style.display = "none";
     
     this._build();
     this._render();
     
-    console.log("🎓 Tutorial Varsmile started");
+    console.log("🎓 Tutorial started");
     if(window.Sound && Sound.tada) Sound.tada();
   },
   
@@ -16461,7 +14341,6 @@ var VarsmileTutorial = {
     var self = this;
     this._overlay = document.createElement("div");
     this._overlay.className = "vtut-overlay";
-    this._overlay.id = "vtut-overlay";
     
     this._darkBg = document.createElement("div");
     this._darkBg.className = "vtut-dark-bg";
@@ -16479,7 +14358,7 @@ var VarsmileTutorial = {
     this._overlay.appendChild(this._tapHint);
     
     this._varsmile = document.createElement("div");
-    this._varsmile.className = "vtut-varsmile bounce";
+    this._varsmile.className = "vtut-varsmile bounce entering";
     this._varsmile.innerHTML = (window.VARSMILE_SVG || this._getFallbackSvg());
     this._overlay.appendChild(this._varsmile);
     
@@ -16524,9 +14403,7 @@ var VarsmileTutorial = {
     this._counter.textContent = cur + " / " + total;
     
     var targetEl = null;
-    if(step.target){
-      targetEl = this._findElement(step.target);
-    }
+    if(step.target) targetEl = this._findElement(step.target);
     
     if(targetEl){
       this._positionAtTarget(targetEl, step);
@@ -16536,13 +14413,11 @@ var VarsmileTutorial = {
     
     this._renderBubble(step);
     
-    if(step.requiresTap){
+    if(step.action === "tap" && step.requiresTap){
       this._setupTapRequirement(step.requiresTap, step);
     }
     
-    if(targetEl){
-      this._autoScroll(targetEl);
-    }
+    if(targetEl) this._autoScroll(targetEl);
   },
   
   _renderBubble: function(step){
@@ -16554,8 +14429,10 @@ var VarsmileTutorial = {
     html += '<p>' + this._formatText(step.text) + '</p>';
     
     if(step.action === "tap"){
+      // Objek AKTIF → user harus tap
       html += '<div style="margin-top:10px;padding:8px 12px;background:#fffbe6;border:2px solid #ffd700;border-radius:8px;font-size:11.5px;font-weight:700;color:#0a0a0a;text-align:center">👆 Tap objek yang ditunjuk</div>';
     } else {
+      // Objek MATI / info → tombol Lanjut
       html += '<button class="vtut-next-btn" id="vtut-next">' + (isLast ? "🎉 Selesai" : "Lanjut →") + '</button>';
     }
     
@@ -16636,7 +14513,7 @@ var VarsmileTutorial = {
     this._bubble.style.top = bubbleY + "px";
     this._bubble.style.transform = "none";
     
-    if(step.requiresTap){
+    if(step.action === "tap"){
       this._tapHint.style.display = "block";
       this._tapHint.style.left = (cx - 24) + "px";
       this._tapHint.style.top = (cy - 24) + "px";
@@ -16646,12 +14523,9 @@ var VarsmileTutorial = {
   },
   
   _positionCenter: function(step){
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var bubbleW = 360;
-    var bubbleH = 280;
-    var vsW = 72;
-    var vsH = 88;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var bubbleW = 360, bubbleH = 280;
+    var vsW = 72, vsH = 88;
     
     this._spotlight.style.display = "none";
     this._tapHint.style.display = "none";
@@ -16673,8 +14547,7 @@ var VarsmileTutorial = {
     var rect = targetEl.getBoundingClientRect();
     var vh = window.innerHeight;
     var pad = 120;
-    var needsScroll = rect.top < pad || rect.bottom > (vh - pad);
-    if(!needsScroll) return;
+    if(rect.top >= pad && rect.bottom <= (vh - pad)) return;
     
     try{
       targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -16686,41 +14559,25 @@ var VarsmileTutorial = {
           if(el) self._positionAtTarget(el, step);
         }
       }, 800);
-    }catch(e){
-      var targetY = window.scrollY + rect.top - (vh / 2) + (rect.height / 2);
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-      var self2 = this;
-      setTimeout(function(){
-        var step = TUTORIAL_STEPS[self2._step];
-        if(step && step.target){
-          var el = self2._findElement(step.target);
-          if(el) self2._positionAtTarget(el, step);
-        }
-      }, 800);
-    }
+    }catch(e){}
   },
   
   _setupTapRequirement: function(selector, step){
     var self = this;
     var targets = selector.split(",").map(function(s){ return s.trim(); });
-    
-    var cleanupList = [];
-    var timeoutId = null;
+    var cleanupList = [], timeoutId = null;
     
     function handleTap(e){
       e.preventDefault();
       e.stopPropagation();
-      
-      console.log("👆 User tapped: " + step.id);
       if(window.Sound && Sound.success) Sound.success();
-      
       cleanup();
       setTimeout(function(){ self._next(); }, 400);
     }
     
     function cleanup(){
-      cleanupList.forEach(function(item){
-        try{ item.el.removeEventListener(item.type, item.fn, true); }catch(e){}
+      cleanupList.forEach(function(it){
+        try{ it.el.removeEventListener(it.type, it.fn, true); }catch(e){}
       });
       cleanupList = [];
       if(timeoutId) clearTimeout(timeoutId);
@@ -16738,7 +14595,6 @@ var VarsmileTutorial = {
     });
     
     timeoutId = setTimeout(function(){
-      console.log("⏱️ Tap timeout, auto-next");
       cleanup();
       self._next();
     }, 30000);
@@ -16779,11 +14635,8 @@ var VarsmileTutorial = {
       try{ self._progress && self._progress.remove(); }catch(e){}
       try{ self._counter && self._counter.remove(); }catch(e){}
       
-      var realVarsmile = document.getElementById("varsmile-char");
-      if(realVarsmile) realVarsmile.style.display = "";
-      
-      var closeBtn = document.getElementById("varsmile-close-btn");
-      if(closeBtn) closeBtn.style.display = "";
+      var realVs = document.getElementById("varsmile-char");
+      if(realVs) realVs.style.display = "";
       
       self._active = false;
       self._overlay = null;
@@ -16808,14 +14661,14 @@ var VarsmileTutorial = {
       var container = document.createElement("div");
       container.className = "vtut-confetti";
       for(var i = 0; i < 80; i++){
-        var piece = document.createElement("div");
-        piece.className = "vtut-confetti-piece";
-        piece.style.left = Math.random() * 100 + "%";
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDelay = (Math.random() * 0.5) + "s";
-        piece.style.animationDuration = (2.5 + Math.random() * 1.5) + "s";
-        piece.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
-        container.appendChild(piece);
+        var p = document.createElement("div");
+        p.className = "vtut-confetti-piece";
+        p.style.left = Math.random() * 100 + "%";
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDelay = (Math.random() * 0.5) + "s";
+        p.style.animationDuration = (2.5 + Math.random() * 1.5) + "s";
+        p.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+        container.appendChild(p);
       }
       document.body.appendChild(container);
       setTimeout(function(){ try{ container.remove(); }catch(e){} }, 4000);
@@ -16828,11 +14681,10 @@ var VarsmileTutorial = {
 };
 
 /* Hook tombol "Ulangi Tutorial" */
-function hookReplayTutorial(){
+setInterval(function(){
   var rt = document.getElementById("btn-replay-tutorial");
-  if(!rt) return;
-  if(rt.dataset.vtutHooked === "1") return;
-  rt.dataset.vtutHooked = "1";
+  if(!rt || rt.dataset.vtut73 === "1") return;
+  rt.dataset.vtut73 = "1";
   
   var newBtn = rt.cloneNode(true);
   rt.parentNode.replaceChild(newBtn, rt);
@@ -16846,14 +14698,13 @@ function hookReplayTutorial(){
       VarsmileTutorial.start();
     }
   });
-}
+}, 2000);
 
-/* Auto start kalau user baru */
-function checkAutoStart(){
+/* Auto start untuk user baru */
+function checkAutoTutorial(){
   try{
     if(!window.Auth || !Auth.current) return;
     if(Auth.current.tutorialShown) return;
-    
     var hashPath = (location.hash.slice(1) || "/").split("?")[0];
     if(hashPath !== "/dashboard") return;
     
@@ -16863,30 +14714,217 @@ function checkAutoStart(){
         setTimeout(function(){ VarsmileTutorial.start(); }, 1500);
       }
     }, 500);
-    
     setTimeout(function(){ clearInterval(checkEl); }, 10000);
   }catch(e){}
 }
 
-setInterval(hookReplayTutorial, 2000);
-setTimeout(checkAutoStart, 3000);
+setTimeout(checkAutoTutorial, 4000);
 
 
 /* ═══════════════════════════════════════════════════════════
-   PART 7 — FIX KELUAR EDITOR + EXPLORE
+   PART 8 — MUSIC MODE PICKER
+   ═══════════════════════════════════════════════════════════ */
+var MusicModeManager = {
+  PREF_KEY: "varlinkbio_music_mode_pref",
+  
+  getMode: function(){
+    try{
+      var raw = localStorage.getItem(this.PREF_KEY);
+      if(!raw) return "tetap";
+      var parsed = JSON.parse(raw);
+      if(parsed && ["tetap","auto","acak"].indexOf(parsed.mode) !== -1){
+        return parsed.mode;
+      }
+    }catch(e){}
+    return "tetap";
+  },
+  
+  setMode: function(mode){
+    try{
+      localStorage.setItem(this.PREF_KEY, JSON.stringify({
+        mode: mode,
+        updatedAt: Date.now()
+      }));
+    }catch(e){}
+    
+    if(window.STATE){
+      STATE.musicPref = STATE.musicPref || {};
+      STATE.musicPref.mode = mode;
+    }
+    if(window.Auth && Auth.current && window.FB){
+      try{
+        FB.db.collection("users").doc(Auth.current.uid).update({ "musicPref.mode": mode });
+      }catch(e){}
+    }
+  }
+};
+
+/* Patch audio handler MusicPlayer — pakai mode picker */
+setTimeout(function(){
+  if(!window.MusicPlayer || !MusicPlayer._audio) return;
+  
+  var MP = window.MusicPlayer;
+  var audio = MP._audio;
+  
+  // Remove handler lama
+  audio.onended = null;
+  
+  // Clone node buat hapus semua listener ended
+  try{
+    var clone = audio.cloneNode(false);
+    if(audio.parentNode) audio.parentNode.replaceChild(clone, audio);
+    MP._audio = clone;
+    audio = clone;
+    audio.volume = 0.5;
+    audio.preload = "auto";
+  }catch(e){}
+  
+  // Set loop berdasarkan mode
+  audio.loop = (MusicModeManager.getMode() === "tetap");
+  
+  // Handler baru
+  audio.addEventListener("ended", async function(){
+    try{
+      var mode = MusicModeManager.getMode();
+      console.log("🎵 Music ended, mode:", mode);
+      
+      if(mode === "tetap"){
+        audio.currentTime = 0;
+        audio.play().catch(function(){});
+        return;
+      }
+      
+      // Ambil queue
+      var queue = [];
+      try{
+        var raw = localStorage.getItem("varlinkbio_playlist_pref");
+        if(raw){
+          var p = JSON.parse(raw);
+          if(p && Array.isArray(p.queue)) queue = p.queue;
+        }
+      }catch(e){}
+      
+      if(!queue.length){
+        audio.currentTime = 0;
+        audio.play().catch(function(){});
+        return;
+      }
+      
+      var currentId = MP._current ? MP._current.id : null;
+      
+      if(mode === "auto"){
+        var curIdx = queue.indexOf(currentId);
+        var nextIdx = (curIdx === -1) ? 0 : ((curIdx + 1) % queue.length);
+        var nextId = queue[nextIdx];
+        
+        if(window.MusicLibrary){
+          var next = await MusicLibrary.getById(nextId);
+          if(next && next.url){
+            MP._current = next;
+            audio.src = next.url;
+            audio.play().catch(function(){});
+          }
+        }
+        return;
+      }
+      
+      if(mode === "acak"){
+        var candidates = queue.filter(function(id){ return id !== currentId; });
+        if(!candidates.length) candidates = queue;
+        var pickId = candidates[Math.floor(Math.random() * candidates.length)];
+        
+        if(window.MusicLibrary){
+          var pick = await MusicLibrary.getById(pickId);
+          if(pick && pick.url){
+            MP._current = pick;
+            audio.src = pick.url;
+            audio.play().catch(function(){});
+          }
+        }
+      }
+    }catch(e){ console.warn("music ended:", e); }
+  });
+  
+  console.log("✅ MusicPlayer mode handler attached");
+}, 3500);
+
+/* Inject mode picker di halaman /music */
+function patchPageMusic(){
+  var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+  if(hashPath !== "/music") return;
+  
+  var page = document.querySelector(".music-picker-page");
+  if(!page) return;
+  if(page.querySelector(".music-mode-picker")) return;
+  
+  var listWrap = document.getElementById("music-list-wrap");
+  if(!listWrap) return;
+  
+  var cur = MusicModeManager.getMode();
+  
+  var modeHTML = 
+    '<div class="music-mode-picker">' +
+      '<h4>🎵 Mode Pemutaran</h4>' +
+      '<div class="music-mode-grid">' +
+        '<button class="music-mode-btn ' + (cur === "tetap" ? "active" : "") + '" data-mode="tetap">' +
+          '<div class="mmb-icon">🔂</div>' +
+          '<div class="mmb-label">Lagu Tetap</div>' +
+          '<div class="mmb-desc">Ulang lagu ini terus</div>' +
+        '</button>' +
+        '<button class="music-mode-btn ' + (cur === "auto" ? "active" : "") + '" data-mode="auto">' +
+          '<div class="mmb-icon">➡️</div>' +
+          '<div class="mmb-label">Auto Pindah</div>' +
+          '<div class="mmb-desc">Habis → lagu berikutnya</div>' +
+        '</button>' +
+        '<button class="music-mode-btn ' + (cur === "acak" ? "active" : "") + '" data-mode="acak">' +
+          '<div class="mmb-icon">🔀</div>' +
+          '<div class="mmb-label">Acak</div>' +
+          '<div class="mmb-desc">Random urutan lagu</div>' +
+        '</button>' +
+      '</div>' +
+    '</div>';
+  
+  listWrap.insertAdjacentHTML("beforebegin", modeHTML);
+  
+  var picker = page.querySelector(".music-mode-picker");
+  picker.querySelectorAll("[data-mode]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var mode = btn.dataset.mode;
+      MusicModeManager.setMode(mode);
+      
+      picker.querySelectorAll("[data-mode]").forEach(function(b){
+        b.classList.toggle("active", b.dataset.mode === mode);
+      });
+      
+      if(window.MusicPlayer && MusicPlayer._audio){
+        MusicPlayer._audio.loop = (mode === "tetap");
+      }
+      
+      var labels = { tetap: "Lagu Tetap 🔂", auto: "Auto Pindah ➡️", acak: "Acak 🔀" };
+      if(window.toast) toast("Mode: " + labels[mode], "success");
+      if(window.Sound && Sound.click) Sound.click();
+    });
+  });
+}
+
+setInterval(patchPageMusic, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 9 — FIX KELUAR EDITOR + EXPLORE
    ═══════════════════════════════════════════════════════════ */
 
-/* ─── Fix Keluar Editor ─── */
+/* Fix keluar editor */
 setTimeout(function(){
   if(!window.Router) return;
   
   var _origNavigate = window.Router.navigate;
-  var _bypassConfirm = false;
+  var _bypass = false;
   
   window.Router.navigate = function(path){
     var hashPath = (location.hash.slice(1) || "/").split("?")[0];
     
-    if(hashPath === "/editor" && path !== "/editor" && !_bypassConfirm){
+    if(hashPath === "/editor" && path !== "/editor" && !_bypass){
       if(window.STATE && STATE.draft && STATE.draft.name){
         var isSaved = STATE.draft.id && STATE.draft.updatedAt;
         var msg = isSaved 
@@ -16896,35 +14934,34 @@ setTimeout(function(){
         var choice = confirm(msg);
         
         if(choice){
-          _bypassConfirm = true;
+          _bypass = true;
           try{
             if(window.PageEditor && window.PageEditor.save){
               var result = window.PageEditor.save();
               if(result && typeof result.then === "function"){
                 result.then(function(){
-                  _bypassConfirm = false;
+                  _bypass = false;
                   _origNavigate.call(window.Router, path);
-                }).catch(function(e){
-                  _bypassConfirm = false;
-                  setTimeout(function(){ _origNavigate.call(window.Router, path); }, 200);
+                }).catch(function(){
+                  _bypass = false;
+                  _origNavigate.call(window.Router, path);
                 });
               } else {
                 setTimeout(function(){
-                  _bypassConfirm = false;
+                  _bypass = false;
                   _origNavigate.call(window.Router, path);
                 }, 800);
               }
               return;
             }
           }catch(e){}
-          
-          _bypassConfirm = false;
+          _bypass = false;
           _origNavigate.call(this, path);
           return;
         } else {
-          _bypassConfirm = true;
+          _bypass = true;
           setTimeout(function(){
-            _bypassConfirm = false;
+            _bypass = false;
             _origNavigate.call(window.Router, path);
           }, 50);
           return;
@@ -16939,57 +14976,47 @@ setTimeout(function(){
 }, 2000);
 
 /* Patch tombol back dashboard */
-setTimeout(function(){
-  setInterval(function(){
-    var backBtn = document.getElementById("btn-back-dashboard");
-    if(!backBtn) return;
-    if(backBtn.dataset.v7 === "1") return;
-    backBtn.dataset.v7 = "1";
-    
-    var newBtn = backBtn.cloneNode(true);
-    backBtn.parentNode.replaceChild(newBtn, backBtn);
-    
-    newBtn.addEventListener("click", function(){
-      var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-      
-      if(hashPath === "/editor" && window.STATE && STATE.draft && STATE.draft.name){
-        var isSaved = STATE.draft.id && STATE.draft.updatedAt;
-        var msg = isSaved 
-          ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan"
-          : "⚠️ Bio belum pernah disimpan!\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan";
-        
-        var choice = confirm(msg);
-        
-        if(choice){
-          if(window.PageEditor && window.PageEditor.save){
-            try{
-              var result = window.PageEditor.save();
-              if(result && typeof result.then === "function"){
-                result.then(function(){
-                  if(window.Router) Router.navigate("/dashboard");
-                }).catch(function(){
-                  if(window.Router) Router.navigate("/dashboard");
-                });
-              } else {
-                setTimeout(function(){
-                  if(window.Router) Router.navigate("/dashboard");
-                }, 900);
-              }
-              return;
-            }catch(e){}
-          }
-        }
-        if(window.Router) Router.navigate("/dashboard");
-      } else {
-        if(window.Router) Router.navigate("/dashboard");
-      }
-    });
-  }, 2000);
+setInterval(function(){
+  var backBtn = document.getElementById("btn-back-dashboard");
+  if(!backBtn || backBtn.dataset.v73 === "1") return;
+  backBtn.dataset.v73 = "1";
   
-  console.log("✅ Back button patched");
-}, 2500);
+  var newBtn = backBtn.cloneNode(true);
+  backBtn.parentNode.replaceChild(newBtn, backBtn);
+  
+  newBtn.addEventListener("click", function(){
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    
+    if(hashPath === "/editor" && window.STATE && STATE.draft && STATE.draft.name){
+      var isSaved = STATE.draft.id && STATE.draft.updatedAt;
+      var msg = isSaved 
+        ? "💾 Simpan perubahan dulu?\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan"
+        : "⚠️ Bio belum pernah disimpan!\n\n• OK = Simpan lalu keluar\n• Cancel = Keluar tanpa simpan";
+      
+      var choice = confirm(msg);
+      
+      if(choice){
+        if(window.PageEditor && window.PageEditor.save){
+          try{
+            var result = window.PageEditor.save();
+            if(result && typeof result.then === "function"){
+              result.then(function(){ if(window.Router) Router.navigate("/dashboard"); })
+                    .catch(function(){ if(window.Router) Router.navigate("/dashboard"); });
+            } else {
+              setTimeout(function(){ if(window.Router) Router.navigate("/dashboard"); }, 900);
+            }
+            return;
+          }catch(e){}
+        }
+      }
+      if(window.Router) Router.navigate("/dashboard");
+    } else {
+      if(window.Router) Router.navigate("/dashboard");
+    }
+  });
+}, 2000);
 
-/* ─── Fix Explore Bio (no composite index) ─── */
+/* Fix Explore — no composite index */
 setTimeout(function(){
   if(!window.Store) return;
   
@@ -17036,716 +15063,23 @@ setTimeout(function(){
   console.log("✅ Store.listDirectory patched");
 }, 3000);
 
-/* Patch Explore page render + recovery */
-setTimeout(function(){
-  setInterval(function(){
-    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-    if(hashPath !== "/explore") return;
-    
-    var wrap = document.getElementById("explore-grid");
-    if(!wrap) return;
-    
-    var txt = (wrap.innerText || "").trim();
-    if(txt === "⏳ Memuat..."){
-      console.warn("⚠️ Explore stuck — force reload");
-      if(window.PageExplore && window.PageExplore.loadGrid){
-        window.PageExplore.loadGrid();
-      }
-    }
-  }, 3000);
-}, 3500);
-
 
 /* ═══════════════════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════════════════ */
-function initPartB(){
-  window.MusicModeManager = MusicModeManager;
+setTimeout(function(){
   window.VarsmileTutorial = VarsmileTutorial;
+  window.MusicModeManager = MusicModeManager;
   
   console.log("╔════════════════════════════════════════╗");
-  console.log("║  ✅ PATCH v7-B AKTIF                   ║");
+  console.log("║  ✅ PATCH v7.3-B AKTIF                 ║");
+  console.log("║  • Tutorial Varsmile (objek mati)      ║");
   console.log("║  • Music modes: Tetap/Auto/Acak        ║");
-  console.log("║  • Music player fix                    ║");
-  console.log("║  • Tutorial Varsmile                   ║");
   console.log("║  • Fix Editor Exit + Explore           ║");
   console.log("╚════════════════════════════════════════╝");
-  console.log("💡 Test: VarsmileTutorial.start()");
-}
-
-setTimeout(initPartB, 2000);
-
-})();
-   </script>
-   <script id="finalpatch-v71">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v7.1 — Nuke semua handler Varsmile lama + rebuild
-   ═══════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-
-console.log("💥 Patch v7.1 — NUKING old Varsmile handlers...");
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 1 — HAPUS SEMUA INTERVAL DARI PATCH LAMA
-   ═══════════════════════════════════════════════════════════ */
-// Simpan referensi global interval setter lama
-try{
-  // Patch interval di window untuk stop semua yang jalan
-  var _oldSetInterval = window.setInterval;
-  window.__v71_oldIntervals = [];
-  var _newSetInterval = function(fn, ms){
-    var id = _oldSetInterval.call(window, fn, ms);
-    window.__v71_oldIntervals.push(id);
-    return id;
-  };
-  // Kita gak override global (bahaya), cukup track yang v7.1 bikin
-}catch(e){}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 2 — HAPUS TOTAL VARSMILE DARI DOM
-   ═══════════════════════════════════════════════════════════ */
-function nukeVarsmile(){
-  try{
-    // Hapus elemen
-    ["varsmile-char","varsmile-close-btn","varsmile-road"].forEach(function(id){
-      var el = document.getElementById(id);
-      if(el) el.remove();
-    });
-    
-    // Hapus bubble & dust
-    document.querySelectorAll(".varsmile-bubble, .varsmile-dust, .vai-panel, .vai-countdown, .vtut-overlay, .vtut-progress, .vtut-counter").forEach(function(el){
-      el.remove();
-    });
-    
-    console.log("🗑️ Varsmile DOM cleaned");
-  }catch(e){ console.warn("nukeVarsmile:", e); }
-}
-
-nukeVarsmile();
-setTimeout(nukeVarsmile, 500);
-setTimeout(nukeVarsmile, 1500);
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 3 — KILL GESTURE RECOVERY (⬆️⬆️⬇️⬇️)
-   ═══════════════════════════════════════════════════════════ */
-try{
-  if(window.GestureRecovery){
-    window.GestureRecovery._seq = [];
-    window.GestureRecovery._trigger = function(){ 
-      console.log("🚫 Gesture disabled");
-    };
-    window.GestureRecovery._addSwipe = function(){ /* noop */ };
-    console.log("✅ GestureRecovery disabled");
-  }
-}catch(e){}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 4 — KILL HANDLER KLIK LAMA (3x, 4x, 2x klik)
-   ═══════════════════════════════════════════════════════════ */
-try{
-  if(window.VarsmileAI){
-    // Override handleVarsmileClick → noop
-    window.VarsmileAI.handleVarsmileClick = function(){
-      console.log("🚫 Old VarsmileAI click handler disabled");
-    };
-    window.VarsmileAI.showCountdown = function(){ /* noop */ };
-    window.VarsmileAI.hideCountdown = function(){ /* noop */ };
-    console.log("✅ Old VarsmileAI click handlers disabled");
-  }
-}catch(e){}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 5 — REBUILD VARSMILE DARI NOL
-   ═══════════════════════════════════════════════════════════ */
-var VS_STATE = {
-  el: null,
-  closeBtn: null,
-  dragging: false,
-  startX: 0,
-  startY: 0,
-  startLeft: 0,
-  startTop: 0,
-  moved: false,
-  clickStartTime: 0,
-  _hidden: false
-};
-
-/* CSS untuk Varsmile (force) */
-var vsCSS = document.createElement("style");
-vsCSS.textContent = [
-  "#varsmile-char{",
-  "  position:fixed !important;",
-  "  width:72px !important;",
-  "  height:88px !important;",
-  "  z-index:99997 !important;",
-  "  pointer-events:auto !important;",
-  "  cursor:grab !important;",
-  "  touch-action:none !important;",
-  "  user-select:none !important;",
-  "  -webkit-user-select:none !important;",
-  "  transition:filter .3s !important;",
-  "  image-rendering:pixelated !important;",
-  "}",
-  "#varsmile-char.dragging{",
-  "  cursor:grabbing !important;",
-  "  filter:drop-shadow(0 0 25px rgba(255,215,0,.9)) !important;",
-  "  transform:scale(1.1) !important;",
-  "}",
-  "#varsmile-char .varsmile-svg{",
-  "  width:100% !important;",
-  "  height:100% !important;",
-  "  display:block !important;",
-  "  filter:drop-shadow(3px 3px 0 rgba(0,0,0,.4)) !important;",
-  "}",
-  "#varsmile-char.move-up .varsmile-svg{animation:vsMoveUp71 .6s ease-out !important}",
-  "#varsmile-char.move-down .varsmile-svg{animation:vsMoveDown71 .6s ease-out !important}",
-  "#varsmile-char.move-side .varsmile-svg{animation:vsMoveSide71 .6s ease-out !important}",
-  "@keyframes vsMoveUp71{0%{transform:translateY(0) rotate(0)}40%{transform:translateY(-25px) rotate(-12deg)}100%{transform:translateY(0) rotate(0)}}",
-  "@keyframes vsMoveDown71{0%{transform:translateY(0) scaleY(1)}40%{transform:translateY(15px) scaleY(.88) scaleX(1.08)}100%{transform:translateY(0) scaleY(1)}}",
-  "@keyframes vsMoveSide71{0%{transform:translateX(0) rotate(0)}40%{transform:translateX(-18px) rotate(-8deg)}100%{transform:translateX(0) rotate(0)}}",
-  "#varsmile-close-btn{",
-  "  position:fixed !important;",
-  "  width:28px !important;",
-  "  height:28px !important;",
-  "  border-radius:50% !important;",
-  "  background:#ff2a2a !important;",
-  "  color:#fff !important;",
-  "  border:2.5px solid #0a0a0a !important;",
-  "  display:grid !important;",
-  "  place-items:center !important;",
-  "  font-size:16px !important;",
-  "  font-weight:900 !important;",
-  "  cursor:pointer !important;",
-  "  box-shadow:2px 2px 0 #0a0a0a !important;",
-  "  padding:0 !important;",
-  "  line-height:1 !important;",
-  "  z-index:99999 !important;",
-  "  font-family:'Inter',sans-serif !important;",
-  "  transition:transform .15s, box-shadow .15s !important;",
-  "}",
-  "#varsmile-close-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a;background:#cc0000}",
-  "#varsmile-close-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #0a0a0a}"
-].join("\n");
-document.head.appendChild(vsCSS);
-
-/* SVG Varsmile (fallback) */
-function getVarsmileSVG(){
-  if(window.VARSMILE_SVG) return window.VARSMILE_SVG;
-  return '<svg viewBox="0 0 16 17" class="varsmile-svg" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' +
-    '<rect x="3" y="1" width="10" height="1" fill="#0a0a0a"/>' +
-    '<rect x="2" y="2" width="12" height="1" fill="#0a0a0a"/>' +
-    '<rect x="1" y="3" width="14" height="7" fill="#0a0a0a"/>' +
-    '<rect x="2" y="10" width="12" height="1" fill="#0a0a0a"/>' +
-    '<rect x="3" y="11" width="10" height="1" fill="#0a0a0a"/>' +
-    '<rect x="2" y="3" width="12" height="7" fill="#ffd700"/>' +
-    '<rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/>' +
-    '<rect x="4" y="5" width="1" height="1" fill="#ffffff"/>' +
-    '<rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/>' +
-    '<rect x="10" y="5" width="1" height="1" fill="#ffffff"/>' +
-    '<rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/>' +
-    '<rect x="5" y="7" width="1" height="1" fill="#0a0a0a"/>' +
-    '<rect x="10" y="7" width="1" height="1" fill="#0a0a0a"/>' +
-    '<rect x="5" y="12" width="6" height="1" fill="#0a0a0a"/>' +
-    '<rect x="4" y="13" width="8" height="3" fill="#0a0a0a"/>' +
-    '<rect x="5" y="13" width="6" height="2" fill="#2563eb"/>' +
-    '<rect x="3" y="13" width="1" height="2" fill="#0a0a0a"/>' +
-    '<rect x="12" y="13" width="1" height="2" fill="#0a0a0a"/>' +
-    '<rect x="6" y="16" width="1" height="1" fill="#0a0a0a"/>' +
-    '<rect x="9" y="16" width="1" height="1" fill="#0a0a0a"/>' +
-  '</svg>';
-}
-
-function buildVarsmile(){
-  try{
-    // Skip di public bio
-    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-    if(hashPath.startsWith("/u/")) return;
-    
-    // Skip kalau user gak login
-    if(!window.Auth || !Auth.current) return;
-    
-    // Skip kalau di-hide user
-    var isHidden = false;
-    try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
-    if(isHidden){ VS_STATE._hidden = true; return; }
-    VS_STATE._hidden = false;
-    
-    // Skip kalau udah ada
-    if(VS_STATE.el && document.body.contains(VS_STATE.el)) return;
-    
-    // Cleanup dulu
-    var old = document.getElementById("varsmile-char");
-    if(old) old.remove();
-    
-    // Buat elemen
-    var vs = document.createElement("div");
-    vs.id = "varsmile-char";
-    vs.className = "facing-right";
-    vs.innerHTML = getVarsmileSVG();
-    
-    // Restore posisi atau default
-    var savedPos = null;
-    try{
-      var raw = localStorage.getItem("varlinkbio_varsmile_pos");
-      if(raw) savedPos = JSON.parse(raw);
-    }catch(e){}
-    
-    if(savedPos && savedPos.left && savedPos.top){
-      var vw = window.innerWidth;
-      var vh = window.innerHeight;
-      var left = Math.max(4, Math.min(vw - 76, savedPos.left));
-      var top = Math.max(4, Math.min(vh - 92, savedPos.top));
-      vs.style.left = left + "px";
-      vs.style.top = top + "px";
-    } else {
-      vs.style.right = "16px";
-      vs.style.bottom = "16px";
-    }
-    
-    document.body.appendChild(vs);
-    VS_STATE.el = vs;
-    
-    // Attach drag
-    attachDragHandlers(vs);
-    
-    // Attach click → AI page
-    attachClickHandler(vs);
-    
-    // Attach close button
-    attachCloseButton(vs);
-    
-    console.log("✅ Varsmile rebuilt");
-  }catch(e){ console.warn("buildVarsmile:", e); }
-}
-
-/* ─── DRAG HANDLERS ─── */
-function attachDragHandlers(vs){
-  VS_STATE.dragging = false;
-  VS_STATE.moved = false;
-  
-  function onStart(e){
-    if(e.button && e.button !== 0) return; // skip right-click
-    var touch = e.touches ? e.touches[0] : e;
-    
-    VS_STATE.dragging = true;
-    VS_STATE.moved = false;
-    VS_STATE.startX = touch.clientX;
-    VS_STATE.startY = touch.clientY;
-    VS_STATE.clickStartTime = Date.now();
-    
-    var rect = vs.getBoundingClientRect();
-    VS_STATE.startLeft = rect.left;
-    VS_STATE.startTop = rect.top;
-    
-    // Konversi dari right/bottom ke left/top
-    vs.style.right = "auto";
-    vs.style.bottom = "auto";
-    vs.style.left = rect.left + "px";
-    vs.style.top = rect.top + "px";
-    
-    vs.classList.add("dragging");
-    vs.style.transition = "none";
-  }
-  
-  function onMove(e){
-    if(!VS_STATE.dragging) return;
-    if(e.cancelable) e.preventDefault();
-    
-    var touch = e.touches ? e.touches[0] : e;
-    var dx = touch.clientX - VS_STATE.startX;
-    var dy = touch.clientY - VS_STATE.startY;
-    
-    if(Math.abs(dx) > 5 || Math.abs(dy) > 5) VS_STATE.moved = true;
-    
-    var newLeft = VS_STATE.startLeft + dx;
-    var newTop = VS_STATE.startTop + dy;
-    
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var vsW = vs.offsetWidth || 72;
-    var vsH = vs.offsetHeight || 88;
-    
-    newLeft = Math.max(4, Math.min(vw - vsW - 4, newLeft));
-    newTop = Math.max(4, Math.min(vh - vsH - 4, newTop));
-    
-    vs.style.left = newLeft + "px";
-    vs.style.top = newTop + "px";
-  }
-  
-  function onEnd(e){
-    if(!VS_STATE.dragging) return;
-    
-    var wasMoved = VS_STATE.moved;
-    VS_STATE.dragging = false;
-    vs.classList.remove("dragging");
-    vs.style.transition = "";
-    
-    if(!wasMoved) return;
-    
-    // Deteksi arah
-    var rect = vs.getBoundingClientRect();
-    var dx = rect.left - VS_STATE.startLeft;
-    var dy = rect.top - VS_STATE.startTop;
-    
-    var animClass = "move-side";
-    if(dy < -30) animClass = "move-up";
-    else if(dy > 30) animClass = "move-down";
-    else if(Math.abs(dx) > 20) animClass = "move-side";
-    
-    vs.classList.add(animClass);
-    setTimeout(function(){
-      if(vs) vs.classList.remove(animClass);
-    }, 600);
-    
-    if(window.Sound && Sound.tick) Sound.tick();
-    
-    // Save posisi
-    try{
-      localStorage.setItem("varlinkbio_varsmile_pos", JSON.stringify({
-        left: rect.left, top: rect.top
-      }));
-    }catch(e){}
-    
-    // Update posisi close btn
-    updateCloseBtnPosition();
-  }
-  
-  // Mouse
-  vs.addEventListener("mousedown", onStart);
-  document.addEventListener("mousemove", onMove);
-  document.addEventListener("mouseup", onEnd);
-  
-  // Touch
-  vs.addEventListener("touchstart", onStart, { passive: false });
-  document.addEventListener("touchmove", onMove, { passive: false });
-  document.addEventListener("touchend", onEnd);
-  document.addEventListener("touchcancel", onEnd);
-}
-
-/* ─── CLICK HANDLER → AI PAGE ─── */
-function attachClickHandler(vs){
-  vs.addEventListener("click", function(e){
-    // Skip kalau abis drag
-    if(VS_STATE.moved){ VS_STATE.moved = false; return; }
-    if(VS_STATE.dragging) return;
-    
-    // Cek durasi klik (biar gak keburu drag)
-    var dur = Date.now() - VS_STATE.clickStartTime;
-    if(dur > 500) return;
-    
-    e.stopPropagation();
-    e.preventDefault();
-    
-    if(window.Sound && Sound.click) Sound.click();
-    
-    // Buka AI page
-    if(window.Router) Router.navigate("/varsmile-ai");
-  }, true);
-}
-
-/* ─── CLOSE BUTTON ─── */
-function attachCloseButton(vs){
-  // Hapus yang lama
-  var old = document.getElementById("varsmile-close-btn");
-  if(old) old.remove();
-  
-  var btn = document.createElement("button");
-  btn.id = "varsmile-close-btn";
-  btn.type = "button";
-  btn.innerHTML = "×";
-  btn.title = "Hapus Varsmile";
-  document.body.appendChild(btn);
-  VS_STATE.closeBtn = btn;
-  
-  btn.addEventListener("click", function(e){
-    e.stopPropagation();
-    e.preventDefault();
-    
-    // Hide Varsmile
-    try{ localStorage.setItem("varlinkbio_varsmile_hidden", "1"); }catch(e){}
-    VS_STATE._hidden = true;
-    
-    // Hapus dari DOM
-    if(VS_STATE.el){
-      try{ VS_STATE.el.remove(); }catch(err){}
-      VS_STATE.el = null;
-    }
-    try{ btn.remove(); }catch(err){}
-    VS_STATE.closeBtn = null;
-    
-    // Update show button di topbar
-    setTimeout(updateShowBtn, 100);
-    
-    if(window.toast) toast("Varsmile dihapus. Munculin lagi dari tombol 🤖 di topbar","info");
-    if(window.Sound && Sound.bip) Sound.bip();
-  });
-  
-  updateCloseBtnPosition();
-}
-
-function updateCloseBtnPosition(){
-  if(!VS_STATE.closeBtn || !VS_STATE.el) return;
-  var rect = VS_STATE.el.getBoundingClientRect();
-  VS_STATE.closeBtn.style.left = (rect.left + rect.width - 18) + "px";
-  VS_STATE.closeBtn.style.top = (rect.top - 6) + "px";
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 6 — TOMBOL SHOW VARSMILE DI TOPBAR
-   ═══════════════════════════════════════════════════════════ */
-function updateShowBtn(){
-  var actions = document.querySelector(".lt-topbar .lt-actions");
-  if(!actions) return;
-  
-  var isHidden = false;
-  try{ isHidden = localStorage.getItem("varlinkbio_varsmile_hidden") === "1"; }catch(e){}
-  
-  var existing = document.getElementById("btn-show-varsmile");
-  
-  if(!isHidden){
-    if(existing) existing.remove();
-    return;
-  }
-  
-  if(existing) return;
-  
-  var btn = document.createElement("button");
-  btn.className = "lt-badge show-varsmile";
-  btn.id = "btn-show-varsmile";
-  btn.title = "Munculin Varsmile";
-  btn.innerHTML = "🤖";
-  btn.style.cssText = "background:#ffd700;color:#0a0a0a;padding:6px 10px;font-size:14px;";
-  
-  var menuBtn = actions.querySelector("#btn-drawer-open");
-  if(menuBtn) actions.insertBefore(btn, menuBtn);
-  else actions.appendChild(btn);
-  
-  btn.addEventListener("click", function(){
-    try{ localStorage.removeItem("varlinkbio_varsmile_hidden"); }catch(e){}
-    VS_STATE._hidden = false;
-    btn.remove();
-    buildVarsmile();
-    if(window.toast) toast("Varsmile muncul lagi!","success");
-    if(window.Sound && Sound.tada) Sound.tada();
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 7 — INIT LOOP
-   ═══════════════════════════════════════════════════════════ */
-function initLoop(){
-  // Build kalau belum ada
-  if(!VS_STATE.el || !document.body.contains(VS_STATE.el)){
-    buildVarsmile();
-  }
-  
-  // Update posisi close button
-  if(VS_STATE.el && VS_STATE.closeBtn){
-    updateCloseBtnPosition();
-  }
-  
-  // Update show button
-  updateShowBtn();
-}
-
-// Loop terus
-setInterval(initLoop, 1500);
-setTimeout(initLoop, 300);
-
-// Re-init saat route change
-window.addEventListener("hashchange", function(){
-  setTimeout(initLoop, 500);
-});
-
-// Force build setelah 3s
-setTimeout(function(){
-  if(!VS_STATE.el) buildVarsmile();
-}, 3000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   EXPOSE
-   ═══════════════════════════════════════════════════════════ */
-window.VarsmileV71 = {
-  rebuild: buildVarsmile,
-  nuke: nukeVarsmile,
-  state: VS_STATE
-};
-
-console.log("╔════════════════════════════════════════╗");
-console.log("║  ✅ PATCH v7.1 AKTIF                   ║");
-console.log("║  • Gesture ⬆️⬆️⬇️⬇️ DIMATIIN            ║");
-console.log("║  • Klik 3x/4x/2x DIMATIIN              ║");
-console.log("║  • Klik 1x → AI page                   ║");
-console.log("║  • Tombol X → hapus real               ║");
-console.log("║  • Drag works (beneran)                ║");
-console.log("╚════════════════════════════════════════╝");
-
-})();
-</script>
-   <script id="finalpatch-v72-intro">
-/* ═══════════════════════════════════════════════════════════
-   PATCH v7.2 — AUTO TRIGGER INTRO VARSMILE
-   ═══════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-
-console.log("🎬 Patch v7.2 — Intro auto trigger...");
-
-/* ═══════════════════════════════════════════════════════════
-   FUNGSI CEK & PLAY INTRO
-   ═══════════════════════════════════════════════════════════ */
-function shouldPlayIntro(){
-  try{
-    if(localStorage.getItem("varlinkbio_intro_shown") === "1") return false;
-  }catch(e){}
-  
-  // Skip di public bio
-  var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-  if(hashPath.startsWith("/u/")) return false;
-  
-  // Skip di login/register
-  if(hashPath === "/login" || hashPath === "/register" || hashPath === "/verify") return false;
-  
-  return true;
-}
-
-function triggerIntro(callback){
-  // Tunggu VarsmileIntro siap
-  var attempts = 0;
-  var checkInterval = setInterval(function(){
-    attempts++;
-    if(attempts > 50){
-      clearInterval(checkInterval);
-      console.warn("⏱️ Intro timeout — VarsmileIntro gak ready");
-      if(callback) callback();
-      return;
-    }
-    
-    if(window.VarsmileIntro && typeof window.VarsmileIntro.play === "function"){
-      clearInterval(checkInterval);
-      
-      if(!shouldPlayIntro()){
-        console.log("⏭️ Intro di-skip (udah pernah / halaman khusus)");
-        if(callback) callback();
-        return;
-      }
-      
-      console.log("🎬 Playing intro...");
-      
-      // Sembunyikan Varsmile dulu sampai intro selesai
-      var vs = document.getElementById("varsmile-char");
-      if(vs) vs.style.display = "none";
-      var closeBtn = document.getElementById("varsmile-close-btn");
-      if(closeBtn) closeBtn.style.display = "none";
-      
-      window.VarsmileIntro.play(function(){
-        console.log("✅ Intro selesai");
-        
-        // Tampilkan Varsmile kembali
-        var vs2 = document.getElementById("varsmile-char");
-        if(vs2) vs2.style.display = "";
-        var closeBtn2 = document.getElementById("varsmile-close-btn");
-        if(closeBtn2) closeBtn2.style.display = "";
-        
-        if(callback) callback();
-      });
-    }
-  }, 200);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   AUTO TRIGGER — SAAT BOOT
-   ═══════════════════════════════════════════════════════════ */
-function autoTrigger(){
-  // Tunggu dependencies
-  var attempts = 0;
-  var checkDeps = setInterval(function(){
-    attempts++;
-    if(attempts > 60){
-      clearInterval(checkDeps);
-      console.warn("⏱️ Deps timeout");
-      return;
-    }
-    
-    if(window.Auth && window.Auth._initialized && window.VarsmileIntro){
-      clearInterval(checkDeps);
-      
-      // Delay 1.5s biar dashboard sempet render dulu
-      setTimeout(function(){
-        triggerIntro();
-      }, 1500);
-    }
-  }, 250);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TRIGGER SAAT USER LOGIN (kalau belum pernah liat intro)
-   ═══════════════════════════════════════════════════════════ */
-function watchLogin(){
-  // Watch kalau user baru login
-  if(window.Auth && Auth.current){
-    // Udah login saat boot
-    return;
-  }
-  
-  var checkLogin = setInterval(function(){
-    if(window.Auth && Auth.current){
-      clearInterval(checkLogin);
-      // Tunggu dashboard render
-      setTimeout(function(){
-        if(shouldPlayIntro()) triggerIntro();
-      }, 2000);
-    }
-  }, 500);
-  
-  // Timeout 30s
-  setTimeout(function(){ clearInterval(checkLogin); }, 30000);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TRIGGER SAAT PINDAH KE DASHBOARD
-   ═══════════════════════════════════════════════════════════ */
-var lastTriggered = false;
-function watchHashChange(){
-  window.addEventListener("hashchange", function(){
-    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
-    
-    if(hashPath === "/dashboard" && shouldPlayIntro() && !lastTriggered){
-      setTimeout(function(){
-        lastTriggered = true;
-        triggerIntro();
-      }, 1200);
-    }
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════
-   INIT
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(autoTrigger, 2000);
-setTimeout(watchLogin, 2500);
-setTimeout(watchHashChange, 3000);
-
-// Expose manual trigger
-window.triggerIntroManual = function(){
-  try{ localStorage.removeItem("varlinkbio_intro_shown"); }catch(e){}
-  if(window.VarsmileIntro) window.VarsmileIntro._played = false;
-  triggerIntro();
-  console.log("🎬 Intro manual triggered");
-};
-
-console.log("╔════════════════════════════════════════╗");
-console.log("║  ✅ PATCH v7.2 AKTIF                   ║");
-console.log("║  • Intro auto-trigger on boot          ║");
-console.log("║  • Intro auto-trigger on login         ║");
-console.log("║  • Intro auto-trigger on /dashboard    ║");
-console.log("╚════════════════════════════════════════╝");
-console.log("💡 Manual: triggerIntroManual()");
-console.log("💡 Reset: VarsmileIntro.reset() + reload");
+}, 2000);
 
 })();
    </script>
 </body>
-</html>
+   </html>

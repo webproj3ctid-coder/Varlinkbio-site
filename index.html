@@ -15081,5 +15081,688 @@ setTimeout(function(){
 
 })();
    </script>
+   <script id="finalpatch-v74-combined">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7.4+ (GABUNGAN)
+   A. Varsmile Static + Drag Langsung (v7.4)
+   B. Full Emoji → Lucide Auto-Map (v7.5)
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🚀 Patch v7.4+ (combined) loading...");
+
+/* ═══════════════════════════════════════════════════════════
+   ═══════════════════════════════════════════════════════════
+   PART A — VARSMILE STATIC + DRAG LANGSUNG
+   ═══════════════════════════════════════════════════════════
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── CSS OVERRIDE: KILL ANIMASI LAMA ─── */
+var overrideCSS = document.createElement("style");
+overrideCSS.id = "finalpatch-v74-css";
+overrideCSS.textContent = [
+  "#varsmile-char{",
+  "  transition:filter .2s !important;",
+  "  animation:none !important;",
+  "  cursor:grab !important;",
+  "  touch-action:none !important;",
+  "  user-select:none !important;",
+  "  -webkit-user-select:none !important;",
+  "}",
+  "#varsmile-char.walking-out,",
+  "#varsmile-char.walking-in,",
+  "#varsmile-char.hide-bottom,",
+  "#varsmile-char.peek-bottom,",
+  "#varsmile-char.walking,",
+  "#varsmile-char.tired,",
+  "#varsmile-char.talking{",
+  "  animation:none !important;",
+  "  transition:filter .2s !important;",
+  "}",
+  "#varsmile-char .varsmile-svg,",
+  "#varsmile-char.walking .varsmile-svg,",
+  "#varsmile-char.idle .varsmile-svg,",
+  "#varsmile-char.tired .varsmile-svg,",
+  "#varsmile-char.talking .varsmile-svg,",
+  "#varsmile-char.peek-bottom .varsmile-svg,",
+  "#varsmile-char.move-up .varsmile-svg,",
+  "#varsmile-char.move-down .varsmile-svg,",
+  "#varsmile-char.move-side .varsmile-svg{",
+  "  animation:none !important;",
+  "}",
+  "#varsmile-char .vs-leg-left,",
+  "#varsmile-char .vs-leg-right{",
+  "  animation:none !important;",
+  "  transform:none !important;",
+  "}",
+  "#varsmile-char.dragging{",
+  "  cursor:grabbing !important;",
+  "  filter:drop-shadow(0 0 25px rgba(255,215,0,.9)) !important;",
+  "  transform:scale(1.08) !important;",
+  "}"
+].join("\n");
+document.head.appendChild(overrideCSS);
+
+/* ─── KILL VARSMILE WALKING LOOP ─── */
+function killVarsmileLoop(){
+  try{
+    if(window.Varsmile){
+      window.Varsmile.startLoop = function(){ this._active = false; };
+      window.Varsmile._idleCycle = function(){};
+      window.Varsmile._step1_walkOut = function(){};
+      window.Varsmile._step2_hide = function(){};
+      window.Varsmile._step3_peek = function(){};
+      window.Varsmile._step4_comeUp = function(){};
+      window.Varsmile._step5_backToIdle = function(){};
+      
+      if(window.Varsmile._tipTimer){
+        clearInterval(window.Varsmile._tipTimer);
+        window.Varsmile._tipTimer = null;
+      }
+      
+      window.Varsmile._active = false;
+      window.Varsmile._mode = "idle";
+    }
+  }catch(e){}
+}
+
+killVarsmileLoop();
+setTimeout(killVarsmileLoop, 1000);
+setTimeout(killVarsmileLoop, 3000);
+setInterval(killVarsmileLoop, 5000);
+
+/* ─── PATCH VARSMILE ELEMENT (static + drag langsung) ─── */
+function patchVarsmileElement(){
+  var vs = document.getElementById("varsmile-char");
+  if(!vs) return;
+  if(vs.dataset.v74 === "1") return;
+  vs.dataset.v74 = "1";
+  
+  // Force static posisi
+  vs.classList.remove("walking-out", "walking-in", "hide-bottom", "peek-bottom", "walking", "tired", "talking");
+  vs.classList.add("idle");
+  
+  // Reset kalau off-screen
+  var rect = vs.getBoundingClientRect();
+  if(rect.left < 0 || rect.left > window.innerWidth - 50 || rect.top < 0 || rect.top > window.innerHeight - 50){
+    vs.style.right = "16px";
+    vs.style.bottom = "16px";
+    vs.style.left = "auto";
+    vs.style.top = "auto";
+  }
+  
+  // Clone buat hapus listener lama
+  var clone = vs.cloneNode(true);
+  vs.parentNode.replaceChild(clone, vs);
+  vs = clone;
+  vs.dataset.v74 = "1";
+  
+  vs.style.cursor = "grab";
+  vs.style.touchAction = "none";
+  vs.style.userSelect = "none";
+  vs.style.webkitUserSelect = "none";
+  vs.style.transition = "filter .2s";
+  
+  // Drag handler
+  var dragging = false;
+  var startX = 0, startY = 0;
+  var startLeft = 0, startTop = 0;
+  var moved = false;
+  var clickStartTime = 0;
+  
+  function getTouch(e){ return e.touches ? e.touches[0] : e; }
+  
+  function onStart(e){
+    if(e.button && e.button !== 0) return;
+    var touch = getTouch(e);
+    if(!touch) return;
+    
+    dragging = true;
+    moved = false;
+    startX = touch.clientX;
+    startY = touch.clientY;
+    clickStartTime = Date.now();
+    
+    var r = vs.getBoundingClientRect();
+    startLeft = r.left;
+    startTop = r.top;
+    
+    vs.style.right = "auto";
+    vs.style.bottom = "auto";
+    vs.style.left = startLeft + "px";
+    vs.style.top = startTop + "px";
+    
+    vs.classList.add("dragging");
+  }
+  
+  function onMove(e){
+    if(!dragging) return;
+    if(e.cancelable) e.preventDefault();
+    var touch = getTouch(e);
+    if(!touch) return;
+    
+    var dx = touch.clientX - startX;
+    var dy = touch.clientY - startY;
+    if(Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var vsW = vs.offsetWidth || 72;
+    var vsH = vs.offsetHeight || 88;
+    
+    var newLeft = Math.max(4, Math.min(vw - vsW - 4, startLeft + dx));
+    var newTop = Math.max(4, Math.min(vh - vsH - 4, startTop + dy));
+    
+    vs.style.left = newLeft + "px";
+    vs.style.top = newTop + "px";
+  }
+  
+  function onEnd(e){
+    if(!dragging) return;
+    dragging = false;
+    vs.classList.remove("dragging");
+    if(!moved) return;
+    
+    if(window.Sound && Sound.tick) Sound.tick();
+    
+    var r = vs.getBoundingClientRect();
+    try{
+      localStorage.setItem("varlinkbio_varsmile_pos", JSON.stringify({
+        left: r.left, top: r.top
+      }));
+    }catch(e){}
+  }
+  
+  vs.addEventListener("mousedown", onStart);
+  document.addEventListener("mousemove", onMove);
+  document.addEventListener("mouseup", onEnd);
+  vs.addEventListener("touchstart", onStart, { passive: false });
+  document.addEventListener("touchmove", onMove, { passive: false });
+  document.addEventListener("touchend", onEnd);
+  document.addEventListener("touchcancel", onEnd);
+  
+  // Click handler (kalau bukan drag)
+  vs.addEventListener("click", function(e){
+    if(moved){ moved = false; return; }
+    if(Date.now() - clickStartTime > 300) return;
+    e.stopPropagation();
+    e.preventDefault();
+    if(window.Sound && Sound.click) Sound.click();
+    if(window.Router) Router.navigate("/varsmile-ai");
+  }, true);
+}
+
+setInterval(patchVarsmileElement, 1000);
+setTimeout(patchVarsmileElement, 500);
+setTimeout(patchVarsmileElement, 2000);
+
+/* ─── CLEANUP ROAD ─── */
+function cleanupRoad(){
+  var road = document.getElementById("varsmile-road");
+  if(road) road.remove();
+  document.querySelectorAll(".varsmile-road").forEach(function(el){ el.remove(); });
+}
+setInterval(cleanupRoad, 3000);
+cleanupRoad();
+
+
+/* ═══════════════════════════════════════════════════════════
+   ═══════════════════════════════════════════════════════════
+   PART B — FULL EMOJI → LUCIDE AUTO-MAP (v7.5)
+   ═══════════════════════════════════════════════════════════
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── EXTEND EMOJI MAP (tambahan banyak) ─── */
+function extendEmojiMap(){
+  if(!window.EMOJI_TO_LUCIDE) return;
+  
+  // Tambah mapping baru
+  var newMap = {
+    /* ==== SMILEYS & EMOTION ==== */
+    "😀":"smile","😃":"smile","😄":"smile","😁":"smile","😆":"smile","😅":"smile",
+    "😂":"laugh","🤣":"laugh","😊":"smile","😇":"sparkles","🙂":"smile","🙃":"smile",
+    "😉":"smile","😌":"smile","😍":"heart","🥰":"heart","😘":"heart","😗":"kiss",
+    "😙":"kiss","😚":"kiss","😋":"smile","😛":"smile","😝":"smile","😜":"smile",
+    "🤪":"smile","🤨":"meh","🧐":"search","🤓":"glasses","😎":"glasses","🤩":"star",
+    "🥳":"party-popper","😏":"meh","😒":"meh","😞":"frown","😔":"frown","😟":"frown",
+    "😕":"frown","🙁":"frown","☹️":"frown","😣":"frown","😖":"frown","😫":"frown",
+    "😩":"frown","🥺":"heart","😢":"frown","😭":"frown","😤":"flame","😠":"angry",
+    "😡":"angry","🤬":"angry","🤯":"zap","😳":"shocked","🥵":"flame","🥶":"snowflake",
+    "😱":"shocked","😨":"shocked","😰":"shocked","😥":"shocked","😓":"droplet",
+    "🤗":"heart","🤔":"thinking","🤭":"smile","🤫":"smile","🤥":"meh","😶":"meh",
+    "😐":"meh","😑":"meh","😬":"meh","🙄":"meh","😯":"shocked","😦":"shocked",
+    "😧":"shocked","😮":"shocked","😲":"shocked","🥱":"clock","😴":"moon","🤤":"droplet",
+    "😪":"moon","😵":"zap","🤐":"lock","🥴":"meh","🤢":"biohazard","🤮":"biohazard",
+    "🤧":"droplet","😷":"mask","🤒":"thermometer","🤕":"bandage","🤑":"dollar-sign",
+    "🤠":"cowboy-hat","😈":"smile","👿":"angry","👹":"ghost","👺":"ghost",
+    "🤡":"drama","💩":"biohazard","👻":"ghost","💀":"skull","☠️":"skull",
+    "👽":"ghost","👾":"gamepad-2","🤖":"bot","🎃":"pumpkin","😺":"cat","😸":"cat",
+    "😹":"cat","😻":"heart","😼":"cat","😽":"kiss","🙀":"shocked","😿":"frown",
+    "😾":"angry","🙈":"eye-off","🙉":"ear-off","🙊":"mic-off",
+    
+    /* ==== GESTURE & BODY ==== */
+    "👋":"hand","🤚":"hand","🖐️":"hand","✋":"hand","🖖":"hand","👌":"check",
+    "🤌":"check","🤏":"check","✌️":"check","🤞":"check","🤟":"hand-heart",
+    "🤘":"zap","🤙":"hand","👈":"pointer","👉":"pointer","👆":"pointer",
+    "🖕":"pointer","👇":"pointer","☝️":"pointer","👍":"thumbs-up","👎":"thumbs-down",
+    "✊":"hand","👊":"hand","🤛":"hand","🤜":"hand","👏":"hand","🙌":"hand-heart",
+    "👐":"hand","🤲":"hand-heart","🤝":"handshake","🙏":"hand-heart","✍️":"pencil",
+    "💅":"sparkles","🤳":"camera","💪":"dumbbell","🦾":"dumbbell","🦿":"dumbbell",
+    "🦵":"footprints","🦶":"footprints","👂":"ear","🦻":"ear","👃":"nose",
+    "🧠":"brain","🫀":"heart","🫁":"lungs","🦷":"tooth","🦴":"bone","👀":"eye",
+    "👁️":"eye","👅":"mouth","👄":"mouth","🫦":"mouth",
+    
+    /* ==== PEOPLE & FAMILY ==== */
+    "👶":"baby","🧒":"user","👦":"user","👧":"user","🧑":"user","👨":"user",
+    "👩":"user","🧓":"user","👴":"user","👵":"user","👱":"user","👲":"user",
+    "👳":"user","🧕":"user","👮":"badge","👷":"hard-hat","💂":"user","🕵️":"search",
+    "👩‍⚕️":"stethoscope","👨‍⚕️":"stethoscope","👩‍🎓":"graduation-cap","👨‍🎓":"graduation-cap",
+    "👩‍🏫":"presentation","👨‍🏫":"presentation","👩‍💻":"laptop","👨‍💻":"laptop",
+    
+    /* ==== ANIMALS & NATURE ==== */
+    "🐶":"dog","🐱":"cat","🐭":"mouse","🐹":"mouse","🐰":"rabbit","🦊":"dog",
+    "🐻":"dog","🐼":"dog","🐨":"dog","🐯":"cat","🦁":"dog","🐮":"cow","🐷":"pig",
+    "🐸":"frog","🐵":"monkey","🙈":"eye-off","🐔":"bird","🐧":"bird","🐦":"bird",
+    "🐤":"bird","🦆":"bird","🦅":"bird","🦉":"bird","🦇":"bird","🐺":"dog","🐗":"pig",
+    "🐴":"horse","🦄":"sparkles","🐝":"bee","🐛":"bug","🦋":"bug","🐌":"bug",
+    "🐞":"bug","🐜":"bug","🦗":"bug","🕷️":"bug","🦂":"bug","🐢":"turtle",
+    "🐍":"snake","🦎":"snake","🦖":"dinosaur","🦕":"dinosaur","🐙":"octopus",
+    "🦑":"octopus","🦐":"shrimp","🦞":"shrimp","🦀":"crab","🐡":"fish",
+    "🐠":"fish","🐟":"fish","🐬":"fish","🐳":"fish","🐋":"fish","🦈":"fish",
+    "🐊":"fish","🐅":"cat","🐆":"cat","🦓":"horse","🦍":"monkey","🦧":"monkey",
+    "🐘":"elephant","🦛":"pig","🦏":"elephant","🐪":"camel","🐫":"camel",
+    "🦒":"tall","🦘":"rabbit","🦬":"cow","🐃":"cow","🐂":"cow","🐄":"cow",
+    "🐎":"horse","🐖":"pig","🐏":"sheep","🐑":"sheep","🦙":"sheep","🐐":"sheep",
+    "🦌":"deer","🐕":"dog","🐩":"dog","🦮":"dog","🐕‍🦺":"dog","🐈":"cat",
+    "🐈‍⬛":"cat","🪶":"feather","🐓":"bird","🦃":"bird","🦤":"bird","🦚":"bird",
+    "🦜":"bird","🦢":"bird","🦩":"bird","🕊️":"bird","🐇":"rabbit","🦝":"dog",
+    "🦨":"dog","🦡":"dog","🦫":"dog","🦦":"dog","🦥":"dog","🐁":"mouse",
+    "🐀":"mouse","🐿️":"squirrel","🦔":"squirrel",
+    
+    /* ==== FOOD & DRINK ==== */
+    "🍎":"apple","🍐":"apple","🍊":"citrus","🍋":"citrus","🍌":"banana",
+    "🍉":"watermelon","🍇":"grape","🍓":"strawberry","🫐":"blueberry","🍈":"melon",
+    "🍒":"cherry","🍑":"peach","🥭":"apple","🍍":"pineapple","🥥":"coconut",
+    "🥝":"kiwi","🍅":"tomato","🍆":"eggplant","🥑":"avocado","🥦":"broccoli",
+    "🥬":"leafy-green","🥒":"cucumber","🌶️":"pepper","🫑":"pepper","🌽":"corn",
+    "🥕":"carrot","🫒":"olive","🧄":"garlic","🧅":"onion","🥔":"potato",
+    "🍠":"sweet-potato","🥐":"croissant","🥯":"bagel","🍞":"bread","🥖":"bread",
+    "🥨":"pretzel","🧀":"cheese","🥚":"egg","🍳":"egg-fried","🧈":"butter",
+    "🥞":"pancake","🧇":"waffle","🥓":"bacon","🥩":"beef","🍗":"drumstick",
+    "🍖":"beef","🦴":"bone","🌭":"hot-dog","🍔":"hamburger","🍟":"french-fries",
+    "🍕":"pizza","🫓":"flatbread","🥪":"sandwich","🥙":"flatbread","🧆":"falafel",
+    "🌮":"taco","🌯":"burrito","🫔":"burrito","🥗":"salad","🥘":"paella",
+    "🫕":"pot","🥫":"can","🍝":"spaghetti","🍜":"ramen","🍲":"soup","🍛":"curry",
+    "🍣":"sushi","🍱":"bento","🥟":"dumpling","🦪":"oyster","🍤":"shrimp",
+    "🍙":"rice","🍚":"rice","🍘":"rice","🍥":"fish-cake","🥠":"cookie",
+    "🥮":"cookie","🍢":"oden","🍡":"dango","🍧":"shave-ice","🍨":"ice-cream",
+    "🍦":"ice-cream","🥧":"pie","🧁":"cupcake","🍰":"cake-slice","🎂":"cake",
+    "🍮":"custard","🍭":"candy","🍬":"candy","🍫":"chocolate","🍿":"popcorn",
+    "🍩":"donut","🍪":"cookie","🌰":"nut","🥜":"nut","🍯":"honey-pot",
+    "🥛":"milk","🍼":"baby","🫖":"tea","☕":"coffee","🍵":"tea","🧃":"cup-soda",
+    "🥤":"cup-soda","🧋":"cup-soda","🍶":"sake","🍺":"beer","🍻":"beer",
+    "🥂":"wine","🍷":"wine","🥃":"wine","🍸":"wine","🍹":"wine","🧉":"coffee",
+    "🍾":"wine","🧊":"ice-cube","🥄":"utensils","🍴":"utensils","🍽️":"utensils",
+    "🥢":"utensils-crossed","🧂":"salt",
+    
+    /* ==== TRAVEL & PLACES ==== */
+    "🚗":"car","🚕":"car-front","🚙":"car-front","🚌":"bus","🚎":"bus",
+    "🏎️":"car","🚓":"car","🚑":"ambulance","🚒":"truck","🚐":"bus",
+    "🛻":"truck","🚚":"truck","🚛":"truck","🚜":"tractor","🦯":"accessibility",
+    "🦽":"accessibility","🦼":"accessibility","🛴":"scooter","🚲":"bike",
+    "🛵":"bike","🏍️":"bike","🛺":"car","🚨":"siren","🚔":"car","🚍":"bus",
+    "🚘":"car","🚖":"car","🚡":"cable-car","🚠":"cable-car","🚟":"cable-car",
+    "🚃":"train","🚋":"train","🚞":"train","🚝":"train","🚄":"train",
+    "🚅":"train","🚈":"train","🚂":"train","🚆":"train","🚇":"train",
+    "🚊":"train","🚉":"train","✈️":"plane","🛫":"plane-takeoff","🛬":"plane-landing",
+    "🛩️":"plane","💺":"armchair","🛰️":"satellite","🚀":"rocket","🛸":"rocket",
+    "🚁":"helicopter","🛶":"sailboat","⛵":"sailboat","🚤":"ship","🛥️":"ship",
+    "🛳️":"ship","⛴️":"ship","🚢":"ship","⚓":"anchor","🪝":"hook",
+    "⛽":"fuel","🚧":"construction","🚦":"traffic-light","🚥":"traffic-light",
+    "🚏":"bus","🗺️":"map","🗿":"landmark","🗽":"landmark","🗼":"landmark",
+    "🏰":"castle","🏯":"castle","🏟️":"stadium","🎡":"ferris-wheel",
+    "🎢":"ferris-wheel","🎠":"ferris-wheel","⛲":"fountain","⛱️":"umbrella",
+    "🏖️":"umbrella","🏝️":"palm-tree","🏜️":"desert","🌋":"mountain",
+    "⛰️":"mountain","🏔️":"mountain-snow","🗻":"mountain","🏕️":"tent-tree",
+    "⛺":"tent","🏠":"home","🏡":"home","🏘️":"home","🏚️":"home",
+    "🏗️":"construction","🏭":"factory","🏢":"building","🏬":"building-2",
+    "🏣":"building","🏤":"building","🏥":"hospital","🏦":"landmark",
+    "🏨":"hotel","🏩":"hotel","🏪":"store","🏫":"school","🏬":"store",
+    "🏭️":"factory","🏯":"castle","🏰":"castle","💒":"church","🗼":"tower",
+    "🗽":"landmark","⛪":"church","🕌":"mosque","🛕":"temple","🕍":"synagogue",
+    "⛩️":"torii","🕋":"kaaba","⛲":"fountain","⛺":"tent","🌁":"foggy",
+    "🌃":"moon","🏙️":"city","🌄":"sunrise","🌅":"sunrise","🌆":"city",
+    "🌇":"sunset","🌉":"bridge","♨️":"hot-springs","🎠":"ferris-wheel",
+    
+    /* ==== WEATHER & NATURE ==== */
+    "🌞":"sun","🌝":"moon","🌚":"moon","🌛":"moon","🌜":"moon","🌘":"moon",
+    "🌗":"moon","🌖":"moon","🌕":"moon","🌔":"moon","🌓":"moon","🌒":"moon",
+    "🌑":"moon","🌙":"moon","⭐":"star","🌟":"star","💫":"sparkles",
+    "✨":"sparkles","⚡":"zap","🌩️":"cloud-lightning","⛈️":"cloud-rain",
+    "🌧️":"cloud-rain","🌦️":"cloud-sun","🌤️":"cloud-sun","⛅":"cloud-sun",
+    "🌥️":"cloud","☁️":"cloud","🌨️":"cloud-snow","❄️":"snowflake",
+    "❅":"snowflake","❆":"snowflake","🌬️":"wind","💨":"wind","🌪️":"tornado",
+    "🌫️":"fog","🌊":"waves","💧":"droplet","💦":"droplet","☔":"umbrella",
+    "☂️":"umbrella","🌂":"umbrella","🌈":"rainbow","☀️":"sun","🌤":"sun",
+    "⛅️":"cloud-sun","☃️":"snowman","⛄":"snowman","☄️":"zap","🔥":"flame",
+    
+    /* ==== SPORTS & ACTIVITIES ==== */
+    "⚽":"circle","🏀":"circle","🏈":"circle","⚾":"circle","🥎":"circle",
+    "🎾":"circle","🏐":"circle","🏉":"circle","🥏":"circle","🎱":"circle",
+    "🪀":"circle","🏓":"circle","🏸":"circle","🏒":"circle","🏑":"circle",
+    "🥍":"circle","🏏":"circle","🪃":"circle","🥅":"circle","⛳":"flag",
+    "🪁":"kite","🏹":"target","🎣":"fish","🤿":"glasses","🥊":"hand",
+    "🥋":"shirt","🎽":"shirt","🛹":"skateboard","🛼":"skateboard","🛷":"sled",
+    "⛸️":"snowflake","🥌":"circle","🎿":"ski","⛷️":"ski","🏂":"ski",
+    "🪂":"kite","🏋️":"dumbbell","🤼":"hand","🤸":"activity","⛹️":"activity",
+    "🤺":"sword","🤾":"hand","🏌️":"flag","🏇":"horse","🧘":"lotus",
+    "🏄":"waves","🏊":"waves","🤽":"waves","🚣":"waves","🧗":"mountain",
+    "🚵":"bike","🚴":"bike","🏆":"trophy","🥇":"award","🥈":"award",
+    "🥉":"award","🏅":"award","🎖️":"award","🏵️":"award","🎗️":"award",
+    "🎫":"ticket","🎟️":"ticket","🎪":"tent-tree","🤹":"user","🎭":"drama",
+    "🩰":"sparkles","🎨":"palette","🎬":"film","🎤":"mic","🎧":"headphones",
+    "🎼":"music","🎹":"piano","🥁":"drum","🪘":"drum","🎷":"music",
+    "🎺":"music","🪗":"music","🎸":"guitar","🪕":"music","🎻":"music",
+    "🎲":"dice-6","♟️":"circle","🎯":"target","🎳":"circle","🎮":"gamepad-2",
+    "🎰":"circle","🧩":"puzzle","🎴":"layers","🀄":"layers",
+    
+    /* ==== OBJECTS ==== */
+    "⌚":"watch","📱":"smartphone","📲":"smartphone","💻":"laptop","⌨️":"keyboard",
+    "🖥️":"monitor","🖨️":"printer","🖱️":"mouse","🖲️":"mouse","💽":"disc",
+    "💾":"save","💿":"disc","📀":"disc","🧮":"calculator","🎥":"video",
+    "🎞️":"film","📽️":"film","🎬":"film","📺":"tv","📷":"camera",
+    "📸":"camera","📹":"video","📼":"disc","🔍":"search","🔎":"search",
+    "🕯️":"flame","💡":"lightbulb","🔦":"flashlight","🏮":"lantern",
+    "🪔":"lamp","📔":"notebook","📕":"book","📖":"book-open","📗":"book",
+    "📘":"book","📙":"book","📚":"library","📓":"notebook","📒":"notebook",
+    "📃":"file","📜":"scroll","📄":"file","📰":"newspaper","🗞️":"newspaper",
+    "📑":"bookmarks","🔖":"bookmark","🏷️":"tag","💰":"coins","🪙":"circle-dollar-sign",
+    "💴":"banknote","💵":"banknote","💶":"banknote","💷":"banknote","💸":"banknote",
+    "💳":"credit-card","🧾":"receipt","💹":"trending-up","✉️":"mail",
+    "📧":"mail","📨":"mail","📩":"mail","📤":"upload","📥":"download",
+    "📦":"package","📫":"mail","📪":"mail","📬":"mail","📭":"mail",
+    "📮":"mail","🗳️":"vote","✏️":"pencil","✒️":"pen","🖋️":"pen",
+    "🖊️":"pen","🖌️":"brush","🖍️":"pencil","📝":"file-edit","💼":"briefcase",
+    "📁":"folder","📂":"folder-open","🗂️":"folder-tree","📅":"calendar",
+    "📆":"calendar","🗒️":"notebook","🗓️":"calendar","📇":"contact",
+    "📈":"trending-up","📉":"trending-down","📊":"bar-chart-3","📋":"clipboard-list",
+    "📌":"pin","📍":"map-pin","📎":"paperclip","🖇️":"paperclip",
+    "📏":"ruler","📐":"triangle","✂️":"scissors","🗃️":"archive",
+    "🗄️":"archive","🗑️":"trash-2","🔒":"lock","🔓":"unlock","🔏":"lock",
+    "🔐":"lock","🔑":"key","🗝️":"key","🔨":"hammer","🪓":"axe",
+    "⛏️":"pickaxe","⚒️":"hammer","🛠️":"wrench","🗡️":"sword","⚔️":"sword",
+    "🔫":"pistol","🪃":"target","🏹":"target","🛡️":"shield","🪚":"saw",
+    "🔧":"wrench","🪛":"wrench","🔩":"bolt","⚙️":"settings","🗜️":"clamp",
+    "⚖️":"scale","🦯":"accessibility","🔗":"link","⛓️":"link","🪝":"hook",
+    "🧰":"toolbox","🧲":"magnet","🪜":"ladder","⚗️":"flask","🧪":"flask",
+    "🧫":"flask","🧬":"dna","🔬":"microscope","🔭":"telescope","📡":"satellite",
+    "💉":"syringe","🩸":"droplet","💊":"pill","🩹":"bandage","🩺":"stethoscope",
+    "🩻":"scan","🚪":"door","🛗":"elevator","🪞":"mirror","🪟":"door",
+    "🛏️":"bed","🛋️":"armchair","🪑":"chair","🚽":"toilet","🪠":"wrench",
+    "🚿":"shower-head","🛁":"bath","🪤":"mousetrap","🪒":"scissors","🧴":"bottle",
+    "🧷":"pin","🧹":"brush","🧺":"basket","🧻":"scroll","🪣":"basket",
+    "🧼":"bubble","🫧":"bubble","🪥":"toothbrush","🧽":"sponge","🧯":"flame",
+    "🛒":"shopping-cart","🚬":"cigarette","⚰️":"archive","🪦":"archive",
+    "⚱️":"archive","🗿":"landmark","🪧":"megaphone","🪪":"badge-check",
+    
+    /* ==== SYMBOLS ==== */
+    "❤️":"heart","🧡":"heart","💛":"heart","💚":"heart","💙":"heart",
+    "💜":"heart","🖤":"heart","🤍":"heart","🤎":"heart","💔":"heart-crack",
+    "❣️":"heart","💕":"heart","💞":"heart","💓":"heart","💗":"heart",
+    "💖":"heart","💘":"heart","💝":"heart","💟":"heart","♥️":"heart",
+    "☮️":"peace","✝️":"cross","☪️":"moon","🕉️":"om","☸️":"wheel",
+    "✡️":"star","🔯":"star","🕎":"menorah","☯️":"yin-yang","☦️":"cross",
+    "🛐":"church","⛎":"activity","♈":"zodiac-aries","♉":"zodiac-taurus",
+    "♊":"zodiac-gemini","♋":"zodiac-cancer","♌":"zodiac-leo","♍":"zodiac-virgo",
+    "♎":"zodiac-libra","♏":"zodiac-scorpio","♐":"zodiac-sagittarius",
+    "♑":"zodiac-capricorn","♒":"zodiac-aquarius","♓":"zodiac-pisces",
+    "🆔":"id-card","⚕️":"stethoscope","♻️":"recycle","⚜️":"flower",
+    "🔱":"anchor","📛":"badge","🔰":"badge","⭕":"circle","✅":"check-circle",
+    "☑️":"check-square","✔️":"check","❌":"x-circle","❎":"x-circle",
+    "➕":"plus","➖":"minus","➗":"divide","✖️":"x","🟰":"equal",
+    "♾️":"infinity","💲":"dollar-sign","💱":"refresh-cw","™️":"copyright",
+    "©️":"copyright","®️":"copyright","〰️":"minus","➰":"refresh-cw",
+    "➿":"refresh-cw","🔚":"arrow-left","🔙":"arrow-left","🔛":"toggle-right",
+    "🔝":"arrow-up","🔜":"arrow-right","🔃":"refresh-cw","🔄":"refresh-cw",
+    "🔁":"repeat","🔂":"repeat-1","▶️":"play","⏩":"fast-forward",
+    "⏭️":"skip-forward","⏯️":"play-circle","◀️":"arrow-left","⏪":"fast-forward",
+    "⏮️":"skip-back","🔼":"triangle","⏫":"arrow-up","🔽":"triangle",
+    "⏬":"arrow-down","⏸️":"pause","⏹️":"square","⏺️":"circle","⏏️":"upload",
+    "🎦":"film","🔅":"sun","🔆":"sun","📶":"signal","📳":"smartphone",
+    "📴":"smartphone","♀️":"venus","♂️":"mars","⚧️":"activity",
+    "✖":"x","➕️":"plus","➖️":"minus","🟥":"square","🟧":"square",
+    "🟨":"square","🟩":"square","🟦":"square","🟪":"square","⬛":"square",
+    "⬜":"square","🟫":"square","🟤":"circle","⚫":"circle","⚪":"circle",
+    "🔴":"circle","🟠":"circle","🟡":"circle","🟢":"circle","🔵":"circle",
+    "🟣":"circle","🟤️":"circle","🔶":"diamond","🔷":"diamond","🔸":"diamond",
+    "🔹":"diamond","🔺":"triangle","🔻":"triangle","💠":"diamond","🔘":"circle",
+    "🔳":"square","🔲":"square","▪️":"square","▫️":"square","◾":"square",
+    "◽":"square","◼️":"square","◻️":"square","🟥️":"square","🔈":"volume",
+    "🔇":"volume-x","🔉":"volume-1","🔊":"volume-2","🔔":"bell","🔕":"bell-off",
+    "📣":"megaphone","📢":"megaphone","💬":"message-circle","💭":"message-square",
+    "🗯️":"message-square","♠️":"spade","♣️":"club","♥️":"heart","♦️":"diamond",
+    "🃏":"layers","🎴":"layers","🀄":"layers","🕐":"clock","🕑":"clock",
+    "🕒":"clock","🕓":"clock","🕔":"clock","🕕":"clock","🕖":"clock",
+    "🕗":"clock","🕘":"clock","🕙":"clock","🕚":"clock","🕛":"clock",
+    "🕜":"clock","🕝":"clock","🕞":"clock","🕟":"clock","🕠":"clock",
+    "🕡":"clock","🕢":"clock","🕣":"clock","🕤":"clock","🕥":"clock",
+    "🕦":"clock","🕧":"clock"
+  };
+  
+  Object.assign(window.EMOJI_TO_LUCIDE, newMap);
+  console.log("✅ Extended emoji map: +" + Object.keys(newMap).length + " emoji");
+}
+
+/* ─── FULL EMOJI AUTO-DETECT (semua Unicode) ─── */
+function installFullEmojiConverter(){
+  if(!window.renderLucideIcon) return;
+  
+  // Regex LEBIH LUAS — semua emoji Unicode
+  var FULL_EMOJI_REGEX = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base}|\uFE0F|\u200D)+/gu;
+  
+  // Fallback based on range
+  function guessFallbackIcon(codepoint){
+    var cp = codepoint;
+    if(cp >= 0x1F600 && cp <= 0x1F64F) return "smile";           // Smileys
+    if(cp >= 0x1F300 && cp <= 0x1F5FF) return "sparkles";        // Misc symbols
+    if(cp >= 0x1F680 && cp <= 0x1F6FF) return "rocket";          // Transport
+    if(cp >= 0x1F900 && cp <= 0x1F9FF) return "circle-dot";      // Supplemental
+    if(cp >= 0x1FA00 && cp <= 0x1FAFF) return "circle-dot";      // Symbols extended
+    if(cp >= 0x2600 && cp <= 0x27BF) return "star";              // Misc symbols
+    if(cp >= 0x1F000 && cp <= 0x1F02F) return "circle-dot";      // Mahjong
+    if(cp >= 0x1F100 && cp <= 0x1F1FF) return "flag";            // Enclosed alphanum
+    if(cp >= 0x1F200 && cp <= 0x1F2FF) return "circle-dot";      // Enclosed ideographic
+    if(cp >= 0x1F700 && cp <= 0x1F77F) return "flask";           // Alchemical
+    if(cp >= 0x1F780 && cp <= 0x1F7FF) return "shape";           // Geometric extended
+    if(cp >= 0x1F800 && cp <= 0x1F8FF) return "arrow-right";     // Supplemental arrows
+    return "circle-dot";
+  }
+  
+  // Override emojiToSvg
+  window.emojiToSvg = function(text, opts){
+    if(!text) return text;
+    
+    return String(text).replace(FULL_EMOJI_REGEX, function(match){
+      // Skip zero-width joiner & variation selector
+      if(match === "\uFE0F" || match === "\uFE0E" || match === "\u200D") return "";
+      
+      // Cek mapping manual dulu
+      var name = window.EMOJI_TO_LUCIDE[match];
+      
+      // Kalau gak ada → auto-guess dari range
+      if(!name){
+        var cp = match.codePointAt(0);
+        name = guessFallbackIcon(cp);
+      }
+      
+      var svg = window.renderLucideIcon(name);
+      if(!svg) return "";
+      
+      return '<span class="lucide-emoji">' + svg + '</span>';
+    });
+  };
+  
+  console.log("✅ Full emoji auto-detect installed");
+}
+
+/* ─── FORCE RE-WALK SEMUA TEXT NODE ─── */
+function forceReconvertAllEmojis(){
+  try{
+    if(!window.emojiToSvg) return;
+    
+    var skipTags = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"];
+    var emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base})/u;
+    
+    // Hapus dulu semua span lucide-emoji lama
+    document.querySelectorAll("span.lucide-emoji").forEach(function(el){
+      try{ el.remove(); }catch(e){}
+    });
+    document.querySelectorAll('span[data-emoji-converted]').forEach(function(el){
+      try{ el.remove(); }catch(e){}
+    });
+    
+    var count = 0;
+    
+    function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(skipTags.indexOf(root.tagName) !== -1) return;
+      if(root.classList && root.classList.contains("lucide-emoji")) return;
+      if(root.closest && root.closest(".lucide-emoji")) return;
+      
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      for(var i = 0; i < kids.length; i++){
+        var k = kids[i];
+        if(k.nodeType === 3){
+          var txt = k.nodeValue;
+          if(!txt) continue;
+          emojiRegex.lastIndex = 0;
+          if(!emojiRegex.test(txt)) continue;
+          
+          try{
+            var html = window.emojiToSvg(txt);
+            if(html && html !== txt){
+              var span = document.createElement("span");
+              span.style.display = "contents";
+              span.setAttribute("data-emoji-v75", "1");
+              span.innerHTML = html;
+              k.parentNode.replaceChild(span, k);
+              count++;
+            }
+          }catch(e){}
+        } else if(k.nodeType === 1){
+          walk(k);
+        }
+      }
+    }
+    
+    walk(document.body);
+    if(count > 0) console.log("🎨 Converted " + count + " text node with emoji");
+  }catch(e){ console.warn("forceReconvertAllEmojis:", e); }
+}
+
+/* ─── MUTATION OBSERVER untuk element baru ─── */
+function installEmojiObserver(){
+  try{
+    if(window.__emojiV75Observer) return;
+    window.__emojiV75Observer = true;
+    
+    var skipTags = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS"];
+    var emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base})/u;
+    
+    function convertNode(node){
+      if(!node || !node.nodeValue) return;
+      var txt = node.nodeValue;
+      if(!txt) return;
+      emojiRegex.lastIndex = 0;
+      if(!emojiRegex.test(txt)) return;
+      
+      try{
+        var html = window.emojiToSvg(txt);
+        if(html && html !== txt){
+          var span = document.createElement("span");
+          span.style.display = "contents";
+          span.setAttribute("data-emoji-v75", "1");
+          span.innerHTML = html;
+          node.parentNode.replaceChild(span, node);
+        }
+      }catch(e){}
+    }
+    
+    function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(skipTags.indexOf(root.tagName) !== -1) return;
+      if(root.classList && root.classList.contains("lucide-emoji")) return;
+      if(root.closest && root.closest(".lucide-emoji")) return;
+      
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      for(var i = 0; i < kids.length; i++){
+        var k = kids[i];
+        if(k.nodeType === 3) convertNode(k);
+        else if(k.nodeType === 1) walk(k);
+      }
+    }
+    
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if(m.target && m.target.closest && m.target.closest(".lucide-emoji")) return;
+        m.addedNodes.forEach(function(n){
+          if(n.nodeType === 1) walk(n);
+          else if(n.nodeType === 3) convertNode(n);
+        });
+      });
+    });
+    
+    obs.observe(document.body, { childList: true, subtree: true });
+    console.log("✅ Emoji observer v7.5 installed");
+  }catch(e){ console.warn("installEmojiObserver:", e); }
+}
+
+/* ─── INIT PART B ─── */
+setTimeout(function(){
+  extendEmojiMap();
+  installFullEmojiConverter();
+  installEmojiObserver();
+  
+  // Force convert setelah 2s, 4s, 6s
+  setTimeout(forceReconvertAllEmojis, 2000);
+  setTimeout(forceReconvertAllEmojis, 4000);
+  setTimeout(forceReconvertAllEmojis, 6000);
+}, 3500);
+
+
+/* ═══════════════════════════════════════════════════════════
+   INIT & EXPOSE
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("╔════════════════════════════════════════╗");
+  console.log("║  ✅ PATCH v7.4+ AKTIF                  ║");
+  console.log("║  A. Varsmile static + drag langsung    ║");
+  console.log("║  B. Full emoji → Lucide auto           ║");
+  console.log("╚════════════════════════════════════════╝");
+}, 500);
+
+window.VarsmileV74 = {
+  killLoop: killVarsmileLoop,
+  patchElement: patchVarsmileElement,
+  resetPosition: function(){
+    try{ localStorage.removeItem("varlinkbio_varsmile_pos"); }catch(e){}
+    var vs = document.getElementById("varsmile-char");
+    if(vs){
+      vs.style.left = "auto";
+      vs.style.top = "auto";
+      vs.style.right = "16px";
+      vs.style.bottom = "16px";
+    }
+  }
+};
+
+window.EmojiV75 = {
+  extend: extendEmojiMap,
+  reconvert: forceReconvertAllEmojis
+};
+
+})();
+</script>
 </body>
    </html>

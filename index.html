@@ -18921,5 +18921,2721 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END PATCH FIX-CEPAT v8.0 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.0 ALL-IN-ONE — PART 1/3
+     CSS + AI Bio Generator + AI Settings (Dev Panel)
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- AUTO-CLEANUP: hapus patch v8 & v8.5 lama -->
+<script id="fixv90-autoclean">
+(function(){
+  "use strict";
+  try{
+    var toRemove = ["fixv8-css","fixv8-js","fixv85-css","fixv85-js","fixv85-autoclean"];
+    toRemove.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){ el.remove(); console.log("🗑️ Auto-cleanup:", id); }
+    });
+    document.querySelectorAll('style[id^="fixv8"], script[id^="fixv8"]').forEach(function(el){
+      if(el.id.indexOf("fixv90") === -1){ el.remove(); }
+    });
+  }catch(e){}
+})();
+</script>
+
+<style id="fixv90-css">
+/* ═══════════════════════════════════════════════════════════
+   VARSMILE: STATIC + DRAG
+   ═══════════════════════════════════════════════════════════ */
+#varsmile-char{
+  position:fixed !important;
+  width:72px !important;height:88px !important;
+  z-index:99999 !important;
+  pointer-events:auto !important;
+  cursor:grab !important;
+  touch-action:none !important;
+  user-select:none !important;
+  -webkit-user-select:none !important;
+  -webkit-tap-highlight-color:transparent !important;
+  transition:none !important;
+  animation:none !important;
+  image-rendering:pixelated !important;
+}
+#varsmile-char *,
+#varsmile-char .varsmile-svg,
+#varsmile-char .vs-leg-left,
+#varsmile-char .vs-leg-right{
+  animation:none !important;
+  transition:none !important;
+}
+#varsmile-char.dragging{
+  cursor:grabbing !important;
+  filter:drop-shadow(0 0 20px rgba(255,215,0,.9)) !important;
+  z-index:100000 !important;
+}
+#varsmile-char.walking-out,
+#varsmile-char.walking-in,
+#varsmile-char.hide-bottom,
+#varsmile-char.peek-bottom,
+#varsmile-char.walking,
+#varsmile-char.tired,
+#varsmile-char.talking,
+#varsmile-char.idle-pos,
+#varsmile-char.move-up,
+#varsmile-char.move-down,
+#varsmile-char.move-side{
+  animation:none !important;
+  transition:none !important;
+}
+.varsmile-road,.varsmile-dust{display:none !important}
+
+/* ═══════════════════════════════════════════════════════════
+   PREVIEW PHONE: FIT 1 LAYAR
+   ═══════════════════════════════════════════════════════════ */
+.editor-preview{position:sticky !important;top:70px !important}
+.preview-phone{
+  aspect-ratio:9/19.5 !important;
+  max-width:320px !important;
+  width:100% !important;
+  margin:0 auto !important;
+  overflow:hidden !important;
+  position:relative !important;
+}
+.preview-phone iframe{
+  width:100% !important;height:100% !important;
+  border:none !important;display:block !important;
+  overflow:hidden !important;
+}
+@media(max-width:1024px){
+  .editor-preview{position:static !important}
+  .preview-phone{max-width:280px !important}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PREVIEW EDIT MODE (toggle)
+   ═══════════════════════════════════════════════════════════ */
+.preview-edit-toggle{
+  display:flex;gap:6px;margin-top:10px;justify-content:center;
+}
+.preview-edit-btn{
+  padding:10px 16px;
+  background:#fff;
+  color:#0a0a0a;
+  border:2.5px solid #0a0a0a;
+  border-radius:10px;
+  font-weight:900;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+  cursor:pointer;
+  box-shadow:3px 3px 0 #0a0a0a;
+  transition:transform .1s, box-shadow .1s;
+  font-family:inherit;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.preview-edit-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #0a0a0a}
+.preview-edit-btn.active{
+  background:#ffd700;
+  box-shadow:0 0 0 2px #ffd700, 3px 3px 0 #0a0a0a;
+}
+.preview-edit-btn.reset{
+  background:#f0ebe0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM THEME BUTTON
+   ═══════════════════════════════════════════════════════════ */
+.btn-custom-theme-fix,
+#btn-custom-theme{
+  background:#a78bfa !important;
+  color:#fff !important;
+  border:2.5px solid #0a0a0a !important;
+  box-shadow:2px 2px 0 #0a0a0a !important;
+  font-weight:900 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.3px !important;
+}
+.btn-custom-theme-fix:hover,
+#btn-custom-theme:hover{
+  transform:translate(-1px,-1px) !important;
+  box-shadow:3px 3px 0 #0a0a0a !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EMOJI LUCIDE
+   ═══════════════════════════════════════════════════════════ */
+.lucide-emoji{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:1em;height:1em;
+  vertical-align:-0.15em;
+  margin:0 1px;
+}
+.lucide-emoji svg{
+  width:100%;height:100%;
+  stroke:currentColor;fill:none;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+span[data-emoji-v90]{display:contents !important}
+
+/* ═══════════════════════════════════════════════════════════
+   MUSIC BUTTON
+   ═══════════════════════════════════════════════════════════ */
+.music-float-btn{top:76px !important;right:14px !important;z-index:99990 !important}
+
+/* ═══════════════════════════════════════════════════════════
+   AI BIO GENERATOR PAGE
+   ═══════════════════════════════════════════════════════════ */
+.aibio-page{
+  max-width:720px;margin:0 auto;
+  padding:20px 18px 80px;
+}
+.aibio-hero{
+  text-align:center;padding:24px 0;
+}
+.aibio-hero .hero-icon{
+  width:88px;height:88px;
+  background:linear-gradient(135deg,#a78bfa,#ff69b4);
+  border:3px solid #0a0a0a;border-radius:50%;
+  display:grid;place-items:center;margin:0 auto 14px;
+  box-shadow:5px 5px 0 #ffd700;
+  font-size:42px;
+  animation:aibioFloat 3s ease-in-out infinite;
+}
+@keyframes aibioFloat{
+  0%,100%{transform:rotate(-3deg) translateY(0)}
+  50%{transform:rotate(-3deg) translateY(-8px)}
+}
+.aibio-hero h1{
+  font-size:clamp(24px,5vw,32px);
+  font-weight:900;text-transform:uppercase;
+  letter-spacing:-.5px;margin-bottom:8px;
+}
+.aibio-hero p{
+  font-size:13.5px;font-weight:600;color:var(--ink-soft);
+  max-width:480px;margin:0 auto;line-height:1.6;
+}
+
+.aibio-form{
+  background:var(--white);border:3px solid var(--ink);
+  border-radius:14px;padding:20px;
+  box-shadow:6px 6px 0 var(--ink);
+  margin-bottom:20px;
+}
+.aibio-form label{
+  display:block;font-size:12px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:6px;color:var(--ink);
+}
+.aibio-form textarea{
+  width:100%;min-height:110px;
+  padding:12px 14px;font-size:14px;
+  border:2.5px solid var(--ink);border-radius:10px;
+  background:var(--cream);font-family:inherit;
+  font-weight:600;resize:vertical;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+.aibio-form textarea:focus{box-shadow:3px 3px 0 var(--ink)}
+
+.aibio-lang-row{
+  display:flex;gap:8px;margin-bottom:14px;
+}
+.aibio-lang-btn{
+  flex:1;padding:10px 12px;
+  border:2.5px solid var(--ink);border-radius:10px;
+  background:var(--white);color:var(--ink);
+  font-weight:900;font-size:12px;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;
+}
+.aibio-lang-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.aibio-lang-btn.active{background:#ffd700}
+
+.aibio-generate-btn{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg,#a78bfa,#ff69b4);
+  color:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  font-weight:900;font-size:14px;
+  text-transform:uppercase;letter-spacing:.5px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;
+  display:flex;align-items:center;
+  justify-content:center;gap:8px;
+}
+.aibio-generate-btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.aibio-generate-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.aibio-generate-btn:disabled{
+  opacity:.5;cursor:not-allowed;
+  transform:none !important;
+}
+
+.aibio-examples{
+  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;
+}
+.aibio-example-chip{
+  padding:7px 12px;
+  background:var(--cream);
+  border:2px solid var(--ink);
+  border-radius:999px;
+  font-size:11.5px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  color:var(--ink);
+  transition:transform .1s;
+}
+.aibio-example-chip:hover{transform:scale(1.03);background:#ffd700}
+
+/* ─── HASIL AI ─── */
+.aibio-result{
+  background:var(--white);
+  border:3px solid var(--ink);
+  border-radius:14px;
+  padding:20px;
+  box-shadow:6px 6px 0 var(--ink);
+  margin-bottom:20px;
+  display:none;
+}
+.aibio-result.show{display:block;animation:aibioSlideIn .4s ease}
+@keyframes aibioSlideIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.aibio-result-head{
+  font-size:12px;font-weight:900;
+  text-transform:uppercase;letter-spacing:1px;
+  color:var(--ink-soft);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:6px;
+}
+.aibio-result-item{
+  background:var(--cream);
+  border:2px solid var(--ink);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:10px;
+}
+.aibio-result-item .lbl{
+  font-size:10.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:var(--ink-soft);
+  margin-bottom:4px;
+}
+.aibio-result-item .val{
+  font-size:14px;font-weight:700;
+  line-height:1.45;
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+}
+.aibio-result-item .val.big{
+  font-size:18px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.aibio-links-preview{
+  display:flex;flex-direction:column;gap:6px;
+}
+.aibio-link-row{
+  display:flex;align-items:center;gap:8px;
+  background:var(--white);
+  border:1.5px solid var(--ink);
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:12.5px;font-weight:700;
+}
+.aibio-link-row .lr-icon{
+  width:22px;height:22px;
+  background:#ffd700;
+  border:1.5px solid var(--ink);
+  border-radius:5px;
+  display:grid;place-items:center;
+  font-size:11px;flex-shrink:0;
+}
+.aibio-link-row .lr-info{flex:1;min-width:0;overflow:hidden}
+.aibio-link-row .lr-info b{
+  font-size:12.5px;font-weight:900;
+  display:block;
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+}
+.aibio-link-row .lr-info span{
+  font-size:10.5px;font-weight:600;
+  color:var(--ink-soft);
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;display:block;
+}
+
+.aibio-tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-top:6px;
+}
+.aibio-tag{
+  padding:4px 10px;
+  background:#a78bfa;color:#fff;
+  border:1.5px solid var(--ink);
+  border-radius:999px;
+  font-size:10.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+
+.aibio-theme-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px;
+  background:var(--ink);color:var(--yellow);
+  border:2px solid var(--ink);
+  border-radius:999px;
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-right:6px;margin-bottom:4px;
+}
+
+.aibio-actions{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-top:16px;
+  padding-top:16px;
+  border-top:2px solid var(--cream-2);
+}
+.aibio-actions button{
+  flex:1;min-width:120px;
+  padding:12px 14px;
+  font-size:12.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  cursor:pointer;font-family:inherit;
+  transition:transform .1s, box-shadow .1s;
+}
+.aibio-actions .btn-regen{
+  background:#ffd700;color:var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.aibio-actions .btn-apply{
+  background:#22c55e;color:#fff;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.aibio-actions .btn-edit{
+  background:var(--white);color:var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.aibio-actions button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.aibio-actions button:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+
+.aibio-loading{
+  display:none;
+  flex-direction:column;align-items:center;
+  justify-content:center;padding:40px 20px;
+  text-align:center;
+  background:var(--white);
+  border:3px solid var(--ink);
+  border-radius:14px;
+  box-shadow:6px 6px 0 var(--ink);
+  margin-bottom:20px;
+}
+.aibio-loading.show{display:flex}
+.aibio-loading .spinner{
+  width:60px;height:60px;
+  border:5px solid var(--cream-2);
+  border-top-color:#a78bfa;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin-bottom:16px;
+}
+.aibio-loading .txt{
+  font-size:13px;font-weight:700;
+  color:var(--ink-soft);
+  line-height:1.6;
+}
+.aibio-loading .txt b{
+  display:block;font-size:14px;
+  color:var(--ink);margin-bottom:4px;
+  font-weight:900;text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.aibio-error{
+  display:none;
+  background:#ff2a2a;color:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  padding:14px 16px;
+  font-size:12.5px;font-weight:700;
+  line-height:1.5;
+  box-shadow:4px 4px 0 var(--ink);
+  margin-bottom:16px;
+}
+.aibio-error.show{display:block}
+
+/* ═══════════════════════════════════════════════════════════
+   DEV PANEL — AI SETTINGS TAB
+   ═══════════════════════════════════════════════════════════ */
+.dev-ai-wrap{
+  max-width:800px;margin:0 auto;
+  padding:0 18px 60px;
+}
+.dev-ai-card{
+  background:var(--white);
+  border:2.5px solid var(--ink);
+  border-radius:12px;
+  padding:16px;
+  box-shadow:4px 4px 0 var(--ink);
+  margin-bottom:14px;
+}
+.dev-ai-card h3{
+  font-size:13px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--white);background:var(--ink);
+  padding:4px 10px;border-radius:6px;
+  display:inline-block;margin-bottom:14px;
+}
+.dev-ai-field{margin-bottom:14px}
+.dev-ai-field label{
+  display:block;font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--ink);margin-bottom:6px;
+}
+.dev-ai-field input,
+.dev-ai-field select,
+.dev-ai-field textarea{
+  width:100%;padding:10px 12px;
+  border:2px solid var(--ink);
+  border-radius:8px;
+  background:var(--cream);
+  font-size:13px;font-weight:600;
+  font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.dev-ai-field textarea{
+  min-height:60px;resize:vertical;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+}
+.dev-ai-field .hint{
+  font-size:10.5px;font-weight:600;
+  color:var(--ink-soft);margin-top:4px;
+  line-height:1.5;
+}
+.dev-ai-row{
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+.dev-ai-row > *{flex:1;min-width:140px}
+.dev-ai-row button{
+  padding:10px 14px;
+  font-size:12px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  border:2.5px solid var(--ink);
+  border-radius:8px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:3px 3px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;
+}
+.dev-ai-row button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.dev-ai-row button:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.dev-ai-test-btn{background:#ffd700;color:var(--ink)}
+.dev-ai-save-btn{background:#22c55e;color:#fff}
+.dev-ai-reset-btn{background:#ff2a2a;color:#fff}
+
+.dev-ai-status{
+  display:none;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:12.5px;font-weight:700;
+  margin-top:10px;
+  border:2.5px solid var(--ink);
+  line-height:1.5;
+  word-wrap:break-word;
+}
+.dev-ai-status.show{display:block}
+.dev-ai-status.ok{background:#22c55e;color:#fff}
+.dev-ai-status.err{background:#ff2a2a;color:#fff}
+.dev-ai-status.info{background:#ffd700;color:var(--ink)}
+
+.dev-ai-apikey-wrap{
+  position:relative;
+}
+.dev-ai-apikey-wrap input{padding-right:80px}
+.dev-ai-apikey-toggle{
+  position:absolute;
+  right:6px;top:50%;transform:translateY(-50%);
+  padding:6px 12px;
+  background:var(--ink);color:var(--yellow);
+  border:2px solid var(--ink);
+  border-radius:6px;
+  font-size:10.5px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+
+.dev-ai-models-list{
+  display:flex;flex-direction:column;gap:6px;
+  margin-top:8px;
+}
+.dev-ai-model-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  background:var(--cream);
+  border:2px solid var(--ink);
+  border-radius:8px;
+  cursor:pointer;
+  transition:transform .1s;
+}
+.dev-ai-model-item:hover{transform:translate(-1px,-1px)}
+.dev-ai-model-item.active{
+  background:#ffd700;
+  box-shadow:0 0 0 2px #ffd700, 2px 2px 0 var(--ink);
+}
+.dev-ai-model-item input[type=radio]{
+  width:18px;height:18px;flex-shrink:0;
+}
+.dev-ai-model-item .info{flex:1;min-width:0}
+.dev-ai-model-item .name{
+  font-size:12.5px;font-weight:900;
+  font-family:'JetBrains Mono',monospace;
+  word-break:break-all;
+}
+.dev-ai-model-item .desc{
+  font-size:10.5px;font-weight:600;
+  color:var(--ink-soft);margin-top:2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIX BADGE CROP DI PREVIEW
+   ═══════════════════════════════════════════════════════════ */
+.preview-phone .bio-name,
+.preview-phone .bio-bio,
+.preview-phone .bio-title-top{
+  max-width:90% !important;
+  word-wrap:break-word !important;
+  overflow-wrap:break-word !important;
+  white-space:normal !important;
+  text-align:center !important;
+}
+</style>
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.0 ALL-IN-ONE — PART 2/3
+     Console Dev Panel + Fix Drag Tombol + Varsmile Drag
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv90-css-2">
+/* ═══════════════════════════════════════════════════════════
+   DEV PANEL — CONSOLE TAB
+   ═══════════════════════════════════════════════════════════ */
+.dev-console-wrap{
+  max-width:1100px;margin:0 auto;
+  padding:0 18px 60px;
+}
+.dev-console-toolbar{
+  display:flex;flex-wrap:wrap;gap:8px;
+  background:var(--white);
+  border:2.5px solid var(--ink);
+  border-radius:10px;
+  padding:12px;
+  box-shadow:3px 3px 0 var(--ink);
+  margin-bottom:12px;
+  align-items:center;
+}
+.dev-console-search{
+  flex:1;min-width:180px;
+  padding:9px 12px;
+  border:2px solid var(--ink);
+  border-radius:8px;
+  background:var(--cream);
+  font-size:12.5px;font-weight:600;
+  font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.dev-console-filter{
+  padding:9px 10px;
+  border:2px solid var(--ink);
+  border-radius:8px;
+  background:var(--cream);
+  font-size:11.5px;font-weight:900;
+  text-transform:uppercase;
+  font-family:inherit;
+  cursor:pointer;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.dev-console-btn{
+  padding:9px 14px;
+  border:2px solid var(--ink);
+  border-radius:8px;
+  background:var(--white);
+  font-size:11.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.dev-console-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.dev-console-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.dev-console-btn.primary{background:#ffd700;color:var(--ink)}
+.dev-console-btn.danger{background:#ff2a2a;color:#fff}
+.dev-console-btn.success{background:#22c55e;color:#fff}
+.dev-console-btn.info{background:#2563eb;color:#fff}
+.dev-console-btn.active{background:#0a0a0a;color:var(--yellow)}
+
+.dev-console-stats{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-bottom:12px;
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.dev-console-stat{
+  padding:6px 12px;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  background:var(--cream);
+  box-shadow:2px 2px 0 var(--ink);
+}
+.dev-console-stat.err{background:#ff2a2a;color:#fff}
+.dev-console-stat.warn{background:#ffd700;color:var(--ink)}
+.dev-console-stat.ok{background:#22c55e;color:#fff}
+
+.dev-console-view{
+  background:#0a0a14;
+  border:3px solid var(--ink);
+  border-radius:10px;
+  padding:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;line-height:1.6;
+  height:520px;
+  overflow-y:auto;
+  box-shadow:4px 4px 0 var(--ink);
+  color:#e0e0e0;
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+}
+.dev-console-line{
+  display:flex;gap:8px;
+  padding:4px 8px;
+  border-radius:5px;
+  border-left:3px solid transparent;
+  margin-bottom:2px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.dev-console-line.log{color:#e0e0e0;border-left-color:#666}
+.dev-console-line.info{color:#60a5fa;border-left-color:#2563eb}
+.dev-console-line.warn{color:#fbbf24;border-left-color:#ffd700;background:rgba(255,215,0,.08)}
+.dev-console-line.error{color:#f87171;border-left-color:#ff2a2a;background:rgba(255,42,42,.1)}
+.dev-console-line .ts{
+  flex-shrink:0;font-size:10.5px;
+  opacity:.5;
+  min-width:60px;
+}
+.dev-console-line .tag{
+  flex-shrink:0;
+  font-size:9.5px;
+  font-weight:900;
+  padding:1px 6px;
+  border-radius:3px;
+  text-transform:uppercase;
+  align-self:flex-start;
+  margin-top:2px;
+}
+.dev-console-line.log .tag{background:#333;color:#aaa}
+.dev-console-line.info .tag{background:#1e40af;color:#bfdbfe}
+.dev-console-line.warn .tag{background:#b45309;color:#fef3c7}
+.dev-console-line.error .tag{background:#991b1b;color:#fecaca}
+.dev-console-line .msg{flex:1;min-width:0;word-break:break-word}
+.dev-console-empty{
+  text-align:center;
+  padding:60px 20px;
+  color:#666;
+  font-size:13px;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+}
+.dev-console-empty .icon{font-size:48px;margin-bottom:12px;opacity:.5}
+
+@media(max-width:600px){
+  .dev-console-view{height:400px;font-size:11px}
+  .dev-console-line .ts{min-width:48px;font-size:9.5px}
+  .dev-console-toolbar{padding:10px}
+  .dev-console-search{font-size:12px}
+}
+</style>
+
+<script id="fixv90-js-a">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.0 — PART 2A
+   Console Dev Panel
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🖥️ Console Dev Panel loading...","color:#ffd700;font-weight:bold");
+
+/* ═══════════════════════════════════════════════════════════
+   CONSOLE CAPTURE SYSTEM
+   ═══════════════════════════════════════════════════════════ */
+var DevConsole = {
+  logs: [],
+  MAX_LOGS: 500,
+  paused: false,
+  _origConsole: null,
+  _listeners: [],
+  
+  init: function(){
+    if(this._origConsole) return;
+    
+    var self = this;
+    this._origConsole = {
+      log: console.log,
+      warn: console.warn,
+      error: console.error,
+      info: console.info
+    };
+    
+    ["log","warn","error","info"].forEach(function(level){
+      console[level] = function(){
+        try{
+          var args = Array.prototype.slice.call(arguments);
+          var msg = self._formatArgs(args);
+          self._add(level, msg, self._detectTag(msg));
+        }catch(e){}
+        try{
+          self._origConsole[level].apply(console, arguments);
+        }catch(e){}
+      };
+    });
+    
+    // Global error handlers
+    window.addEventListener("error", function(e){
+      var msg = (e.message || "Unknown error") + " at line " + (e.lineno || "?");
+      self._add("error", msg, "GLOBAL");
+    });
+    
+    window.addEventListener("unhandledrejection", function(e){
+      var reason = e.reason ? (e.reason.message || String(e.reason)) : "Unknown promise rejection";
+      self._add("error", "PROMISE: " + reason, "GLOBAL");
+    });
+    
+    // Intercept fetch error
+    var origFetch = window.fetch;
+    if(origFetch && !window.__fetchPatched){
+      window.__fetchPatched = true;
+      window.fetch = function(){
+        var url = arguments[0];
+        return origFetch.apply(this, arguments).catch(function(err){
+          self._add("error", "FETCH ERROR: " + (url || "?") + " — " + err.message, "FETCH");
+          throw err;
+        });
+      };
+    }
+    
+    // Log startup
+    this._add("info", "Console Dev Panel initialized", "SYSTEM");
+  },
+  
+  _formatArgs: function(args){
+    return args.map(function(a){
+      if(a === null) return "null";
+      if(a === undefined) return "undefined";
+      if(typeof a === "object"){
+        try{
+          var str = JSON.stringify(a);
+          if(str && str.length > 300) return str.slice(0, 300) + "...";
+          return str;
+        }catch(e){ return String(a); }
+      }
+      return String(a);
+    }).join(" ");
+  },
+  
+  _detectTag: function(msg){
+    if(!msg) return "LOG";
+    var m = msg.toUpperCase();
+    if(m.indexOf("VARSMile") !== -1 || m.indexOf("VS") !== -1) return "VSMILE";
+    if(m.indexOf("MUSIC") !== -1) return "MUSIC";
+    if(m.indexOf("AI") !== -1 || m.indexOf("GROQ") !== -1) return "AI";
+    if(m.indexOf("PATCH") !== -1 || m.indexOf("FIX") !== -1 || m.indexOf("V7.") !== -1 || m.indexOf("V8.") !== -1 || m.indexOf("V9.") !== -1) return "PATCH";
+    if(m.indexOf("FIREBASE") !== -1 || m.indexOf("FIRESTORE") !== -1) return "FB";
+    if(m.indexOf("EMOJI") !== -1) return "EMOJI";
+    if(m.indexOf("DRAG") !== -1) return "DRAG";
+    if(m.indexOf("BUILDHTML") !== -1 || m.indexOf("PREVIEW") !== -1) return "PREVIEW";
+    if(m.indexOf("CONSOLE") !== -1) return "SYSTEM";
+    return "LOG";
+  },
+  
+  _add: function(level, msg, tag){
+    if(this.paused) return;
+    var entry = {
+      id: Date.now() + "_" + Math.random().toString(36).slice(2,6),
+      level: level,
+      msg: String(msg || ""),
+      tag: tag || "LOG",
+      ts: new Date()
+    };
+    this.logs.push(entry);
+    if(this.logs.length > this.MAX_LOGS) this.logs.shift();
+    
+    // Notify listeners
+    this._listeners.forEach(function(fn){
+      try{ fn(entry); }catch(e){}
+    });
+  },
+  
+  onAdd: function(fn){
+    if(typeof fn === "function") this._listeners.push(fn);
+  },
+  
+  clear: function(){
+    this.logs = [];
+    this._add("info", "Console cleared", "SYSTEM");
+  },
+  
+  pause: function(){
+    this.paused = true;
+  },
+  
+  resume: function(){
+    this.paused = false;
+    this._add("info", "Console resumed", "SYSTEM");
+  },
+  
+  export: function(){
+    var txt = this.logs.map(function(l){
+      var ts = l.ts.toTimeString().slice(0,8);
+      return "[" + ts + "][" + l.level.toUpperCase() + "][" + l.tag + "] " + l.msg;
+    }).join("\n");
+    return txt;
+  },
+  
+  download: function(){
+    try{
+      var txt = this.export();
+      var blob = new Blob([txt], { type: "text/plain" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "varlinkbio-console-" + Date.now() + ".txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      return true;
+    }catch(e){ return false; }
+  },
+  
+  count: function(level){
+    if(!level) return this.logs.length;
+    return this.logs.filter(function(l){ return l.level === level; }).length;
+  },
+  
+  testError: function(){
+    this._add("error", "🧪 TEST ERROR — ini contoh error dummy buat test viewer", "TEST");
+  }
+};
+
+// Init
+DevConsole.init();
+window.DevConsole = DevConsole;
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER CONSOLE TAB
+   ═══════════════════════════════════════════════════════════ */
+var ConsoleTab = {
+  filter: "all",
+  search: "",
+  _listenerAttached: false,
+  
+  async render(){
+    var wrap = document.getElementById("dev-content");
+    if(!wrap) return;
+    
+    var stats = {
+      total: DevConsole.count(),
+      log: DevConsole.count("log"),
+      info: DevConsole.count("info"),
+      warn: DevConsole.count("warn"),
+      error: DevConsole.count("error")
+    };
+    
+    wrap.innerHTML = 
+      '<div class="dev-console-wrap">' +
+        '<div class="dev-console-stats">' +
+          '<div class="dev-console-stat">📋 ' + stats.total + ' total</div>' +
+          '<div class="dev-console-stat ok">✓ ' + stats.log + '</div>' +
+          '<div class="dev-console-stat">ℹ️ ' + stats.info + '</div>' +
+          '<div class="dev-console-stat warn">⚠ ' + stats.warn + '</div>' +
+          '<div class="dev-console-stat ' + (stats.error > 0 ? "err" : "") + '">✕ ' + stats.error + '</div>' +
+        '</div>' +
+        '<div class="dev-console-toolbar">' +
+          '<input type="text" class="dev-console-search" id="dev-console-search" placeholder="🔍 Cari log..." value="' + this._esc(this.search) + '"/>' +
+          '<select class="dev-console-filter" id="dev-console-filter">' +
+            '<option value="all">Semua Level</option>' +
+            '<option value="log">Log</option>' +
+            '<option value="info">Info</option>' +
+            '<option value="warn">Warn</option>' +
+            '<option value="error">Error</option>' +
+          '</select>' +
+          '<button class="dev-console-btn primary" id="dev-console-pause">' + (DevConsole.paused ? "▶️ Resume" : "⏸️ Pause") + '</button>' +
+          '<button class="dev-console-btn info" id="dev-console-copy">📋 Copy</button>' +
+          '<button class="dev-console-btn success" id="dev-console-download">💾 Download</button>' +
+          '<button class="dev-console-btn" id="dev-console-test">🧪 Test</button>' +
+          '<button class="dev-console-btn danger" id="dev-console-clear">🗑️ Clear</button>' +
+        '</div>' +
+        '<div class="dev-console-view" id="dev-console-view"></div>' +
+      '</div>';
+    
+    var filterEl = document.getElementById("dev-console-filter");
+    if(filterEl) filterEl.value = this.filter;
+    
+    // Bind events
+    var self = this;
+    
+    var searchEl = document.getElementById("dev-console-search");
+    if(searchEl){
+      searchEl.addEventListener("input", function(){
+        self.search = this.value;
+        self.renderLogs();
+      });
+    }
+    
+    if(filterEl){
+      filterEl.addEventListener("change", function(){
+        self.filter = this.value;
+        self.renderLogs();
+      });
+    }
+    
+    var pauseBtn = document.getElementById("dev-console-pause");
+    if(pauseBtn){
+      pauseBtn.addEventListener("click", function(){
+        if(DevConsole.paused){
+          DevConsole.resume();
+          this.innerHTML = "⏸️ Pause";
+        } else {
+          DevConsole.pause();
+          this.innerHTML = "▶️ Resume";
+        }
+      });
+    }
+    
+    var copyBtn = document.getElementById("dev-console-copy");
+    if(copyBtn){
+      copyBtn.addEventListener("click", async function(){
+        try{
+          await navigator.clipboard.writeText(DevConsole.export());
+          if(window.toast) toast("Log di-copy ✓","success");
+        }catch(e){
+          if(window.toast) toast("Gagal copy","error");
+        }
+      });
+    }
+    
+    var dlBtn = document.getElementById("dev-console-download");
+    if(dlBtn){
+      dlBtn.addEventListener("click", function(){
+        if(DevConsole.download()){
+          if(window.toast) toast("Log didownload ✓","success");
+        } else {
+          if(window.toast) toast("Gagal download","error");
+        }
+      });
+    }
+    
+    var testBtn = document.getElementById("dev-console-test");
+    if(testBtn){
+      testBtn.addEventListener("click", function(){
+        DevConsole.testError();
+      });
+    }
+    
+    var clearBtn = document.getElementById("dev-console-clear");
+    if(clearBtn){
+      clearBtn.addEventListener("click", function(){
+        if(!confirm("Clear semua log?")) return;
+        DevConsole.clear();
+        self.renderLogs();
+        self._updateStats();
+      });
+    }
+    
+    // Attach live listener
+    if(!this._listenerAttached){
+      this._listenerAttached = true;
+      DevConsole.onAdd(function(){
+        var hp = (location.hash.slice(1) || "/").split("?")[0];
+        if(hp === "/dev" && self.filter !== undefined){
+          self.renderLogs();
+        }
+      });
+    }
+    
+    this.renderLogs();
+  },
+  
+  renderLogs(){
+    var view = document.getElementById("dev-console-view");
+    if(!view) return;
+    
+    var logs = DevConsole.logs.slice();
+    
+    // Filter level
+    if(this.filter !== "all"){
+      logs = logs.filter(function(l){ return l.level === this.filter; }, this);
+    }
+    
+    // Filter search
+    if(this.search){
+      var q = this.search.toLowerCase();
+      logs = logs.filter(function(l){
+        return l.msg.toLowerCase().indexOf(q) !== -1 ||
+               l.tag.toLowerCase().indexOf(q) !== -1 ||
+               l.level.toLowerCase().indexOf(q) !== -1;
+      });
+    }
+    
+    if(!logs.length){
+      view.innerHTML = '<div class="dev-console-empty"><div class="icon">📭</div>Belum ada log' + (this.search || this.filter !== "all" ? " yang cocok" : "") + '</div>';
+      return;
+    }
+    
+    // Auto-scroll kalau di bawah + gak paused
+    var wasAtBottom = (view.scrollTop + view.clientHeight) >= (view.scrollHeight - 50);
+    
+    var html = "";
+    logs.forEach(function(l){
+      var ts = l.ts.toTimeString().slice(0,8);
+      html += '<div class="dev-console-line ' + l.level + '">' +
+        '<span class="ts">' + ts + '</span>' +
+        '<span class="tag">' + l.tag + '</span>' +
+        '<span class="msg">' + this._esc(l.msg) + '</span>' +
+      '</div>';
+    }, this);
+    
+    view.innerHTML = html;
+    
+    if(wasAtBottom || !DevConsole.paused){
+      view.scrollTop = view.scrollHeight;
+    }
+  },
+  
+  _updateStats(){
+    var stats = document.getElementById("dev-console-stats");
+    if(!stats) return;
+    var total = DevConsole.count();
+    var logC = DevConsole.count("log");
+    var infoC = DevConsole.count("info");
+    var warnC = DevConsole.count("warn");
+    var errC = DevConsole.count("error");
+    stats.innerHTML = 
+      '<div class="dev-console-stat">📋 ' + total + ' total</div>' +
+      '<div class="dev-console-stat ok">✓ ' + logC + '</div>' +
+      '<div class="dev-console-stat">ℹ️ ' + infoC + '</div>' +
+      '<div class="dev-console-stat warn">⚠ ' + warnC + '</div>' +
+      '<div class="dev-console-stat ' + (errC > 0 ? "err" : "") + '">✕ ' + errC + '</div>';
+  },
+  
+  _esc(s){
+    return String(s || "").replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+};
+
+window.ConsoleTab = ConsoleTab;
+console.log("✅ Console Dev Panel ready");
+
+})();
+</script>
+
+<script id="fixv90-js-b">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.0 — PART 2B
+   Fix Drag Tombol Preview (Toggle Mode) + Varsmile Drag
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🎯 Fix Drag + Varsmile loading...","color:#ffd700;font-weight:bold");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 0 — NUKE HANDLER LAMA
+   ═══════════════════════════════════════════════════════════ */
+function nukeAll(){
+  try{
+    if(window.Varsmile){
+      window.Varsmile.init = function(){};
+      window.Varsmile.startLoop = function(){};
+      window.Varsmile.startLoginMode = function(){};
+      window.Varsmile.runAway3D = function(){ return Promise.resolve(); };
+      window.Varsmile.hide = function(){
+        this._active = false;
+        if(this._tipTimer){ clearInterval(this._tipTimer); this._tipTimer = null; }
+        if(this._el){ try{ this._el.remove(); }catch(e){} this._el = null; }
+        if(this._bubbleEl){ try{ this._bubbleEl.remove(); }catch(e){} this._bubbleEl = null; }
+      };
+      if(window.Varsmile._tipTimer){ clearInterval(window.Varsmile._tipTimer); window.Varsmile._tipTimer = null; }
+      window.Varsmile._active = false;
+    }
+    if(window.VarsmileV73) window.VarsmileV73.rebuild = function(){};
+    if(window.VarsmileV74){
+      window.VarsmileV74.patchElement = function(){};
+      window.VarsmileV74.killLoop = function(){};
+    }
+    if(window.VarsmileDrag) window.VarsmileDrag.ensure = function(){};
+    if(window.ButtonDrag) window.ButtonDrag.ensure = function(){};
+    if(window.injectCustomThemeButton) window.injectCustomThemeButton = function(){};
+    if(window.enhanceLinkDragSortable) window.enhanceLinkDragSortable = function(){};
+    if(window.enablePreviewButtonDrag) window.enablePreviewButtonDrag = function(){};
+    if(window.StepsSound){
+      window.StepsSound.stopWalking = function(){};
+      window.StepsSound.startWalking = function(){};
+    }
+  }catch(e){}
+}
+nukeAll();
+setTimeout(nukeAll, 500);
+setTimeout(nukeAll, 1500);
+setTimeout(nukeAll, 3000);
+setInterval(nukeAll, 5000);
+
+function cleanupRoad(){
+  document.querySelectorAll(".varsmile-road, .varsmile-dust").forEach(function(el){ el.remove(); });
+}
+setInterval(cleanupRoad, 2000);
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — VARSMILE DRAG
+   ═══════════════════════════════════════════════════════════ */
+var VS = { el:null, drag:false, moved:false, sx:0, sy:0, sl:0, st:0, t0:0, bound:false };
+
+function getDefaultSVG(){
+  return '<svg viewBox="0 0 16 17" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="3" y="1" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="2" width="12" height="1" fill="#0a0a0a"/>' +
+    '<rect x="1" y="3" width="14" height="7" fill="#0a0a0a"/><rect x="2" y="10" width="12" height="1" fill="#0a0a0a"/>' +
+    '<rect x="3" y="11" width="10" height="1" fill="#0a0a0a"/><rect x="2" y="3" width="12" height="7" fill="#ffd700"/>' +
+    '<rect x="4" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="4" y="5" width="1" height="1" fill="#ffffff"/>' +
+    '<rect x="10" y="5" width="2" height="2" fill="#0a0a0a"/><rect x="10" y="5" width="1" height="1" fill="#ffffff"/>' +
+    '<rect x="3" y="7" width="1" height="1" fill="#ff69b4"/><rect x="12" y="7" width="1" height="1" fill="#ff69b4"/>' +
+    '<rect x="6" y="8" width="4" height="1" fill="#0a0a0a"/><rect x="5" y="7" width="1" height="1" fill="#0a0a0a"/>' +
+    '<rect x="10" y="7" width="1" height="1" fill="#0a0a0a"/><rect x="5" y="12" width="6" height="1" fill="#0a0a0a"/>' +
+    '<rect x="4" y="13" width="8" height="3" fill="#0a0a0a"/><rect x="5" y="13" width="6" height="2" fill="#2563eb"/>' +
+    '<rect x="3" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="3" y="14" width="1" height="1" fill="#ffd700"/>' +
+    '<rect x="12" y="13" width="1" height="2" fill="#0a0a0a"/><rect x="12" y="14" width="1" height="1" fill="#ffd700"/>' +
+    '<rect x="6" y="16" width="1" height="1" fill="#0a0a0a"/><rect x="9" y="16" width="1" height="1" fill="#0a0a0a"/></svg>';
+}
+
+function ensureVarsmile(){
+  try{
+    if(!window.Auth || !Auth.current) return;
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp.startsWith("/u/")) return;
+    if(!window.STATE || STATE.varsmileEnabled === false) return;
+
+    var el = document.getElementById("varsmile-char");
+    if(el){
+      if(VS.el !== el){
+        VS.el = el;
+        VS.bound = false;
+        bindVarsmile(el);
+      }
+      return;
+    }
+
+    var svg = window.VARSMILE_SVG || getDefaultSVG();
+    var newEl = document.createElement("div");
+    newEl.id = "varsmile-char";
+    newEl.className = "facing-right";
+    newEl.innerHTML = svg;
+    newEl.style.right = "16px";
+    newEl.style.bottom = "16px";
+    document.body.appendChild(newEl);
+
+    try{
+      var pos = localStorage.getItem("varlinkbio_varsmile_pos");
+      if(pos){
+        var p = JSON.parse(pos);
+        if(p && typeof p.left === "number"){
+          var vw = window.innerWidth, vh = window.innerHeight;
+          newEl.style.left = Math.max(4, Math.min(vw - 76, p.left)) + "px";
+          newEl.style.top = Math.max(4, Math.min(vh - 92, p.top)) + "px";
+          newEl.style.right = "auto";
+          newEl.style.bottom = "auto";
+        }
+      }
+    }catch(e){}
+
+    VS.el = newEl;
+    VS.bound = false;
+    bindVarsmile(newEl);
+  }catch(e){ console.warn("ensureVarsmile:", e); }
+}
+
+function bindVarsmile(el){
+  if(VS.bound) return;
+  VS.bound = true;
+
+  el.style.cursor = "grab";
+  el.style.touchAction = "none";
+  el.style.userSelect = "none";
+  el.style.webkitUserSelect = "none";
+  el.style.pointerEvents = "auto";
+
+  function onDown(e){
+    if(e.pointerType === "mouse" && e.button !== 0) return;
+    if(e.target && e.target.closest && e.target.closest(".varsmile-bubble")) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    VS.drag = true;
+    VS.moved = false;
+    VS.sx = e.clientX;
+    VS.sy = e.clientY;
+    VS.t0 = Date.now();
+
+    var r = el.getBoundingClientRect();
+    VS.sl = r.left;
+    VS.st = r.top;
+
+    el.style.right = "auto";
+    el.style.bottom = "auto";
+    el.style.left = r.left + "px";
+    el.style.top = r.top + "px";
+    el.classList.add("dragging");
+
+    try{ el.setPointerCapture(e.pointerId); }catch(err){}
+
+    document.addEventListener("pointermove", onMove, { passive: false });
+    document.addEventListener("pointerup", onUp);
+    document.addEventListener("pointercancel", onUp);
+  }
+
+  function onMove(e){
+    if(!VS.drag) return;
+    e.preventDefault();
+    var dx = e.clientX - VS.sx;
+    var dy = e.clientY - VS.sy;
+    if(Math.abs(dx) > 4 || Math.abs(dy) > 4) VS.moved = true;
+
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var w = el.offsetWidth || 72, h = el.offsetHeight || 88;
+
+    el.style.left = Math.max(4, Math.min(vw - w - 4, VS.sl + dx)) + "px";
+    el.style.top = Math.max(4, Math.min(vh - h - 4, VS.st + dy)) + "px";
+  }
+
+  function onUp(e){
+    if(!VS.drag) return;
+    VS.drag = false;
+    el.classList.remove("dragging");
+
+    document.removeEventListener("pointermove", onMove);
+    document.removeEventListener("pointerup", onUp);
+    document.removeEventListener("pointercancel", onUp);
+
+    try{ el.releasePointerCapture(e.pointerId); }catch(err){}
+
+    if(!VS.moved){
+      if(Date.now() - VS.t0 < 400){
+        if(window.Sound && Sound.click) Sound.click();
+        if(window.Router) Router.navigate("/varsmile-ai");
+      }
+      return;
+    }
+
+    var r = el.getBoundingClientRect();
+    try{ localStorage.setItem("varlinkbio_varsmile_pos", JSON.stringify({ left:r.left, top:r.top })); }catch(err){}
+    if(window.Sound && Sound.tick) Sound.tick();
+  }
+
+  el.addEventListener("pointerdown", onDown);
+  console.log("✅ Varsmile drag bound");
+}
+
+ensureVarsmile();
+setInterval(ensureVarsmile, 2000);
+window.addEventListener("hashchange", function(){ setTimeout(ensureVarsmile, 500); });
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — PREVIEW: FIX BUILDHTML (SCALE 72%)
+   ═══════════════════════════════════════════════════════════ */
+function patchPreviewBuildHTML(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) return;
+    if(window.PagePublic._fitFixV90) return;
+    window.PagePublic._fitFixV90 = true;
+
+    var origBuild = window.PagePublic.buildHTML;
+
+    window.PagePublic.buildHTML = function(bio, opts){
+      var html = origBuild.call(this, bio, opts);
+
+      if(opts && opts.preview){
+        var previewCSS = '<style id="preview-fit-v90">' +
+          'html,body{height:100vh !important;overflow:hidden !important;margin:0 !important;padding:0 !important}' +
+          'body{transform:scale(0.72) !important;transform-origin:top center !important;width:138.88% !important;height:138.88% !important}' +
+          '.bio-wrap{min-height:100vh !important;padding:20px 12px 30px !important;justify-content:flex-start !important}' +
+          '.bio-inner{max-width:100% !important}' +
+          '.bio-banner{height:72px !important;margin-bottom:12px !important;border-width:2.5px !important}' +
+          '.bio-avatar{width:72px !important;height:72px !important;border-width:3px !important}' +
+          '.bio-title-top{font-size:9.5px !important;padding:3px 9px !important;margin-top:6px !important;letter-spacing:.6px !important}' +
+          '.bio-name{font-size:14px !important;padding:4px 11px !important;margin-top:-2px !important;letter-spacing:0 !important;max-width:95% !important;word-wrap:break-word !important;white-space:normal !important;line-height:1.15 !important}' +
+          '.bio-bio{font-size:9px !important;padding:3px 9px !important;line-height:1.25 !important;max-width:95% !important;word-wrap:break-word !important;white-space:normal !important}' +
+          '.bio-plan-badge{font-size:7.5px !important;padding:2px 7px !important;margin-top:6px !important}' +
+          '.bio-logos{margin-bottom:8px !important;margin-top:2px !important;gap:5px !important}' +
+          '.bio-logo-item{width:30px !important;height:30px !important;border-width:2px !important}' +
+          '.bio-links{gap:6px !important}' +
+          '.bio-link{padding:8px 10px !important;font-size:10.5
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.0 ALL-IN-ONE — PART 3/3
+     Fix Emoji + Console Tab + AI Bio Render + Init
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script id="fixv90-js-c">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.0 — PART 3A
+   Fix Drag Preview (Toggle Mode) + Emoji Extension
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🎨 Part 3A loading...","color:#ffd700;font-weight:bold");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — PREVIEW BUTTON DRAG (TOGGLE MODE)
+   ═══════════════════════════════════════════════════════════ */
+var PreviewEditMode = {
+  enabled: false,
+  _frame: null,
+  _attached: false,
+  
+  toggle: function(){
+    this.enabled = !this.enabled;
+    this.updateButton();
+    
+    if(this.enabled){
+      this.attachDrag();
+      if(window.toast) toast("🎯 Mode atur posisi ON — geser tombol","info");
+      if(window.Sound && Sound.bip) Sound.bip();
+    } else {
+      this.detachDrag();
+      if(window.toast) toast("✅ Mode atur posisi OFF","success");
+      if(window.Sound && Sound.click) Sound.click();
+    }
+  },
+  
+  updateButton: function(){
+    var btn = document.getElementById("preview-edit-toggle-btn");
+    if(!btn) return;
+    if(this.enabled){
+      btn.innerHTML = "✅ Selesai Atur Posisi";
+      btn.classList.add("active");
+    } else {
+      btn.innerHTML = "🎯 Atur Posisi Tombol";
+      btn.classList.remove("active");
+    }
+  },
+  
+  attachDrag: function(){
+    try{
+      var frame = document.getElementById("prev-frame");
+      if(!frame) return;
+      this._frame = frame;
+      
+      var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if(!doc) return;
+      
+      var links = doc.querySelectorAll(".bio-link[data-idx]");
+      var self = this;
+      
+      links.forEach(function(link){
+        if(link.dataset.v90Drag === "1") return;
+        link.dataset.v90Drag = "1";
+        
+        var idx = link.dataset.idx;
+        var drag = false, moved = false;
+        var sx = 0, sy = 0, stx = 0, sty = 0;
+        
+        try{
+          if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+            var l = STATE.draft.links[idx];
+            stx = l.btnDragX || 0;
+            sty = l.btnDragY || 0;
+            if(stx || sty) link.style.transform = "translate(" + stx + "px, " + sty + "px)";
+          }
+        }catch(e){}
+        
+        link.style.cursor = "grab";
+        link.style.touchAction = "none";
+        link.style.userSelect = "none";
+        
+        function onDown(e){
+          if(!self.enabled) return;
+          if(e.pointerType === "mouse" && e.button !== 0) return;
+          e.preventDefault();
+          e.stopPropagation();
+          
+          drag = true;
+          moved = false;
+          sx = e.clientX;
+          sy = e.clientY;
+          
+          try{
+            if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+              var l = STATE.draft.links[idx];
+              stx = l.btnDragX || 0;
+              sty = l.btnDragY || 0;
+            }
+          }catch(err){}
+          
+          link.style.cursor = "grabbing";
+          link.style.zIndex = "999";
+          link.style.opacity = "0.85";
+          
+          try{ link.setPointerCapture(e.pointerId); }catch(err){}
+          
+          doc.addEventListener("pointermove", onMove, { passive: false });
+          doc.addEventListener("pointerup", onUp);
+          doc.addEventListener("pointercancel", onUp);
+        }
+        
+        function onMove(e){
+          if(!drag) return;
+          e.preventDefault();
+          var dx = e.clientX - sx;
+          var dy = e.clientY - sy;
+          if(Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+          link.style.transform = "translate(" + (stx + dx) + "px, " + (sty + dy) + "px)";
+        }
+        
+        function onUp(e){
+          if(!drag) return;
+          drag = false;
+          link.style.cursor = "grab";
+          link.style.zIndex = "";
+          link.style.opacity = "";
+          
+          doc.removeEventListener("pointermove", onMove);
+          doc.removeEventListener("pointerup", onUp);
+          doc.removeEventListener("pointercancel", onUp);
+          
+          try{ link.releasePointerCapture(e.pointerId); }catch(err){}
+          if(!moved) return;
+          
+          var m = link.style.transform.match(/translate\((-?[\d.]+)px,\s*(-?[\d.]+)px\)/);
+          if(m){
+            var fx = parseFloat(m[1]), fy = parseFloat(m[2]);
+            try{
+              if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+                STATE.draft.links[idx].btnDragX = fx;
+                STATE.draft.links[idx].btnDragY = fy;
+              }
+            }catch(err){}
+            if(window.toast) toast("Tombol digeser ✓","success");
+            if(window.Sound && Sound.click) Sound.click();
+          }
+        }
+        
+        // Context menu disable
+        link.addEventListener("contextmenu", function(e){
+          if(self.enabled) e.preventDefault();
+        });
+        
+        // Long-press disable
+        link.addEventListener("touchstart", function(e){
+          if(self.enabled && e.cancelable) e.preventDefault();
+        }, { passive: false });
+        
+        link.addEventListener("pointerdown", onDown);
+        
+        // Block click pas enabled
+        link.addEventListener("click", function(e){
+          if(self.enabled){ e.preventDefault(); e.stopPropagation(); }
+        }, true);
+      });
+      
+      this._attached = true;
+      console.log("✅ Preview drag attached:", links.length, "tombol");
+    }catch(e){ console.warn("attachDrag:", e); }
+  },
+  
+  detachDrag: function(){
+    try{
+      var frame = document.getElementById("prev-frame");
+      if(!frame) return;
+      var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if(!doc) return;
+      
+      // Re-render preview biar reset
+      if(window.PageEditor && window.PageEditor.updatePreview){
+        window.PageEditor.updatePreview();
+      }
+      this._attached = false;
+    }catch(e){}
+  }
+};
+
+window.PreviewEditMode = PreviewEditMode;
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — INJECT TOGGLE BUTTON DI EDITOR
+   ═══════════════════════════════════════════════════════════ */
+function injectPreviewToggle(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    if(document.getElementById("preview-edit-toggle-btn")) return;
+    
+    var previewPanel = document.querySelector(".editor-preview");
+    if(!previewPanel) return;
+    
+    var toggleWrap = document.createElement("div");
+    toggleWrap.className = "preview-edit-toggle";
+    toggleWrap.innerHTML = 
+      '<button class="preview-edit-btn" id="preview-edit-toggle-btn" type="button">' +
+        '🎯 Atur Posisi Tombol' +
+      '</button>';
+    
+    // Insert setelah preview phone
+    var phone = previewPanel.querySelector(".preview-phone");
+    if(phone && phone.parentNode){
+      phone.parentNode.insertBefore(toggleWrap, phone.nextSibling);
+    } else {
+      previewPanel.appendChild(toggleWrap);
+    }
+    
+    var btn = document.getElementById("preview-edit-toggle-btn");
+    if(btn){
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        PreviewEditMode.toggle();
+      });
+    }
+    
+    console.log("✅ Preview toggle button injected");
+  }catch(e){ console.warn("injectPreviewToggle:", e); }
+}
+
+setInterval(injectPreviewToggle, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(injectPreviewToggle, 600); });
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — INJECT CUSTOM THEME BUTTON
+   ═══════════════════════════════════════════════════════════ */
+function injectCustomThemeBtn(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var targets = [
+      document.getElementById("btn-save"),
+      document.getElementById("btn-save2")
+    ].filter(Boolean);
+    
+    if(!targets.length) return;
+    
+    targets.forEach(function(saveBtn){
+      if(saveBtn.parentNode.querySelector(".btn-custom-theme-fix")) return;
+      if(saveBtn.parentNode.querySelector("#btn-custom-theme")) return;
+      
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn btn-sm btn-custom-theme-fix";
+      btn.innerHTML = "🎨 Custom Theme";
+      
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if(window.Sound && Sound.click) Sound.click();
+        
+        if(typeof window.openCustomThemeBuilder === "function"){
+          window.openCustomThemeBuilder(null);
+        } else {
+          if(window.toast) toast("Builder loading...","info");
+          setTimeout(function(){
+            if(typeof window.openCustomThemeBuilder === "function"){
+              window.openCustomThemeBuilder(null);
+            } else {
+              if(window.toast) toast("Gagal buka. Refresh halaman.","error");
+            }
+          }, 600);
+        }
+      });
+      
+      saveBtn.parentNode.insertBefore(btn, saveBtn);
+      console.log("✅ Custom Theme btn →", saveBtn.id || "unknown");
+    });
+  }catch(e){ console.warn("injectCustomThemeBtn:", e); }
+}
+
+setInterval(injectCustomThemeBtn, 1200);
+window.addEventListener("hashchange", function(){ setTimeout(injectCustomThemeBtn, 600); });
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — EXTEND EMOJI MAP (BANYAK)
+   ═══════════════════════════════════════════════════════════ */
+function extendEmojiMap(){
+  if(!window.EMOJI_TO_LUCIDE) return;
+  
+  var extra = {
+    "🤖":"bot","🔊":"volume-2","🔇":"volume-x","🔈":"volume","🔉":"volume-1",
+    "📢":"megaphone","📣":"megaphone","🎤":"mic","🎧":"headphones",
+    "🎵":"music","🎶":"music","🎼":"music","🎹":"piano","🥁":"drum",
+    "🎸":"guitar","🎺":"music","🎻":"music","🎷":"music","📻":"radio",
+    "📺":"tv","🎬":"film","📽️":"film","📽":"film","🎞️":"film",
+    "📸":"camera","📷":"camera","📹":"video","🎥":"video","📼":"disc",
+    "😀":"smile","😃":"smile","😄":"smile","😁":"smile","😆":"smile","😅":"smile",
+    "😂":"laugh","🤣":"laugh","😊":"smile","😇":"sparkles","🙂":"smile","🙃":"smile",
+    "😉":"smile","😌":"smile","😍":"heart","🥰":"heart","😘":"heart","😗":"kiss",
+    "😋":"smile","😛":"smile","😝":"smile","😜":"smile","🤪":"smile","🤨":"meh",
+    "🧐":"search","🤓":"glasses","😎":"glasses","🤩":"star","🥳":"party-popper",
+    "😏":"meh","😒":"meh","😞":"frown","😔":"frown","😟":"frown","😕":"frown",
+    "🙁":"frown","😣":"frown","😖":"frown","😫":"frown","😩":"frown","🥺":"heart",
+    "😢":"frown","😭":"frown","😤":"flame","😠":"angry","😡":"angry","🤬":"angry",
+    "🤯":"zap","😳":"shocked","🥵":"flame","🥶":"snowflake","😱":"shocked",
+    "😨":"shocked","😰":"shocked","😥":"shocked","😓":"droplet","🤗":"heart",
+    "🤔":"thinking","🤭":"smile","🤫":"smile","🤥":"meh","😶":"meh","😐":"meh",
+    "😑":"meh","😬":"meh","🙄":"meh","😯":"shocked","😮":"shocked","😲":"shocked",
+    "😴":"moon","😪":"moon","😵":"zap","🤐":"lock","🤢":"biohazard","🤮":"biohazard",
+    "😷":"mask","🤒":"thermometer","🤕":"bandage","🤑":"dollar-sign","🤠":"user",
+    "😈":"smile","👿":"angry","👹":"ghost","👺":"ghost","🤡":"drama","💩":"biohazard",
+    "👻":"ghost","💀":"skull","☠️":"skull","👽":"ghost","👾":"gamepad-2",
+    "🎃":"pumpkin","😺":"cat","😸":"cat","😹":"cat","😻":"heart","😼":"cat",
+    "😽":"kiss","🙀":"shocked","😿":"frown","😾":"angry",
+    "👋":"hand","🤚":"hand","✋":"hand","👌":"check","✌️":"check","🤞":"check",
+    "🤟":"hand-heart","🤘":"zap","🤙":"hand","👈":"pointer","👉":"pointer",
+    "👆":"pointer","👇":"pointer","☝️":"pointer","👍":"thumbs-up","👎":"thumbs-down",
+    "✊":"hand","👊":"hand","👏":"hand","🙌":"hand-heart","🤝":"handshake",
+    "🙏":"hand-heart","✍️":"pencil","💪":"dumbbell",
+    "🐶":"dog","🐱":"cat","🐭":"mouse","🐹":"mouse","🐰":"rabbit","🦊":"dog",
+    "🐻":"dog","🐼":"dog","🐨":"dog","🐯":"cat","🦁":"dog","🐮":"cow","🐷":"pig",
+    "🐸":"frog","🐵":"monkey","🐔":"bird","🐧":"bird","🐦":"bird","🐤":"bird",
+    "🦆":"bird","🦅":"bird","🦉":"bird","🐺":"dog","🐴":"horse","🦄":"sparkles",
+    "🐝":"bee","🐛":"bug","🦋":"bug","🐌":"bug","🐞":"bug","🐜":"bug",
+    "🐢":"turtle","🐍":"snake","🦎":"snake","🦖":"dinosaur","🐙":"octopus",
+    "🦀":"crab","🐡":"fish","🐠":"fish","🐟":"fish","🐬":"fish","🐳":"fish",
+    "🦈":"fish","🐊":"fish",
+    "🍕":"pizza","🍔":"hamburger","🍟":"french-fries","☕":"coffee","🍵":"tea",
+    "🍺":"beer","🍷":"wine","🍰":"cake-slice","🎂":"cake","🍪":"cookie",
+    "🍩":"donut","🍫":"chocolate","🍿":"popcorn","🍎":"apple","🍊":"citrus",
+    "🍌":"banana","🍇":"grape","🍓":"strawberry","🥑":"avocado","🍅":"tomato",
+    "🌞":"sun","🌙":"moon","⭐":"star","🌟":"star","✨":"sparkles","💫":"sparkles",
+    "⚡":"zap","🔥":"flame","🌊":"waves","❄️":"snowflake","☀️":"sun","🌈":"rainbow",
+    "🌲":"tree-pine","🌳":"tree-deciduous","🌴":"palm-tree","🌸":"flower","🌹":"flower",
+    "🌺":"flower","🌻":"flower","🍀":"clover","🌿":"leaf",
+    "👤":"user","👥":"users","👨":"user","👩":"user","🧑":"user","👶":"baby",
+    "👦":"user","👧":"user","🧓":"user","👴":"user","👵":"user",
+    "💡":"lightbulb","🔔":"bell","📱":"smartphone","💻":"laptop","🖥️":"monitor",
+    "⌨️":"keyboard","🖱️":"mouse","🎮":"gamepad-2","🕹️":"gamepad-2","🎯":"target",
+    "🎲":"dice-6","🎨":"palette","🖌️":"brush","🖍️":"pencil","✏️":"pencil",
+    "🖊️":"pen","📚":"library","📖":"book-open","📕":"book","📗":"book",
+    "📘":"book","📙":"book","📝":"file-edit","📋":"clipboard-list","📊":"bar-chart-3",
+    "📈":"trending-up","📉":"trending-down","📅":"calendar","⏰":"clock","⏱️":"timer",
+    "⏳":"hourglass","⌛":"hourglass",
+    "❤️":"heart","💔":"heart-crack","💖":"heart","💗":"heart","💓":"heart",
+    "✅":"check-circle","❌":"x-circle","⚠️":"alert-triangle","ℹ️":"info",
+    "❓":"help-circle","❗":"alert-circle","🚫":"ban","🔒":"lock","🔓":"unlock",
+    "🔑":"key","🛡️":"shield","⚙️":"settings","🔧":"wrench","🔨":"hammer",
+    "💳":"credit-card","💰":"coins","💵":"banknote","💸":"banknote",
+    "📌":"pin","📍":"map-pin","🔗":"link","📎":"paperclip","📁":"folder",
+    "📂":"folder-open","📄":"file","📃":"file","✂️":"scissors","🗑️":"trash-2",
+    "✉️":"mail","📧":"mail","📨":"mail","📤":"upload","📥":"download",
+    "📦":"package","✔️":"check","☑️":"check-square","✖️":"x","➕":"plus",
+    "➖":"minus","➗":"divide","♾️":"infinity","🔍":"search","🔎":"search",
+    "🔗":"link","⛓️":"link","♠️":"spade","♣️":"club","♦️":"diamond",
+    "⭐":"star","🌐":"globe","🗺️":"map","🧭":"compass","🏠":"home","🏡":"home",
+    "🏢":"building","🏬":"building-2","🏪":"store","🏫":"school","🏨":"hotel",
+    "🏥":"hospital","🏦":"landmark","💒":"church","🏛️":"landmark",
+    "⬆️":"arrow-up","⬇️":"arrow-down","⬅️":"arrow-left","➡️":"arrow-right",
+    "↗️":"arrow-up-right","↘️":"arrow-down-right","↙️":"arrow-down-left","↖️":"arrow-up-left",
+    "🔄":"refresh-cw","🔃":"refresh-cw","🔀":"shuffle","🔁":"repeat","🔂":"repeat-1",
+    "▶️":"play","⏩":"fast-forward","⏭️":"skip-forward","⏸️":"pause","⏹️":"square",
+    "🔴":"circle","🟠":"circle","🟡":"circle","🟢":"circle","🔵":"circle",
+    "🟣":"circle","🟤":"circle","⚫":"circle","⚪":"circle",
+    "🟥":"square","🟧":"square","🟨":"square","🟩":"square","🟦":"square","🟪":"square",
+    "⬛":"square","⬜":"square","🔷":"diamond","🔶":"diamond","💠":"diamond"
+  };
+  
+  Object.assign(window.EMOJI_TO_LUCIDE, extra);
+  console.log("✅ Emoji extended: +" + Object.keys(extra).length);
+}
+
+function guessEmojiIcon(cp){
+  if(cp >= 0x1F600 && cp <= 0x1F64F) return "smile";
+  if(cp >= 0x1F464 && cp <= 0x1F487) return "user";
+  if(cp >= 0x1F400 && cp <= 0x1F43F) return "paw-print";
+  if(cp >= 0x1F345 && cp <= 0x1F37F) return "utensils";
+  if(cp >= 0x1F680 && cp <= 0x1F6FF) return "car";
+  if(cp >= 0x1F4A0 && cp <= 0x1F4FF) return "package";
+  if(cp >= 0x1F500 && cp <= 0x1F5FF) return "sparkles";
+  if(cp >= 0x1F900 && cp <= 0x1F9FF) return "circle-dot";
+  if(cp >= 0x1FA00 && cp <= 0x1FAFF) return "circle-dot";
+  if(cp >= 0x2600 && cp <= 0x27BF) return "star";
+  if(cp >= 0x25A0 && cp <= 0x25FF) return "square";
+  if(cp >= 0x2190 && cp <= 0x21FF) return "arrow-right";
+  return "circle-dot";
+}
+
+function installEmojiV90(){
+  if(!window.emojiToSvg || window.__emojiV90) return;
+  window.__emojiV90 = true;
+  
+  var REGEX = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base}|\uFE0F|\u200D)+/gu;
+  
+  window.emojiToSvg = function(text, opts){
+    if(!text) return text;
+    return String(text).replace(REGEX, function(match){
+      if(match === "\uFE0F" || match === "\uFE0E" || match === "\u200D") return "";
+      var name = (window.EMOJI_TO_LUCIDE && window.EMOJI_TO_LUCIDE[match]);
+      if(!name) name = guessEmojiIcon(match.codePointAt(0));
+      if(!name) return match;
+      var svg = window.renderLucideIcon ? window.renderLucideIcon(name) : null;
+      if(!svg) return match;
+      return '<span class="lucide-emoji">' + svg + '</span>';
+    });
+  };
+  console.log("✅ Emoji v90 installed");
+}
+
+function reconvertEmojiV90(){
+  try{
+    if(!window.emojiToSvg) return;
+    var SKIP = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS","IFRAME"];
+    var RE = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base})/u;
+    
+    document.querySelectorAll("span.lucide-emoji, span[data-emoji-v75], span[data-emoji-v85], span[data-emoji-v90]").forEach(function(el){
+      var parent = el.parentNode;
+      if(parent){
+        try{ parent.replaceChild(document.createTextNode(el.textContent || ""), el); }catch(e){}
+      }
+    });
+    
+    var count = 0;
+    function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(SKIP.indexOf(root.tagName) !== -1) return;
+      if(root.classList && root.classList.contains("lucide-emoji")) return;
+      
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      for(var i = 0; i < kids.length; i++){
+        var k = kids[i];
+        if(k.nodeType === 3){
+          var txt = k.nodeValue;
+          if(!txt) continue;
+          RE.lastIndex = 0;
+          if(!RE.test(txt)) continue;
+          try{
+            var html = window.emojiToSvg(txt);
+            if(html && html !== txt){
+              var span = document.createElement("span");
+              span.style.display = "contents";
+              span.setAttribute("data-emoji-v90","1");
+              span.innerHTML = html;
+              k.parentNode.replaceChild(span, k);
+              count++;
+            }
+          }catch(e){}
+        } else if(k.nodeType === 1 && k.tagName !== "IFRAME"){
+          walk(k);
+        }
+      }
+    }
+    walk(document.body);
+    if(count > 0) console.log("🎨 Emoji converted:", count, "nodes");
+  }catch(e){ console.warn("reconvertEmojiV90:", e); }
+}
+
+function installEmojiObserver(){
+  if(window.__emojiObsV90) return;
+  window.__emojiObsV90 = true;
+  
+  var SKIP = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","CIRCLE","RECT","POLYGON","LINE","POLYLINE","ELLIPSE","G","DEFS","IFRAME"];
+  var RE = /(\p{Emoji_Presentation}|\p{Emoji_Modifier_Base})/u;
+  
+  function convertNode(node){
+    if(!node || !node.nodeValue) return;
+    var txt = node.nodeValue;
+    if(!txt) return;
+    RE.lastIndex = 0;
+    if(!RE.test(txt)) return;
+    try{
+      var html = window.emojiToSvg(txt);
+      if(html && html !== txt){
+        var span = document.createElement("span");
+        span.style.display = "contents";
+        span.setAttribute("data-emoji-v90","1");
+        span.innerHTML = html;
+        node.parentNode.replaceChild(span, node);
+      }
+    }catch(e){}
+  }
+  
+  function walk(root){
+    if(!root || root.nodeType !== 1) return;
+    if(SKIP.indexOf(root.tagName) !== -1) return;
+    if(root.classList && root.classList.contains("lucide-emoji")) return;
+    
+    var kids = Array.prototype.slice.call(root.childNodes || []);
+    for(var i = 0; i < kids.length; i++){
+      var k = kids[i];
+      if(k.nodeType === 3) convertNode(k);
+      else if(k.nodeType === 1) walk(k);
+    }
+  }
+  
+  var obs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      if(m.target && m.target.closest && m.target.closest(".lucide-emoji")) return;
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType === 1) walk(n);
+        else if(n.nodeType === 3) convertNode(n);
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+  console.log("✅ Emoji observer installed");
+}
+
+setTimeout(function(){
+  extendEmojiMap();
+  installEmojiV90();
+  installEmojiObserver();
+  setTimeout(reconvertEmojiV90, 500);
+  setTimeout(reconvertEmojiV90, 2000);
+  setTimeout(reconvertEmojiV90, 5000);
+}, 3500);
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — HOOK DEV PANEL: TAMBAH TAB MUSIC, CONSOLE, AI SETTINGS
+   ═══════════════════════════════════════════════════════════ */
+function hookDevPanel(){
+  try{
+    var tabsWrap = document.getElementById("dev-tabs");
+    if(!tabsWrap) return;
+    
+    // Cek tab Console
+    if(!document.getElementById("dev-tab-console-added")){
+      var consoleTab = document.createElement("div");
+      consoleTab.className = "dev-tab";
+      consoleTab.dataset.tab = "console";
+      consoleTab.id = "dev-tab-console-added";
+      consoleTab.textContent = "🖥️ Console";
+      tabsWrap.appendChild(consoleTab);
+      
+      consoleTab.addEventListener("click", function(){
+        document.querySelectorAll("#dev-tabs .dev-tab").forEach(function(t){ t.classList.remove("active"); });
+        consoleTab.classList.add("active");
+        if(window.PageDev && window.PageDev.state) window.PageDev.state.tab = "console";
+        if(window.ConsoleTab) window.ConsoleTab.render();
+      });
+    }
+    
+    // Cek tab AI Settings
+    if(!document.getElementById("dev-tab-ai-added")){
+      var aiTab = document.createElement("div");
+      aiTab.className = "dev-tab";
+      aiTab.dataset.tab = "aisettings";
+      aiTab.id = "dev-tab-ai-added";
+      aiTab.textContent = "🤖 AI Settings";
+      tabsWrap.appendChild(aiTab);
+      
+      aiTab.addEventListener("click", function(){
+        document.querySelectorAll("#dev-tabs .dev-tab").forEach(function(t){ t.classList.remove("active"); });
+        aiTab.classList.add("active");
+        if(window.PageDev && window.PageDev.state) window.PageDev.state.tab = "aisettings";
+        if(window.AISettingsTab) window.AISettingsTab.render();
+      });
+    }
+    
+    // Hook PageDev.renderContent biar handle tab baru
+    if(window.PageDev && !window.PageDev._v90Hooked){
+      window.PageDev._v90Hooked = true;
+      var origRender = window.PageDev.renderContent;
+      window.PageDev.renderContent = async function(){
+        if(this.state && this.state.tab === "console"){
+          if(window.ConsoleTab) return await window.ConsoleTab.render();
+        }
+        if(this.state && this.state.tab === "aisettings"){
+          if(window.AISettingsTab) return await window.AISettingsTab.render();
+        }
+        return await origRender.call(this);
+      };
+    }
+  }catch(e){ console.warn("hookDevPanel:", e); }
+}
+
+setInterval(hookDevPanel, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(hookDevPanel, 600); });
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — EXPOSE
+   ═══════════════════════════════════════════════════════════ */
+window.PreviewEditMode = PreviewEditMode;
+window.injectPreviewToggle = injectPreviewToggle;
+window.reconvertEmojiV90 = reconvertEmojiV90;
+
+console.log("✅ Part 3A ready");
+
+})();
+</script>
+
+<script id="fixv90-js-d">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.0 — PART 3B
+   AI Settings Tab (Dev Panel) + AI Bio Generator + Init
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🤖 Part 3B loading...","color:#ffd700;font-weight:bold");
+
+/* ═══════════════════════════════════════════════════════════
+   AI CONFIG MANAGER
+   ═══════════════════════════════════════════════════════════ */
+var AIConfig = {
+  DEFAULTS: {
+    apiKey: "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",
+    model: "openai/gpt-oss-120b",
+    maxTokens: 1024,
+    temperature: 0.7
+  },
+  _cache: null,
+  
+  get: function(){
+    if(this._cache) return this._cache;
+    try{
+      var raw = localStorage.getItem("varlinkbio_ai_config");
+      if(raw){
+        var parsed = JSON.parse(raw);
+        this._cache = Object.assign({}, this.DEFAULTS, parsed);
+        return this._cache;
+      }
+    }catch(e){}
+    this._cache = Object.assign({}, this.DEFAULTS);
+    return this._cache;
+  },
+  
+  save: function(config){
+    try{
+      this._cache = Object.assign({}, this.DEFAULTS, config);
+      localStorage.setItem("varlinkbio_ai_config", JSON.stringify(this._cache));
+      
+      // Sync ke Firestore (global)
+      if(window.FB){
+        FB.db.collection("settings").doc("app").set({
+          aiConfig: this._cache
+        }, { merge:true }).catch(function(){});
+      }
+      return true;
+    }catch(e){
+      console.warn("AIConfig.save:", e);
+      return false;
+    }
+  },
+  
+  async loadFromFirestore(){
+    try{
+      if(!window.FB) return;
+      var doc = await FB.db.collection("settings").doc("app").get();
+      if(doc.exists){
+        var data = doc.data();
+        if(data.aiConfig){
+          this._cache = Object.assign({}, this.DEFAULTS, data.aiConfig);
+          localStorage.setItem("varlinkbio_ai_config", JSON.stringify(this._cache));
+        }
+      }
+    }catch(e){}
+  },
+  
+  reset: function(){
+    try{
+      localStorage.removeItem("varlinkbio_ai_config");
+      this._cache = null;
+    }catch(e){}
+  }
+};
+
+window.AIConfig = AIConfig;
+
+/* ═══════════════════════════════════════════════════════════
+   AI SETTINGS TAB (Dev Panel)
+   ═══════════════════════════════════════════════════════════ */
+var AISettingsTab = {
+  MODELS: [
+    { id:"openai/gpt-oss-120b", name:"GPT-OSS 120B", desc:"Best all-around (default)" },
+    { id:"llama-3.3-70b-versatile", name:"Llama 3.3 70B", desc:"Cepat & pinter" },
+    { id:"llama-3.1-8b-instant", name:"Llama 3.1 8B", desc:"Sangat cepat, ringan" },
+    { id:"mixtral-8x7b-32768", name:"Mixtral 8x7B", desc:"Context panjang" },
+    { id:"gemma2-9b-it", name:"Gemma 2 9B", desc:"Ringan & stabil" }
+  ],
+  
+  async render(){
+    var wrap = document.getElementById("dev-content");
+    if(!wrap) return;
+    
+    var cfg = AIConfig.get();
+    
+    var modelsHTML = this.MODELS.map(function(m){
+      var checked = (cfg.model === m.id) ? "checked" : "";
+      var active = (cfg.model === m.id) ? "active" : "";
+      return '<label class="dev-ai-model-item ' + active + '">' +
+        '<input type="radio" name="ai-model" value="' + m.id + '" ' + checked + '/>' +
+        '<div class="info">' +
+          '<div class="name">' + m.name + '</div>' +
+          '<div class="desc">' + m.desc + ' · ' + m.id + '</div>' +
+        '</div>' +
+      '</label>';
+    }).join("");
+    
+    wrap.innerHTML = 
+      '<div class="dev-ai-wrap">' +
+        '<div class="dev-ai-card">' +
+          '<h3>🔑 API Key</h3>' +
+          '<div class="dev-ai-field">' +
+            '<label>Groq API Key</label>' +
+            '<div class="dev-ai-apikey-wrap">' +
+              '<input type="password" id="dev-ai-apikey" value="' + this._esc(cfg.apiKey) + '" placeholder="gsk_..."/>' +
+              '<button class="dev-ai-apikey-toggle" id="dev-ai-apikey-toggle" type="button">👁️ Show</button>' +
+            '</div>' +
+            '<div class="hint">Dapat dari <b>console.groq.com/keys</b>. Disimpan di browser + Firestore.</div>' +
+          '</div>' +
+        '</div>' +
+        
+        '<div class="dev-ai-card">' +
+          '<h3>🤖 Model AI</h3>' +
+          '<div class="dev-ai-models-list">' + modelsHTML + '</div>' +
+        '</div>' +
+        
+        '<div class="dev-ai-card">' +
+          '<h3>⚙️ Parameter</h3>' +
+          '<div class="dev-ai-row" style="margin-bottom:14px">' +
+            '<div class="dev-ai-field" style="flex:1">' +
+              '<label>Max Tokens</label>' +
+              '<input type="number" id="dev-ai-maxtokens" value="' + (cfg.maxTokens || 1024) + '" min="100" max="8000"/>' +
+              '<div class="hint">100-8000</div>' +
+            '</div>' +
+            '<div class="dev-ai-field" style="flex:1">' +
+              '<label>Temperature</label>' +
+              '<input type="number" id="dev-ai-temp" value="' + (cfg.temperature || 0.7) + '" min="0" max="2" step="0.1"/>' +
+              '<div class="hint">0.0 - 2.0 (kreatif tinggi = 1.0+)</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        
+        '<div class="dev-ai-card">' +
+          '<h3>🧪 Test & Save</h3>' +
+          '<div class="dev-ai-row">' +
+            '<button class="dev-ai-test-btn" id="dev-ai-test">🧪 Test Connection</button>' +
+            '<button class="dev-ai-save-btn" id="dev-ai-save">💾 Simpan</button>' +
+            '<button class="dev-ai-reset-btn" id="dev-ai-reset">↺ Reset</button>' +
+          '</div>' +
+          '<div class="dev-ai-status" id="dev-ai-status"></div>' +
+        '</div>' +
+        
+        '<div class="dev-ai-card" style="background:#fffbe6;border-color:#ffd700">' +
+          '<h3 style="background:#ffd700;color:#0a0a0a">💡 Info</h3>' +
+          '<div style="font-size:12px;font-weight:600;line-height:1.7">' +
+            '• Config ini dipakai bareng oleh <b>AI Bio Generator</b> & <b>Varsmile AI</b><br>' +
+            '• Setiap kali simpan → otomatis ke-sync<br>' +
+            '• Kalau API key invalid → test bakal error<br>' +
+            '• Limit Groq: ~14,400 req/hari (gratis)' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    
+    this._bind();
+  },
+  
+  _bind(){
+    var self = this;
+    
+    // Toggle API key visibility
+    var toggleBtn = document.getElementById("dev-ai-apikey-toggle");
+    var apikeyInput = document.getElementById("dev-ai-apikey");
+    if(toggleBtn && apikeyInput){
+      toggleBtn.addEventListener("click", function(){
+        if(apikeyInput.type === "password"){
+          apikeyInput.type = "text";
+          this.innerHTML = "🙈 Hide";
+        } else {
+          apikeyInput.type = "password";
+          this.innerHTML = "👁️ Show";
+        }
+      });
+    }
+    
+    // Model radio
+    document.querySelectorAll('input[name="ai-model"]').forEach(function(radio){
+      radio.addEventListener("change", function(){
+        document.querySelectorAll(".dev-ai-model-item").forEach(function(el){ el.classList.remove("active"); });
+        this.closest(".dev-ai-model-item").classList.add("active");
+      });
+    });
+    
+    // Test
+    var testBtn = document.getElementById("dev-ai-test");
+    if(testBtn){
+      testBtn.addEventListener("click", function(){ self._test(); });
+    }
+    
+    // Save
+    var saveBtn = document.getElementById("dev-ai-save");
+    if(saveBtn){
+      saveBtn.addEventListener("click", function(){ self._save(); });
+    }
+    
+    // Reset
+    var resetBtn = document.getElementById("dev-ai-reset");
+    if(resetBtn){
+      resetBtn.addEventListener("click", function(){ self._reset(); });
+    }
+  },
+  
+  _getFormConfig(){
+    var apiKey = document.getElementById("dev-ai-apikey");
+    var maxTokens = document.getElementById("dev-ai-maxtokens");
+    var temp = document.getElementById("dev-ai-temp");
+    var model = document.querySelector('input[name="ai-model"]:checked');
+    
+    return {
+      apiKey: apiKey ? apiKey.value.trim() : "",
+      model: model ? model.value : "openai/gpt-oss-120b",
+      maxTokens: maxTokens ? parseInt(maxTokens.value) || 1024 : 1024,
+      temperature: temp ? parseFloat(temp.value) || 0.7 : 0.7
+    };
+  },
+  
+  _showStatus(text, type){
+    var el = document.getElementById("dev-ai-status");
+    if(!el) return;
+    el.textContent = text;
+    el.className = "dev-ai-status show " + (type || "info");
+  },
+  
+  async _test(){
+    var cfg = this._getFormConfig();
+    if(!cfg.apiKey){
+      this._showStatus("❌ API Key kosong","err");
+      return;
+    }
+    
+    this._showStatus("⏳ Testing...","info");
+    
+    try{
+      var response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + cfg.apiKey
+        },
+        body: JSON.stringify({
+          model: cfg.model,
+          messages: [{ role: "user", content: "Say OK" }],
+          max_tokens: 10
+        })
+      });
+      
+      if(response.ok){
+        var data = await response.json();
+        var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        this._showStatus("✅ Berhasil! Model respon: \"" + (reply || "OK") + "\"","ok");
+        if(window.Sound && Sound.tada) Sound.tada();
+      } else {
+        var errData = null;
+        try{ errData = await response.json(); }catch(e){}
+        var errMsg = errData && errData.error && errData.error.message ? errData.error.message : ("HTTP " + response.status);
+        this._showStatus("❌ Gagal: " + errMsg,"err");
+        if(window.Sound && Sound.error) Sound.error();
+      }
+    }catch(e){
+      this._showStatus("❌ Network error: " + e.message,"err");
+    }
+  },
+  
+  _save(){
+    var cfg = this._getFormConfig();
+    
+    if(!cfg.apiKey){
+      this._showStatus("❌ API Key wajib diisi","err");
+      return;
+    }
+    
+    if(AIConfig.save(cfg)){
+      this._showStatus("✅ Tersimpan! Auto-sync ke AI Bio & Varsmile AI.","ok");
+      if(window.Sound && Sound.tada) Sound.tada();
+      if(window.toast) toast("✅ AI Config disimpan!","success");
+    } else {
+      this._showStatus("❌ Gagal menyimpan","err");
+    }
+  },
+  
+  _reset(){
+    if(!confirm("Reset AI config ke default?")) return;
+    AIConfig.reset();
+    this._showStatus("↺ Config direset ke default","info");
+    setTimeout(function(){ AISettingsTab.render(); }, 500);
+  },
+  
+  _esc(s){
+    return String(s || "").replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+};
+
+window.AISettingsTab = AISettingsTab;
+
+/* ═══════════════════════════════════════════════════════════
+   AI BIO GENERATOR PAGE
+   ═══════════════════════════════════════════════════════════ */
+var AIBioPage = {
+  _lastResult: null,
+  _lang: "id",
+  _generating: false,
+  
+  render(){
+    if(!window.Auth || !Auth.current){
+      if(window.Router) Router.navigate("/login");
+      return;
+    }
+    
+    var app = document.getElementById("app");
+    if(!app) return;
+    
+    var html = (window.renderTopbar ? renderTopbar() : "");
+    html += '<div class="aibio-page">';
+    html += '<div class="aibio-hero">';
+    html += '<div class="hero-icon">🪄</div>';
+    html += '<h1>AI Bio Generator</h1>';
+    html += '<p>Ceritain tentang kamu atau bisnis kamu — AI bakal bikin bio, link, tema, & tag yang pas dalam hitungan detik.</p>';
+    html += '</div>';
+    
+    html += '<div class="aibio-form">';
+    html += '<label>✍️ Ceritain tentang kamu / bisnis kamu</label>';
+    html += '<textarea id="aibio-prompt" placeholder="Contoh:&#10;Aku penjual kue online di Bandung, target anak muda. Mau promosi lewat IG & WA."></textarea>';
+    
+    html += '<label>🌐 Bahasa Output</label>';
+    html += '<div class="aibio-lang-row">';
+    html += '<button type="button" class="aibio-lang-btn active" data-lang="id">🇮🇩 Indonesia</button>';
+    html += '<button type="button" class="aibio-lang-btn" data-lang="en">🇬🇧 English</button>';
+    html += '</div>';
+    
+    html += '<label>💡 Contoh Prompt</label>';
+    html += '<div class="aibio-examples">';
+    html += '<div class="aibio-example-chip" data-example="Aku penjual kue online di Bandung, target anak muda">🍰 Penjual kue</div>';
+    html += '<div class="aibio-example-chip" data-example="Aku content creator TikTok bahas teknologi & gadget">📱 Content creator</div>';
+    html += '<div class="aibio-example-chip" data-example="Aku freelancer desain grafis dari Jakarta">💼 Freelancer</div>';
+    html += '<div class="aibio-example-chip" data-example="Aku musisi indie, baru rilis single baru">🎵 Musisi</div>';
+    html += '</div>';
+    
+    html += '<button type="button" class="aibio-generate-btn" id="aibio-generate">✨ Generate Bio</button>';
+    html += '</div>';
+    
+    html += '<div class="aibio-error" id="aibio-error"></div>';
+    
+    html += '<div class="aibio-loading" id="aibio-loading">';
+    html += '<div class="spinner"></div>';
+    html += '<div class="txt"><b>AI sedang berfikir...</b>Bentar ya, 5-15 detik aja</div>';
+    html += '</div>';
+    
+    html += '<div class="aibio-result" id="aibio-result"></div>';
+    html += '</div>';
+    
+    app.innerHTML = html;
+    if(window.bindTopbar) bindTopbar();
+    
+    this._bind();
+  },
+  
+  _bind(){
+    var self = this;
+    
+    document.querySelectorAll(".aibio-lang-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        document.querySelectorAll(".aibio-lang-btn").forEach(function(b){ b.classList.remove("active"); });
+        btn.classList.add("active");
+        self._lang = btn.dataset.lang;
+      });
+    });
+    
+    document.querySelectorAll(".aibio-example-chip").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var prompt = document.getElementById("aibio-prompt");
+        if(prompt) prompt.value = chip.dataset.example;
+      });
+    });
+    
+    var genBtn = document.getElementById("aibio-generate");
+    if(genBtn) genBtn.addEventListener("click", function(){ self.generate(); });
+  },
+  
+  _showError(msg){
+    var el = document.getElementById("aibio-error");
+    if(!el) return;
+    el.textContent = "❌ " + msg;
+    el.classList.add("show");
+  },
+  
+  _hideError(){
+    var el = document.getElementById("aibio-error");
+    if(el) el.classList.remove("show");
+  },
+  
+  async generate(){
+    if(this._generating) return;
+    
+    var promptEl = document.getElementById("aibio-prompt");
+    var prompt = promptEl ? promptEl.value.trim() : "";
+    
+    if(!prompt){
+      this._showError("Ketik dulu ceritanya ya!");
+      return;
+    }
+    
+    if(prompt.length < 10){
+      this._showError("Ceritain lebih detail (min 10 karakter)");
+      return;
+    }
+    
+    this._hideError();
+    this._generating = true;
+    
+    var genBtn = document.getElementById("aibio-generate");
+    var loadingEl = document.getElementById("aibio-loading");
+    var resultEl = document.getElementById("aibio-result");
+    
+    if(genBtn) genBtn.disabled = true;
+    if(loadingEl) loadingEl.classList.add("show");
+    if(resultEl) resultEl.classList.remove("show");
+    
+    try{
+      var result = await this._callGroq(prompt);
+      this._lastResult = result;
+      this._renderResult(result);
+      if(window.Sound && Sound.tada) Sound.tada();
+    }catch(e){
+      this._showError(e.message || "Gagal generate. Coba lagi.");
+      if(window.Sound && Sound.error) Sound.error();
+    } finally {
+      this._generating = false;
+      if(genBtn) genBtn.disabled = false;
+      if(loadingEl) loadingEl.classList.remove("show");
+    }
+  },
+  
+  async _callGroq(prompt){
+    var cfg = AIConfig.get();
+    if(!cfg.apiKey) throw new Error("API Key belum di-set. Minta admin setting di Dev Panel.");
+    
+    var langText = this._lang === "en" ? "English" : "Bahasa Indonesia";
+    
+    var sysPrompt = 
+      'You are a bio generator for Varlinkbio (link-in-bio platform). ' +
+      'User akan kasih cerita tentang dirinya/bisnisnya. Kamu WAJIB balas dengan JSON ONLY (no markdown, no codeblock).\n\n' +
+      'OUTPUT FORMAT (JSON):\n' +
+      '{\n' +
+      '  "name": "Nama bio, max 30 char, singkat & catchy",\n' +
+      '  "bio": "Deskripsi max 160 char, catchy & jelas",\n' +
+      '  "links": [\n' +
+      '    {"label": "Instagram", "url": "https://instagram.com/", "type": "classic"},\n' +
+      '    {"label": "WhatsApp", "url": "https://wa.me/628xxx", "type": "classic"}\n' +
+      '  ],\n' +
+      '  "theme": "neo-pink",\n' +
+      '  "style": "brutalism",\n' +
+      '  "tags": ["kue", "bandung", "food"]\n' +
+      '}\n\n' +
+      'ATURAN:\n' +
+      '- Output bahasa: ' + langText + '\n' +
+      '- name & bio HARUS dalam bahasa ' + langText + '\n' +
+      '- links: 3-5 link yang RELEVAN sama industri user (contoh: penjual kue → Instagram, WA, Shopee)\n' +
+      '- theme pilih dari: neo-cream, neo-midnight, neo-dark, neo-blue, neo-rose, neo-pink, neo-green, neo-purple, neo-orange, neo-ocean, neo-coffee\n' +
+      '- style pilih dari: brutalism, minimalist, glassmorphism, material, gaming\n' +
+      '- tags: 3-5 tag industri\n' +
+      '- RETURN JSON ONLY, TANPA penjelasan apapun';
+    
+    var userPrompt = 'Cerita user: ' + prompt;
+    
+    var response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + cfg.apiKey
+      },
+      body: JSON.stringify({
+        model: cfg.model || "openai/gpt-oss-120b",
+        messages: [
+          { role: "system", content: sysPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        max_tokens: cfg.maxTokens || 1024,
+        temperature: cfg.temperature || 0.7,
+        response_format: { type: "json_object" }
+      })
+    });
+    
+    if(!response.ok){
+      var errData = null;
+      try{ errData = await response.json(); }catch(e){}
+      var errMsg = errData && errData.error && errData.error.message ? errData.error.message : ("HTTP " + response.status);
+      throw new Error("Groq error: " + errMsg);
+    }
+    
+    var data = await response.json();
+    var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    
+    if(!content) throw new Error("AI gak ngasih hasil");
+    
+    // Parse JSON
+    var parsed;
+    try{
+      parsed = JSON.parse(content);
+    }catch(e){
+      // Coba extract JSON dari text
+      var match = content.match(/\{[\s\S]*\}/);
+      if(match){
+        try{ parsed = JSON.parse(match[0]); }catch(e2){}
+      }
+      if(!parsed) throw new Error("Format hasil AI gak valid. Coba lagi.");
+    }
+    
+    // Validate
+    if(!parsed.name) parsed.name = "Bio Baru";
+    if(!parsed.bio) parsed.bio = "";
+    if(!Array.isArray(parsed.links)) parsed.links = [];
+    if(!parsed.theme) parsed.theme = "neo-cream";
+    if(!parsed.style) parsed.style = "brutalism";
+    if(!Array.isArray(parsed.tags)) parsed.tags = [];
+    
+    return parsed;
+  },
+  
+  _renderResult(result){
+    var el = document.getElementById("aibio-result");
+    if(!el) return;
+    
+    var html = '<div class="aibio-result-head">✨ Hasil Generate</div>';
+    
+    html += '<div class="aibio-result-item">';
+    html += '<div class="lbl">📛 Nama Bio</div>';
+    html += '<div class="val big">' + this._esc(result.name) + '</div>';
+    html += '</div>';
+    
+    if(result.bio){
+      html += '<div class="aibio-result-item">';
+      html += '<div class="lbl">📝 Deskripsi</div>';
+      html += '<div class="val">' + this._esc(result.bio) + '</div>';
+      html += '</div>';
+    }
+    
+    if(result.links && result.links.length){
+      html += '<div class="aibio-result-item">';
+      html += '<div class="lbl">🔗 Link Suggestion (' + result.links.length + ')</div>';
+      html += '<div class="aibio-links-preview">';
+      result.links.forEach(function(l){
+        html += '<div class="aibio-link-row">';
+        html += '<div class="lr-icon">🔗</div>';
+        html += '<div class="lr-info">';
+        html += '<b>' + AIBioPage._esc(l.label || "Link") + '</b>';
+        html += '<span>' + AIBioPage._esc(l.url || "") + '</span>';
+        html += '</div></div>';
+      });
+      html += '</div></div>';
+    }
+    
+    html += '<div class="aibio-result-item">';
+    html += '<div class="lbl">🎨 Tema & Style</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    html += '<span class="aibio-theme-badge">🎨 ' + this._esc(result.theme) + '</span>';
+    html += '<span class="aibio-theme-badge">✨ ' + this._esc(result.style) + '</span>';
+    html += '</div></div>';
+    
+    if(result.tags && result.tags.length){
+      html += '<div class="aibio-result-item">';
+      html += '<div class="lbl">🏷️ Tags</div>';
+      html += '<div class="aibio-tags">';
+      result.tags.forEach(function(t){
+        html += '<span class="aibio-tag">#' + AIBioPage._esc(t) + '</span>';
+      });
+      html += '</div></div>';
+    }
+    
+    html += '<div class="aibio-actions">';
+    html += '<button type="button" class="btn-regen" id="aibio-regen">🔁 Regenerate</button>';
+    html += '<button type="button" class="btn-apply" id="aibio-apply">✅ Pakai Ini</button>';
+    html += '</div>';
+    
+    el.innerHTML = html;
+    el.classList.add("show");
+    
+    var self = this;
+    var regenBtn = document.getElementById("aibio-regen");
+    if(regenBtn) regenBtn.addEventListener("click", function(){ self.generate(); });
+    
+    var applyBtn = document.getElementById("aibio-apply");
+    if(applyBtn) applyBtn.addEventListener("click", function(){ self._apply(result); });
+  },
+  
+  _apply(result){
+    try{
+      // Init draft baru
+      var draft = (window.PageEditor && PageEditor.newDraft) ? PageEditor.newDraft() : {
+        id:null, slug:"", name:"", bio:"",
+        profile:"", banner:"", bannerType:"image",
+        logos:[], animation:"none",
+        links:[],
+        theme:"neo-cream", lock:"", allowDirectory:true,
+        stats:{ views:0, clicks:{}, daily:{} }
+      };
+      
+      draft.name = result.name || "";
+      draft.bio = result.bio || "";
+      draft.theme = result.theme || "neo-cream";
+      
+      // Convert links
+      draft.links = (result.links || []).map(function(l){
+        return {
+          label: l.label || "Link",
+          url: l.url || "https://",
+          type: l.type || "classic",
+          color: "",
+          thumb: "",
+          active: true,
+          featPosX: 50, featPosY: 50,
+          featZoom: 1, featPadding: 10,
+          featRatio: "16:9"
+        };
+      });
+      
+      // Set STATE
+      if(window.STATE){
+        STATE.draft = draft;
+        STATE.currentEdit = null;
+      }
+      
+      if(window.Sound && Sound.tada) Sound.tada();
+      if(window.toast) toast("✅ Bio diterapkan! Lanjut edit di Editor","success");
+      
+      setTimeout(function(){
+        if(window.Router) Router.navigate("/editor");
+      }, 600);
+    }catch(e){
+      console.warn("_apply:", e);
+      if(window.toast) toast("Gagal apply: " + e.message,"error");
+    }
+  },
+  
+  _esc(s){
+    return String(s || "").replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+};
+
+window.AIBioPage = AIBioPage;
+
+/* ═══════════════════════════════════════════════════════════
+   INJECT TOMBOL AI BIO DI DASHBOARD
+   ═══════════════════════════════════════════════════════════ */
+function injectAIBioButton(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/dashboard") return;
+    if(document.getElementById("btn-ai-bio")) return;
+    
+    var bikinBtn = document.getElementById("btn-bikin");
+    if(!bikinBtn) return;
+    
+    var aiBtn = document.createElement("button");
+    aiBtn.className = "btn btn-lg btn-block";
+    aiBtn.id = "btn-ai-bio";
+    aiBtn.type = "button";
+    aiBtn.style.background = "linear-gradient(135deg,#a78bfa,#ff69b4)";
+    aiBtn.style.color = "#fff";
+    aiBtn.style.marginTop = "6px";
+    aiBtn.innerHTML = "🪄 AI Bio Generator";
+    
+    aiBtn.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(window.Sound && Sound.click) Sound.click();
+      if(window.Router) Router.navigate("/ai-bio");
+    });
+    
+    bikinBtn.parentNode.insertBefore(aiBtn, bikinBtn.nextSibling);
+    console.log("✅ AI Bio button injected");
+  }catch(e){ console.warn("injectAIBioButton:", e); }
+}
+
+setInterval(injectAIBioButton, 1200);
+window.addEventListener("hashchange", function(){ setTimeout(injectAIBioButton, 600); });
+
+/* ═══════════════════════════════════════════════════════════
+   PATCH VARSMile AI — pakai config baru
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(window.VarsmileAIPage && !window.VarsmileAIPage._v90Patched){
+    window.VarsmileAIPage._v90Patched = true;
+    var origAskGroq = window.VarsmileAIPage.askGroq;
+    
+    window.VarsmileAIPage.askGroq = async function(userText){
+      try{
+        var cfg = AIConfig.get();
+        if(!cfg.apiKey) return "🔑 API key belum diset. Minta admin setting di Dev Panel.";
+        
+        // Panggil orig (pakai logic sendiri)
+        return await origAskGroq.call(this, userText);
+      }catch(e){
+        return this.fallbackReply(userText);
+      }
+    };
+    console.log("✅ Varsmile AI patched (pakai config baru)");
+  }
+}, 4000);
+
+/* ═══════════════════════════════════════════════════════════
+   ROUTE: /ai-bio
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(window.Router && window.Router.on){
+    window.Router.on("/ai-bio", function(){ AIBioPage.render(); });
+    console.log("✅ Route /ai-bio registered");
+  }
+}, 2500);
+
+/* ═══════════════════════════════════════════════════════════
+   INIT — LOAD AI CONFIG FROM FIRESTORE
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(window.Auth && Auth.current){
+    AIConfig.loadFromFirestore().then(function(){
+      console.log("✅ AI Config loaded from Firestore");
+    });
+  }
+}, 3500);
+
+/* ═══════════════════════════════════════════════════════════
+   LOG FINAL
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ PATCH v9.0 ALL-IN-ONE AKTIF        ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • AI Bio Generator (/ai-bio)          ║","color:#22c55e");
+  console.log("%c║  • Dev Panel → AI Settings             ║","color:#22c55e");
+  console.log("%c║  • Dev Panel → Console                 ║","color:#22c55e");
+  console.log("%c║  • Preview toggle drag mode            ║","color:#22c55e");
+  console.log("%c║  • Varsmile drag                       ║","color:#22c55e");
+  console.log("%c║  • Emoji extended (+200 map)           ║","color:#22c55e");
+  console.log("%c║  • Auto-cleanup v8/v8.5                ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+}, 1000);
+
+console.log("✅ Part 3B ready — Patch v9.0 SELESAI");
+
+})();
+</script>
+<!-- ═══ END PATCH v9.0 ALL-IN-ONE ═══ -->
 </body>
    </html>

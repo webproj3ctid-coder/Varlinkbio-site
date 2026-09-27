@@ -15764,5 +15764,2327 @@ window.EmojiV75 = {
 
 })();
 </script>
+   <style id="finalpatch-v76-css">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7.6 — Custom Theme Builder + Editor Features
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. THEME BUILDER MODAL
+   ═══════════════════════════════════════════════════════════ */
+.ctb-modal{
+  padding:4px;
+  max-width:100%;
+}
+.ctb-header{
+  text-align:center;padding:10px 0 16px;
+  border-bottom:2px solid #f0ebe0;
+  margin-bottom:16px;
+}
+.ctb-header h3{
+  font-size:18px;font-weight:900;
+  text-transform:uppercase;letter-spacing:-.3px;
+  margin-bottom:6px;color:#0a0a0a;
+}
+.ctb-header p{font-size:12.5px;font-weight:600;color:#555;line-height:1.5}
+
+/* Section */
+.ctb-section{
+  background:#f0ebe0;
+  border:2px solid #0a0a0a;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+}
+.ctb-section-title{
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:#555;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+
+/* Color picker grid */
+.ctb-color-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:8px;
+}
+.ctb-color-item{
+  display:flex;flex-direction:column;gap:5px;
+}
+.ctb-color-item label{
+  font-size:10.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  color:#0a0a0a;
+}
+.ctb-color-pick{
+  display:flex;align-items:center;gap:6px;
+  background:#fff;
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  padding:4px;
+  cursor:pointer;
+  transition:transform .1s;
+}
+.ctb-color-pick:hover{transform:translate(-1px,-1px);box-shadow:2px 2px 0 #0a0a0a}
+.ctb-color-input{
+  width:32px;height:32px;border-radius:6px;
+  border:1.5px solid #0a0a0a;
+  cursor:pointer;flex-shrink:0;
+  padding:0;background:transparent;
+  appearance:none;-webkit-appearance:none;
+}
+.ctb-color-input::-webkit-color-swatch-wrapper{padding:0}
+.ctb-color-input::-webkit-color-swatch{border:none;border-radius:5px}
+.ctb-color-input::-moz-color-swatch{border:none;border-radius:5px}
+.ctb-color-value{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;font-weight:700;
+  color:#0a0a0a;flex:1;
+  overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Font picker */
+.ctb-font-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+  gap:6px;
+}
+.ctb-font-btn{
+  padding:10px 8px;
+  background:#fff;
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:700;
+  text-align:center;
+  box-shadow:2px 2px 0 #0a0a0a;
+  transition:all .1s;
+  color:#0a0a0a;
+}
+.ctb-font-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a}
+.ctb-font-btn.active{background:#ffd700;box-shadow:0 0 0 2px #ffd700, 3px 3px 0 #0a0a0a}
+
+/* Radius slider */
+.ctb-slider-wrap{margin-bottom:10px}
+.ctb-slider-label{
+  display:flex;justify-content:space-between;
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  margin-bottom:6px;color:#0a0a0a;
+}
+.ctb-slider-val{
+  font-family:'JetBrains Mono',monospace;
+  color:#ff8c00;
+}
+.ctb-slider{
+  width:100%;height:8px;
+  -webkit-appearance:none;appearance:none;
+  background:#fff;
+  border:2px solid #0a0a0a;
+  border-radius:999px;
+  outline:none;padding:0;
+}
+.ctb-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:22px;height:22px;border-radius:50%;
+  background:#ffd700;border:2.5px solid #0a0a0a;
+  cursor:pointer;box-shadow:2px 2px 0 #0a0a0a;
+}
+.ctb-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;
+  background:#ffd700;border:2.5px solid #0a0a0a;
+  cursor:pointer;box-shadow:2px 2px 0 #0a0a0a;
+}
+
+/* Shadow options */
+.ctb-shadow-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+}
+.ctb-shadow-btn{
+  padding:12px 6px;
+  background:#fff;
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+  text-align:center;
+  box-shadow:2px 2px 0 #0a0a0a;
+  transition:all .1s;
+  color:#0a0a0a;
+}
+.ctb-shadow-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a}
+.ctb-shadow-btn.active{background:#ffd700;box-shadow:0 0 0 2px #ffd700, 3px 3px 0 #0a0a0a}
+.ctb-shadow-preview{
+  display:inline-block;
+  width:24px;height:24px;
+  background:#f0ebe0;
+  border:2px solid #0a0a0a;
+  border-radius:4px;
+  margin-bottom:4px;
+}
+.ctb-shadow-btn[data-shadow="none"] .ctb-shadow-preview{box-shadow:none}
+.ctb-shadow-btn[data-shadow="hard"] .ctb-shadow-preview{box-shadow:3px 3px 0 #0a0a0a}
+.ctb-shadow-btn[data-shadow="soft"] .ctb-shadow-preview{box-shadow:0 3px 6px rgba(0,0,0,.2)}
+.ctb-shadow-btn[data-shadow="glow"] .ctb-shadow-preview{box-shadow:0 0 8px #ffd700}
+
+/* Pattern options */
+.ctb-pattern-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(70px,1fr));
+  gap:6px;
+}
+.ctb-pattern-btn{
+  padding:8px 4px;
+  background:#fff;
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  cursor:pointer;
+  text-align:center;
+  box-shadow:2px 2px 0 #0a0a0a;
+  transition:all .1s;
+  color:#0a0a0a;
+}
+.ctb-pattern-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #0a0a0a}
+.ctb-pattern-btn.active{background:#ffd700;box-shadow:0 0 0 2px #ffd700, 3px 3px 0 #0a0a0a}
+.ctb-pattern-preview{
+  width:100%;height:32px;
+  border:1.5px solid #0a0a0a;
+  border-radius:4px;
+  margin-bottom:4px;
+  background:#f0ebe0;
+}
+.ctb-pattern-preview.pat-none{background:#f0ebe0}
+.ctb-pattern-preview.pat-dots{
+  background-image:radial-gradient(circle,#0a0a0a 1px,transparent 1px);
+  background-size:8px 8px;
+}
+.ctb-pattern-preview.pat-lines{
+  background-image:repeating-linear-gradient(45deg,#0a0a0a 0,#0a0a0a 1px,transparent 1px,transparent 6px);
+}
+.ctb-pattern-preview.pat-grid{
+  background-image:linear-gradient(#0a0a0a 1px,transparent 1px),
+    linear-gradient(90deg,#0a0a0a 1px,transparent 1px);
+  background-size:8px 8px;
+}
+.ctb-pattern-preview.pat-gradient{
+  background:linear-gradient(135deg,#ffd700,#ff69b4);
+}
+.ctb-pattern-label{
+  font-size:9.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. LIVE PREVIEW PANEL
+   ═══════════════════════════════════════════════════════════ */
+.ctb-preview-panel{
+  position:sticky;top:20px;
+  background:#fff;
+  border:2.5px solid #0a0a0a;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:4px 4px 0 #0a0a0a;
+}
+.ctb-preview-panel h4{
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:#555;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.ctb-preview-box{
+  width:100%;max-width:280px;
+  margin:0 auto;
+  border:3px solid #0a0a0a;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:4px 4px 0 #0a0a0a;
+  padding:14px;
+  transition:all .3s;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. MY THEMES LIST
+   ═══════════════════════════════════════════════════════════ */
+.ctb-themes-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:10px;
+}
+.ctb-theme-card{
+  background:#fff;
+  border:2.5px solid #0a0a0a;
+  border-radius:10px;
+  padding:10px;
+  box-shadow:3px 3px 0 #0a0a0a;
+  position:relative;
+  cursor:pointer;
+  transition:transform .1s;
+}
+.ctb-theme-card:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #0a0a0a}
+.ctb-theme-card.active{background:#ffd700;box-shadow:0 0 0 2px #ffd700, 3px 3px 0 #0a0a0a}
+.ctb-theme-name{
+  font-size:11.5px;font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:6px;
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;color:#0a0a0a;
+}
+.ctb-theme-colors{
+  display:flex;gap:3px;margin-bottom:6px;
+}
+.ctb-theme-colors span{
+  width:100%;height:14px;
+  border-radius:3px;
+  border:1.5px solid #0a0a0a;
+}
+.ctb-theme-meta{
+  font-size:9.5px;font-weight:700;
+  color:#888;
+  display:flex;
+  justify-content:space-between;
+}
+.ctb-theme-actions{
+  position:absolute;top:6px;right:6px;
+  display:flex;gap:4px;
+}
+.ctb-theme-action{
+  width:22px;height:22px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid #0a0a0a;
+  display:grid;place-items:center;
+  cursor:pointer;font-size:10px;
+  padding:0;line-height:1;
+}
+.ctb-theme-action:hover{background:#ff2a2a;color:#fff;border-color:#ff2a2a}
+.ctb-themes-empty{
+  text-align:center;
+  padding:30px 16px;
+  background:#fff;
+  border:2px dashed #888;
+  border-radius:10px;
+  color:#888;
+  font-size:12.5px;
+  font-weight:600;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. PALETTE GENERATOR
+   ═══════════════════════════════════════════════════════════ */
+.ctb-palette-drop{
+  border:2.5px dashed #0a0a0a;
+  border-radius:10px;
+  padding:20px;
+  text-align:center;
+  cursor:pointer;
+  background:#fff;
+  transition:all .15s;
+}
+.ctb-palette-drop:hover{background:#ffd700;border-style:solid}
+.ctb-palette-drop .icon{
+  font-size:32px;margin-bottom:6px;
+}
+.ctb-palette-drop p{
+  font-size:11.5px;font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  color:#0a0a0a;
+}
+.ctb-palette-drop small{
+  font-size:10.5px;font-weight:600;
+  color:#555;display:block;margin-top:3px;
+}
+.ctb-palette-result{
+  margin-top:12px;
+  display:none;
+  grid-template-columns:repeat(auto-fill,minmax(50px,1fr));
+  gap:6px;
+}
+.ctb-palette-result.show{display:grid}
+.ctb-palette-color{
+  aspect-ratio:1;
+  border-radius:6px;
+  border:2px solid #0a0a0a;
+  cursor:pointer;
+  transition:transform .1s;
+  position:relative;
+}
+.ctb-palette-color:hover{transform:scale(1.05)}
+.ctb-palette-color .hex{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(0,0,0,.7);color:#fff;
+  font-size:8px;font-weight:900;
+  text-align:center;padding:2px;
+  border-radius:0 0 4px 4px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. DRAG TOMBOL DI PREVIEW (posisi di bio)
+   ═══════════════════════════════════════════════════════════ */
+.preview-phone iframe{
+  pointer-events:auto;
+}
+.ctb-drag-hint{
+  position:absolute;bottom:8px;left:8px;right:8px;
+  background:rgba(255,215,0,.95);
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  text-align:center;
+  color:#0a0a0a;
+  box-shadow:2px 2px 0 #0a0a0a;
+  pointer-events:none;
+  animation:pulseHint 2s ease-in-out infinite;
+}
+@keyframes pulseHint{
+  0%,100%{opacity:1}
+  50%{opacity:.7}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. TAB SWITCHER (My Theme / Custom)
+   ═══════════════════════════════════════════════════════════ */
+.ctb-tabs{
+  display:flex;gap:6px;margin-bottom:14px;
+  background:#f0ebe0;
+  border:2px solid #0a0a0a;
+  border-radius:10px;
+  padding:4px;
+}
+.ctb-tab{
+  flex:1;padding:9px 10px;
+  border:none;
+  border-radius:7px;
+  background:transparent;
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+  cursor:pointer;
+  color:#555;
+  transition:all .15s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.ctb-tab:hover{color:#0a0a0a}
+.ctb-tab.active{background:#0a0a0a;color:#ffd700}
+.ctb-pane{display:none}
+.ctb-pane.active{display:block}
+
+/* ═══════════════════════════════════════════════════════════
+   7. BUTTONS BAWAH MODAL
+   ═══════════════════════════════════════════════════════════ */
+.ctb-actions{
+  display:flex;gap:8px;
+  position:sticky;bottom:0;
+  background:#fff;
+  padding-top:12px;
+  margin-top:12px;
+  border-top:2px solid #f0ebe0;
+}
+.ctb-actions button{
+  flex:1;
+  padding:12px;
+  font-size:12.5px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+  border:2.5px solid #0a0a0a;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform .1s, box-shadow .1s;
+}
+.ctb-actions .btn-apply{
+  background:#22c55e;color:#fff;
+  box-shadow:3px 3px 0 #0a0a0a;
+}
+.ctb-actions .btn-apply:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #0a0a0a}
+.ctb-actions .btn-save{
+  background:#ffd700;color:#0a0a0a;
+  box-shadow:3px 3px 0 #0a0a0a;
+}
+.ctb-actions .btn-save:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #0a0a0a}
+.ctb-actions .btn-cancel{
+  background:#fff;color:#0a0a0a;
+  box-shadow:3px 3px 0 #0a0a0a;
+  flex:0 0 auto;
+  padding:12px 16px;
+}
+.ctb-actions .btn-cancel:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #0a0a0a}
+
+/* ═══════════════════════════════════════════════════════════
+   8. TOMBOL CUSTOM THEME DI EDITOR TOOLBAR
+   ═══════════════════════════════════════════════════════════ */
+#btn-custom-theme{
+  background:#a78bfa;
+  color:#fff;
+  border:2.5px solid #0a0a0a;
+  box-shadow:2px 2px 0 #0a0a0a;
+}
+#btn-custom-theme:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 #0a0a0a;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .ctb-modal .ctb-two-col{
+    grid-template-columns:1fr !important;
+  }
+  .ctb-preview-panel{position:static}
+}
+</style>
+   <script id="finalpatch-v76-js-a">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7.6 — JS PART A
+   1. Custom Theme State (LocalStorage + Firestore)
+   2. Custom Theme Builder Modal
+   3. Live Preview Panel
+   4. Palette Generator
+   5. My Themes List
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🎨 Patch v7.6-A — Custom Theme Builder loading...");
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM THEME STATE
+   ═══════════════════════════════════════════════════════════ */
+var CustomTheme = {
+  STORAGE_KEY: "varlinkbio_custom_themes",
+  APPLIED_KEY: "varlinkbio_custom_theme_active",
+
+  /* Default theme */
+  DEFAULTS: {
+    name: "My Theme",
+    colors: {
+      bg: "#f0ebe0",
+      text: "#0a0a0a",
+      btnBg: "#ffffff",
+      btnText: "#0a0a0a",
+      border: "#0a0a0a",
+      accent: "#ffd700",
+      shadow: "#0a0a0a"
+    },
+    font: "Inter",
+    borderRadius: 12,
+    shadowStyle: "hard",
+    bgPattern: "dots",
+    bgGradient: "linear-gradient(135deg,#ffd700,#ff69b4)",
+    createdAt: Date.now()
+  },
+
+  /* Get all saved themes */
+  getAll: function(){
+    try{
+      var raw = localStorage.getItem(this.STORAGE_KEY);
+      if(!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    }catch(e){ return []; }
+  },
+
+  /* Save theme (add/update) */
+  save: function(theme){
+    try{
+      if(!theme.id) theme.id = "theme_" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+      theme.updatedAt = Date.now();
+
+      var arr = this.getAll();
+      var idx = arr.findIndex(function(t){ return t.id === theme.id; });
+      if(idx === -1) arr.unshift(theme);
+      else arr[idx] = theme;
+
+      // Limit max 20 themes
+      if(arr.length > 20) arr = arr.slice(0, 20);
+
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(arr));
+
+      // Sync ke Firestore kalau login (optional)
+      this._syncToFirestore(arr);
+
+      return theme;
+    }catch(e){
+      console.warn("CustomTheme.save:", e);
+      return null;
+    }
+  },
+
+  /* Delete theme */
+  remove: function(id){
+    try{
+      var arr = this.getAll().filter(function(t){ return t.id !== id; });
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(arr));
+      this._syncToFirestore(arr);
+
+      // Clear applied kalau theme dihapus
+      if(this.getApplied() === id){
+        localStorage.removeItem(this.APPLIED_KEY);
+      }
+      return true;
+    }catch(e){ return false; }
+  },
+
+  /* Get theme by ID */
+  getById: function(id){
+    var arr = this.getAll();
+    return arr.find(function(t){ return t.id === id; }) || null;
+  },
+
+  /* Set theme as active */
+  apply: function(id){
+    try{
+      localStorage.setItem(this.APPLIED_KEY, id);
+      console.log("✅ Theme applied:", id);
+      return true;
+    }catch(e){ return false; }
+  },
+
+  /* Get applied theme */
+  getApplied: function(){
+    try{ return localStorage.getItem(this.APPLIED_KEY); }
+    catch(e){ return null; }
+  },
+
+  /* Get applied theme object */
+  getAppliedTheme: function(){
+    var id = this.getApplied();
+    if(!id) return null;
+    return this.getById(id);
+  },
+
+  /* Sync ke Firestore (opt) */
+  _syncToFirestore: function(arr){
+    try{
+      if(!window.FB || !window.Auth || !Auth.current) return;
+      FB.db.collection("users").doc(Auth.current.uid).update({
+        customThemes: arr
+      }).catch(function(){});
+    }catch(e){}
+  },
+
+  /* Load dari Firestore */
+  async loadFromFirestore(){
+    try{
+      if(!window.FB || !window.Auth || !Auth.current) return;
+      var doc = await FB.db.collection("users").doc(Auth.current.uid).get();
+      if(!doc.exists) return;
+      var data = doc.data();
+      if(Array.isArray(data.customThemes) && data.customThemes.length){
+        // Merge dengan local (local menang)
+        var local = this.getAll();
+        var merged = local.slice();
+        data.customThemes.forEach(function(t){
+          if(!merged.find(function(x){ return x.id === t.id; })){
+            merged.push(t);
+          }
+        });
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(merged.slice(0, 20)));
+      }
+    }catch(e){}
+  },
+
+  /* Convert theme → CSS variable string */
+  toCSS: function(theme){
+    if(!theme) return "";
+    var c = theme.colors || {};
+    var parts = [
+      "--ctb-bg: " + (c.bg || "#f0ebe0"),
+      "--ctb-text: " + (c.text || "#0a0a0a"),
+      "--ctb-btn-bg: " + (c.btnBg || "#ffffff"),
+      "--ctb-btn-text: " + (c.btnText || "#0a0a0a"),
+      "--ctb-border: " + (c.border || "#0a0a0a"),
+      "--ctb-accent: " + (c.accent || "#ffd700"),
+      "--ctb-shadow: " + (c.shadow || "#0a0a0a"),
+      "--ctb-radius: " + (theme.borderRadius || 12) + "px",
+      "--ctb-font: '" + (theme.font || "Inter") + "', sans-serif"
+    ];
+
+    /* Shadow style */
+    var shadowMap = {
+      none: "none",
+      hard: "4px 4px 0 var(--ctb-shadow)",
+      soft: "0 4px 12px rgba(0,0,0,.15)",
+      glow: "0 0 20px var(--ctb-accent)"
+    };
+    parts.push("--ctb-shadow-style: " + (shadowMap[theme.shadowStyle] || shadowMap.hard));
+
+    /* Pattern */
+    var patternMap = {
+      none: "",
+      dots: "radial-gradient(circle, " + (c.text || "#0a0a0a") + " 1px, transparent 1px)",
+      lines: "repeating-linear-gradient(45deg, " + (c.text || "#0a0a0a") + " 0, " + (c.text || "#0a0a0a") + " 1px, transparent 1px, transparent 8px)",
+      grid: "linear-gradient(" + (c.text || "#0a0a0a") + " 1px, transparent 1px), linear-gradient(90deg, " + (c.text || "#0a0a0a") + " 1px, transparent 1px)",
+      gradient: theme.bgGradient || "linear-gradient(135deg,#ffd700,#ff69b4)"
+    };
+    parts.push("--ctb-pattern: " + (patternMap[theme.bgPattern] || "none"));
+
+    if(theme.bgPattern === "dots"){
+      parts.push("--ctb-bg-size: 16px 16px");
+    } else if(theme.bgPattern === "grid"){
+      parts.push("--ctb-bg-size: 12px 12px");
+    } else if(theme.bgPattern === "gradient"){
+      parts.push("--ctb-bg-size: 200% 200%");
+    } else {
+      parts.push("--ctb-bg-size: auto");
+    }
+
+    return parts.join("; ");
+  }
+};
+
+/* Expose */
+window.CustomTheme = CustomTheme;
+
+
+/* ═══════════════════════════════════════════════════════════
+   BUILD MODAL HTML
+   ═══════════════════════════════════════════════════════════ */
+function buildCustomThemeModal(currentTheme, isNew){
+  var theme = currentTheme || JSON.parse(JSON.stringify(CustomTheme.DEFAULTS));
+
+  var fonts = [
+    "Inter", "Poppins", "JetBrains Mono", "VT323",
+    "Playfair Display", "Bebas Neue", "Fredoka", "Space Grotesk"
+  ];
+
+  var fontBtns = fonts.map(function(f){
+    return '<div class="ctb-font-btn ' + (theme.font === f ? "active" : "") + '" data-font="' + f + '" ' +
+      'style="font-family:\'' + f + '\', sans-serif">' + f + '</div>';
+  }).join("");
+
+  var shadowBtns = ["none","hard","soft","glow"].map(function(s){
+    var label = { none: "None", hard: "Hard", soft: "Soft", glow: "Glow" }[s];
+    return '<div class="ctb-shadow-btn ' + (theme.shadowStyle === s ? "active" : "") + '" data-shadow="' + s + '">' +
+      '<div class="ctb-shadow-preview"></div>' + label + '</div>';
+  }).join("");
+
+  var patterns = [
+    { id: "none", label: "None" },
+    { id: "dots", label: "Dots" },
+    { id: "lines", label: "Lines" },
+    { id: "grid", label: "Grid" },
+    { id: "gradient", label: "Gradient" }
+  ];
+  var patternBtns = patterns.map(function(p){
+    return '<div class="ctb-pattern-btn ' + (theme.bgPattern === p.id ? "active" : "") + '" data-pattern="' + p.id + '">' +
+      '<div class="ctb-pattern-preview pat-' + p.id + '"></div>' +
+      '<div class="ctb-pattern-label">' + p.label + '</div>' +
+    '</div>';
+  }).join("");
+
+  var colorKeys = [
+    { key: "bg", label: "Background" },
+    { key: "text", label: "Text" },
+    { key: "btnBg", label: "Button BG" },
+    { key: "btnText", label: "Button Text" },
+    { key: "border", label: "Border" },
+    { key: "accent", label: "Accent" },
+    { key: "shadow", label: "Shadow" }
+  ];
+  var colorInputs = colorKeys.map(function(c){
+    var val = (theme.colors && theme.colors[c.key]) || "#000000";
+    return '<div class="ctb-color-item">' +
+      '<label>' + c.label + '</label>' +
+      '<div class="ctb-color-pick" data-color="' + c.key + '">' +
+        '<input type="color" class="ctb-color-input" data-color-key="' + c.key + '" value="' + val + '"/>' +
+        '<span class="ctb-color-value" data-color-val="' + c.key + '">' + val + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+
+  var html = '<div class="ctb-modal">' +
+    '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>' +
+    '<div class="ctb-header">' +
+      '<h3>🎨 Custom Theme Builder</h3>' +
+      '<p>Bikin tema sendiri — pilih warna, font, bentuk, pattern</p>' +
+    '</div>' +
+
+    '<div class="ctb-tabs">' +
+      '<button class="ctb-tab active" data-tab="builder">🛠️ Builder</button>' +
+      '<button class="ctb-tab" data-tab="palette">🖼️ Palette</button>' +
+      '<button class="ctb-tab" data-tab="mythemes">💾 My Themes (' + CustomTheme.getAll().length + ')</button>' +
+    '</div>' +
+
+    /* ═══ TAB: BUILDER ═══ */
+    '<div class="ctb-pane active" data-pane="builder">' +
+
+      /* Color picker */
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">🎨 Colors</div>' +
+        '<div class="ctb-color-grid">' + colorInputs + '</div>' +
+      '</div>' +
+
+      /* Font */
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">🔤 Font</div>' +
+        '<div class="ctb-font-grid">' + fontBtns + '</div>' +
+      '</div>' +
+
+      /* Border Radius */
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">📐 Border Radius</div>' +
+        '<div class="ctb-slider-wrap">' +
+          '<div class="ctb-slider-label">' +
+            '<span>Radius</span>' +
+            '<span class="ctb-slider-val" id="ctb-radius-val">' + theme.borderRadius + 'px</span>' +
+          '</div>' +
+          '<input type="range" class="ctb-slider" id="ctb-radius-slider" min="0" max="32" value="' + theme.borderRadius + '"/>' +
+        '</div>' +
+      '</div>' +
+
+      /* Shadow */
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">🌫️ Shadow Style</div>' +
+        '<div class="ctb-shadow-grid">' + shadowBtns + '</div>' +
+      '</div>' +
+
+      /* Pattern */
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">🎭 Background Pattern</div>' +
+        '<div class="ctb-pattern-grid">' + patternBtns + '</div>' +
+      '</div>' +
+
+      /* Live Preview */
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">👁️ Live Preview</div>' +
+        '<div id="ctb-preview-wrap"></div>' +
+      '</div>' +
+
+    '</div>' +
+
+    /* ═══ TAB: PALETTE ═══ */
+    '<div class="ctb-pane" data-pane="palette">' +
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">🖼️ Generate dari Gambar</div>' +
+        '<div class="ctb-palette-drop" id="ctb-palette-drop">' +
+          '<div class="icon">🖼️</div>' +
+          '<p>Upload Gambar</p>' +
+          '<small>Klik buat pilih / drop gambar di sini</small>' +
+          '<input type="file" id="ctb-palette-input" accept="image/*" style="display:none"/>' +
+        '</div>' +
+        '<div class="ctb-palette-result" id="ctb-palette-result"></div>' +
+      '</div>' +
+
+      '<div class="ctb-section">' +
+        '<div class="ctb-section-title">🎨 Generate dari 1 Warna</div>' +
+        '<div class="ctb-color-item" style="margin-bottom:10px">' +
+          '<label>Pilih Warna Utama</label>' +
+          '<div class="ctb-color-pick">' +
+            '<input type="color" class="ctb-color-input" id="ctb-palette-seed" value="#ff8c00"/>' +
+            '<span class="ctb-color-value" id="ctb-palette-seed-val">#ff8c00</span>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-primary btn-block" id="ctb-gen-palette" style="padding:10px;font-size:12px;text-transform:uppercase">Generate Palette</button>' +
+        '<div class="ctb-palette-result" id="ctb-palette-result2"></div>' +
+      '</div>' +
+    '</div>' +
+
+    /* ═══ TAB: MY THEMES ═══ */
+    '<div class="ctb-pane" data-pane="mythemes">' +
+      '<div id="ctb-themes-list-wrap"></div>' +
+    '</div>' +
+
+    /* Actions */
+    '<div class="ctb-actions">' +
+      '<button class="btn-cancel" id="ctb-cancel">✕</button>' +
+      '<button class="btn-save" id="ctb-save">💾 Simpan</button>' +
+      '<button class="btn-apply" id="ctb-apply">✅ Pakai</button>' +
+    '</div>' +
+  '</div>';
+
+  return html;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER LIVE PREVIEW
+   ═══════════════════════════════════════════════════════════ */
+function renderLivePreview(container, theme){
+  if(!container) return;
+
+  var c = theme.colors || {};
+  var bg = c.bg || "#f0ebe0";
+  var text = c.text || "#0a0a0a";
+  var btnBg = c.btnBg || "#ffffff";
+  var btnText = c.btnText || "#0a0a0a";
+  var border = c.border || "#0a0a0a";
+  var accent = c.accent || "#ffd700";
+  var shadow = c.shadow || "#0a0a0a";
+
+  var shadowStyle = "";
+  if(theme.shadowStyle === "none") shadowStyle = "none";
+  else if(theme.shadowStyle === "hard") shadowStyle = "4px 4px 0 " + shadow;
+  else if(theme.shadowStyle === "soft") shadowStyle = "0 4px 12px rgba(0,0,0,.15)";
+  else if(theme.shadowStyle === "glow") shadowStyle = "0 0 20px " + accent;
+
+  var radius = (theme.borderRadius || 12) + "px";
+  var font = "'" + (theme.font || "Inter") + "', sans-serif";
+
+  var patternCSS = "";
+  if(theme.bgPattern === "dots"){
+    patternCSS = "background-image: radial-gradient(circle, " + text + " 1px, transparent 1px);" +
+      "background-size: 12px 12px;";
+  } else if(theme.bgPattern === "lines"){
+    patternCSS = "background-image: repeating-linear-gradient(45deg, " + text + " 0, " + text + " 1px, transparent 1px, transparent 6px);";
+  } else if(theme.bgPattern === "grid"){
+    patternCSS = "background-image: linear-gradient(" + text + " 1px, transparent 1px), linear-gradient(90deg, " + text + " 1px, transparent 1px);" +
+      "background-size: 10px 10px;";
+  } else if(theme.bgPattern === "gradient"){
+    patternCSS = "background: " + (theme.bgGradient || "linear-gradient(135deg,#ffd700,#ff69b4)") + ";";
+  }
+
+  var bgStyle = patternCSS || ("background:" + bg + ";");
+
+  container.innerHTML = '<div style="' +
+    'border: 3px solid ' + border + ';' +
+    'border-radius: ' + radius + ';' +
+    'box-shadow: ' + shadowStyle + ';' +
+    'padding: 14px;' +
+    'font-family: ' + font + ';' +
+    'color: ' + text + ';' +
+    'background: ' + bg + ';' +
+    patternCSS +
+    'max-width: 260px;margin: 0 auto;' +
+    '">' +
+    '<div style="font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-bottom:10px">Nama Kamu</div>' +
+    '<div style="display:flex;flex-direction:column;gap:6px">' +
+      '<div style="' +
+        'background: ' + btnBg + ';' +
+        'color: ' + btnText + ';' +
+        'border: 2px solid ' + border + ';' +
+        'border-radius: ' + radius + ';' +
+        'padding: 8px 12px;' +
+        'text-align: center;' +
+        'font-size: 11px;' +
+        'font-weight: 800;' +
+        'text-transform: uppercase;' +
+        'box-shadow: ' + shadowStyle + ';' +
+      '">Instagram</div>' +
+      '<div style="' +
+        'background: ' + btnBg + ';' +
+        'color: ' + btnText + ';' +
+        'border: 2px solid ' + border + ';' +
+        'border-radius: ' + radius + ';' +
+        'padding: 8px 12px;' +
+        'text-align: center;' +
+        'font-size: 11px;' +
+        'font-weight: 800;' +
+        'text-transform: uppercase;' +
+        'box-shadow: ' + shadowStyle + ';' +
+      '">WhatsApp</div>' +
+      '<div style="' +
+        'background: ' + accent + ';' +
+        'color: ' + text + ';' +
+        'border: 2px solid ' + border + ';' +
+        'border-radius: ' + radius + ';' +
+        'padding: 8px 12px;' +
+        'text-align: center;' +
+        'font-size: 11px;' +
+        'font-weight: 800;' +
+        'text-transform: uppercase;' +
+        'box-shadow: ' + shadowStyle + ';' +
+      '">Kontak</div>' +
+    '</div>' +
+  '</div>';
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PALETTE GENERATOR
+   ═══════════════════════════════════════════════════════════ */
+function rgbToHex(r, g, b){
+  return "#" + [r, g, b].map(function(v){
+    var h = Math.max(0, Math.min(255, v)).toString(16);
+    return h.length === 1 ? "0" + h : h;
+  }).join("");
+}
+
+function extractPaletteFromImage(img, count){
+  count = count || 8;
+  try{
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    var w = 100, h = 100;
+    canvas.width = w; canvas.height = h;
+    ctx.drawImage(img, 0, 0, w, h);
+
+    var data = ctx.getImageData(0, 0, w, h).data;
+    var pixels = [];
+
+    for(var i = 0; i < data.length; i += 4){
+      var r = data[i], g = data[i+1], b = data[i+2];
+      // Skip too dark/light
+      var lum = (r + g + b) / 3;
+      if(lum < 20 || lum > 235) continue;
+      pixels.push([r, g, b]);
+    }
+
+    if(!pixels.length) return [];
+
+    // Simple k-means-ish: bucket by intensity + hue
+    var buckets = {};
+    pixels.forEach(function(p){
+      var r = p[0], g = p[1], b = p[2];
+      // Quantize to 32
+      var key = (Math.round(r/32) + "-" + Math.round(g/32) + "-" + Math.round(b/32));
+      if(!buckets[key]){
+        buckets[key] = { r: 0, g: 0, b: 0, n: 0 };
+      }
+      buckets[key].r += r;
+      buckets[key].g += g;
+      buckets[key].b += b;
+      buckets[key].n++;
+    });
+
+    // Sort by count
+    var arr = Object.keys(buckets).map(function(k){
+      var bk = buckets[k];
+      return {
+        r: Math.round(bk.r / bk.n),
+        g: Math.round(bk.g / bk.n),
+        b: Math.round(bk.b / bk.n),
+        n: bk.n
+      };
+    });
+    arr.sort(function(a, b){ return b.n - a.n; });
+
+    // Pick top N with distinct colors
+    var picked = [];
+    for(var j = 0; j < arr.length && picked.length < count; j++){
+      var col = arr[j];
+      var isDistinct = true;
+      for(var k = 0; k < picked.length; k++){
+        var dx = col.r - picked[k].r;
+        var dy = col.g - picked[k].g;
+        var dz = col.b - picked[k].b;
+        if(Math.sqrt(dx*dx + dy*dy + dz*dz) < 40){
+          isDistinct = false;
+          break;
+        }
+      }
+      if(isDistinct) picked.push(col);
+    }
+
+    return picked.map(function(c){ return rgbToHex(c.r, c.g, c.b); });
+  }catch(e){
+    console.warn("extractPalette:", e);
+    return [];
+  }
+}
+
+function generatePaletteFromColor(hex, count){
+  count = count || 6;
+  try{
+    // Parse hex
+    var r = parseInt(hex.slice(1,3),16);
+    var g = parseInt(hex.slice(3,5),16);
+    var b = parseInt(hex.slice(5,7),16);
+
+    // Convert to HSL
+    var max = Math.max(r, g, b) / 255;
+    var min = Math.min(r, g, b) / 255;
+    var l = (max + min) / 2;
+    var h = 0, s = 0;
+
+    if(max !== min){
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if(max === r / 255) h = ((g / 255 - b / 255) / d + (g < b ? 6 : 0)) / 6;
+      else if(max === g / 255) h = ((b / 255 - r / 255) / d + 2) / 6;
+      else h = ((r / 255 - g / 255) / d + 4) / 6;
+    }
+
+    // Generate variants
+    var palette = [];
+    var angles = [0, 30, 60, 180, 210, 240, 300, 330];
+
+    for(var i = 0; i < count; i++){
+      var angle = angles[i % angles.length] / 360;
+      var newH = (h + angle) % 1;
+      var newS = Math.min(1, s + (i % 2 === 0 ? 0.1 : -0.1));
+      var newL = 0.3 + (i / count) * 0.5;
+      var rgb = hslToRgb(newH, newS, newL);
+      palette.push(rgbToHex(rgb[0], rgb[1], rgb[2]));
+    }
+
+    return palette;
+  }catch(e){
+    console.warn("generatePaletteFromColor:", e);
+    return [];
+  }
+}
+
+function hslToRgb(h, s, l){
+  var r, g, b;
+  if(s === 0){
+    r = g = b = l;
+  } else {
+    var hue2rgb = function(p, q, t){
+      if(t < 0) t += 1;
+      if(t > 1) t -= 1;
+      if(t < 1/6) return p + (q - p) * 6 * t;
+      if(t < 1/2) return q;
+      if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    };
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER MY THEMES LIST
+   ═══════════════════════════════════════════════════════════ */
+function renderMyThemes(wrap){
+  if(!wrap) return;
+  var themes = CustomTheme.getAll();
+  var appliedId = CustomTheme.getApplied();
+
+  if(!themes.length){
+    wrap.innerHTML = '<div class="ctb-themes-empty">🎨 Belum ada tema tersimpan.<br>Bikin tema dulu di tab Builder!</div>';
+    return;
+  }
+
+  var html = '<div class="ctb-themes-list">';
+  themes.forEach(function(t){
+    var c = t.colors || {};
+    html += '<div class="ctb-theme-card ' + (appliedId === t.id ? "active" : "") + '" data-theme-id="' + t.id + '">' +
+      '<div class="ctb-theme-actions">' +
+        '<button class="ctb-theme-action" data-action="del" data-id="' + t.id + '" title="Hapus">✕</button>' +
+      '</div>' +
+      '<div class="ctb-theme-name">' + (window.esc ? esc(t.name) : t.name) + '</div>' +
+      '<div class="ctb-theme-colors">' +
+        '<span style="background:' + (c.bg || "#f0ebe0") + '"></span>' +
+        '<span style="background:' + (c.btnBg || "#fff") + '"></span>' +
+        '<span style="background:' + (c.accent || "#ffd700") + '"></span>' +
+        '<span style="background:' + (c.border || "#0a0a0a") + '"></span>' +
+        '<span style="background:' + (c.text || "#0a0a0a") + '"></span>' +
+      '</div>' +
+      '<div class="ctb-theme-meta">' +
+        '<span>' + (t.font || "Inter") + '</span>' +
+        '<span>R' + (t.borderRadius || 12) + '</span>' +
+      '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+
+  wrap.innerHTML = html;
+
+  // Bind card click → load theme
+  wrap.querySelectorAll("[data-theme-id]").forEach(function(card){
+    card.addEventListener("click", function(e){
+      if(e.target.closest("[data-action]")) return;
+      var id = card.dataset.themeId;
+      var t = CustomTheme.getById(id);
+      if(!t) return;
+
+      // Set as current theme di builder
+      var m = document.querySelector(".modal-back");
+      if(m) m.remove();
+
+      // Reopen with loaded theme
+      setTimeout(function(){
+        openCustomThemeBuilder(t);
+      }, 200);
+    });
+  });
+
+  // Bind delete
+  wrap.querySelectorAll('[data-action="del"]').forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      if(!confirm("Hapus tema ini?")) return;
+      CustomTheme.remove(btn.dataset.id);
+      renderMyThemes(wrap);
+      // Update tab counter
+      var tab = document.querySelector('.ctb-tab[data-tab="mythemes"]');
+      if(tab) tab.innerHTML = '💾 My Themes (' + CustomTheme.getAll().length + ')';
+    });
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   OPEN BUILDER MODAL
+   ═══════════════════════════════════════════════════════════ */
+function openCustomThemeBuilder(existingTheme){
+  if(!window.openModal){
+    console.warn("openModal gak ada");
+    return;
+  }
+
+  var isNew = !existingTheme;
+  var theme = existingTheme
+    ? JSON.parse(JSON.stringify(existingTheme))
+    : JSON.parse(JSON.stringify(CustomTheme.DEFAULTS));
+
+  if(isNew) theme.id = null; // biar save bikin ID baru
+
+  var m = window.openModal(buildCustomThemeModal(theme, isNew));
+  if(!m) return;
+
+  var modalRoot = m.querySelector(".modal");
+  if(modalRoot){
+    modalRoot.style.maxWidth = "640px";
+    modalRoot.style.width = "96%";
+  }
+
+  /* ─── Render initial preview ─── */
+  var previewWrap = m.querySelector("#ctb-preview-wrap");
+  renderLivePreview(previewWrap, theme);
+
+  /* ─── Color pickers ─── */
+  m.querySelectorAll("[data-color-key]").forEach(function(inp){
+    inp.addEventListener("input", function(e){
+      var key = inp.dataset.colorKey;
+      var val = e.target.value;
+      if(!theme.colors) theme.colors = {};
+      theme.colors[key] = val;
+
+      // Update hex label
+      var label = m.querySelector('[data-color-val="' + key + '"]');
+      if(label) label.textContent = val;
+
+      // Update preview
+      renderLivePreview(previewWrap, theme);
+    });
+  });
+
+  /* ─── Font picker ─── */
+  m.querySelectorAll("[data-font]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      m.querySelectorAll("[data-font]").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      theme.font = btn.dataset.font;
+      renderLivePreview(previewWrap, theme);
+    });
+  });
+
+  /* ─── Radius slider ─── */
+  var radiusSlider = m.querySelector("#ctb-radius-slider");
+  var radiusVal = m.querySelector("#ctb-radius-val");
+  if(radiusSlider){
+    radiusSlider.addEventListener("input", function(e){
+      theme.borderRadius = parseInt(e.target.value);
+      if(radiusVal) radiusVal.textContent = theme.borderRadius + "px";
+      renderLivePreview(previewWrap, theme);
+    });
+  }
+
+  /* ─── Shadow picker ─── */
+  m.querySelectorAll("[data-shadow]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      m.querySelectorAll("[data-shadow]").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      theme.shadowStyle = btn.dataset.shadow;
+      renderLivePreview(previewWrap, theme);
+    });
+  });
+
+  /* ─── Pattern picker ─── */
+  m.querySelectorAll("[data-pattern]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      m.querySelectorAll("[data-pattern]").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      theme.bgPattern = btn.dataset.pattern;
+      renderLivePreview(previewWrap, theme);
+    });
+  });
+
+  /* ─── Tabs ─── */
+  m.querySelectorAll(".ctb-tab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      m.querySelectorAll(".ctb-tab").forEach(function(t){ t.classList.remove("active"); });
+      tab.classList.add("active");
+      var target = tab.dataset.tab;
+      m.querySelectorAll(".ctb-pane").forEach(function(p){
+        p.classList.toggle("active", p.dataset.pane === target);
+      });
+      // Render my themes
+      if(target === "mythemes"){
+        var wrap = m.querySelector("#ctb-themes-list-wrap");
+        renderMyThemes(wrap);
+      }
+    });
+  });
+
+  /* ─── Palette from image ─── */
+  var paletteDrop = m.querySelector("#ctb-palette-drop");
+  var paletteInput = m.querySelector("#ctb-palette-input");
+  var paletteResult = m.querySelector("#ctb-palette-result");
+
+  if(paletteDrop && paletteInput){
+    paletteDrop.addEventListener("click", function(){ paletteInput.click(); });
+
+    paletteDrop.addEventListener("dragover", function(e){
+      e.preventDefault();
+      paletteDrop.style.background = "#ffd700";
+    });
+    paletteDrop.addEventListener("dragleave", function(){
+      paletteDrop.style.background = "";
+    });
+    paletteDrop.addEventListener("drop", function(e){
+      e.preventDefault();
+      paletteDrop.style.background = "";
+      var file = e.dataTransfer.files[0];
+      if(file) handlePaletteImage(file);
+    });
+
+    paletteInput.addEventListener("change", function(e){
+      var file = e.target.files[0];
+      if(file) handlePaletteImage(file);
+    });
+  }
+
+  function handlePaletteImage(file){
+    if(!file.type.startsWith("image/")){
+      if(window.toast) toast("Hanya file gambar","error");
+      return;
+    }
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function(){
+      URL.revokeObjectURL(url);
+      var colors = extractPaletteFromImage(img, 8);
+      renderPaletteResult(paletteResult, colors, theme, previewWrap, m);
+    };
+    img.onerror = function(){
+      URL.revokeObjectURL(url);
+      if(window.toast) toast("Gagal baca gambar","error");
+    };
+    img.src = url;
+  }
+
+  /* ─── Palette from color ─── */
+  var seedInput = m.querySelector("#ctb-palette-seed");
+  var seedVal = m.querySelector("#ctb-palette-seed-val");
+  var genBtn = m.querySelector("#ctb-gen-palette");
+  var paletteResult2 = m.querySelector("#ctb-palette-result2");
+
+  if(seedInput){
+    seedInput.addEventListener("input", function(e){
+      if(seedVal) seedVal.textContent = e.target.value;
+    });
+  }
+
+  if(genBtn){
+    genBtn.addEventListener("click", function(){
+      var seed = seedInput.value;
+      var colors = generatePaletteFromColor(seed, 8);
+      renderPaletteResult(paletteResult2, colors, theme, previewWrap, m);
+    });
+  }
+
+  /* ─── Actions ─── */
+  var cancelBtn = m.querySelector("#ctb-cancel");
+  if(cancelBtn) cancelBtn.addEventListener("click", function(){ m.remove(); });
+
+  var saveBtn = m.querySelector("#ctb-save");
+  if(saveBtn) saveBtn.addEventListener("click", function(){
+    var name = prompt("Nama tema:", theme.name || "My Theme");
+    if(name === null) return;
+    theme.name = name.trim() || "My Theme";
+
+    var saved = CustomTheme.save(theme);
+    if(saved){
+      theme.id = saved.id;
+      if(window.toast) toast("✅ Tema disimpan!","success");
+      if(window.Sound && Sound.tada) Sound.tada();
+
+      // Update tab counter
+      var tab = m.querySelector('.ctb-tab[data-tab="mythemes"]');
+      if(tab) tab.innerHTML = '💾 My Themes (' + CustomTheme.getAll().length + ')';
+    } else {
+      if(window.toast) toast("Gagal simpan tema","error");
+    }
+  });
+
+  var applyBtn = m.querySelector("#ctb-apply");
+  if(applyBtn) applyBtn.addEventListener("click", async function(){
+    // Save dulu (auto)
+    if(!theme.id){
+      theme.name = theme.name || "My Theme";
+      var saved = CustomTheme.save(theme);
+      if(saved) theme.id = saved.id;
+    } else {
+      CustomTheme.save(theme);
+    }
+
+    // Apply
+    CustomTheme.apply(theme.id);
+
+    // Update draft
+    if(window.STATE && STATE.draft){
+      STATE.draft.theme = "custom";
+      STATE.draft.customThemeId = theme.id;
+      STATE.draft.customThemeData = theme;
+    }
+
+    // Update preview iframe (kalau di editor)
+    try{
+      if(window.PageEditor && window.PageEditor.updatePreview){
+        window.PageEditor.updatePreview();
+      }
+    }catch(e){}
+
+    if(window.toast) toast("✅ Tema dipakai!","success");
+    if(window.Sound && Sound.tada) Sound.tada();
+
+    setTimeout(function(){ m.remove(); }, 300);
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER PALETTE RESULT
+   ═══════════════════════════════════════════════════════════ */
+function renderPaletteResult(container, colors, theme, previewWrap, modal){
+  if(!container) return;
+  if(!colors || !colors.length){
+    container.classList.remove("show");
+    if(window.toast) toast("Gagal ekstrak warna","error");
+    return;
+  }
+
+  var html = "";
+  colors.forEach(function(hex, i){
+    html += '<div class="ctb-palette-color" style="background:' + hex + '" data-hex="' + hex + '">' +
+      '<span class="hex">' + hex + '</span>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+  container.classList.add("show");
+
+  // Bind: klik warna → apply ke theme berdasarkan index
+  container.querySelectorAll("[data-hex]").forEach(function(el){
+    el.addEventListener("click", function(){
+      var hex = el.dataset.hex;
+      // Cycle: bg, text, btnBg, btnText, border, accent, shadow
+      var keys = ["bg","text","btnBg","btnText","border","accent","shadow"];
+      // Ambil yang pertama belum di-apply (simple: pakai urutan klik)
+      var idx = parseInt(el.dataset.idx || "0");
+      el.dataset.idx = String(idx + 1);
+
+      var key = keys[(idx) % keys.length];
+      if(!theme.colors) theme.colors = {};
+      theme.colors[key] = hex;
+
+      // Update color input
+      var input = modal.querySelector('[data-color-key="' + key + '"]');
+      if(input) input.value = hex;
+      var label = modal.querySelector('[data-color-val="' + key + '"]');
+      if(label) label.textContent = hex;
+
+      // Update preview
+      if(previewWrap) renderLivePreview(previewWrap, theme);
+
+      if(window.toast) toast(key + " → " + hex,"info");
+    });
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   INJECT TOMBOL DI EDITOR TOOLBAR
+   ═══════════════════════════════════════════════════════════ */
+function injectCustomThemeButton(){
+  try{
+    var hashPath = (location.hash.slice(1) || "/").split("?")[0];
+    if(hashPath !== "/editor") return;
+    if(document.getElementById("btn-custom-theme")) return;
+
+    var saveBtn = document.getElementById("btn-save");
+    if(!saveBtn) return;
+
+    var btn = document.createElement("button");
+    btn.className = "btn btn-sm";
+    btn.id = "btn-custom-theme";
+    btn.type = "button";
+    btn.innerHTML = "🎨 Custom Theme";
+    btn.addEventListener("click", function(){
+      if(window.Sound && Sound.click) Sound.click();
+      openCustomThemeBuilder(null);
+    });
+
+    saveBtn.parentNode.insertBefore(btn, saveBtn);
+    console.log("✅ Tombol Custom Theme di-inject");
+  }catch(e){ console.warn("injectCustomThemeButton:", e); }
+}
+
+setInterval(injectCustomThemeButton, 2000);
+setTimeout(injectCustomThemeButton, 500);
+setTimeout(injectCustomThemeButton, 1500);
+
+/* Observer untuk editor re-render */
+try{
+  var obs = new MutationObserver(function(){ injectCustomThemeButton(); });
+  obs.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+
+/* ═══════════════════════════════════════════════════════════
+   AUTO LOAD THEMES FROM FIRESTORE
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  try{
+    if(window.Auth && Auth.current){
+      CustomTheme.loadFromFirestore();
+    }
+  }catch(e){}
+}, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   EXPOSE
+   ═══════════════════════════════════════════════════════════ */
+window.openCustomThemeBuilder = openCustomThemeBuilder;
+window.renderLivePreview = renderLivePreview;
+window.extractPaletteFromImage = extractPaletteFromImage;
+window.generatePaletteFromColor = generatePaletteFromColor;
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v7.6-A AKTIF                 ║");
+console.log("║  • Custom Theme Builder                ║");
+console.log("║  • Live Preview                        ║");
+console.log("║  • Palette Generator                   ║");
+console.log("║  • My Themes List                      ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+   </script>
+   <script id="finalpatch-v76-js-b">
+/* ═══════════════════════════════════════════════════════════
+   PATCH v7.6 — JS PART B
+   1. Drag Tombol (Reorder + Drag Posisi Preview)
+   2. Save as Preset (Theme Preset)
+   3. Apply Custom Theme ke Public Bio
+   4. Integrasi dengan PagePublic (Preview + Public)
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+console.log("🎯 Patch v7.6-B — Drag + Preset + Integrasi loading...");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — DRAG TOMBOL (REORDER LINK ROW)
+   Improve drag reorder link di editor list
+   ═══════════════════════════════════════════════════════════ */
+function enhanceLinkDragSortable(){
+  var list = document.getElementById("links-list");
+  if(!list) return;
+  if(list.dataset.sortable === "1") return;
+  list.dataset.sortable = "1";
+
+  var dragSrc = null;
+
+  function getRowFromTarget(target){
+    while(target && target !== list){
+      if(target.classList && target.classList.contains("link-row")) return target;
+      target = target.parentNode;
+    }
+    return null;
+  }
+
+  list.addEventListener("dragstart", function(e){
+    var row = getRowFromTarget(e.target);
+    if(!row) return;
+    dragSrc = row;
+    row.style.opacity = "0.4";
+    try{ e.dataTransfer.effectAllowed = "move"; }catch(err){}
+  });
+
+  list.addEventListener("dragover", function(e){
+    e.preventDefault();
+    var row = getRowFromTarget(e.target);
+    if(!row || row === dragSrc) return;
+    try{ e.dataTransfer.dropEffect = "move"; }catch(err){}
+
+    var rect = row.getBoundingClientRect();
+    var midY = rect.top + rect.height / 2;
+    if(e.clientY < midY){
+      row.parentNode.insertBefore(dragSrc, row);
+    } else {
+      row.parentNode.insertBefore(dragSrc, row.nextSibling);
+    }
+  });
+
+  list.addEventListener("dragend", function(e){
+    if(!dragSrc) return;
+    dragSrc.style.opacity = "";
+    dragSrc = null;
+
+    // Sync urutan ke STATE.draft.links
+    try{
+      var rows = list.querySelectorAll(".link-row");
+      var newOrder = [];
+      rows.forEach(function(row){
+        var idx = parseInt(row.dataset.i, 10);
+        if(!isNaN(idx) && window.STATE && STATE.draft && STATE.draft.links[idx]){
+          newOrder.push(STATE.draft.links[idx]);
+        }
+      });
+      if(newOrder.length && newOrder.length === (STATE.draft.links || []).length){
+        STATE.draft.links = newOrder;
+        // Re-render biar data-i sinkron
+        if(window.PageEditor && window.PageEditor.renderLinks){
+          window.PageEditor.renderLinks();
+          window.PageEditor.updatePreview();
+        }
+      }
+    }catch(err){ console.warn("reorder:", err); }
+  });
+
+  console.log("✅ Link drag sortable enhanced");
+}
+
+setInterval(enhanceLinkDragSortable, 1500);
+setTimeout(enhanceLinkDragSortable, 800);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — DRAG POSISI TOMBOL DI PREVIEW
+   User bisa geser-geser tombol di preview bio
+   ═══════════════════════════════════════════════════════════ */
+function enablePreviewButtonDrag(){
+  try{
+    var previewFrame = document.getElementById("prev-frame");
+    if(!previewFrame) return;
+    if(previewFrame.dataset.btnDragEnabled === "1") return;
+
+    var frameDoc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+    if(!frameDoc) return;
+
+    previewFrame.dataset.btnDragEnabled = "1";
+
+    var links = frameDoc.querySelectorAll(".bio-link[data-idx]");
+    if(!links.length) return;
+
+    links.forEach(function(link){
+      // Setup draggable
+      link.style.position = "relative";
+      link.style.cursor = "grab";
+      link.style.userSelect = "none";
+      link.style.touchAction = "none";
+
+      var idx = link.dataset.idx;
+      var startX = 0, startY = 0;
+      var startTranslateX = 0, startTranslateY = 0;
+      var dragging = false;
+
+      // Baca existing transform (kalo ada)
+      var savedStyle = "";
+      try{
+        if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+          var l = STATE.draft.links[idx];
+          if(l.btnDragX || l.btnDragY){
+            link.style.transform = "translate(" + (l.btnDragX || 0) + "px, " + (l.btnDragY || 0) + "px)";
+            startTranslateX = l.btnDragX || 0;
+            startTranslateY = l.btnDragY || 0;
+          }
+        }
+      }catch(e){}
+
+      var onStart = function(e){
+        if(e.target.closest("iframe")) return;
+        dragging = true;
+        var touch = e.touches ? e.touches[0] : e;
+        startX = touch.clientX;
+        startY = touch.clientY;
+        // Re-read current
+        try{
+          if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+            var l2 = STATE.draft.links[idx];
+            startTranslateX = l2.btnDragX || 0;
+            startTranslateY = l2.btnDragY || 0;
+          }
+        }catch(e){}
+        link.style.cursor = "grabbing";
+        link.style.zIndex = "999";
+        link.style.opacity = "0.85";
+      };
+
+      var onMove = function(e){
+        if(!dragging) return;
+        if(e.cancelable) e.preventDefault();
+        var touch = e.touches ? e.touches[0] : e;
+        var dx = touch.clientX - startX;
+        var dy = touch.clientY - startY;
+
+        var newX = startTranslateX + dx;
+        var newY = startTranslateY + dy;
+
+        link.style.transform = "translate(" + newX + "px, " + newY + "px)";
+
+        // Simpan sementara di DOM dataset
+        link.dataset.tempDragX = String(newX);
+        link.dataset.tempDragY = String(newY);
+      };
+
+      var onEnd = function(e){
+        if(!dragging) return;
+        dragging = false;
+        link.style.cursor = "grab";
+        link.style.zIndex = "";
+        link.style.opacity = "";
+
+        var fx = parseFloat(link.dataset.tempDragX || "0");
+        var fy = parseFloat(link.dataset.tempDragY || "0");
+        delete link.dataset.tempDragX;
+        delete link.dataset.tempDragY;
+
+        // Simpan ke STATE
+        try{
+          if(window.STATE && STATE.draft && STATE.draft.links && STATE.draft.links[idx]){
+            STATE.draft.links[idx].btnDragX = fx;
+            STATE.draft.links[idx].btnDragY = fy;
+            console.log("📍 Button moved:", idx, fx, fy);
+          }
+        }catch(e){}
+
+        if(window.toast) toast("Tombol dipindah ✓","success");
+        if(window.Sound && Sound.click) Sound.click();
+      };
+
+      link.addEventListener("mousedown", onStart);
+      link.addEventListener("touchstart", onStart, { passive: false });
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("touchmove", onMove, { passive: false });
+      document.addEventListener("mouseup", onEnd);
+      document.addEventListener("touchend", onEnd);
+    });
+
+    // Show hint overlay
+    showPreviewDragHint();
+
+    console.log("✅ Preview button drag enabled:", links.length, "buttons");
+  }catch(e){ console.warn("enablePreviewButtonDrag:", e); }
+}
+
+function showPreviewDragHint(){
+  try{
+    var previewPhone = document.querySelector(".preview-phone");
+    if(!previewPhone) return;
+    if(previewPhone.querySelector(".ctb-drag-hint")) return;
+
+    var hint = document.createElement("div");
+    hint.className = "ctb-drag-hint";
+    hint.textContent = "👆 Geser tombol buat atur posisi";
+    previewPhone.appendChild(hint);
+
+    // Auto-hide after 8s
+    setTimeout(function(){
+      if(hint) hint.remove();
+    }, 8000);
+  }catch(e){}
+}
+
+/* Watch editor re-render untuk re-attach drag */
+setInterval(enablePreviewButtonDrag, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — SAVE AS PRESET (Theme Preset)
+   ═══════════════════════════════════════════════════════════ */
+var ThemePresets = {
+  /* Preset bawaan */
+  BUILTIN: [
+    {
+      id: "preset_neon_tokyo",
+      name: "Neon Tokyo",
+      colors: {
+        bg: "#0a0a14", text: "#00ffcc", btnBg: "#0a0a14",
+        btnText: "#00ffcc", border: "#00ffcc", accent: "#ff00ff", shadow: "#00ffcc"
+      },
+      font: "JetBrains Mono", borderRadius: 4, shadowStyle: "glow",
+      bgPattern: "grid", bgGradient: ""
+    },
+    {
+      id: "preset_pastel_dream",
+      name: "Pastel Dream",
+      colors: {
+        bg: "#fce7f3", text: "#831843", btnBg: "#fbcfe8",
+        btnText: "#831843", border: "#9f1239", accent: "#ec4899", shadow: "#9f1239"
+      },
+      font: "Poppins", borderRadius: 20, shadowStyle: "soft",
+      bgPattern: "dots", bgGradient: ""
+    },
+    {
+      id: "preset_retro_wave",
+      name: "Retro Wave",
+      colors: {
+        bg: "#1a0a2e", text: "#ff69b4", btnBg: "#1a0a2e",
+        btnText: "#ffd700", border: "#ff69b4", accent: "#ffd700", shadow: "#ff00ff"
+      },
+      font: "VT323", borderRadius: 8, shadowStyle: "glow",
+      bgPattern: "gradient", bgGradient: "linear-gradient(135deg,#1a0a2e,#ff00ff)"
+    },
+    {
+      id: "preset_gold_luxury",
+      name: "Gold Luxury",
+      colors: {
+        bg: "#0a0a0a", text: "#d4af37", btnBg: "#0a0a0a",
+        btnText: "#d4af37", border: "#d4af37", accent: "#d4af37", shadow: "#8b6914"
+      },
+      font: "Playfair Display", borderRadius: 4, shadowStyle: "soft",
+      bgPattern: "lines", bgGradient: ""
+    },
+    {
+      id: "preset_brutalist",
+      name: "Neo Brutalist",
+      colors: {
+        bg: "#f0ebe0", text: "#0a0a0a", btnBg: "#ffffff",
+        btnText: "#0a0a0a", border: "#0a0a0a", accent: "#ffd700", shadow: "#0a0a0a"
+      },
+      font: "Inter", borderRadius: 0, shadowStyle: "hard",
+      bgPattern: "dots", bgGradient: ""
+    },
+    {
+      id: "preset_mint_fresh",
+      name: "Mint Fresh",
+      colors: {
+        bg: "#d1fae5", text: "#065f46", btnBg: "#ffffff",
+        btnText: "#065f46", border: "#10b981", accent: "#10b981", shadow: "#065f46"
+      },
+      font: "Poppins", borderRadius: 16, shadowStyle: "soft",
+      bgPattern: "none", bgGradient: ""
+    },
+    {
+      id: "preset_sunset_glow",
+      name: "Sunset Glow",
+      colors: {
+        bg: "#fff7ed", text: "#7c2d12", btnBg: "#ffffff",
+        btnText: "#7c2d12", border: "#ea580c", accent: "#fbbf24", shadow: "#ea580c"
+      },
+      font: "Bebas Neue", borderRadius: 12, shadowStyle: "soft",
+      bgPattern: "gradient", bgGradient: "linear-gradient(135deg,#ff8c00,#ff69b4)"
+    },
+    {
+      id: "preset_cosmic",
+      name: "Cosmic Dark",
+      colors: {
+        bg: "#050514", text: "#e0e0ff", btnBg: "rgba(30,30,60,.6)",
+        btnText: "#a78bfa", border: "#a78bfa", accent: "#a78bfa", shadow: "#a78bfa"
+      },
+      font: "Space Grotesk", borderRadius: 14, shadowStyle: "glow",
+      bgPattern: "dots", bgGradient: ""
+    }
+  ],
+
+  /* Get all presets (builtin + saved) */
+  getAll: function(){
+    var saved = [];
+    try{
+      var raw = localStorage.getItem("varlinkbio_theme_presets");
+      if(raw) saved = JSON.parse(raw) || [];
+    }catch(e){}
+    return this.BUILTIN.concat(saved);
+  },
+
+  /* Save custom preset */
+  save: function(theme, presetName){
+    try{
+      var saved = [];
+      try{
+        var raw = localStorage.getItem("varlinkbio_theme_presets");
+        if(raw) saved = JSON.parse(raw) || [];
+      }catch(e){}
+
+      var preset = JSON.parse(JSON.stringify(theme));
+      preset.id = "preset_" + Date.now().toString(36);
+      preset.name = presetName || theme.name || "My Preset";
+      preset.isCustom = true;
+
+      saved.unshift(preset);
+      if(saved.length > 10) saved = saved.slice(0, 10);
+
+      localStorage.setItem("varlinkbio_theme_presets", JSON.stringify(saved));
+      return preset;
+    }catch(e){
+      console.warn("ThemePresets.save:", e);
+      return null;
+    }
+  },
+
+  /* Remove preset */
+  remove: function(id){
+    try{
+      var saved = [];
+      try{
+        var raw = localStorage.getItem("varlinkbio_theme_presets");
+        if(raw) saved = JSON.parse(raw) || [];
+      }catch(e){}
+      saved = saved.filter(function(p){ return p.id !== id; });
+      localStorage.setItem("varlinkbio_theme_presets", JSON.stringify(saved));
+      return true;
+    }catch(e){ return false; }
+  }
+};
+
+window.ThemePresets = ThemePresets;
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — APPLY CUSTOM THEME KE PUBLIC BIO
+   Patch PagePublic.buildHTML biar support custom theme
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(!window.PagePublic || !window.PagePublic.buildHTML) return;
+  if(window.PagePublic._customThemePatched) return;
+  window.PagePublic._customThemePatched = true;
+
+  var origBuild = window.PagePublic.buildHTML;
+
+  window.PagePublic.buildHTML = function(bio, opts){
+    // Kalau ada custom theme aktif, inject CSS-nya
+    var html = origBuild.call(this, bio, opts);
+
+    try{
+      // Cek: bio.theme === "custom" atau ada customThemeData
+      if(bio && bio.customThemeData){
+        var theme = bio.customThemeData;
+        var customCSS = buildCustomThemeCSS(theme);
+
+        // Inject sebelum </style>
+        html = html.replace(/<\/style>/i, customCSS + "</style>");
+
+        // Update class body (hapus theme-neo-* kalau ada)
+        html = html.replace(/<body class="[^"]*"/i, '<body class="custom-theme-active"');
+
+        console.log("✅ Custom theme applied to public bio");
+      } else if(bio && bio.theme === "custom" && bio.customThemeId){
+        // Load theme dari localStorage
+        var t = window.CustomTheme && window.CustomTheme.getById(bio.customThemeId);
+        if(t){
+          var css = buildCustomThemeCSS(t);
+          html = html.replace(/<\/style>/i, css + "</style>");
+          html = html.replace(/<body class="[^"]*"/i, '<body class="custom-theme-active"');
+        }
+      }
+    }catch(e){
+      console.warn("customTheme buildHTML:", e);
+    }
+
+    return html;
+  };
+
+  /* Helper: build CSS dari theme */
+  function buildCustomThemeCSS(theme){
+    if(!theme) return "";
+
+    var c = theme.colors || {};
+    var bg = c.bg || "#f0ebe0";
+    var text = c.text || "#0a0a0a";
+    var btnBg = c.btnBg || "#ffffff";
+    var btnText = c.btnText || "#0a0a0a";
+    var border = c.border || "#0a0a0a";
+    var accent = c.accent || "#ffd700";
+    var shadow = c.shadow || "#0a0a0a";
+
+    var shadowStyle = "4px 4px 0 " + shadow;
+    if(theme.shadowStyle === "none") shadowStyle = "none";
+    else if(theme.shadowStyle === "soft") shadowStyle = "0 4px 12px rgba(0,0,0,.15)";
+    else if(theme.shadowStyle === "glow") shadowStyle = "0 0 20px " + accent;
+
+    var radius = (theme.borderRadius || 12) + "px";
+    var font = "'" + (theme.font || "Inter") + "', sans-serif";
+
+    var patternCSS = "";
+    if(theme.bgPattern === "dots"){
+      patternCSS = "background-image: radial-gradient(circle, " + text + " 1.4px, transparent 1.4px), radial-gradient(circle, " + text + " 1.4px, transparent 1.4px);" +
+        "background-size: 20px 20px, 20px 20px;" +
+        "background-position: 0 0, 10px 10px;";
+    } else if(theme.bgPattern === "lines"){
+      patternCSS = "background-image: repeating-linear-gradient(45deg, " + text + " 0, " + text + " 1px, transparent 1px, transparent 12px);";
+    } else if(theme.bgPattern === "grid"){
+      patternCSS = "background-image: linear-gradient(" + text + " 1px, transparent 1px), linear-gradient(90deg, " + text + " 1px, transparent 1px);" +
+        "background-size: 20px 20px;";
+    } else if(theme.bgPattern === "gradient"){
+      patternCSS = "background: " + (theme.bgGradient || "linear-gradient(135deg,#ffd700,#ff69b4)") + "; background-size: 200% 200%; animation: gradientShift 15s ease infinite;";
+    }
+
+    return [
+      "@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}",
+      "body.custom-theme-active{",
+        "font-family: " + font + " !important;",
+        "background-color: " + bg + " !important;",
+        "color: " + text + " !important;",
+        patternCSS,
+      "}",
+      "body.custom-theme-active .bio-wrap{color:" + text + " !important}",
+      "body.custom-theme-active .bio-name{",
+        "background: " + accent + " !important;",
+        "color: " + text + " !important;",
+        "border-color: " + border + " !important;",
+        "border-radius: " + radius + " !important;",
+        "box-shadow: " + shadowStyle + " !important;",
+      "}",
+      "body.custom-theme-active .bio-bio{",
+        "background: " + accent + " !important;",
+        "color: " + text + " !important;",
+        "border-color: " + border + " !important;",
+        "border-radius: " + radius + " !important;",
+      "}",
+      "body.custom-theme-active .bio-title-top{",
+        "background: " + btnBg + " !important;",
+        "color: " + btnText + " !important;",
+        "border-color: " + border + " !important;",
+        "border-radius: " + radius + " !important;",
+      "}",
+      "body.custom-theme-active .bio-link{",
+        "background: " + btnBg + " !important;",
+        "color: " + btnText + " !important;",
+        "border-color: " + border + " !important;",
+        "border-radius: " + radius + " !important;",
+        "box-shadow: " + shadowStyle + " !important;",
+        "font-family: " + font + " !important;",
+      "}",
+      "body.custom-theme-active .bio-avatar{",
+        "border-color: " + border + " !important;",
+        "box-shadow: " + shadowStyle + " !important;",
+      "}",
+      "body.custom-theme-active .bio-banner{",
+        "border-color: " + border + " !important;",
+        "border-radius: " + radius + " !important;",
+        "box-shadow: " + shadowStyle + " !important;",
+      "}",
+      "body.custom-theme-active .bio-logo-item{",
+        "border-color: " + border + " !important;",
+      "}",
+      "body.custom-theme-active .bio-footer{",
+        "background: " + btnBg + " !important;",
+        "color: " + btnText + " !important;",
+        "border-color: " + border + " !important;",
+      "}",
+      "body.custom-theme-active .bio-deco{display:none !important}"
+    ].join("\n");
+  }
+
+  console.log("✅ PagePublic patched untuk custom theme");
+}, 4000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — PRESET PICKER DI CUSTOM THEME BUILDER
+   Tambah section preset di modal
+   ═══════════════════════════════════════════════════════════ */
+function injectPresetSection(){
+  var modal = document.querySelector(".ctb-modal");
+  if(!modal) return;
+  if(modal.querySelector("#ctb-preset-section")) return;
+
+  var builderPane = modal.querySelector('[data-pane="builder"]');
+  if(!builderPane) return;
+
+  var presets = ThemePresets.getAll();
+  var presetHTML = '<div class="ctb-section" id="ctb-preset-section">' +
+    '<div class="ctb-section-title">⚡ Quick Preset</div>' +
+    '<div class="ctb-themes-list">';
+
+  presets.forEach(function(p){
+    var c = p.colors || {};
+    presetHTML += '<div class="ctb-theme-card" data-preset-id="' + p.id + '">' +
+      '<div class="ctb-theme-name">' + (window.esc ? esc(p.name) : p.name) + '</div>' +
+      '<div class="ctb-theme-colors">' +
+        '<span style="background:' + (c.bg || "#f0ebe0") + '"></span>' +
+        '<span style="background:' + (c.btnBg || "#fff") + '"></span>' +
+        '<span style="background:' + (c.accent || "#ffd700") + '"></span>' +
+        '<span style="background:' + (c.border || "#0a0a0a") + '"></span>' +
+        '<span style="background:' + (c.text || "#0a0a0a") + '"></span>' +
+      '</div>' +
+    '</div>';
+  });
+
+  presetHTML += '</div></div>';
+
+  builderPane.insertAdjacentHTML("afterbegin", presetHTML);
+
+  // Bind klik preset → load ke theme
+  modal.querySelectorAll("[data-preset-id]").forEach(function(card){
+    card.addEventListener("click", function(){
+      var id = card.dataset.presetId;
+      var preset = ThemePresets.getAll().find(function(p){ return p.id === id; });
+      if(!preset) return;
+
+      // Apply preset ke theme object
+      var theme = JSON.parse(JSON.stringify(preset));
+      delete theme.id;
+
+      // Tutup modal lama, buka baru
+      var mb = modal.closest(".modal-back");
+      if(mb) mb.remove();
+
+      setTimeout(function(){
+        if(window.openCustomThemeBuilder){
+          window.openCustomThemeBuilder(theme);
+        }
+      }, 200);
+
+      if(window.toast) toast("Preset: " + preset.name,"info");
+    });
+  });
+}
+
+/* Watch modal buat inject preset */
+setInterval(function(){
+  if(document.querySelector(".ctb-modal") && !document.querySelector("#ctb-preset-section")){
+    injectPresetSection();
+  }
+}, 1500);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — EXPORT/IMPORT THEME JSON
+   ═══════════════════════════════════════════════════════════ */
+function injectExportImportButtons(){
+  var modal = document.querySelector(".ctb-modal");
+  if(!modal) return;
+  if(modal.querySelector("#ctb-export-import")) return;
+
+  var actions = modal.querySelector(".ctb-actions");
+  if(!actions) return;
+
+  var container = document.createElement("div");
+  container.id = "ctb-export-import";
+  container.style.cssText = "display:flex;gap:6px;margin-top:8px;flex-wrap:wrap";
+
+  var exportBtn = document.createElement("button");
+  exportBtn.className = "btn btn-sm";
+  exportBtn.style.cssText = "flex:1;padding:10px;font-size:11px;text-transform:uppercase;background:#f0ebe0;border:2px solid #0a0a0a;border-radius:8px;cursor:pointer;font-weight:900;font-family:inherit";
+  exportBtn.textContent = "📤 Export";
+  exportBtn.addEventListener("click", exportThemeJSON);
+
+  var importBtn = document.createElement("button");
+  importBtn.className = "btn btn-sm";
+  importBtn.style.cssText = "flex:1;padding:10px;font-size:11px;text-transform:uppercase;background:#f0ebe0;border:2px solid #0a0a0a;border-radius:8px;cursor:pointer;font-weight:900;font-family:inherit";
+  importBtn.textContent = "📥 Import";
+  importBtn.addEventListener("click", importThemeJSON);
+
+  container.appendChild(exportBtn);
+  container.appendChild(importBtn);
+
+  actions.parentNode.insertBefore(container, actions.nextSibling);
+}
+
+function exportThemeJSON(){
+  try{
+    var themes = window.CustomTheme.getAll();
+    if(!themes.length){
+      if(window.toast) toast("Belum ada tema buat di-export","error");
+      return;
+    }
+
+    var data = {
+      version: "v7.6",
+      exportedAt: new Date().toISOString(),
+      themes: themes
+    };
+
+    var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "varlinkbio-themes-" + Date.now() + ".json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    if(window.toast) toast("✅ Theme di-export!","success");
+    if(window.Sound && Sound.tada) Sound.tada();
+  }catch(e){
+    if(window.toast) toast("Gagal export: " + e.message,"error");
+  }
+}
+
+function importThemeJSON(){
+  try{
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json,application/json";
+    input.onchange = function(){
+      var file = input.files[0];
+      if(!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function(){
+        try{
+          var data = JSON.parse(reader.result);
+          var themes = Array.isArray(data) ? data : (data.themes || []);
+          if(!themes.length){
+            if(window.toast) toast("File gak valid","error");
+            return;
+          }
+
+          var count = 0;
+          themes.forEach(function(t){
+            if(t && t.colors){
+              t.id = null; // biar bikin ID baru
+              var saved = window.CustomTheme.save(t);
+              if(saved) count++;
+            }
+          });
+
+          if(window.toast) toast("✅ " + count + " tema di-import!","success");
+          if(window.Sound && Sound.tada) Sound.tada();
+        }catch(e){
+          if(window.toast) toast("Format JSON salah","error");
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  }catch(e){
+    if(window.toast) toast("Gagal import: " + e.message,"error");
+  }
+}
+
+setInterval(injectExportImportButtons, 1500);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 7 — AUTO APPLY CUSTOM THEME DI EDITOR PREVIEW
+   Setiap kali PageEditor.updatePreview() dipanggil,
+   pastikan custom theme diapply
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(!window.PageEditor || !window.PageEditor.updatePreview) return;
+  if(window.PageEditor._customThemePatched) return;
+  window.PageEditor._customThemePatched = true;
+
+  var origUpdate = window.PageEditor.updatePreview;
+
+  window.PageEditor.updatePreview = function(){
+    // Panggil original dulu
+    origUpdate.call(this);
+
+    // Kalau custom theme aktif, patch preview
+    setTimeout(function(){
+      try{
+        var draft = window.STATE && STATE.draft;
+        if(!draft) return;
+        if(draft.theme !== "custom" && !draft.customThemeData) return;
+
+        var theme = draft.customThemeData;
+        if(!theme && draft.customThemeId){
+          theme = window.CustomTheme.getById(draft.customThemeId);
+        }
+        if(!theme) return;
+
+        // Patch CSS variable di preview iframe
+        var previewFrame = document.getElementById("prev-frame");
+        if(!previewFrame) return;
+        var frameDoc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+        if(!frameDoc) return;
+
+        applyThemeToIframe(frameDoc, theme);
+      }catch(e){}
+    }, 300);
+  };
+
+  console.log("✅ PageEditor.updatePreview patched untuk custom theme");
+}, 3000);
+
+function applyThemeToIframe(doc, theme){
+  if(!doc || !theme) return;
+  try{
+    // Hapus CSS custom theme lama (kalo ada)
+    var old = doc.querySelector("style[data-custom-theme]");
+    if(old) old.remove();
+
+    var c = theme.colors || {};
+    var bg = c.bg || "#f0ebe0";
+    var text = c.text || "#0a0a0a";
+    var btnBg = c.btnBg || "#ffffff";
+    var btnText = c.btnText || "#0a0a0a";
+    var border = c.border || "#0a0a0a";
+    var accent = c.accent || "#ffd700";
+    var shadow = c.shadow || "#0a0a0a";
+
+    var shadowStyle = "4px 4px 0 " + shadow;
+    if(theme.shadowStyle === "none") shadowStyle = "none";
+    else if(theme.shadowStyle === "soft") shadowStyle = "0 4px 12px rgba(0,0,0,.15)";
+    else if(theme.shadowStyle === "glow") shadowStyle = "0 0 20px " + accent;
+
+    var radius = (theme.borderRadius || 12) + "px";
+    var font = "'" + (theme.font || "Inter") + "', sans-serif";
+
+    var patternCSS = "";
+    if(theme.bgPattern === "dots"){
+      patternCSS = "background-image: radial-gradient(circle, " + text + " 1.4px, transparent 1.4px), radial-gradient(circle, " + text + " 1.4px, transparent 1.4px);background-size: 20px 20px, 20px 20px;background-position: 0 0, 10px 10px;";
+    } else if(theme.bgPattern === "lines"){
+      patternCSS = "background-image: repeating-linear-gradient(45deg, " + text + " 0, " + text + " 1px, transparent 1px, transparent 12px);";
+    } else if(theme.bgPattern === "grid"){
+      patternCSS = "background-image: linear-gradient(" + text + " 1px, transparent 1px), linear-gradient(90deg, " + text + " 1px, transparent 1px);background-size: 20px 20px;";
+    } else if(theme.bgPattern === "gradient"){
+      patternCSS = "background: " + (theme.bgGradient || "linear-gradient(135deg,#ffd700,#ff69b4)") + ";";
+    }
+
+    var style = doc.createElement("style");
+    style.setAttribute("data-custom-theme", "1");
+    style.textContent = [
+      "body{",
+        "font-family: " + font + " !important;",
+        "background-color: " + bg + " !important;",
+        "color: " + text + " !important;",
+        patternCSS,
+      "}",
+      ".bio-wrap{color:" + text + " !important}",
+      ".bio-name{background: " + accent + " !important;color: " + text + " !important;border-color: " + border + " !important;border-radius: " + radius + " !important;box-shadow: " + shadowStyle + " !important}",
+      ".bio-bio{background: " + accent + " !important;color: " + text + " !important;border-color: " + border + " !important;border-radius: " + radius + " !important}",
+      ".bio-title-top{background: " + btnBg + " !important;color: " + btnText + " !important;border-color: " + border + " !important;border-radius: " + radius + " !important}",
+      ".bio-link{background: " + btnBg + " !important;color: " + btnText + " !important;border-color: " + border + " !important;border-radius: " + radius + " !important;box-shadow: " + shadowStyle + " !important;font-family: " + font + " !important}",
+      ".bio-avatar{border-color: " + border + " !important;box-shadow: " + shadowStyle + " !important}",
+      ".bio-banner{border-color: " + border + " !important;border-radius: " + radius + " !important;box-shadow: " + shadowStyle + " !important}",
+      ".bio-footer{background: " + btnBg + " !important;color: " + btnText + " !important;border-color: " + border + " !important}",
+      ".bio-deco{display:none !important}"
+    ].join("\n");
+
+    var head = doc.head || doc.getElementsByTagName("head")[0];
+    if(head) head.appendChild(style);
+  }catch(e){ console.warn("applyThemeToIframe:", e); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   EXPOSE + LOG
+   ═══════════════════════════════════════════════════════════ */
+window.enhanceLinkDragSortable = enhanceLinkDragSortable;
+window.enablePreviewButtonDrag = enablePreviewButtonDrag;
+window.applyThemeToIframe = applyThemeToIframe;
+
+console.log("╔════════════════════════════════════════╗");
+console.log("║  ✅ PATCH v7.6-B AKTIF                 ║");
+console.log("║  • Drag link reorder (enhanced)        ║");
+console.log("║  • Drag posisi tombol di preview       ║");
+console.log("║  • Theme Presets (8 builtin + custom)  ║");
+console.log("║  • Export/Import Theme (JSON)          ║");
+console.log("║  • Custom theme ke public bio          ║");
+console.log("╚════════════════════════════════════════╝");
+
+})();
+   </script>
 </body>
    </html>

@@ -24248,1058 +24248,8 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END PATCH v9.2 FINAL ═══ -->
-   <!-- ═══════════════════════════════════════════════════════════════
-     PATCH v9.3 — FIX PREVIEW EDITOR
-     Preview fit 1 layar + fix crop + hapus tombol Atur Posisi
-     by Varoo
-     ═══════════════════════════════════════════════════════════════ -->
-
-<style id="fixv93-css">
-/* ═══════════════════════════════════════════════════════════
-   FIX 1 — PREVIEW PHONE: FIT 1 LAYAR
-   ═══════════════════════════════════════════════════════════ */
-.preview-phone{
-  aspect-ratio: 9 / 19.5 !important;
-  max-width: 340px !important;
-  width: 100% !important;
-  margin: 0 auto !important;
-  overflow: hidden !important;
-  position: relative !important;
-  padding: 0 !important;
-  background: #0a0a0a !important;
-}
-.preview-phone iframe{
-  width: 100% !important;
-  height: 100% !important;
-  border: none !important;
-  display: block !important;
-  overflow: hidden !important;
-}
-
-.editor-preview{
-  position: sticky !important;
-  top: 70px !important;
-  align-self: flex-start !important;
-}
-
-@media(max-width:1024px){
-  .editor-preview{position: static !important}
-  .preview-phone{max-width: 320px !important}
-}
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 2 — HAPUS TOMBOL ATUR POSISI (PAKSA)
-   ═══════════════════════════════════════════════════════════ */
-#preview-edit-toggle-btn,
-.preview-edit-toggle,
-.preview-edit-btn,
-.editor-preview button[id*="preview-edit"],
-.editor-preview button[id*="atur-posisi"]{
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  position: absolute !important;
-  left: -9999px !important;
-  overflow: hidden !important;
-}
-</style>
-
-<script id="fixv93-js">
-/* ═══════════════════════════════════════════════════════════════
-   PATCH v9.3 — FIX PREVIEW
-   ═══════════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-console.log("%c🔧 FIX v9.3 PREVIEW loading...","color:#ffd700;font-weight:bold;font-size:14px");
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 1 — PATCH PagePublic.buildHTML (preview mode)
-   ═══════════════════════════════════════════════════════════ */
-function patchPreviewBuildHTML(){
-  try{
-    if(!window.PagePublic || !window.PagePublic.buildHTML) {
-      console.warn("PagePublic gak ready, retry...");
-      return false;
-    }
-    if(window.PagePublic._fitFixV93) return true;
-    window.PagePublic._fitFixV93 = true;
-    
-    var origBuild = window.PagePublic.buildHTML;
-    
-    window.PagePublic.buildHTML = function(bio, opts){
-      var html = origBuild.call(this, bio, opts);
-      
-      if(opts && opts.preview){
-        var previewCSS = '<style id="preview-fit-v93">' +
-          /* Root: kunci 1 layar */
-          'html,body{' +
-            'height:100vh !important;' +
-            'max-height:100vh !important;' +
-            'overflow:hidden !important;' +
-            'margin:0 !important;padding:0 !important;' +
-          '}' +
-          
-          /* Scale down: 75% + center */
-          'body{' +
-            'transform:scale(0.75) !important;' +
-            'transform-origin:top center !important;' +
-            'width:133.33% !important;' +
-            'height:133.33% !important;' +
-            'margin-left:-16.66% !important;' +
-          '}' +
-          
-          /* Wrapper bio */
-          '.bio-wrap{' +
-            'min-height:100vh !important;' +
-            'padding:20px 12px 20px !important;' +
-            'justify-content:flex-start !important;' +
-          '}' +
-          '.bio-inner{max-width:100% !important}' +
-          
-          /* Banner */
-          '.bio-banner{' +
-            'height:70px !important;' +
-            'margin-bottom:10px !important;' +
-            'border-width:2.5px !important;' +
-            'border-radius:10px !important;' +
-          '}' +
-          
-          /* Avatar */
-          '.bio-avatar{' +
-            'width:70px !important;height:70px !important;' +
-            'border-width:3px !important;' +
-          '}' +
-          
-          /* Title */
-          '.bio-title-top{' +
-            'font-size:9px !important;' +
-            'padding:3px 8px !important;' +
-            'margin-top:6px !important;' +
-            'letter-spacing:.5px !important;' +
-          '}' +
-          
-          /* Name — fix crop */
-          '.bio-name{' +
-            'font-size:13px !important;' +
-            'padding:4px 10px !important;' +
-            'margin-top:-2px !important;' +
-            'letter-spacing:0 !important;' +
-            'max-width:96% !important;' +
-            'width:auto !important;' +
-            'word-wrap:break-word !important;' +
-            'overflow-wrap:break-word !important;' +
-            'white-space:normal !important;' +
-            'line-height:1.15 !important;' +
-            'text-align:center !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          /* Bio — fix crop */
-          '.bio-bio{' +
-            'font-size:8.5px !important;' +
-            'padding:3px 8px !important;' +
-            'line-height:1.25 !important;' +
-            'max-width:96% !important;' +
-            'width:auto !important;' +
-            'word-wrap:break-word !important;' +
-            'overflow-wrap:break-word !important;' +
-            'white-space:normal !important;' +
-            'text-align:center !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          /* Plan badge */
-          '.bio-plan-badge{' +
-            'font-size:7px !important;' +
-            'padding:2px 6px !important;' +
-            'margin-top:5px !important;' +
-          '}' +
-          
-          /* Logos */
-          '.bio-logos{' +
-            'margin-bottom:6px !important;' +
-            'margin-top:2px !important;' +
-            'gap:4px !important;' +
-          '}' +
-          '.bio-logo-item{' +
-            'width:28px !important;height:28px !important;' +
-            'border-width:2px !important;' +
-          '}' +
-          
-          /* Links */
-          '.bio-links{gap:5px !important}' +
-          '.bio-link{' +
-            'padding:7px 9px !important;' +
-            'font-size:10px !important;' +
-            'min-height:36px !important;' +
-            'border-width:2.5px !important;' +
-            'box-shadow:3px 3px 0 var(--ink) !important;' +
-            'letter-spacing:0 !important;' +
-            'gap:5px !important;' +
-            'word-wrap:break-word !important;' +
-            'white-space:normal !important;' +
-          '}' +
-          '.bio-link .licon{' +
-            'width:14px !important;height:14px !important;' +
-          '}' +
-          '.bio-link .licon svg{' +
-            'width:14px !important;height:14px !important;' +
-          '}' +
-          '.bio-link .ltext{' +
-            'font-size:10px !important;' +
-            'line-height:1.15 !important;' +
-            'word-wrap:break-word !important;' +
-          '}' +
-          
-          /* Featured link */
-          '.bio-link.bio-featured .feat-img-wrap{padding:5px !important}' +
-          '.bio-link.bio-featured .feat-body{' +
-            'padding:4px 8px 5px !important;' +
-          '}' +
-          '.bio-link.bio-featured .feat-body b{' +
-            'font-size:9.5px !important;' +
-          '}' +
-          
-          /* Footer — HIDE kalau kekecilan */
-          '.bio-footer{' +
-            'margin-top:10px !important;' +
-            'font-size:7px !important;' +
-            'padding:3px 8px !important;' +
-            'letter-spacing:.3px !important;' +
-            'max-width:100% !important;' +
-            'word-wrap:break-word !important;' +
-            'white-space:normal !important;' +
-          '}' +
-          
-          /* Deco + CTA */
-          '.bio-deco{display:none !important}' +
-          '.bio-cta-float{display:none !important}' +
-          
-          /* Fix crop umum */
-          '.bio-header{' +
-            'overflow:visible !important;' +
-            'max-width:100% !important;' +
-          '}' +
-          '.bio-header > *{' +
-            'max-width:96% !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          '</style>';
-        html = html.replace(/<\/head>/i, previewCSS + '</head>');
-      }
-      return html;
-    };
-    
-    console.log("✅ Preview buildHTML patched (v93)");
-    return true;
-  }catch(e){
-    console.warn("patchPreviewBuildHTML:", e);
-    return false;
-  }
-}
-
-// Retry sampai PagePublic ready
-var previewRetry = 0;
-function tryPreview(){
-  previewRetry++;
-  if(patchPreviewBuildHTML() || previewRetry > 30) return;
-  setTimeout(tryPreview, 500);
-}
-setTimeout(tryPreview, 500);
-setTimeout(patchPreviewBuildHTML, 2500);
-setTimeout(patchPreviewBuildHTML, 5000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 2 — HAPUS TOMBOL ATUR POSISI (PAKSA DOM)
-   ═══════════════════════════════════════════════════════════ */
-function removeAturPosisiBtn(){
-  try{
-    // By ID
-    ["preview-edit-toggle-btn","preview-edit-toggle"].forEach(function(id){
-      var el = document.getElementById(id);
-      if(el){ el.remove(); }
-    });
-    
-    // By class
-    document.querySelectorAll(".preview-edit-toggle, .preview-edit-btn").forEach(function(el){
-      el.remove();
-    });
-    
-    // By text content (cari button dengan text "Atur Posisi")
-    document.querySelectorAll("button").forEach(function(btn){
-      var txt = (btn.textContent || "").toUpperCase();
-      if(txt.indexOf("ATUR POSISI") !== -1 || 
-         txt.indexOf("ATUR POSISI TOMBOL") !== -1){
-        btn.remove();
-      }
-    });
-    
-    // By class container
-    document.querySelectorAll(".preview-edit-toggle-wrap").forEach(function(el){
-      el.remove();
-    });
-    
-    // Kill method
-    if(window.PreviewEditMode){
-      window.PreviewEditMode.toggle = function(){};
-      window.PreviewEditMode.attachDrag = function(){};
-      window.PreviewEditMode.enabled = false;
-    }
-  }catch(e){}
-}
-
-removeAturPosisiBtn();
-setInterval(removeAturPosisiBtn, 800);
-window.addEventListener("hashchange", function(){ setTimeout(removeAturPosisiBtn, 500); });
-
-// MutationObserver untuk hapus kalau muncul lagi
-try{
-  var obsAtur = new MutationObserver(function(muts){
-    muts.forEach(function(m){
-      m.addedNodes.forEach(function(n){
-        if(n.nodeType === 1){
-          if(n.id === "preview-edit-toggle-btn"){
-            n.remove();
-            return;
-          }
-          if(n.classList && (n.classList.contains("preview-edit-toggle") || n.classList.contains("preview-edit-btn"))){
-            n.remove();
-            return;
-          }
-          if(n.tagName === "BUTTON"){
-            var txt = (n.textContent || "").toUpperCase();
-            if(txt.indexOf("ATUR POSISI") !== -1){
-              n.remove();
-            }
-          }
-        }
-      });
-    });
-  });
-  obsAtur.observe(document.body, { childList: true, subtree: true });
-}catch(e){}
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 3 — FORCE REFRESH PREVIEW (kalau di editor)
-   ═══════════════════════════════════════════════════════════ */
-function forceRefreshPreview(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var frame = document.getElementById("prev-frame");
-    if(!frame) return;
-    
-    // Kalau iframe udah ada dan gak ada CSS preview-fit-v93 → refresh
-    try{
-      var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
-      if(doc && !doc.getElementById("preview-fit-v93")){
-        // Refresh via PageEditor
-        if(window.PageEditor && window.PageEditor.updatePreview){
-          window.PageEditor.updatePreview();
-          console.log("🔄 Preview refreshed (force)");
-        }
-      }
-    }catch(e){}
-  }catch(e){}
-}
-
-// Refresh sekali aja pas editor muncul
-setTimeout(forceRefreshPreview, 2000);
-setTimeout(forceRefreshPreview, 4000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   LOG
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  console.log("");
-  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
-  console.log("%c║  ✅ PATCH v9.3 PREVIEW FIX AKTIF       ║","color:#22c55e;font-weight:bold");
-  console.log("%c║  • Preview fit 1 layar (scale 75%)     ║","color:#22c55e");
-  console.log("%c║  • Fix crop badge (word-break)         ║","color:#22c55e");
-  console.log("%c║  • Tombol Atur Posisi dihapus paksa    ║","color:#22c55e");
-  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
-  console.log("");
-}, 1500);
-
-})();
-</script>
-<!-- ═══ END PATCH v9.3 PREVIEW FIX ═══ -->
+   
 <!-- ═══════════════════════════════════════════════════════════════
-     PATCH v9.4 — PREVIEW FINAL
-     Fix tinggi preview + crop + scale
-     by Varoo
-     ═══════════════════════════════════════════════════════════════ -->
-
-<style id="fixv94-css">
-/* ═══════════════════════════════════════════════════════════
-   FIX PREVIEW: AUTO HEIGHT (ngikutin konten)
-   ═══════════════════════════════════════════════════════════ */
-.preview-phone{
-  aspect-ratio: auto !important;
-  max-width: 320px !important;
-  width: 100% !important;
-  min-height: 480px !important;
-  max-height: 600px !important;
-  margin: 0 auto !important;
-  overflow: hidden !important;
-  position: relative !important;
-  background: #0a0a0a !important;
-  border-radius: 28px !important;
-}
-.preview-phone iframe{
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 480px !important;
-  max-height: 600px !important;
-  border: none !important;
-  display: block !important;
-}
-.editor-preview{
-  position: sticky !important;
-  top: 70px !important;
-}
-@media(max-width:1024px){
-  .editor-preview{position: static !important}
-  .preview-phone{max-width: 300px !important}
-}
-</style>
-
-<script id="fixv94-js">
-/* ═══════════════════════════════════════════════════════════════
-   PATCH v9.4 — PREVIEW FINAL
-   ═══════════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-console.log("%c🔧 FIX v9.4 PREVIEW loading...","color:#ffd700;font-weight:bold;font-size:14px");
-
-/* ═══════════════════════════════════════════════════════════
-   PATCH PagePublic.buildHTML — OVERRIDE v93
-   ═══════════════════════════════════════════════════════════ */
-function patchPreviewFinal(){
-  try{
-    if(!window.PagePublic || !window.PagePublic.buildHTML){
-      return false;
-    }
-    
-    // Kalau udah v94, skip
-    if(window.PagePublic._fitFixV94) return true;
-    
-    // Force override (bukan chain — biar v93 di-bypass)
-    window.PagePublic._fitFixV94 = true;
-    window.PagePublic._fitFixV93 = true; // disable v93
-    
-    // Simpan original (yang asli tanpa v93)
-    var origBuild = window.PagePublic._buildHTMLOriginal;
-    if(!origBuild){
-      // Kalau belum ada, cari yang original dari PagePublic asli
-      // Fallback: pakai current buildHTML (biar gak crash)
-      origBuild = window.PagePublic.buildHTML;
-    }
-    
-    window.PagePublic.buildHTML = function(bio, opts){
-      var html = origBuild.call(this, bio, opts);
-      
-      if(opts && opts.preview){
-        var previewCSS = '<style id="preview-fit-v94">' +
-          
-          /* Root: auto height, no forced 100vh */
-          'html{' +
-            'min-height:100% !important;' +
-            'height:auto !important;' +
-            'overflow-x:hidden !important;' +
-            'overflow-y:hidden !important;' +
-            'margin:0 !important;padding:0 !important;' +
-          '}' +
-          
-          'body{' +
-            'min-height:100% !important;' +
-            'height:auto !important;' +
-            'overflow:hidden !important;' +
-            'margin:0 !important;padding:0 !important;' +
-            'transform:scale(0.68) !important;' +
-            'transform-origin:top left !important;' +
-            'width:147% !important;' +
-            'margin-left:-23.5% !important;' +
-          '}' +
-          
-          /* Bio wrapper */
-          '.bio-wrap{' +
-            'min-height:auto !important;' +
-            'padding:14px 10px 14px !important;' +
-            'justify-content:flex-start !important;' +
-          '}' +
-          '.bio-inner{max-width:100% !important}' +
-          
-          /* Banner */
-          '.bio-banner{' +
-            'height:60px !important;' +
-            'margin-bottom:8px !important;' +
-            'border-width:2.5px !important;' +
-            'border-radius:10px !important;' +
-            'box-shadow:3px 3px 0 var(--ink) !important;' +
-          '}' +
-          
-          /* Avatar */
-          '.bio-avatar{' +
-            'width:60px !important;height:60px !important;' +
-            'border-width:3px !important;' +
-            'box-shadow:3px 3px 0 var(--ink) !important;' +
-          '}' +
-          
-          /* Title */
-          '.bio-title-top{' +
-            'font-size:8.5px !important;' +
-            'padding:2px 7px !important;' +
-            'margin-top:5px !important;' +
-            'letter-spacing:.4px !important;' +
-          '}' +
-          
-          /* Name — FIX CROP */
-          '.bio-name{' +
-            'font-size:12px !important;' +
-            'padding:3px 9px !important;' +
-            'margin-top:-2px !important;' +
-            'letter-spacing:0 !important;' +
-            'max-width:92% !important;' +
-            'width:fit-content !important;' +
-            'word-wrap:break-word !important;' +
-            'overflow-wrap:break-word !important;' +
-            'word-break:break-word !important;' +
-            'white-space:normal !important;' +
-            'line-height:1.1 !important;' +
-            'text-align:center !important;' +
-            'box-sizing:border-box !important;' +
-            'overflow:hidden !important;' +
-          '}' +
-          
-          /* Bio — FIX CROP */
-          '.bio-bio{' +
-            'font-size:7.5px !important;' +
-            'padding:2px 8px !important;' +
-            'line-height:1.2 !important;' +
-            'max-width:92% !important;' +
-            'width:fit-content !important;' +
-            'word-wrap:break-word !important;' +
-            'overflow-wrap:break-word !important;' +
-            'word-break:break-word !important;' +
-            'white-space:normal !important;' +
-            'text-align:center !important;' +
-            'box-sizing:border-box !important;' +
-            'overflow:hidden !important;' +
-          '}' +
-          
-          /* Plan */
-          '.bio-plan-badge{' +
-            'font-size:6.5px !important;' +
-            'padding:2px 6px !important;' +
-            'margin-top:4px !important;' +
-          '}' +
-          
-          /* Logos */
-          '.bio-logos{' +
-            'margin-bottom:6px !important;' +
-            'margin-top:1px !important;' +
-            'gap:4px !important;' +
-          '}' +
-          '.bio-logo-item{' +
-            'width:24px !important;height:24px !important;' +
-            'border-width:2px !important;' +
-            'box-shadow:2px 2px 0 var(--ink) !important;' +
-          '}' +
-          
-          /* Links */
-          '.bio-links{gap:4px !important}' +
-          '.bio-link{' +
-            'padding:6px 8px !important;' +
-            'font-size:9.5px !important;' +
-            'min-height:30px !important;' +
-            'border-width:2.5px !important;' +
-            'box-shadow:2.5px 2.5px 0 var(--ink) !important;' +
-            'letter-spacing:0 !important;' +
-            'gap:4px !important;' +
-            'border-radius:8px !important;' +
-          '}' +
-          '.bio-link .licon{' +
-            'width:12px !important;height:12px !important;' +
-          '}' +
-          '.bio-link .licon svg{' +
-            'width:12px !important;height:12px !important;' +
-          '}' +
-          '.bio-link .ltext{' +
-            'font-size:9.5px !important;' +
-            'line-height:1.15 !important;' +
-            'word-wrap:break-word !important;' +
-            'white-space:normal !important;' +
-          '}' +
-          
-          /* Featured */
-          '.bio-link.bio-featured .feat-img-wrap{padding:4px !important}' +
-          '.bio-link.bio-featured .feat-body{padding:3px 6px 4px !important}' +
-          '.bio-link.bio-featured .feat-body b{font-size:9px !important}' +
-          
-          /* Footer */
-          '.bio-footer{' +
-            'margin-top:8px !important;' +
-            'font-size:6.5px !important;' +
-            'padding:2px 7px !important;' +
-            'letter-spacing:.3px !important;' +
-            'max-width:100% !important;' +
-            'word-wrap:break-word !important;' +
-            'white-space:normal !important;' +
-          '}' +
-          
-          /* Deco + CTA */
-          '.bio-deco{display:none !important}' +
-          '.bio-cta-float{display:none !important}' +
-          
-          /* Header fix */
-          '.bio-header{' +
-            'overflow:visible !important;' +
-            'max-width:100% !important;' +
-            'margin-bottom:8px !important;' +
-          '}' +
-          '.bio-header > *{' +
-            'max-width:96% !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          '</style>';
-        html = html.replace(/<\/head>/i, previewCSS + '</head>');
-      }
-      return html;
-    };
-    
-    console.log("✅ Preview v94 patched (auto height)");
-    return true;
-  }catch(e){
-    console.warn("patchPreviewFinal:", e);
-    return false;
-  }
-}
-
-// Retry sampai ready
-var attempts = 0;
-function tryAgain(){
-  attempts++;
-  if(patchPreviewFinal() || attempts > 20) return;
-  setTimeout(tryAgain, 500);
-}
-setTimeout(tryAgain, 500);
-setTimeout(patchPreviewFinal, 2500);
-setTimeout(patchPreviewFinal, 5000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   AUTO-HEIGHT PREVIEW (JS)
-   Sesuaikan tinggi iframe biar konten gak kekecilan
-   ═══════════════════════════════════════════════════════════ */
-function autoHeightPreview(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var frame = document.getElementById("prev-frame");
-    if(!frame) return;
-    
-    var phone = frame.closest(".preview-phone");
-    if(!phone) return;
-    
-    // Set tinggi HP ngikutin konten (min 480, max 600)
-    setTimeout(function(){
-      try{
-        var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
-        if(!doc) return;
-        var bodyH = doc.body ? doc.body.scrollHeight : 500;
-        // Konten di-scale 0.68, jadi tinggi asli = bodyH / 0.68
-        var scaledH = bodyH * 0.68;
-        var finalH = Math.max(480, Math.min(600, scaledH));
-        phone.style.minHeight = finalH + "px";
-<!-- ═══════════════════════════════════════════════════════════════
-     PATCH v9.5 — PREVIEW AUTO-FIT RESPONSIVE
-     Auto-adjust preview sesuai ukuran layar (HP/tablet/desktop)
-     by Varoo
-     ═══════════════════════════════════════════════════════════════ -->
-
-<style id="fixv95-css">
-/* ═══════════════════════════════════════════════════════════
-   PREVIEW PHONE: RESPONSIVE AUTO-FIT
-   ═══════════════════════════════════════════════════════════ */
-.editor-preview{
-  position: sticky !important;
-  top: 70px !important;
-  align-self: flex-start !important;
-}
-.preview-phone{
-  width: 100% !important;
-  max-width: 100% !important;
-  aspect-ratio: 9 / 19.5 !important;
-  margin: 0 auto !important;
-  overflow: hidden !important;
-  position: relative !important;
-  background: #0a0a0a !important;
-  border-radius: 28px !important;
-  /* Tinggi dinamis diatur via JS */
-}
-.preview-phone iframe{
-  width: 100% !important;
-  height: 100% !important;
-  border: none !important;
-  display: block !important;
-  overflow: hidden !important;
-}
-
-/* Desktop: fixed 340px */
-@media(min-width:1024px){
-  .preview-phone{
-    max-width: 340px !important;
-  }
-}
-
-/* Tablet: 300px */
-@media(min-width:768px) and (max-width:1023px){
-  .preview-phone{
-    max-width: 300px !important;
-  }
-}
-
-/* HP: 100% lebar (dengan padding) */
-@media(max-width:767px){
-  .editor-preview{
-    position: static !important;
-  }
-  .preview-phone{
-    max-width: 100% !important;
-    margin: 0 !important;
-  }
-}
-</style>
-
-<script id="fixv95-js">
-/* ═══════════════════════════════════════════════════════════════
-   PATCH v9.5 — PREVIEW AUTO-FIT RESPONSIVE
-   ═══════════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-console.log("%c📱 FIX v9.5 PREVIEW AUTO-FIT loading...","color:#ffd700;font-weight:bold;font-size:14px");
-
-/* ═══════════════════════════════════════════════════════════
-   PART 1 — HITUNG SCALE OTOMATIS
-   ═══════════════════════════════════════════════════════════ */
-function calcAutoScale(frameW, frameH){
-  // Konten bio asli: lebar ~420px, tinggi ~800-1200px (dinamis)
-  // Kita mau kontennya fit ke frame W x H
-  
-  // Scale berdasarkan lebar
-  var scaleW = frameW / 420;
-  
-  // Scale berdasarkan tinggi (asumsi konten ~900px)
-  var scaleH = frameH / 900;
-  
-  // Ambil yang lebih kecil biar fit
-  var scale = Math.min(scaleW, scaleH);
-  
-  // Clamp 0.4 - 1.2
-  return Math.max(0.4, Math.min(1.2, scale));
-}
-
-/* ═══════════════════════════════════════════════════════════
-   PART 2 — PATCH buildHTML: PAKAI CSS VARIABLE
-   ═══════════════════════════════════════════════════════════ */
-function patchPreviewResponsive(){
-  try{
-    if(!window.PagePublic || !window.PagePublic.buildHTML) return false;
-    if(window.PagePublic._fitFixV95) return true;
-    window.PagePublic._fitFixV95 = true;
-    window.PagePublic._fitFixV94 = true;
-    window.PagePublic._fitFixV93 = true;
-    
-    var origBuild = window.PagePublic._buildHTMLOriginal || window.PagePublic.buildHTML;
-    window.PagePublic._buildHTMLOriginal = origBuild;
-    
-    window.PagePublic.buildHTML = function(bio, opts){
-      var html = origBuild.call(this, bio, opts);
-      
-      if(opts && opts.preview){
-        var previewCSS = '<style id="preview-fit-v95">' +
-          
-          /* Root: variable scale */
-          ':root{--vs-scale:0.68}' +
-          
-          /* Root HTML */
-          'html{' +
-            'height:100% !important;' +
-            'overflow:hidden !important;' +
-            'margin:0 !important;padding:0 !important;' +
-          '}' +
-          
-          /* Body: auto-scale via CSS variable */
-          'body{' +
-            'height:100% !important;' +
-            'overflow:hidden !important;' +
-            'margin:0 !important;padding:0 !important;' +
-            'transform:scale(var(--vs-scale,0.68)) !important;' +
-            'transform-origin:top center !important;' +
-            'width:calc(100% / var(--vs-scale,0.68)) !important;' +
-            'height:calc(100% / var(--vs-scale,0.68)) !important;' +
-            'margin-left:calc(-1 * (100% / var(--vs-scale,0.68) - 100%) / 2) !important;' +
-          '}' +
-          
-          /* Bio wrapper */
-          '.bio-wrap{' +
-            'min-height:auto !important;' +
-            'padding:14px 10px 14px !important;' +
-            'justify-content:flex-start !important;' +
-          '}' +
-          '.bio-inner{max-width:100% !important}' +
-          
-          /* Banner */
-          '.bio-banner{' +
-            'height:auto !important;' +
-            'aspect-ratio:16/5 !important;' +
-            'max-height:80px !important;' +
-            'margin-bottom:8px !important;' +
-            'border-width:2.5px !important;' +
-            'border-radius:10px !important;' +
-          '}' +
-          
-          /* Avatar */
-          '.bio-avatar{' +
-            'width:64px !important;height:64px !important;' +
-            'border-width:3px !important;' +
-          '}' +
-          
-          /* Title */
-          '.bio-title-top{' +
-            'font-size:9px !important;' +
-            'padding:2px 8px !important;' +
-            'margin-top:5px !important;' +
-          '}' +
-          
-          /* Name — anti crop */
-          '.bio-name{' +
-            'font-size:13px !important;' +
-            'padding:4px 10px !important;' +
-            'margin-top:-2px !important;' +
-            'letter-spacing:0 !important;' +
-            'max-width:94% !important;' +
-            'width:auto !important;' +
-            'word-break:break-word !important;' +
-            'white-space:normal !important;' +
-            'line-height:1.1 !important;' +
-            'text-align:center !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          /* Bio — anti crop */
-          '.bio-bio{' +
-            'font-size:8px !important;' +
-            'padding:3px 8px !important;' +
-            'line-height:1.2 !important;' +
-            'max-width:94% !important;' +
-            'width:auto !important;' +
-            'word-break:break-word !important;' +
-            'white-space:normal !important;' +
-            'text-align:center !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          /* Plan */
-          '.bio-plan-badge{' +
-            'font-size:7px !important;' +
-            'padding:2px 6px !important;' +
-            'margin-top:5px !important;' +
-          '}' +
-          
-          /* Logos */
-          '.bio-logos{' +
-            'margin-bottom:6px !important;' +
-            'margin-top:2px !important;' +
-            'gap:4px !important;' +
-          '}' +
-          '.bio-logo-item{' +
-            'width:26px !important;height:26px !important;' +
-            'border-width:2px !important;' +
-          '}' +
-          
-          /* Links */
-          '.bio-links{gap:5px !important}' +
-          '.bio-link{' +
-            'padding:6px 9px !important;' +
-            'font-size:10px !important;' +
-            'min-height:34px !important;' +
-            'border-width:2.5px !important;' +
-            'box-shadow:3px 3px 0 var(--ink) !important;' +
-            'letter-spacing:0 !important;' +
-            'gap:5px !important;' +
-          '}' +
-          '.bio-link .licon{' +
-            'width:13px !important;height:13px !important;' +
-          '}' +
-          '.bio-link .licon svg{' +
-            'width:13px !important;height:13px !important;' +
-          '}' +
-          '.bio-link .ltext{' +
-            'font-size:10px !important;' +
-            'line-height:1.15 !important;' +
-            'word-break:break-word !important;' +
-            'white-space:normal !important;' +
-          '}' +
-          
-          /* Featured */
-          '.bio-link.bio-featured .feat-img-wrap{padding:5px !important}' +
-          '.bio-link.bio-featured .feat-body{padding:4px 8px 5px !important}' +
-          '.bio-link.bio-featured .feat-body b{font-size:9.5px !important}' +
-          
-          /* Footer */
-          '.bio-footer{' +
-            'margin-top:8px !important;' +
-            'font-size:7px !important;' +
-            'padding:2px 8px !important;' +
-            'max-width:100% !important;' +
-            'word-break:break-word !important;' +
-          '}' +
-          
-          /* Deco + CTA */
-          '.bio-deco{display:none !important}' +
-          '.bio-cta-float{display:none !important}' +
-          
-          /* Header */
-          '.bio-header{' +
-            'overflow:visible !important;' +
-            'max-width:100% !important;' +
-          '}' +
-          '.bio-header > *{' +
-            'max-width:96% !important;' +
-            'box-sizing:border-box !important;' +
-          '}' +
-          
-          '</style>';
-        html = html.replace(/<\/head>/i, previewCSS + '</head>');
-      }
-      return html;
-    };
-    console.log("✅ Preview v95 patched (auto-fit)");
-    return true;
-  }catch(e){
-    console.warn("patchPreviewResponsive:", e);
-    return false;
-  }
-}
-
-// Retry
-var tries = 0;
-(function retry(){
-  tries++;
-  if(patchPreviewResponsive() || tries > 20) return;
-  setTimeout(retry, 500);
-})();
-setTimeout(patchPreviewResponsive, 2500);
-setTimeout(patchPreviewResponsive, 5000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   PART 3 — AUTO-FIT PREVIEW (deteksi ukuran + update CSS var)
-   ═══════════════════════════════════════════════════════════ */
-function autoFitPreview(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var frame = document.getElementById("prev-frame");
-    if(!frame) return;
-    
-    var phone = frame.closest(".preview-phone");
-    if(!phone) return;
-    
-    // Tunggu iframe load
-    setTimeout(function(){
-      try{
-        var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
-        if(!doc) return;
-        
-        var frameRect = frame.getBoundingClientRect();
-        var frameW = frameRect.width;
-        var frameH = frameRect.height;
-        
-        if(frameW < 50 || frameH < 50) return;
-        
-        // Ambil tinggi konten asli
-        var bodyH = doc.body ? doc.body.scrollHeight : 800;
-        var bodyW = doc.body ? doc.body.scrollWidth : 420;
-        
-        // Hitung scale: fit WIDTH & HEIGHT
-        var scaleW = frameW / Math.max(bodyW, 420);
-        var scaleH = frameH / Math.max(bodyH, 900);
-        var scale = Math.min(scaleW, scaleH);
-        
-        // Clamp
-        scale = Math.max(0.4, Math.min(1.2, scale));
-        
-        // Update CSS variable di iframe
-        doc.documentElement.style.setProperty("--vs-scale", scale);
-        
-        console.log("📱 Auto-fit scale:", Math.round(scale * 100) + "%", "(frame:", Math.round(frameW) + "x" + Math.round(frameH) + ")");
-      }catch(e){ console.warn("autoFit:", e); }
-    }, 1200);
-  }catch(e){}
-}
-
-// Trigger
-setTimeout(autoFitPreview, 1500);
-setTimeout(autoFitPreview, 3500);
-setTimeout(autoFitPreview, 5500);
-
-// Resize listener (rotate HP / resize window)
-var resizeTO;
-window.addEventListener("resize", function(){
-  clearTimeout(resizeTO);
-  resizeTO = setTimeout(autoFitPreview, 300);
-});
-
-// Orientation change (rotate HP)
-window.addEventListener("orientationchange", function(){
-  clearTimeout(resizeTO);
-  resizeTO = setTimeout(autoFitPreview, 500);
-});
-
-// Hash change (pindah halaman)
-window.addEventListener("hashchange", function(){
-  setTimeout(autoFitPreview, 1000);
-});
-
-
-/* ═══════════════════════════════════════════════════════════
-   PART 4 — OBSERVER (kalau preview re-render)
-   ═══════════════════════════════════════════════════════════ */
-try{
-  var previewObs = new MutationObserver(function(muts){
-    muts.forEach(function(m){
-      m.addedNodes.forEach(function(n){
-        if(n.nodeType === 1){
-          if(n.id === "prev-frame"){
-            setTimeout(autoFitPreview, 1500);
-          }
-          if(n.querySelector && n.querySelector("#prev-frame")){
-            setTimeout(autoFitPreview, 1500);
-          }
-        }
-      });
-    });
-  });
-  previewObs.observe(document.body, { childList: true, subtree: true });
-}catch(e){}
-
-
-/* ═══════════════════════════════════════════════════════════
-   PART 5 — MANUAL REFRESH (kalau user butuh)<!-- ═══════════════════════════════════════════════════════════════
      PATCH v9.6 — PREVIEW IFRAME URL (SIMPLE + AKURAT)
      Preview = iframe load URL bio publik → identik HP asli
      by Varoo
@@ -25540,5 +24490,1481 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END PATCH v9.6 ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v10.0 — IKLAN VIDEO SYSTEM — PART 1/2
+     Dev Panel Iklan Manager + User Viewer
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="iklan-v10-css">
+/* ═══════════════════════════════════════════════════════════
+   DEV PANEL — IKLAN MANAGER
+   ═══════════════════════════════════════════════════════════ */
+.iklan-mgr-wrap{
+  max-width:900px;margin:0 auto;padding:0 18px 60px;
+}
+.iklan-mgr-head{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;flex-wrap:wrap;margin-bottom:16px;
+}
+.iklan-mgr-head .title{
+  font-size:13px;font-weight:900;text-transform:uppercase;
+  background:var(--ink);color:var(--yellow);
+  padding:6px 14px;border-radius:6px;letter-spacing:.5px;
+}
+.iklan-mgr-add{
+  padding:10px 16px;
+  background:#22c55e;color:#fff;
+  border:2.5px solid var(--ink);border-radius:10px;
+  font-weight:900;font-size:12px;text-transform:uppercase;
+  letter-spacing:.3px;cursor:pointer;font-family:inherit;
+  box-shadow:3px 3px 0 var(--ink);
+  transition:transform .1s, box-shadow .1s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.iklan-mgr-add:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+
+.iklan-mgr-list{display:flex;flex-direction:column;gap:14px}
+.iklan-card{
+  background:var(--white);border:2.5px solid var(--ink);
+  border-radius:12px;padding:14px;
+  box-shadow:4px 4px 0 var(--ink);
+  display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;
+}
+.iklan-card.inactive{opacity:.6;background:#f5f5f5}
+.iklan-card .ik-thumb{
+  width:160px;height:90px;
+  background:#0a0a0a;border:2px solid var(--ink);
+  border-radius:8px;overflow:hidden;flex-shrink:0;
+  position:relative;
+}
+.iklan-card .ik-thumb video,
+.iklan-card .ik-thumb img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.iklan-card .ik-thumb .ik-badge{
+  position:absolute;top:4px;right:4px;
+  background:#ff2a2a;color:#fff;
+  font-size:9px;font-weight:900;
+  padding:2px 6px;border-radius:4px;
+  text-transform:uppercase;letter-spacing:.3px;
+  border:1.5px solid #0a0a0a;
+}
+.iklan-card .ik-thumb .ik-badge.on{background:#22c55e}
+.iklan-card .ik-info{flex:1;min-width:200px}
+.iklan-card .ik-info .ik-title{
+  font-size:14px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  margin-bottom:6px;
+}
+.iklan-card .ik-info .ik-meta{
+  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;
+}
+.iklan-card .ik-info .ik-meta span{
+  font-size:10.5px;font-weight:700;
+  background:var(--cream);border:1.5px solid var(--ink);
+  padding:2px 8px;border-radius:999px;
+}
+.iklan-card .ik-info .ik-url{
+  font-size:10.5px;font-weight:600;
+  color:var(--ink-soft);word-break:break-all;
+  margin-bottom:8px;
+}
+.iklan-card .ik-actions{
+  display:flex;gap:6px;flex-wrap:wrap;width:100%;
+}
+.iklan-card .ik-actions button{
+  flex:1;min-width:100px;padding:8px 12px;
+  border:2px solid var(--ink);border-radius:8px;
+  font-size:11.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s;
+}
+.iklan-card .ik-actions button:hover{transform:translate(-1px,-1px)}
+.iklan-card .ik-actions .ik-edit{background:#ffd700;color:var(--ink)}
+.iklan-card .ik-actions .ik-toggle{background:#2563eb;color:#fff}
+.iklan-card .ik-actions .ik-toggle.on{background:#f59e0b;color:#fff}
+.iklan-card .ik-actions .ik-del{background:#ff2a2a;color:#fff}
+
+.iklan-mgr-empty{
+  text-align:center;padding:40px 20px;
+  background:var(--white);border:2.5px dashed var(--ink-soft);
+  border-radius:12px;
+  color:var(--ink-soft);font-weight:600;font-size:13px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL FORM IKLAN
+   ═══════════════════════════════════════════════════════════ */
+.iklan-form{
+  padding:4px;
+}
+.iklan-form h3{
+  font-size:16px;font-weight:900;text-transform:uppercase;
+  margin-bottom:14px;letter-spacing:-.3px;
+  display:flex;align-items:center;gap:8px;
+}
+.iklan-form .if-field{margin-bottom:14px}
+.iklan-form label{
+  display:block;font-size:11.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--ink);margin-bottom:6px;
+}
+.iklan-form input[type=text],
+.iklan-form input[type=number]{
+  width:100%;padding:10px 12px;
+  border:2px solid var(--ink);border-radius:8px;
+  background:var(--cream);font-size:13px;
+  font-weight:600;font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.iklan-form .if-hint{
+  font-size:10.5px;font-weight:600;
+  color:var(--ink-soft);margin-top:4px;
+}
+.iklan-form .if-tabs{
+  display:flex;gap:6px;margin-bottom:8px;
+}
+.iklan-form .if-tab{
+  flex:1;padding:8px 12px;
+  border:2px solid var(--ink);border-radius:8px;
+  background:var(--white);color:var(--ink);
+  font-size:11px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:2px 2px 0 var(--ink);
+  transition:transform .1s;
+}
+.iklan-form .if-tab:hover{transform:translate(-1px,-1px)}
+.iklan-form .if-tab.active{background:#ffd700}
+.iklan-form .if-pane{display:none}
+.iklan-form .if-pane.active{display:block}
+.iklan-form .if-upload-zone{
+  border:2.5px dashed var(--ink);
+  border-radius:10px;padding:24px;
+  text-align:center;cursor:pointer;
+  background:var(--cream);
+  transition:all .15s;
+}
+.iklan-form .if-upload-zone:hover{
+  background:#ffd700;border-style:solid;
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.iklan-form .if-upload-zone .icon{
+  font-size:36px;margin-bottom:8px;
+}
+.iklan-form .if-upload-zone p{
+  font-size:12.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  margin-bottom:4px;
+}
+.iklan-form .if-upload-zone small{
+  font-size:10.5px;font-weight:600;
+  color:var(--ink-soft);
+}
+.iklan-form .if-upload-zone input[type=file]{display:none}
+.iklan-form .if-preview{
+  margin-top:10px;padding:8px;
+  background:#0a0a0a;border:2px solid var(--ink);
+  border-radius:8px;display:none;
+}
+.iklan-form .if-preview.show{display:block}
+.iklan-form .if-preview video,
+.iklan-form .if-preview iframe{
+  width:100%;aspect-ratio:16/9;border-radius:6px;
+  display:block;background:#000;
+}
+.iklan-form .if-checkbox{
+  display:flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;cursor:pointer;
+  padding:10px 12px;
+  background:var(--cream);border:2px solid var(--ink);
+  border-radius:8px;
+}
+.iklan-form .if-checkbox input{
+  width:18px;height:18px;flex-shrink:0;
+}
+.iklan-form .if-actions{
+  display:flex;gap:8px;margin-top:14px;
+  padding-top:14px;border-top:2px solid var(--cream-2);
+}
+.iklan-form .if-actions button{
+  flex:1;padding:12px;
+  font-size:12.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  border:2.5px solid var(--ink);border-radius:10px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:3px 3px 0 var(--ink);
+  transition:transform .1s;
+}
+.iklan-form .if-actions button:hover{transform:translate(-1px,-1px)}
+.iklan-form .if-actions .if-save{background:#22c55e;color:#fff}
+.iklan-form .if-actions .if-cancel{background:var(--cream);color:var(--ink);flex:0 0 auto;padding:12px 20px}
+
+/* ═══════════════════════════════════════════════════════════
+   IKLAN VIEWER (user)
+   ═══════════════════════════════════════════════════════════ */
+.iklan-viewer-modal{padding:4px;text-align:center}
+.iklan-viewer-modal h3{
+  font-size:18px;font-weight:900;text-transform:uppercase;
+  letter-spacing:-.3px;margin-bottom:6px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.iklan-viewer-modal .iv-sub{
+  font-size:12.5px;font-weight:600;color:var(--ink-soft);
+  margin-bottom:14px;line-height:1.5;
+}
+.iklan-viewer-modal .iv-player{
+  width:100%;aspect-ratio:16/9;
+  background:#000;border:3px solid var(--ink);
+  border-radius:12px;overflow:hidden;
+  box-shadow:5px 5px 0 var(--ink);
+  position:relative;margin-bottom:14px;
+}
+.iklan-viewer-modal .iv-player video,
+.iklan-viewer-modal .iv-player iframe{
+  width:100%;height:100%;display:block;
+  border:none;background:#000;
+}
+.iklan-viewer-modal .iv-link-btn{
+  position:absolute;bottom:10px;right:10px;
+  background:#ffd700;color:#0a0a0a;
+  border:2.5px solid var(--ink);border-radius:8px;
+  padding:8px 14px;
+  font-size:11.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:3px 3px 0 var(--ink);
+  display:none;
+  transition:transform .1s;
+  z-index:10;
+}
+.iklan-viewer-modal .iv-link-btn.show{display:inline-flex;align-items:center;gap:5px}
+.iklan-viewer-modal .iv-link-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+
+.iklan-viewer-modal .iv-countdown{
+  font-size:44px;font-weight:900;
+  font-family:var(--mono);line-height:1;
+  color:var(--ink);margin:14px 0;
+  letter-spacing:-2px;
+  animation:ivPulse 1s ease-in-out infinite;
+}
+@keyframes ivPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+.iklan-viewer-modal .iv-progress{
+  height:10px;background:var(--cream-2);
+  border:2px solid var(--ink);border-radius:999px;
+  overflow:hidden;margin-bottom:14px;
+}
+.iklan-viewer-modal .iv-progress-fill{
+  height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);
+  width:0%;transition:width 1s linear;
+}
+
+.iklan-viewer-modal .iv-claim-btn{
+  width:100%;padding:14px;
+  background:var(--ink);color:var(--yellow);
+  border:2.5px solid var(--ink);border-radius:10px;
+  font-size:14px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px;
+  cursor:pointer;font-family:inherit;
+  box-shadow:4px 4px 0 var(--yellow);
+  transition:transform .1s, box-shadow .1s;
+  margin-top:6px;
+}
+.iklan-viewer-modal .iv-claim-btn:disabled{
+  opacity:.4;cursor:not-allowed;
+  transform:none !important;
+  box-shadow:4px 4px 0 var(--yellow) !important;
+}
+.iklan-viewer-modal .iv-claim-btn:not(:disabled):hover{
+  transform:translate(-1px,-1px);
+  box-shadow:5px 5px 0 var(--yellow);
+}
+.iklan-viewer-modal .iv-claim-btn.ready{
+  background:#22c55e;color:#fff;
+  box-shadow:4px 4px 0 var(--ink);
+}
+
+.iklan-viewer-modal .iv-loading{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 20px;text-align:center;
+}
+.iklan-viewer-modal .iv-loading .spinner{
+  width:50px;height:50px;
+  border:4px solid var(--cream-2);
+  border-top-color:#ffd700;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin-bottom:12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══════════════════════════════════════════════════════════
+   TOMBOL IKLAN DI DASHBOARD
+   ═══════════════════════════════════════════════════════════ */
+.kb-actions .btn-iklan{
+  background:#ff2a2a;
+  color:#fff;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.kb-actions .btn-iklan .count{
+  background:rgba(255,255,255,.25);
+  padding:1px 6px;border-radius:4px;
+  font-size:10px;font-weight:900;
+}
+</style>
+
+<script id="iklan-v10-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v10.0 — IKLAN SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🎬 IKLAN v10 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+var CLOUDINARY = {
+  cloudName: "lcceusqr",
+  uploadPreset: "Varlinkbio",
+  folder: "varlinkbio/iklan",
+  maxSizeMB: 25
+};
+
+var IKLAN_COLLECTION = "iklan";
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — IKLAN DATABASE (Firestore)
+   ═══════════════════════════════════════════════════════════ */
+var IklanDB = {
+  async list(){
+    try{
+      var snap = await FB.db.collection(IKLAN_COLLECTION).get();
+      var arr = [];
+      snap.forEach(function(d){ arr.push({ id:d.id, ...d.data() }); });
+      arr.sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); });
+      return arr;
+    }catch(e){
+      console.warn("IklanDB.list:", e);
+      return [];
+    }
+  },
+  
+  async listActive(){
+    try{
+      var snap = await FB.db.collection(IKLAN_COLLECTION).where("active","==",true).get();
+      var arr = [];
+      snap.forEach(function(d){ arr.push({ id:d.id, ...d.data() }); });
+      return arr;
+    }catch(e){
+      console.warn("IklanDB.listActive:", e);
+      return [];
+    }
+  },
+  
+  async get(id){
+    try{
+      var doc = await FB.db.collection(IKLAN_COLLECTION).doc(id).get();
+      if(doc.exists) return { id:doc.id, ...doc.data() };
+      return null;
+    }catch(e){ return null; }
+  },
+  
+  async save(data){
+    try{
+      var id = data.id;
+      var payload = {
+        title: String(data.title || "Iklan").trim(),
+        videoUrl: String(data.videoUrl || "").trim(),
+        videoType: data.videoType || "url", // "upload" | "url"
+        targetUrl: String(data.targetUrl || "").trim(),
+        duration: 30,
+        reward: parseInt(data.reward) || 25,
+        active: data.active !== false,
+        createdAt: data.createdAt || Date.now(),
+        updatedAt: Date.now(),
+        createdBy: (window.Auth && Auth.current) ? Auth.current.email : "unknown"
+      };
+      
+      if(id){
+        await FB.db.collection(IKLAN_COLLECTION).doc(id).update(payload);
+        return { id: id, ...payload };
+      } else {
+        var ref = await FB.db.collection(IKLAN_COLLECTION).add(payload);
+        return { id: ref.id, ...payload };
+      }
+    }catch(e){
+      console.error("IklanDB.save:", e);
+      throw e;
+    }
+  },
+  
+  async remove(id){
+    try{
+      await FB.db.collection(IKLAN_COLLECTION).doc(id).delete();
+      return true;
+    }catch(e){ throw e; }
+  },
+  
+  async toggle(id, active){
+    try{
+      await FB.db.collection(IKLAN_COLLECTION).doc(id).update({ active: active });
+      return true;
+    }catch(e){ throw e; }
+  }
+};
+
+window.IklanDB = IklanDB;
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — CLOUDINARY UPLOAD (video)
+   ═══════════════════════════════════════════════════════════ */
+function uploadVideoToCloudinary(file, onProgress){
+  return new Promise(function(resolve, reject){
+    if(!file) return reject(new Error("File kosong"));
+    
+    var sizeMB = file.size / (1024 * 1024);
+    if(sizeMB > CLOUDINARY.maxSizeMB){
+      return reject(new Error("Video max " + CLOUDINARY.maxSizeMB + "MB (file: " + sizeMB.toFixed(1) + "MB)"));
+    }
+    
+    var formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY.uploadPreset);
+    formData.append("folder", CLOUDINARY.folder);
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.cloudinary.com/v1_1/" + CLOUDINARY.cloudName + "/video/upload");
+    
+    xhr.upload.onprogress = function(e){
+      if(e.lengthComputable && onProgress){
+        onProgress(Math.round((e.loaded / e.total) * 100));
+      }
+    };
+    
+    xhr.onload = function(){
+      if(xhr.status === 200){
+        try{
+          var data = JSON.parse(xhr.responseText);
+          resolve({
+            url: data.secure_url,
+            publicId: data.public_id,
+            duration: data.duration || 0,
+            bytes: data.bytes
+          });
+        }catch(e){ reject(new Error("Response error")); }
+      } else {
+        var errMsg = "Upload gagal (HTTP " + xhr.status + ")";
+        try{
+          var errData = JSON.parse(xhr.responseText);
+          if(errData.error && errData.error.message) errMsg = errData.error.message;
+        }catch(e){}
+        reject(new Error(errMsg));
+      }
+    };
+    xhr.onerror = function(){ reject(new Error("Network error")); };
+    xhr.send(formData);
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — DETEKSI URL VIDEO
+   ═══════════════════════════════════════════════════════════ */
+function detectVideoType(url){
+  if(!url) return "unknown";
+  var u = url.toLowerCase();
+  if(u.indexOf("youtube.com") !== -1 || u.indexOf("youtu.be") !== -1) return "youtube";
+  if(u.indexOf("vimeo.com") !== -1) return "vimeo";
+  if(u.indexOf("tiktok.com") !== -1) return "tiktok";
+  if(u.indexOf(".mp4") !== -1 || u.indexOf(".webm") !== -1 || u.indexOf(".mov") !== -1) return "direct";
+  if(u.indexOf("cloudinary.com") !== -1) return "direct";
+  return "direct";
+}
+
+function getEmbedUrl(url){
+  if(!url) return "";
+  var u = url.toLowerCase();
+  
+  // YouTube
+  var yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if(yt) return "https://www.youtube.com/embed/" + yt[1] + "?autoplay=0&rel=0";
+  
+  // Vimeo
+  var vm = url.match(/vimeo\.com\/(\d+)/);
+  if(vm) return "https://player.vimeo.com/video/" + vm[1];
+  
+  // Direct
+  return url;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — DEV PANEL: IKLAN MANAGER
+   ═══════════════════════════════════════════════════════════ */
+var IklanManager = {
+  async render(){
+    var wrap = document.getElementById("dev-content");
+    if(!wrap) return;
+    
+    wrap.innerHTML = '<div class="iklan-mgr-wrap"><div class="iklan-mgr-empty">⏳ Memuat iklan...</div></div>';
+    
+    try{
+      var list = await IklanDB.list();
+      
+      var html = '<div class="iklan-mgr-wrap">';
+      html += '<div class="iklan-mgr-head">';
+      html += '<div class="title">🎬 ' + list.length + ' Iklan</div>';
+      html += '<button class="iklan-mgr-add" id="iklan-add-btn">➕ Tambah Iklan</button>';
+      html += '</div>';
+      
+      if(!list.length){
+        html += '<div class="iklan-mgr-empty">😶 Belum ada iklan. Klik "Tambah Iklan" buat mulai.</div>';
+      } else {
+        html += '<div class="iklan-mgr-list">';
+        list.forEach(function(ik){
+          var videoSrc = ik.videoType === "url" ? getEmbedUrl(ik.videoUrl) : ik.videoUrl;
+          var isEmbed = detectVideoType(ik.videoUrl) === "youtube" || detectVideoType(ik.videoUrl) === "vimeo";
+          
+          html += '<div class="iklan-card ' + (ik.active ? '' : 'inactive') + '">';
+          html += '<div class="ik-thumb">';
+          if(ik.videoUrl){
+            if(isEmbed){
+              html += '<iframe src="' + videoSrc.replace(/"/g,"&quot;") + '" loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
+            } else {
+              html += '<video src="' + videoSrc.replace(/"/g,"&quot;") + '" muted preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>';
+            }
+          } else {
+            html += '<div style="display:grid;place-items:center;height:100%;color:#fff;font-size:32px">🎬</div>';
+          }
+          html += '<div class="ik-badge ' + (ik.active ? 'on' : '') + '">' + (ik.active ? 'AKTIF' : 'OFF') + '</div>';
+          html += '</div>';
+          
+          html += '<div class="ik-info">';
+          html += '<div class="ik-title">' + escapeHtml(ik.title || "Tanpa judul") + '</div>';
+          html += '<div class="ik-meta">';
+          html += '<span>⏱️ ' + (ik.duration || 30) + 's</span>';
+          html += '<span>💰 ' + (ik.reward || 25) + ' kredit</span>';
+          html += '<span>📅 ' + new Date(ik.createdAt || Date.now()).toLocaleDateString("id-ID") + '</span>';
+          html += '</div>';
+          if(ik.targetUrl){
+            html += '<div class="ik-url">🔗 ' + escapeHtml(ik.targetUrl) + '</div>';
+          }
+          html += '</div>';
+          
+          html += '<div class="ik-actions">';
+          html += '<button class="ik-edit" data-id="' + ik.id + '">✏️ Edit</button>';
+          html += '<button class="ik-toggle ' + (ik.active ? 'on' : '') + '" data-id="' + ik.id + '" data-active="' + (ik.active ? '1' : '0') + '">' + (ik.active ? '⏸️ Nonaktifkan' : '▶️ Aktifkan') + '</button>';
+          html += '<button class="ik-del" data-id="' + ik.id + '">🗑️ Hapus</button>';
+          html += '</div>';
+          
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+      
+      wrap.innerHTML = html;
+      
+      // Bind events
+      var addBtn = document.getElementById("iklan-add-btn");
+      if(addBtn) addBtn.addEventListener("click", function(){
+        IklanManager.openForm(null);
+      });
+      
+      wrap.querySelectorAll(".ik-edit").forEach(function(btn){
+        btn.addEventListener("click", async function(){
+          var ik = await IklanDB.get(btn.dataset.id);
+          if(ik) IklanManager.openForm(ik);
+        });
+      });
+      
+      wrap.querySelectorAll(".ik-del").forEach(function(btn){
+        btn.addEventListener("click", async function(){
+          if(!confirm("Hapus iklan ini?")) return;
+          try{
+            await IklanDB.remove(btn.dataset.id);
+            if(window.toast) toast("Iklan dihapus ✓","success");
+            IklanManager.render();
+          }catch(e){ if(window.toast) toast("Gagal: " + e.message,"error"); }
+        });
+      });
+      
+      wrap.querySelectorAll(".ik-toggle").forEach(function(btn){
+        btn.addEventListener("click", async function(){
+          var newActive = btn.dataset.active === "1" ? false : true;
+          try{
+            await IklanDB.toggle(btn.dataset.id, newActive);
+            if(window.toast) toast(newActive ? "Iklan diaktifkan ✓" : "Iklan dinonaktifkan","success");
+            IklanManager.render();
+          }catch(e){ if(window.toast) toast("Gagal: " + e.message,"error"); }
+        });
+      });
+      
+    }catch(e){
+      wrap.innerHTML = '<div class="iklan-mgr-wrap"><div class="iklan-mgr-empty">😵 ' + escapeHtml(e.message) + '</div></div>';
+    }
+  },
+  
+  openForm(iklan){
+    var isEdit = !!iklan;
+    var ik = iklan || {
+      title:"", videoUrl:"", videoType:"url",
+      targetUrl:"", duration:30, reward:25, active:true
+    };
+    
+    var html = '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>' +
+      '<div class="iklan-form">' +
+      '<h3>🎬 ' + (isEdit ? 'Edit' : 'Tambah') + ' Iklan</h3>' +
+      
+      '<div class="if-field">' +
+      '<label>📝 Judul Iklan</label>' +
+      '<input type="text" id="if-title" value="' + escapeHtml(ik.title||"") + '" placeholder="Contoh: Promo Kue Bandung"/>' +
+      '</div>' +
+      
+      '<div class="if-field">' +
+      '<label>🎬 Sumber Video</label>' +
+      '<div class="if-tabs">' +
+      '<button class="if-tab active" data-tab="url" type="button">🔗 Paste URL</button>' +
+      '<button class="if-tab" data-tab="upload" type="button">📤 Upload File</button>' +
+      '</div>' +
+      
+      '<div class="if-pane active" data-pane="url">' +
+      '<input type="text" id="if-video-url" value="' + escapeHtml(ik.videoType === "url" ? ik.videoUrl : "") + '" placeholder="https://youtube.com/watch?v=... atau https://...mp4"/>' +
+      '<div class="if-hint">Support: YouTube, Vimeo, TikTok, MP4 direct, Cloudinary</div>' +
+      '</div>' +
+      
+      '<div class="if-pane" data-pane="upload">' +
+      '<div class="if-upload-zone" id="if-upload-zone">' +
+      '<input type="file" id="if-video-file" accept="video/*"/>' +
+      '<div class="icon">📤</div>' +
+      '<p>Klik Upload Video</p>' +
+      '<small>MP4, WebM, MOV — Max ' + CLOUDINARY.maxSizeMB + ' MB</small>' +
+      '</div>' +
+      '<div class="if-hint" id="if-upload-status"></div>' +
+      '</div>' +
+      
+      '<div class="if-preview" id="if-preview">' +
+      '<div style="font-size:10.5px;font-weight:900;color:#ffd700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">📺 Preview:</div>' +
+      '<div id="if-preview-content"></div>' +
+      '</div>' +
+      
+      '</div>' +
+      
+      '<div class="if-field">' +
+      '<label>🔗 Link Tujuan (klik video → buka link)</label>' +
+      '<input type="text" id="if-target-url" value="' + escapeHtml(ik.targetUrl||"") + '" placeholder="https://contoh.com"/>' +
+      '<div class="if-hint">Muncul tombol "Buka Link" setelah user nonton 30 detik</div>' +
+      '</div>' +
+      
+      '<div class="if-field" style="display:flex;gap:10px">' +
+      '<div style="flex:1">' +
+      '<label>⏱️ Durasi (detik)</label>' +
+      '<input type="number" id="if-duration" value="' + (ik.duration||30) + '" min="5" max="120" readonly/>' +
+      '<div class="if-hint">Fixed 30 detik</div>' +
+      '</div>' +
+      '<div style="flex:1">' +
+      '<label>💰 Reward (kredit)</label>' +
+      '<input type="number" id="if-reward" value="' + (ik.reward||25) + '" min="5" max="500"/>' +
+      '</div>' +
+      '</div>' +
+      
+      '<div class="if-field">' +
+      '<label class="if-checkbox">' +
+      '<input type="checkbox" id="if-active" ' + (ik.active ? 'checked' : '') + '/>' +
+      '✅ Aktifkan iklan ini' +
+      '</label>' +
+      '</div>' +
+      
+      '<div class="if-actions">' +
+      '<button class="if-cancel" type="button" onclick="this.closest(\'.modal-back\').remove()">Batal</button>' +
+      '<button class="if-save" id="if-save" type="button">💾 Simpan</button>' +
+      '</div>' +
+      
+      '</div>';
+    
+    var m = window.openModal(html);
+    if(!m) return;
+    
+    var modalRoot = m.querySelector(".modal");
+    if(modalRoot){
+      modalRoot.style.maxWidth = "560px";
+      modalRoot.style.width = "95%";
+    }
+    
+    // Tab switching
+    var currentVideoType = ik.videoType || "url";
+    var currentVideoUrl = ik.videoUrl || "";
+    
+    m.querySelectorAll(".if-tab").forEach(function(tab){
+      tab.addEventListener("click", function(){
+        m.querySelectorAll(".if-tab").forEach(function(t){ t.classList.remove("active"); });
+        tab.classList.add("active");
+        var target = tab.dataset.tab;
+        currentVideoType = target;
+        m.querySelectorAll(".if-pane").forEach(function(p){
+          p.classList.toggle("active", p.dataset.pane === target);
+        });
+      });
+    });
+    
+    // Set initial tab
+    if(currentVideoType === "upload"){
+      m.querySelectorAll(".if-tab").forEach(function(t){
+        t.classList.toggle("active", t.dataset.tab === "upload");
+      });
+      m.querySelectorAll(".if-pane").forEach(function(p){
+        p.classList.toggle("active", p.dataset.pane === "upload");
+      });
+    }
+    
+    // Preview existing video
+    function updatePreview(url){
+      var previewEl = document.getElementById("if-preview");
+      var contentEl = document.getElementById("if-preview-content");
+      if(!previewEl || !contentEl) return;
+      
+      if(!url){
+        previewEl.classList.remove("show");
+        contentEl.innerHTML = "";
+        return;
+      }
+      
+      var type = detectVideoType(url);
+      previewEl.classList.add("show");
+      
+      if(type === "youtube" || type === "vimeo"){
+        contentEl.innerHTML = '<iframe src="' + getEmbedUrl(url).replace(/"/g,"&quot;") + '" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;border-radius:6px;display:block;background:#000"></iframe>';
+      } else {
+        contentEl.innerHTML = '<video src="' + url.replace(/"/g,"&quot;") + '" controls muted style="width:100%;aspect-ratio:16/9;border-radius:6px;display:block;background:#000"></video>';
+      }
+    }
+    
+    if(currentVideoUrl) updatePreview(currentVideoUrl);
+    
+    // URL input change
+    var urlInput = document.getElementById("if-video-url");
+    if(urlInput){
+      urlInput.addEventListener("change", function(){
+        currentVideoUrl = this.value.trim();
+        updatePreview(currentVideoUrl);
+      });
+    }
+    
+    // Upload zone
+    var uploadZone = document.getElementById("if-upload-zone");
+    var fileInput = document.getElementById("if-video-file");
+    var uploadStatus = document.getElementById("if-upload-status");
+    
+    if(uploadZone && fileInput){
+      uploadZone.addEventListener("click", function(){ fileInput.click(); });
+      
+      fileInput.addEventListener("change", async function(e){
+        var f = e.target.files[0];
+        if(!f) return;
+        
+        var sizeMB = f.size / (1024 * 1024);
+        if(sizeMB > CLOUDINARY.maxSizeMB){
+          if(window.toast) toast("Video max " + CLOUDINARY.maxSizeMB + "MB","error");
+          return;
+        }
+        
+        uploadStatus.textContent = "⏳ Uploading... 0%";
+        
+        try{
+          var result = await uploadVideoToCloudinary(f, function(pct){
+            uploadStatus.textContent = "⏳ Uploading... " + pct + "%";
+          });
+          currentVideoUrl = result.url;
+          currentVideoType = "upload";
+          uploadStatus.textContent = "✅ Upload sukses!";
+          updatePreview(result.url);
+        }catch(err){
+          uploadStatus.textContent = "❌ " + err.message;
+          if(window.toast) toast("Gagal upload: " + err.message,"error");
+        }
+      });
+    }
+    
+    // Save button
+    var saveBtn = document.getElementById("if-save");
+    if(saveBtn){
+      saveBtn.addEventListener("click", async function(){
+        var title = (document.getElementById("if-title")?.value || "").trim();
+        var targetUrl = (document.getElementById("if-target-url")?.value || "").trim();
+        var reward = parseInt(document.getElementById("if-reward")?.value) || 25;
+        var active = document.getElementById("if-active")?.checked;
+        
+        // Ambil video URL sesuai tab
+        var videoUrl = currentVideoUrl;
+        if(currentVideoType === "url"){
+          var urlVal = document.getElementById("if-video-url")?.value;
+          if(urlVal && urlVal.trim()) videoUrl = urlVal.trim();
+        }
+        
+        if(!title){
+          if(window.toast) toast("Judul wajib diisi","error");
+          return;
+        }
+        if(!videoUrl){
+          if(window.toast) toast("Video wajib diisi","error");
+          return;
+        }
+        
+        saveBtn.disabled = true;
+        saveBtn.textContent = "⏳ Menyimpan...";
+        
+        try{
+          await IklanDB.save({
+            id: ik.id || null,
+            title: title,
+            videoUrl: videoUrl,
+            videoType: currentVideoType,
+            targetUrl: targetUrl,
+            duration: 30,
+            reward: reward,
+            active: active,
+            createdAt: ik.createdAt
+          });
+          
+          if(window.toast) toast("✅ Iklan tersimpan!","success");
+          if(window.Sound && Sound.tada) Sound.tada();
+          m.remove();
+          IklanManager.render();
+        }catch(e){
+          saveBtn.disabled = false;
+          saveBtn.textContent = "💾 Simpan";
+          if(window.toast) toast("Gagal: " + e.message,"error");
+        }
+      });
+    }
+  }
+};
+
+window.IklanManager = IklanManager;
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — USER: IKLAN VIEWER
+   ═══════════════════════════════════════════════════════════ */
+var IklanViewer = {
+  _timer:null,
+  _countdown:0,
+  _current:null,
+  
+  async open(){
+    if(!window.Auth || !Auth.current){
+      if(window.toast) toast("Login dulu","error");
+      return;
+    }
+    
+    // Cek limit
+    if(!this._canWatch()){
+      if(window.toast) toast("Max " + (window.IKLAN_MAX_PER_DAY || 5) + " iklan/hari. Coba besok!","error");
+      return;
+    }
+    
+    // Buka modal loading
+    var m = window.openModal(
+      '<button class="close-x" id="iv-close">×</button>' +
+      '<div class="iklan-viewer-modal">' +
+      '<div class="iv-loading">' +
+      '<div class="spinner"></div>' +
+      '<div style="font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px">Memuat Iklan...</div>' +
+      '</div>' +
+      '</div>'
+    );
+    if(!m) return;
+    
+    // Ambil list iklan aktif
+    var list = await IklanDB.listActive();
+    if(!list.length){
+      m.remove();
+      if(window.toast) toast("Belum ada iklan aktif","error");
+      return;
+    }
+    
+    // Pilih random
+    var ik = list[Math.floor(Math.random() * list.length)];
+    this._current = ik;
+    
+    // Render viewer
+    this._renderViewer(m, ik);
+    
+    // Bind close
+    var closeBtn = document.getElementById("iv-close");
+    if(closeBtn) closeBtn.addEventListener("click", function(){
+      IklanViewer._stop();
+      m.remove();
+    });
+  },
+  
+  _canWatch(){
+    try{
+      var today = new Date().toISOString().slice(0,10);
+      var lastDate = STATE.iklanLastDate || "";
+      var todayCount = STATE.iklanToday || 0;
+      if(lastDate !== today) return true;
+      return todayCount < (window.IKLAN_MAX_PER_DAY || 5);
+    }catch(e){ return true; }
+  },
+  
+  _renderViewer(modal, ik){
+    var contentEl = modal.querySelector(".iklan-viewer-modal");
+    if(!contentEl) return;
+    
+    var videoType = detectVideoType(ik.videoUrl);
+    var isEmbed = (videoType === "youtube" || videoType === "vimeo");
+    
+    var videoHTML = "";
+    if(isEmbed){
+      videoHTML = '<iframe src="' + getEmbedUrl(ik.videoUrl).replace(/"/g,"&quot;") + '" allowfullscreen allow="autoplay" style="width:100%;height:100%;border:none;background:#000"></iframe>';
+    } else {
+      videoHTML = '<video src="' + ik.videoUrl.replace(/"/g,"&quot;") + '" autoplay muted playsinline preload="auto" style="width:100%;height:100%;object-fit:contain;background:#000"></video>';
+    }
+    
+    contentEl.innerHTML = 
+      '<h3>📺 ' + escapeHtml(ik.title || "Iklan") + '</h3>' +
+      '<div class="iv-sub">Nonton <b>30 detik</b> → dapat <b>' + (ik.reward || 25) + ' kredit</b></div>' +
+      '<div class="iv-player">' +
+      videoHTML +
+      (ik.targetUrl ? '<button class="iv-link-btn" id="iv-open-link">🔗 Buka Link</button>' : '') +
+      '</div>' +
+      '<div class="iv-countdown" id="iv-count">30</div>' +
+      '<div class="iv-progress"><div class="iv-progress-fill" id="iv-bar"></div></div>' +
+      '<button class="iv-claim-btn" id="iv-claim" disabled>⏳ Tunggu 30 detik...</button>';
+    
+    // Auto-play video kalau direct
+    if(!isEmbed){
+      var vid = contentEl.querySelector("video");
+      if(vid){
+        vid.muted = false;
+        vid.play().catch(function(){ 
+          vid.muted = true;
+          vid.play().catch(function(){});
+        });
+      }
+    }
+    
+    // Bind link button
+    var linkBtn = document.getElementById("iv-open-link");
+    if(linkBtn && ik.targetUrl){
+      linkBtn.addEventListener("click", function(){
+        window.open(ik.targetUrl, "_blank");
+      });
+    }
+    
+    // Show link button after 5 detik
+    if(linkBtn){
+      setTimeout(function(){
+        if(linkBtn) linkBtn.classList.add("show");
+      }, 5000);
+    }
+    
+    // Countdown
+    this._countdown = 30;
+    var self = this;
+    var countEl = document.getElementById("iv-count");
+    var barEl = document.getElementById("iv-bar");
+    var claimBtn = document.getElementById("iv-claim");
+    
+    this._timer = setInterval(function(){
+      self._countdown--;
+      if(countEl) countEl.textContent = self._countdown > 0 ? self._countdown : "✓";
+      if(barEl) barEl.style.width = ((30 - self._countdown) / 30 * 100) + "%";
+      
+      if(self._countdown <= 0){
+        self._stop();
+        if(claimBtn){
+          claimBtn.disabled = false;
+          claimBtn.textContent = "🎁 Klaim +" + (ik.reward || 25) + " Kredit";
+          claimBtn.classList.add("ready");
+        }
+        if(window.Sound && Sound.tada) Sound.tada();
+      }
+    }, 1000);
+    
+    // Claim button
+    if(claimBtn){
+      claimBtn.addEventListener("click", function(){
+        if(self._countdown > 0) return;
+        self._claim(modal, ik);
+      });
+    }
+  },
+  
+  _stop(){
+    if(this._timer){ clearInterval(this._timer); this._timer = null; }
+  },
+  
+  async _claim(modal, ik){
+    var claimBtn = document.getElementById("iv-claim");
+    if(claimBtn){ claimBtn.disabled = true; claimBtn.textContent = "⏳ Memproses..."; }
+    
+    try{
+      var reward = ik.reward || 25;
+      var today = new Date().toISOString().slice(0,10);
+      var newKredit = (STATE.kredit || 0) + reward;
+      var newCount = (STATE.iklanToday || 0) + 1;
+      var lastDate = STATE.iklanLastDate || "";
+      if(lastDate !== today) newCount = 1;
+      
+      await FB.db.collection("users").doc(Auth.current.uid).update({
+        kredit: newKredit,
+        iklanToday: newCount,
+        iklanLastDate: today
+      });
+      
+      STATE.kredit = newKredit;
+      STATE.iklanToday = newCount;
+      STATE.iklanLastDate = today;
+      
+      if(window.Sound && Sound.tada) Sound.tada();
+      if(window.toast) toast("🎁 +" + reward + " kredit!","success");
+      
+      modal.remove();
+      
+      // Update kredit badge
+      var kb = document.getElementById("btn-kredit-top");
+      if(kb) kb.innerHTML = (window.ico ? ico('coins','ic-sm') : '') + " " + newKredit;
+      
+    }catch(e){
+      if(window.toast) toast("Gagal klaim: " + e.message,"error");
+      if(claimBtn){ claimBtn.disabled = false; claimBtn.textContent = "🎁 Klaim Kredit"; }
+    }
+  }
+};
+
+window.IklanViewer = IklanViewer;
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — HOOK KE DASHBOARD (ganti tombol iklan)
+   ═══════════════════════════════════════════════════════════ */
+function hookDashboardIklanBtn(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/dashboard") return;
+    
+    var btn = document.getElementById("btn-watch-iklan");
+    if(!btn) return;
+    if(btn.dataset.v10Hooked === "1") return;
+    btn.dataset.v10Hooked = "1";
+    
+    // Clone buat hapus listener lama
+    var newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    newBtn.addEventListener("click", function(){
+      if(window.Sound && Sound.click) Sound.click();
+      IklanViewer.open();
+    });
+    
+    console.log("✅ Dashboard iklan btn hooked");
+  }catch(e){}
+}
+
+setInterval(hookDashboardIklanBtn, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(hookDashboardIklanBtn, 500); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 7 — HOOK KE DEV PANEL (tambah tab)
+   ═══════════════════════════════════════════════════════════ */
+function hookDevPanelIklan(){
+  try{
+    var tabsWrap = document.getElementById("dev-tabs");
+    if(!tabsWrap) return;
+    
+    if(!document.getElementById("dev-tab-iklan-added")){
+      var tab = document.createElement("div");
+      tab.className = "dev-tab";
+      tab.dataset.tab = "iklan";
+      tab.id = "dev-tab-iklan-added";
+      tab.textContent = "🎬 Iklan";
+      tabsWrap.appendChild(tab);
+      
+      tab.addEventListener("click", function(){
+        document.querySelectorAll("#dev-tabs .dev-tab").forEach(function(t){ t.classList.remove("active"); });
+        tab.classList.add("active");
+        if(window.PageDev && window.PageDev.state) window.PageDev.state.tab = "iklan";
+        IklanManager.render();
+      });
+    }
+    
+    // Hook PageDev.renderContent
+    if(window.PageDev && !window.PageDev._v10Hooked){
+      window.PageDev._v10Hooked = true;
+      var orig = window.PageDev.renderContent;
+      window.PageDev.renderContent = async function(){
+        if(this.state && this.state.tab === "iklan"){
+          return await IklanManager.render();
+        }
+        return await orig.call(this);
+      };
+    }
+  }catch(e){}
+}
+
+setInterval(hookDevPanelIklan, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(hookDevPanelIklan, 500); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════ */
+function escapeHtml(s){
+  return String(s || "").replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  🎬 PATCH v10.0 IKLAN AKTIF            ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Dev Panel → Tab Iklan               ║","color:#22c55e");
+  console.log("%c║  • Upload/URL video (max 25 MB)        ║","color:#22c55e");
+  console.log("%c║  • User viewer 30 detik                ║","color:#22c55e");
+  console.log("%c║  • Reward kredit + limit 5x/hari       ║","color:#22c55e");
+  console.log("%c║  • Klik video → buka link tujuan       ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v10.0 ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v10.0 — HELP UPDATE — PART 2/2
+     FAQ baru untuk semua fitur baru
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+     
+<script id="help-v10-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v10.0 — HELP UPDATE
+   Replace FAQ_DATA dengan versi baru + tambah kategori
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c📚 HELP v10 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — FAQ DATA BARU (LENGKAP)
+   ═══════════════════════════════════════════════════════════ */
+var FAQ_DATA_V10 = [
+  /* ═══════ AKUN ═══════ */
+  { cat:"akun", q:"Cara daftar akun?", a:'<p>Klik <b>"Daftar Gratis"</b> di beranda, isi:</p><ul><li>Nama lengkap</li><li>Email aktif</li><li>Password (min 6 karakter)</li><li>Konfirmasi password</li></ul><p>Setelah daftar → cek email untuk verifikasi.</p>' },
+  { cat:"akun", q:"Verifikasi email gak masuk?", a:'<p>Kalau email verifikasi gak masuk:</p><ul><li>Cek folder <b>Spam</b> / <b>Promosi</b></li><li>Buka <b>Settings</b> → klik <b>Kirim Ulang Email Verifikasi</b></li><li>Tunggu 1-2 menit</li><li>Kalau tetap gak masuk → chat admin</li></ul>' },
+  { cat:"akun", q:"Login Google gagal?", a:'<p>Kalau login Google gagal, kemungkinan buka link di <b>browser dalam aplikasi</b> (WA, IG, TikTok).</p><p><b>Solusi:</b></p><ol><li>Tap titik tiga <b>⋮</b></li><li>Pilih <b>"Buka di Chrome"</b></li><li>Login Google lagi</li></ol>' },
+  { cat:"akun", q:"Ganti nama / password?", a:'<p>Buka <b>Settings</b>:</p><ul><li><b>Ganti Nama</b> — isi nama baru → klik Simpan</li><li><b>Ganti Password</b> — isi password lama + baru + konfirmasi</li></ul>' },
+  { cat:"akun", q:"Logout dari device lain?", a:'<p>Buka <b>Settings</b> → scroll bawah → klik <b>Logout</b>.</p><p>Ini akan keluar dari device yang sedang dipakai. Untuk device lain, login ulang di device tersebut.</p>' },
+
+  /* ═══════ BIO ═══════ */
+  { cat:"bio", q:"Cara bikin bio pertama?", a:'<p>Dari <b>Dashboard</b>:</p><ol><li>Klik tombol <b>"Bikin Link-in-Bio Baru"</b></li><li>Kamu masuk ke <b>Editor</b></li><li>Isi nama, bio, link</li><li>Pilih tema & warna</li><li>Klik <b>Simpan</b></li></ol>' },
+  { cat:"bio", q:"Kok preview di editor kosong?", a:'<p>Preview di editor <b>otomatis load URL bio</b> kamu.</p><ul><li>Kalau bio <b>belum pernah di-save</b> → preview pakai template sementara</li><li>Setelah <b>save</b> → preview langsung load URL asli</li><li>Klik tombol <b>🔄 Refresh Preview</b> kalau perlu</li></ul>' },
+  { cat:"bio", q:"Preview beda sama yang di HP?", a:'<p>Preview pakai <b>iframe URL asli</b> — jadi 100% sama dengan yang keliatan user di HP.</p><p>Kalau beda, klik <b>🔄 Refresh Preview</b> di bawah preview phone.</p>' },
+  { cat:"bio", q:"Apa itu Featured Link?", a:'<p><b>Featured Link</b> = tombol dengan gambar + tombol. Cocok buat link promosi.</p><p><b>Fitur:</b></p><ul><li>Upload thumbnail</li><li>Drag gambar atur posisi</li><li>Slider zoom</li><li>Atur padding & rasio (16:9, 1:1, 4:3, auto)</li></ul>' },
+  { cat:"bio", q:"Cara drag posisi tombol?", a:'<p>Di editor, tombol <b>"Atur Posisi Tombol"</b> udah dihapus. Sekarang:</p><ol><li>Save bio dulu</li><li>Buka URL bio di HP asli</li><li>Kalau perlu adjust → edit lagi di editor</li></ol>' },
+  { cat:"bio", q:"Cara pakai Template Bio?", a:'<p>Di Editor:</p><ol><li>Klik tombol <b>📋 Template</b></li><li>Pilih template (Kreator, Freelancer, Toko, Musisi, dll)</li><li>Klik <b>Pakai Template Ini</b></li><li>Auto isi link + tema + warna</li></ol>' },
+  { cat:"bio", q:"Paste Banyak URL?", a:'<p>Di Editor:</p><ol><li>Klik tombol <b>📤 Paste Banyak URL</b></li><li>Paste list URL (1 per baris)</li><li>Klik <b>Tambah Semua</b></li><li>Auto-detect platform (IG, TikTok, YouTube, dll)</li></ol>' },
+  { cat:"bio", q:"Scan QR?", a:'<p>Di Editor:</p><ol><li>Klik tombol <b>📷 Scan QR</b></li><li>Izinkan akses kamera</li><li>Arahkan ke QR code (WA, IG, dsb)</li><li>Auto jadi tombol link</li></ol>' },
+  { cat:"bio", q:"Clone bio?", a:'<p>Di halaman <b>Kelola Bio</b>:</p><ol><li>Cari bio yang mau di-clone</li><li>Klik tombol <b>📋</b> (Clone)</li><li>Bio baru dibuat otomatis + "(Copy)"</li></ol>' },
+  { cat:"bio", q:"Export / Import Bio?", a:'<p><b>Export:</b> di Kelola Bio → klik <b>📥 Export</b> → file JSON didownload.</p><p><b>Import:</b> di Kelola Bio → klik <b>📤 Import</b> → paste JSON → bio baru dibuat.</p>' },
+  { cat:"bio", q:"Bio muncul di Explore?", a:'<p>Di Editor → centang <b>"Tampilkan di Explore"</b>. Bio bakal muncul di halaman Explore user lain.</p><p>Butuh fitur <b>directoryListing</b> (Starter+).</p>' },
+  { cat:"bio", q:"URL kustom (slug)?", a:'<p>Plan <b>Pro+</b> bisa ganti slug di Editor:</p><ol><li>Buka field <b>URL Kustom</b></li><li>Isi slug (min 4 karakter, Pro)</li><li>Klik <b>Cek</b> — kalau tersedia → hijau</li><li>Save</li></ol>' },
+  { cat:"bio", q:"Kenapa link pas diklik muncul menu?", a:'<p>Kalau long-press link di preview, yang muncul adalah <b>menu konteks Android</b> (buka tab baru, salin URL, dll) — ini <b>normal</b>.</p><p>Link bakal buka normal kalau <b>tap cepat</b> (bukan long-press).</p>' },
+
+  /* ═══════ MUSIC ═══════ */
+  { cat:"music", q:"Cara atur music bio?", a:'<p>Di Editor:</p><ol><li>Scroll ke section <b>🎵 Music Bio</b></li><li>Klik <b>Pilih Lagu</b></li><li>Pilih dari library music</li><li>Save</li></ol>' },
+  { cat:"music", q:"Music kedengaran di luar browser?", a:'<p><b>Ini udah di-fix!</b></p><p>Music sekarang <b>auto-pause</b> kalau:</p><ul><li>Kamu minimize app (ke home screen)</li><li>Pindah tab browser</li><li>Switch ke app lain</li></ul><p>Balik ke tab → music <b>auto-resume</b>.</p>' },
+  { cat:"music", q:"Music mode (Tetap / Auto / Acak)?", a:'<p>Di halaman <b>Music Saya</b>:</p><ul><li><b>🔂 Tetap</b> — ulang lagu yang sama terus</li><li><b>➡️ Auto Pindah</b> — habis → lagu berikutnya</li><li><b>🔀 Acak</b> — random urutan lagu</li></ul>' },
+  { cat:"music", q:"Klik lagu → gak keluar suara?", a:'<p>Browser kadang blokir autoplay. Klik tombol <b>🔊/🔇</b> di kanan atas (float button) buat nyalain music.</p>' },
+
+  /* ═══════ PLAN & KREDIT ═══════ */
+  { cat:"plan", q:"Plan apa aja yang ada?", a:'<ul><li><b>Free</b> — Rp 0</li><li><b>Starter</b> — Rp 5.000 <b>PERMANENT</b></li><li><b>Pro</b> — Rp 1.000/hari s/d Rp 15.000 permanen</li><li><b>Ultimate</b> — Rp 6.000/hari s/d Rp 25.000 permanen</li></ul>' },
+  { cat:"plan", q:"Cara upgrade plan?", a:'<ol><li>Klik <b>Upgrade</b> di dashboard</li><li>Pilih plan + durasi</li><li>Donate via <b>Tako</b></li><li>Kirim bukti ke <b>WA admin</b></li><li>Plan aktif 1×24 jam</li></ol>' },
+  { cat:"plan", q:"Kredit & Fitur Store?", a:'<p><b>Kredit</b> = mata uang beli fitur satuan.</p><p><b>Cara dapat kredit:</b></p><ul><li><b>🎬 Nonton Iklan</b> — +25 kredit (max 5x/hari)</li><li><b>💰 Top Up</b> — Rp 500+ = 100+ kredit</li></ul><p><b>Fitur Starter:</b> 50 kredit</p><p><b>Fitur Pro:</b> 100 kredit</p><p><b>Fitur Ultimate:</b> 225 kredit</p>' },
+  { cat:"plan", q:"Fitur beli satuan permanen?", a:'<p><b>Iya!</b> Fitur beli satuan (toggle link, embed, analytics chart, dll) = <b>permanen</b>. Gak ilang walau plan turun ke Free.</p>' },
+  { cat:"plan", q:"Beda style UI & warna?", a:'<ul><li><b>Style UI</b> — gaya design (brutalism, minimalist, glassmorphism, dll)</li><li><b>Warna</b> — palet (cream, dark, blue, dll)</li></ul><p>Bisa dikombinasi!</p>' },
+
+  /* ═══════ IKLAN ═══════ */
+  { cat:"iklan", q:"Cara nonton iklan?", a:'<ol><li>Dashboard → klik tombol <b>📺 Iklan</b></li><li>Video iklan muncul</li><li><b>Nonton 30 detik</b></li><li>Setelah selesai → tombol <b>🎁 Klaim Kredit</b> aktif</li><li>Klik → <b>+25 kredit</b></li></ol>' },
+  { cat:"iklan", q:"Kenapa ada tombol Buka Link?", a:'<p>Kalau kamu <b>tertarik</b> sama iklannya, tombol <b>🔗 Buka Link</b> muncul setelah 5 detik.</p><p>Klik → buka link iklan di tab baru. <b>Gak wajib</b>, cuma kalau tertarik aja.</p>' },
+  { cat:"iklan", q:"Max nonton iklan per hari?", a:'<p>Max <b>5 iklan / hari</b> = 125 kredit.</p><p>Reset tiap 24 jam (jam 00:00).</p>' },
+  { cat:"iklan", q:"Iklan gak muncul / stuck?", a:'<ul><li>Refresh halaman</li><li>Cek limit harian (max 5/hari)</li><li>Kalau iklan invalid → lapor admin</li><li>Video error → report ke admin</li></ul>' },
+  { cat:"iklan", q:"Link iklan gak bisa diklik?", a:'<p>Tombol <b>Buka Link</b> hanya muncul <b>setelah 5 detik</b> nonton.</p><p>Kalau masih gak muncul, mungkin iklan gak punya link tujuan (admin gak isi).</p>' },
+
+  /* ═══════ VARSMile ═══════ */
+  { cat:"varsmile", q:"Apa itu Varsmile?", a:'<p><b>Varsmile</b> = maskot pop-up bulat kuning yang ngasih <b>tips motivasi</b>.</p><p><b>Fitur:</b></p><ul><li>Muncul di pojok kanan bawah</li><li>Klik → buka <b>Varsmile AI</b> (chat)</li><li>Bisa di-<b>drag</b> ke mana aja</li><li>Auto-kasih tips tiap 45 detik</li></ul>' },
+  { cat:"varsmile", q:"Cara pindah Varsmile?", a:'<p><b>Drag & drop:</b></p><ol><li>Tap + tahan Varsmile</li><li>Geser ke posisi baru</li><li>Lepas → posisi tersimpan</li></ol><p>Posisi otomatis <b>tersimpan</b> — balik lagi di tempat yang sama.</p>' },
+  { cat:"varsmile", q:"Bubble teks Varsmile?", a:'<p>Bubble muncul <b>center tepat di atas</b> Varsmile, ada panah nunjuk ke bulatan.</p><p><b>Auto hilang</b> setelah 4-5 detik. Klik bubble → tutup manual.</p>' },
+  { cat:"varsmile", q:"Varsmile AI chat apa?", a:'<p><b>Varsmile AI</b> = chat dengan AI (Groq). Bisa:</p><ul><li>Bikin bio otomatis</li><li>Kasih saran tema</li><li>Jawab pertanyaan Varlinkbio</li><li>Chat santai</li></ul><p>Limit: tergantung plan (default 25 pesan/hari).</p>' },
+
+  /* ═══════ AI ═══════ */
+  { cat:"ai", q:"Apa itu AI Bio Generator?", a:'<p><b>AI Bio Generator</b> = fitur auto-generate bio pakai AI.</p><ol><li>Ceritain tentang kamu/bisnis</li><li>Klik <b>✨ Generate Bio</b></li><li>AI kasih: nama, bio, link, tema, tag</li><li>Klik <b>✅ Pakai Ini</b> → langsung ke editor</li></ol>' },
+  { cat:"ai", q:"Cara pakai AI Bio?", a:'<p>Di Dashboard:</p><ol><li>Klik tombol <b>🪄 AI Bio Generator</b> (di bawah "Bikin Link-in-Bio Baru")</li><li>Ceritain tentang kamu/bisnis</li><li>Klik Generate</li></ol>' },
+  { cat:"ai", q:"AI kasih hasil aneh / gak sesuai?", a:'<ol><li>Klik <b>🔁 Regenerate</b> buat variasi baru</li><li>Cerita lebih detail di prompt</li><li>Edit manual setelah apply ke editor</li></ol>' },
+  { cat:"ai", q:"AI error / limit?", a:'<ul><li>Kalau limit Groq habis → tunggu 1 jam</li><li>Cek koneksi internet</li><li>Kalau error "API key invalid" → lapor admin</li></ul>' },
+
+  /* ═══════ CUSTOM THEME ═══════ */
+  { cat:"theme", q:"Apa itu Custom Theme Builder?", a:'<p><b>Custom Theme Builder</b> = bikin tema bio kamu sendiri.</p><p>Di Editor → klik <b>🎨 Custom Theme</b>.</p><p><b>Bisa atur:</b></p><ul><li>7 warna (bg, text, btn, border, accent, shadow)</li><li>Font (8 pilihan)</li><li>Border radius (0-32px)</li><li>Shadow style (none/hard/soft/glow)</li><li>Background pattern (none/dots/lines/grid/gradient)</li></ul>' },
+  { cat:"theme", q:"Cara generate palette dari gambar?", a:'<p>Di Custom Theme Builder → tab <b>🖼️ Palette</b>:</p><ol><li>Upload gambar (atau drag & drop)</li><li>AI extract 8 warna dari gambar</li><li>Klik warna → auto apply ke bagian tema</li></ol>' },
+  { cat:"theme", q:"Palette dari 1 warna?", a:'<p>Di tab Palette:</p><ol><li>Pilih 1 warna seed</li><li>Klik <b>Generate Palette</b></li><li>Auto bikin 8 varian warna</li></ol>' },
+  { cat:"theme", q:"Simpan / Load custom theme?", a:'<ul><li><b>Simpan</b> — klik 💾 Simpan, kasih nama</li><li><b>Load</b> — tab My Themes → klik card tema</li><li><b>Pakai</b> — klik ✅ Pakai</li></ul>' },
+  { cat:"theme", q:"Export / Import theme?", a:'<p>Di Custom Theme Builder (bawah):</p><ul><li><b>📤 Export</b> — download JSON semua tema</li><li><b>📥 Import</b> — upload JSON → load tema</li></ul>' },
+
+  /* ═══════ UI / TAMPILAN ═══════ */
+  { cat:"ui", q:"Ganti style UI dashboard?", a:'<p>Di <b>Settings</b> → section <b>Tampilan</b>:</p><ol><li>Pilih <b>Style UI</b> (brutalism, minimalist, glass, dll)</li><li>Pilih <b>Warna</b> (cream, dark, blue, pink, dll)</li></ol>' },
+  { cat:"ui", q:"Emoji jadi icon (bukan emoji biasa)?", a:'<p>Bener, emoji auto-convert jadi <b>icon Lucide</b> biar konsisten + cepat load.</p><p>Kalau emoji lambat muncul, sekarang pakai <b>Fast Emoji</b> (inline SVG) — muncul <b>instan</b>.</p>' },
+  { cat:"ui", q:"Style UI & warna beda-beda?", a:'<p><b>Style UI</b> = gaya design (border, shadow, animasi).</p><p><b>Warna</b> = palet warna (background, text, topbar).</p><p>Bisa <b>mix & match</b>!</p>' },
+
+  /* ═══════ DEV PANEL ═══════ */
+  { cat:"devpanel", q:"Apa itu Dev Panel?", a:'<p><b>Dev Panel</b> = panel admin (khusus developer).</p><p>Bisa akses:</p><ul><li>👥 Users management</li><li>🔗 Bios management</li><li>🤝 Partners</li><li>📢 Updates</li><li>🔧 Maintenance</li><li>⭐ Favicon</li><li>🎵 Music Library</li><li>🎬 Iklan Manager</li><li>🤖 AI Settings</li><li>🖥️ Console</li></ul>' },
+  { cat:"devpanel", q:"AI Settings buat apa?", a:'<p>Di Dev Panel → tab <b>🤖 AI Settings</b>:</p><ul><li>Ganti <b>API Key</b> Groq</li><li>Pilih <b>model</b> AI</li><li>Atur <b>max tokens</b> & <b>temperature</b></li><li><b>Test Connection</b></li></ul><p>Config ini dipakai bareng AI Bio + Varsmile AI.</p>' },
+  { cat:"devpanel", q:"Console Dev Panel?", a:'<p>Di Dev Panel → tab <b>🖥️ Console</b>:</p><ul><li>Lihat semua log app</li><li>Filter by level (log/info/warn/error)</li><li>Search log</li><li>Copy / Download log</li><li>Pause / Clear</li></ul><p>Berguna buat debug tanpa buka Chrome DevTools.</p>' },
+  { cat:"devpanel", q:"Maintenance mode?", a:'<p>Di Dev Panel → tab <b>🔧 Maintenance</b>:</p><ul><li>Aktifkan → user lihat halaman maintenance</li><li>Set durasi (15 menit - 1 hari)</li><li>Auto-unlock saat durasi habis</li><li>Dev bypass → tetap bisa akses</li></ul>' },
+
+  /* ═══════ TEKNIS ═══════ */
+  { cat:"tech", q:"Kenapa QR blank?", a:'<p>Ini bug lama yang udah <b>di-fix</b> di versi terbaru.</p><p>Kalau masih blank:</p><ul><li>Refresh halaman</li><li>Clear cache browser</li><li>Buka di incognito</li></ul>' },
+  { cat:"tech", q:'Tombol "Atur Posisi" hilang?', a:'<p>Bener, tombol itu udah <b>dihapus</b>. Sekarang preview pakai iframe URL asli - jadi 100% sama dengan yang keliatan user.</p><p>Kalau perlu adjust, save dulu, buka URL di HP asli.</p>' },
+  { cat:"tech", q:"Tutorial gak bisa diklik?", a:'<p>Ini bug lama. Kalau tutorial stuck:</p><ul><li>Tap <b>Lewati Tutorial</b></li><li>Atau buka Dev Panel → Console → ketik <code>skipTutorial()</code></li></ul>' },
+  { cat:"tech", q:"Refresh cache browser?", a:'<p><b>Android Chrome:</b></p><ol><li>Tap <b>⋮</b></li><li>Setelan → Privasi & keamanan</li><li>Hapus data penjelajahan</li><li>Centang "Gambar & file di cache"</li><li>Hapus data → refresh</li></ol>' },
+  { cat:"tech", q:"Cek error di HP (F12)?", a:'<p>Buka <b>Dev Panel → Console</b> — ini built-in console yang bisa kamu akses dari HP.</p><p>Atau install <b>Kiwi Browser</b> (support Chrome DevTools).</p>' },
+  { cat:"tech", q:"Kontak & bantuan?", a:'<p><b>WA Admin:</b> <a href="https://wa.me/6285823058292" target="_blank" style="color:#2563eb;text-decoration:underline;font-weight:900">+62 858-2305-8292</a></p><p>Fast response buat <b>Ultimate</b>.</p>' },
+
+  /* ═══════ LAIN-LAIN ═══════ */
+  { cat:"lain", q:"Varlinkbio apa sih?", a:'<p><b>Varlinkbio</b> = platform <b>Link-in-Bio Generator</b>.</p><p>Bikin satu halaman berisi semua link penting kamu (IG, WA, TikTok, Shopee, dll) — bisa di-share lewat 1 URL.</p><p><b>Fitur:</b></p><ul><li>17 tema warna + 11 style UI</li><li>Custom theme builder</li><li>AI Bio Generator</li><li>Music bio</li><li>Analytics + Top Links</li><li>QR code</li><li>vCard</li><li>Lock bio</li><li>Embed YouTube/Spotify</li></ul>' },
+  { cat:"lain", q:"Ada promo / diskon?", a:'<p>Cek halaman <b>Beranda</b> atau ikuti <b>Update</b> di dashboard buat info promo terbaru.</p>' },
+  { cat:"lain", q:"Bisa refund?", a:'<p>Kebijakan refund - hubungi <b>WA admin</b> untuk diskusi.</p>' },
+  { cat:"lain", q:"Saran fitur baru?", a:'<p>Kirim saran ke <b>WA admin</b>. Kalau cocok, bakal diimplementasi!</p>' }
+];
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — KATEGORI BARU
+   ═══════════════════════════════════════════════════════════ */
+var FAQ_CATS_V10 = [
+  { id:"all", label:"Semua", icon:"📚" },
+  { id:"akun", label:"Akun", icon:"👤" },
+  { id:"bio", label:"Bio", icon:"🔗" },
+  { id:"music", label:"Music", icon:"🎵" },
+  { id:"plan", label:"Plan", icon:"💎" },
+  { id:"iklan", label:"Iklan", icon:"🎬" },
+  { id:"varsmile", label:"Varsmile", icon:"🙂" },
+  { id:"ai", label:"AI", icon:"🤖" },
+  { id:"theme", label:"Theme", icon:"🎨" },
+  { id:"ui", label:"Tampilan", icon:"🖼️" },
+  { id:"devpanel", label:"Dev Panel", icon:"⚡" },
+  { id:"tech", label:"Teknis", icon:"🔧" },
+  { id:"lain", label:"Lain", icon:"✨" }
+];
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — PATCH PageHelp (override FAQ)
+   ═══════════════════════════════════════════════════════════ */
+function patchPageHelp(){
+  try{
+    if(!window.PageHelp) return false;
+    if(window.PageHelp._v10Patched) return true;
+    window.PageHelp._v10Patched = true;
+    
+    // Override global FAQ (kalau ada)
+    window.FAQ_DATA = FAQ_DATA_V10;
+    window.FAQ_CATS = FAQ_CATS_V10;
+    
+    // Override render List di PageHelp
+    var origRenderList = window.PageHelp.renderList;
+    if(typeof origRenderList === "function"){
+      window.PageHelp.renderList = function(){
+        var el = document.getElementById("help-list");
+        if(!el) return;
+        
+        var list = FAQ_DATA_V10;
+        if(this.state.cat !== "all") list = list.filter(function(f){ return f.cat === this.state.cat; }, this);
+        if(this.state.search){
+          var q = this.state.search;
+          list = list.filter(function(f){
+            return f.q.toLowerCase().indexOf(q) !== -1 || f.a.toLowerCase().indexOf(q) !== -1;
+          });
+        }
+        
+        if(!list.length){
+          el.innerHTML = '<div class="help-empty" style="text-align:center;padding:40px 20px;color:#888;font-weight:600">🔍 Gak ada hasil</div>';
+          return;
+        }
+        
+        var html = "";
+        list.forEach(function(f){
+          html += '<div class="help-item">' +
+            '<div class="help-q"><span class="q-icon">?</span><span style="flex:1">' + escapeHtml(f.q) + '</span><span class="q-arrow">▼</span></div>' +
+            '<div class="help-a">' + f.a + '</div>' +
+          '</div>';
+        });
+        el.innerHTML = html;
+        
+        // Bind toggle
+        el.querySelectorAll(".help-item").forEach(function(item){
+          var q = item.querySelector(".help-q");
+          if(q) q.addEventListener("click", function(){ item.classList.toggle("open"); });
+        });
+      };
+    }
+    
+    console.log("✅ PageHelp patched (v10)");
+    return true;
+  }catch(e){
+    console.warn("patchPageHelp:", e);
+    return false;
+  }
+}
+
+// Retry
+var tries = 0;
+(function retry(){
+  tries++;
+  if(patchPageHelp() || tries > 20) return;
+  setTimeout(retry, 500);
+})();
+setTimeout(patchPageHelp, 2000);
+setTimeout(patchPageHelp, 4000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — PATCH render halaman Help (UI)
+   Tambah kategori baru ke render
+   ═══════════════════════════════════════════════════════════ */
+function patchHelpUI(){
+  try{
+    if(!window.PageHelp) return false;
+    if(window.PageHelp._v10UIPatched) return true;
+    window.PageHelp._v10UIPatched = true;
+    
+    var origRender = window.PageHelp.render;
+    window.PageHelp.render = function(){
+      if(!window.Auth || !Auth.current){
+        if(window.Router) Router.navigate("/login");
+        return;
+      }
+      if(window.STATE && STATE.varsmileEnabled){
+        setTimeout(function(){
+          if(window.Varsmile && Varsmile.init) Varsmile.init();
+        }, 300);
+      }
+      
+      var app = document.getElementById("app");
+      if(!app) return;
+      
+      var html = (window.renderTopbar ? renderTopbar() : "");
+      html += '<div class="help-page">';
+      html += '<div class="help-hero">';
+      html += '<div class="hero-icon">' + (window.ico ? ico('help') : '?') + '</div>';
+      html += '<h1>Bantuan & FAQ</h1>';
+      html += '<p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-top:8px">Semua yang perlu kamu tau tentang Varlinkbio</p>';
+      html += '</div>';
+      html += '<div class="help-search-wrap">';
+      html += '<span class="search-icon">🔍</span>';
+      html += '<input type="text" id="help-search" placeholder="Cari..." autocomplete="off" value="' + (this.state.search || "") + '"/>';
+      html += '</div>';
+      html += '<div class="help-cats" id="help-cats"></div>';
+      html += '<div class="help-list" id="help-list"></div>';
+      html += '<div class="help-cta">';
+      html += '<h3>Masih bingung?</h3>';
+      html += '<p style="font-size:13px;font-weight:600;margin-bottom:10px">Chat admin via WA</p>';
+      html += '<a href="https://wa.me/6285823058292?text=' + encodeURIComponent("Halo admin, saya butuh bantuan") + '" target="_blank" class="btn">' + (window.ico ? ico('whatsapp') : '') + ' Chat Admin</a>';
+      html += '</div>';
+      html += '</div>';
+      
+      app.innerHTML = html;
+      if(window.bindTopbar) bindTopbar();
+      
+      // Render kategori
+      var cats = document.getElementById("help-cats");
+      if(cats){
+        cats.innerHTML = FAQ_CATS_V10.map(function(c){
+          return '<div class="help-cat ' + (this.state.cat === c.id ? "active" : "") + '" data-cat="' + c.id + '">' + c.icon + ' ' + c.label + '</div>';
+        }, this).join("");
+        
+        var self = this;
+        cats.querySelectorAll(".help-cat").forEach(function(el){
+          el.addEventListener("click", function(){
+            self.state.cat = el.dataset.cat;
+            cats.querySelectorAll(".help-cat").forEach(function(x){
+              x.classList.toggle("active", x.dataset.cat === self.state.cat);
+            });
+            self.renderList();
+          });
+        });
+      }
+      
+      // Search
+      var se = document.getElementById("help-search");
+      if(se){
+        var self2 = this;
+        se.addEventListener("input", function(){
+          self2.state.search = this.value.toLowerCase().trim();
+          self2.renderList();
+        });
+      }
+      
+      this.renderList();
+    };
+    
+    console.log("✅ PageHelp UI patched (v10)");
+    return true;
+  }catch(e){
+    console.warn("patchHelpUI:", e);
+    return false;
+  }
+}
+
+var tries2 = 0;
+(function retry2(){
+  tries2++;
+  if(patchHelpUI() || tries2 > 20) return;
+  setTimeout(retry2, 500);
+})();
+setTimeout(patchHelpUI, 2500);
+setTimeout(patchHelpUI, 5000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — HELPER
+   ═══════════════════════════════════════════════════════════ */
+function escapeHtml(s){
+  return String(s || "").replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  📚 PATCH v10.0 HELP AKTIF             ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • " + FAQ_DATA_V10.length + " FAQ baru                          ║","color:#22c55e");
+  console.log("%c║  • " + FAQ_CATS_V10.length + " kategori                            ║","color:#22c55e");
+  console.log("%c║  • Update semua fitur baru             ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v10.0 HELP ═══ -->
 </body>
    </html>

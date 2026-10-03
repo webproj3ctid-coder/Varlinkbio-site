@@ -24632,5 +24632,326 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END PATCH v9.3 PREVIEW FIX ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.4 — PREVIEW FINAL
+     Fix tinggi preview + crop + scale
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv94-css">
+/* ═══════════════════════════════════════════════════════════
+   FIX PREVIEW: AUTO HEIGHT (ngikutin konten)
+   ═══════════════════════════════════════════════════════════ */
+.preview-phone{
+  aspect-ratio: auto !important;
+  max-width: 320px !important;
+  width: 100% !important;
+  min-height: 480px !important;
+  max-height: 600px !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  background: #0a0a0a !important;
+  border-radius: 28px !important;
+}
+.preview-phone iframe{
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 480px !important;
+  max-height: 600px !important;
+  border: none !important;
+  display: block !important;
+}
+.editor-preview{
+  position: sticky !important;
+  top: 70px !important;
+}
+@media(max-width:1024px){
+  .editor-preview{position: static !important}
+  .preview-phone{max-width: 300px !important}
+}
+</style>
+
+<script id="fixv94-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.4 — PREVIEW FINAL
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🔧 FIX v9.4 PREVIEW loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   PATCH PagePublic.buildHTML — OVERRIDE v93
+   ═══════════════════════════════════════════════════════════ */
+function patchPreviewFinal(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML){
+      return false;
+    }
+    
+    // Kalau udah v94, skip
+    if(window.PagePublic._fitFixV94) return true;
+    
+    // Force override (bukan chain — biar v93 di-bypass)
+    window.PagePublic._fitFixV94 = true;
+    window.PagePublic._fitFixV93 = true; // disable v93
+    
+    // Simpan original (yang asli tanpa v93)
+    var origBuild = window.PagePublic._buildHTMLOriginal;
+    if(!origBuild){
+      // Kalau belum ada, cari yang original dari PagePublic asli
+      // Fallback: pakai current buildHTML (biar gak crash)
+      origBuild = window.PagePublic.buildHTML;
+    }
+    
+    window.PagePublic.buildHTML = function(bio, opts){
+      var html = origBuild.call(this, bio, opts);
+      
+      if(opts && opts.preview){
+        var previewCSS = '<style id="preview-fit-v94">' +
+          
+          /* Root: auto height, no forced 100vh */
+          'html{' +
+            'min-height:100% !important;' +
+            'height:auto !important;' +
+            'overflow-x:hidden !important;' +
+            'overflow-y:hidden !important;' +
+            'margin:0 !important;padding:0 !important;' +
+          '}' +
+          
+          'body{' +
+            'min-height:100% !important;' +
+            'height:auto !important;' +
+            'overflow:hidden !important;' +
+            'margin:0 !important;padding:0 !important;' +
+            'transform:scale(0.68) !important;' +
+            'transform-origin:top left !important;' +
+            'width:147% !important;' +
+            'margin-left:-23.5% !important;' +
+          '}' +
+          
+          /* Bio wrapper */
+          '.bio-wrap{' +
+            'min-height:auto !important;' +
+            'padding:14px 10px 14px !important;' +
+            'justify-content:flex-start !important;' +
+          '}' +
+          '.bio-inner{max-width:100% !important}' +
+          
+          /* Banner */
+          '.bio-banner{' +
+            'height:60px !important;' +
+            'margin-bottom:8px !important;' +
+            'border-width:2.5px !important;' +
+            'border-radius:10px !important;' +
+            'box-shadow:3px 3px 0 var(--ink) !important;' +
+          '}' +
+          
+          /* Avatar */
+          '.bio-avatar{' +
+            'width:60px !important;height:60px !important;' +
+            'border-width:3px !important;' +
+            'box-shadow:3px 3px 0 var(--ink) !important;' +
+          '}' +
+          
+          /* Title */
+          '.bio-title-top{' +
+            'font-size:8.5px !important;' +
+            'padding:2px 7px !important;' +
+            'margin-top:5px !important;' +
+            'letter-spacing:.4px !important;' +
+          '}' +
+          
+          /* Name — FIX CROP */
+          '.bio-name{' +
+            'font-size:12px !important;' +
+            'padding:3px 9px !important;' +
+            'margin-top:-2px !important;' +
+            'letter-spacing:0 !important;' +
+            'max-width:92% !important;' +
+            'width:fit-content !important;' +
+            'word-wrap:break-word !important;' +
+            'overflow-wrap:break-word !important;' +
+            'word-break:break-word !important;' +
+            'white-space:normal !important;' +
+            'line-height:1.1 !important;' +
+            'text-align:center !important;' +
+            'box-sizing:border-box !important;' +
+            'overflow:hidden !important;' +
+          '}' +
+          
+          /* Bio — FIX CROP */
+          '.bio-bio{' +
+            'font-size:7.5px !important;' +
+            'padding:2px 8px !important;' +
+            'line-height:1.2 !important;' +
+            'max-width:92% !important;' +
+            'width:fit-content !important;' +
+            'word-wrap:break-word !important;' +
+            'overflow-wrap:break-word !important;' +
+            'word-break:break-word !important;' +
+            'white-space:normal !important;' +
+            'text-align:center !important;' +
+            'box-sizing:border-box !important;' +
+            'overflow:hidden !important;' +
+          '}' +
+          
+          /* Plan */
+          '.bio-plan-badge{' +
+            'font-size:6.5px !important;' +
+            'padding:2px 6px !important;' +
+            'margin-top:4px !important;' +
+          '}' +
+          
+          /* Logos */
+          '.bio-logos{' +
+            'margin-bottom:6px !important;' +
+            'margin-top:1px !important;' +
+            'gap:4px !important;' +
+          '}' +
+          '.bio-logo-item{' +
+            'width:24px !important;height:24px !important;' +
+            'border-width:2px !important;' +
+            'box-shadow:2px 2px 0 var(--ink) !important;' +
+          '}' +
+          
+          /* Links */
+          '.bio-links{gap:4px !important}' +
+          '.bio-link{' +
+            'padding:6px 8px !important;' +
+            'font-size:9.5px !important;' +
+            'min-height:30px !important;' +
+            'border-width:2.5px !important;' +
+            'box-shadow:2.5px 2.5px 0 var(--ink) !important;' +
+            'letter-spacing:0 !important;' +
+            'gap:4px !important;' +
+            'border-radius:8px !important;' +
+          '}' +
+          '.bio-link .licon{' +
+            'width:12px !important;height:12px !important;' +
+          '}' +
+          '.bio-link .licon svg{' +
+            'width:12px !important;height:12px !important;' +
+          '}' +
+          '.bio-link .ltext{' +
+            'font-size:9.5px !important;' +
+            'line-height:1.15 !important;' +
+            'word-wrap:break-word !important;' +
+            'white-space:normal !important;' +
+          '}' +
+          
+          /* Featured */
+          '.bio-link.bio-featured .feat-img-wrap{padding:4px !important}' +
+          '.bio-link.bio-featured .feat-body{padding:3px 6px 4px !important}' +
+          '.bio-link.bio-featured .feat-body b{font-size:9px !important}' +
+          
+          /* Footer */
+          '.bio-footer{' +
+            'margin-top:8px !important;' +
+            'font-size:6.5px !important;' +
+            'padding:2px 7px !important;' +
+            'letter-spacing:.3px !important;' +
+            'max-width:100% !important;' +
+            'word-wrap:break-word !important;' +
+            'white-space:normal !important;' +
+          '}' +
+          
+          /* Deco + CTA */
+          '.bio-deco{display:none !important}' +
+          '.bio-cta-float{display:none !important}' +
+          
+          /* Header fix */
+          '.bio-header{' +
+            'overflow:visible !important;' +
+            'max-width:100% !important;' +
+            'margin-bottom:8px !important;' +
+          '}' +
+          '.bio-header > *{' +
+            'max-width:96% !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          '</style>';
+        html = html.replace(/<\/head>/i, previewCSS + '</head>');
+      }
+      return html;
+    };
+    
+    console.log("✅ Preview v94 patched (auto height)");
+    return true;
+  }catch(e){
+    console.warn("patchPreviewFinal:", e);
+    return false;
+  }
+}
+
+// Retry sampai ready
+var attempts = 0;
+function tryAgain(){
+  attempts++;
+  if(patchPreviewFinal() || attempts > 20) return;
+  setTimeout(tryAgain, 500);
+}
+setTimeout(tryAgain, 500);
+setTimeout(patchPreviewFinal, 2500);
+setTimeout(patchPreviewFinal, 5000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   AUTO-HEIGHT PREVIEW (JS)
+   Sesuaikan tinggi iframe biar konten gak kekecilan
+   ═══════════════════════════════════════════════════════════ */
+function autoHeightPreview(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var frame = document.getElementById("prev-frame");
+    if(!frame) return;
+    
+    var phone = frame.closest(".preview-phone");
+    if(!phone) return;
+    
+    // Set tinggi HP ngikutin konten (min 480, max 600)
+    setTimeout(function(){
+      try{
+        var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        if(!doc) return;
+        var bodyH = doc.body ? doc.body.scrollHeight : 500;
+        // Konten di-scale 0.68, jadi tinggi asli = bodyH / 0.68
+        var scaledH = bodyH * 0.68;
+        var finalH = Math.max(480, Math.min(600, scaledH));
+        phone.style.minHeight = finalH + "px";
+        phone.style.maxHeight = finalH + "px";
+      }catch(e){}
+    }, 1500);
+  }catch(e){}
+}
+
+// Trigger refresh
+setTimeout(autoHeightPreview, 1500);
+setTimeout(autoHeightPreview, 3000);
+setTimeout(autoHeightPreview, 5000);
+window.addEventListener("hashchange", function(){ setTimeout(autoHeightPreview, 1000); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ PATCH v9.4 PREVIEW FINAL           ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Auto height (ngikutin konten)       ║","color:#22c55e");
+  console.log("%c║  • Scale 68% (muat 1 layar)            ║","color:#22c55e");
+  console.log("%c║  • Fix crop badge (word-break)         ║","color:#22c55e");
+  console.log("%c║  • No blank space bawah                ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v9.4 PREVIEW FINAL ═══ -->
 </body>
    </html>

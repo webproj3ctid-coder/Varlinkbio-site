@@ -24922,17 +24922,389 @@ function autoHeightPreview(){
         var scaledH = bodyH * 0.68;
         var finalH = Math.max(480, Math.min(600, scaledH));
         phone.style.minHeight = finalH + "px";
-        phone.style.maxHeight = finalH + "px";
-      }catch(e){}
-    }, 1500);
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.5 — PREVIEW AUTO-FIT RESPONSIVE
+     Auto-adjust preview sesuai ukuran layar (HP/tablet/desktop)
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv95-css">
+/* ═══════════════════════════════════════════════════════════
+   PREVIEW PHONE: RESPONSIVE AUTO-FIT
+   ═══════════════════════════════════════════════════════════ */
+.editor-preview{
+  position: sticky !important;
+  top: 70px !important;
+  align-self: flex-start !important;
+}
+.preview-phone{
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 9 / 19.5 !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  background: #0a0a0a !important;
+  border-radius: 28px !important;
+  /* Tinggi dinamis diatur via JS */
+}
+.preview-phone iframe{
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  display: block !important;
+  overflow: hidden !important;
+}
+
+/* Desktop: fixed 340px */
+@media(min-width:1024px){
+  .preview-phone{
+    max-width: 340px !important;
+  }
+}
+
+/* Tablet: 300px */
+@media(min-width:768px) and (max-width:1023px){
+  .preview-phone{
+    max-width: 300px !important;
+  }
+}
+
+/* HP: 100% lebar (dengan padding) */
+@media(max-width:767px){
+  .editor-preview{
+    position: static !important;
+  }
+  .preview-phone{
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+}
+</style>
+
+<script id="fixv95-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.5 — PREVIEW AUTO-FIT RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c📱 FIX v9.5 PREVIEW AUTO-FIT loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — HITUNG SCALE OTOMATIS
+   ═══════════════════════════════════════════════════════════ */
+function calcAutoScale(frameW, frameH){
+  // Konten bio asli: lebar ~420px, tinggi ~800-1200px (dinamis)
+  // Kita mau kontennya fit ke frame W x H
+  
+  // Scale berdasarkan lebar
+  var scaleW = frameW / 420;
+  
+  // Scale berdasarkan tinggi (asumsi konten ~900px)
+  var scaleH = frameH / 900;
+  
+  // Ambil yang lebih kecil biar fit
+  var scale = Math.min(scaleW, scaleH);
+  
+  // Clamp 0.4 - 1.2
+  return Math.max(0.4, Math.min(1.2, scale));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — PATCH buildHTML: PAKAI CSS VARIABLE
+   ═══════════════════════════════════════════════════════════ */
+function patchPreviewResponsive(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) return false;
+    if(window.PagePublic._fitFixV95) return true;
+    window.PagePublic._fitFixV95 = true;
+    window.PagePublic._fitFixV94 = true;
+    window.PagePublic._fitFixV93 = true;
+    
+    var origBuild = window.PagePublic._buildHTMLOriginal || window.PagePublic.buildHTML;
+    window.PagePublic._buildHTMLOriginal = origBuild;
+    
+    window.PagePublic.buildHTML = function(bio, opts){
+      var html = origBuild.call(this, bio, opts);
+      
+      if(opts && opts.preview){
+        var previewCSS = '<style id="preview-fit-v95">' +
+          
+          /* Root: variable scale */
+          ':root{--vs-scale:0.68}' +
+          
+          /* Root HTML */
+          'html{' +
+            'height:100% !important;' +
+            'overflow:hidden !important;' +
+            'margin:0 !important;padding:0 !important;' +
+          '}' +
+          
+          /* Body: auto-scale via CSS variable */
+          'body{' +
+            'height:100% !important;' +
+            'overflow:hidden !important;' +
+            'margin:0 !important;padding:0 !important;' +
+            'transform:scale(var(--vs-scale,0.68)) !important;' +
+            'transform-origin:top center !important;' +
+            'width:calc(100% / var(--vs-scale,0.68)) !important;' +
+            'height:calc(100% / var(--vs-scale,0.68)) !important;' +
+            'margin-left:calc(-1 * (100% / var(--vs-scale,0.68) - 100%) / 2) !important;' +
+          '}' +
+          
+          /* Bio wrapper */
+          '.bio-wrap{' +
+            'min-height:auto !important;' +
+            'padding:14px 10px 14px !important;' +
+            'justify-content:flex-start !important;' +
+          '}' +
+          '.bio-inner{max-width:100% !important}' +
+          
+          /* Banner */
+          '.bio-banner{' +
+            'height:auto !important;' +
+            'aspect-ratio:16/5 !important;' +
+            'max-height:80px !important;' +
+            'margin-bottom:8px !important;' +
+            'border-width:2.5px !important;' +
+            'border-radius:10px !important;' +
+          '}' +
+          
+          /* Avatar */
+          '.bio-avatar{' +
+            'width:64px !important;height:64px !important;' +
+            'border-width:3px !important;' +
+          '}' +
+          
+          /* Title */
+          '.bio-title-top{' +
+            'font-size:9px !important;' +
+            'padding:2px 8px !important;' +
+            'margin-top:5px !important;' +
+          '}' +
+          
+          /* Name — anti crop */
+          '.bio-name{' +
+            'font-size:13px !important;' +
+            'padding:4px 10px !important;' +
+            'margin-top:-2px !important;' +
+            'letter-spacing:0 !important;' +
+            'max-width:94% !important;' +
+            'width:auto !important;' +
+            'word-break:break-word !important;' +
+            'white-space:normal !important;' +
+            'line-height:1.1 !important;' +
+            'text-align:center !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          /* Bio — anti crop */
+          '.bio-bio{' +
+            'font-size:8px !important;' +
+            'padding:3px 8px !important;' +
+            'line-height:1.2 !important;' +
+            'max-width:94% !important;' +
+            'width:auto !important;' +
+            'word-break:break-word !important;' +
+            'white-space:normal !important;' +
+            'text-align:center !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          /* Plan */
+          '.bio-plan-badge{' +
+            'font-size:7px !important;' +
+            'padding:2px 6px !important;' +
+            'margin-top:5px !important;' +
+          '}' +
+          
+          /* Logos */
+          '.bio-logos{' +
+            'margin-bottom:6px !important;' +
+            'margin-top:2px !important;' +
+            'gap:4px !important;' +
+          '}' +
+          '.bio-logo-item{' +
+            'width:26px !important;height:26px !important;' +
+            'border-width:2px !important;' +
+          '}' +
+          
+          /* Links */
+          '.bio-links{gap:5px !important}' +
+          '.bio-link{' +
+            'padding:6px 9px !important;' +
+            'font-size:10px !important;' +
+            'min-height:34px !important;' +
+            'border-width:2.5px !important;' +
+            'box-shadow:3px 3px 0 var(--ink) !important;' +
+            'letter-spacing:0 !important;' +
+            'gap:5px !important;' +
+          '}' +
+          '.bio-link .licon{' +
+            'width:13px !important;height:13px !important;' +
+          '}' +
+          '.bio-link .licon svg{' +
+            'width:13px !important;height:13px !important;' +
+          '}' +
+          '.bio-link .ltext{' +
+            'font-size:10px !important;' +
+            'line-height:1.15 !important;' +
+            'word-break:break-word !important;' +
+            'white-space:normal !important;' +
+          '}' +
+          
+          /* Featured */
+          '.bio-link.bio-featured .feat-img-wrap{padding:5px !important}' +
+          '.bio-link.bio-featured .feat-body{padding:4px 8px 5px !important}' +
+          '.bio-link.bio-featured .feat-body b{font-size:9.5px !important}' +
+          
+          /* Footer */
+          '.bio-footer{' +
+            'margin-top:8px !important;' +
+            'font-size:7px !important;' +
+            'padding:2px 8px !important;' +
+            'max-width:100% !important;' +
+            'word-break:break-word !important;' +
+          '}' +
+          
+          /* Deco + CTA */
+          '.bio-deco{display:none !important}' +
+          '.bio-cta-float{display:none !important}' +
+          
+          /* Header */
+          '.bio-header{' +
+            'overflow:visible !important;' +
+            'max-width:100% !important;' +
+          '}' +
+          '.bio-header > *{' +
+            'max-width:96% !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          '</style>';
+        html = html.replace(/<\/head>/i, previewCSS + '</head>');
+      }
+      return html;
+    };
+    console.log("✅ Preview v95 patched (auto-fit)");
+    return true;
+  }catch(e){
+    console.warn("patchPreviewResponsive:", e);
+    return false;
+  }
+}
+
+// Retry
+var tries = 0;
+(function retry(){
+  tries++;
+  if(patchPreviewResponsive() || tries > 20) return;
+  setTimeout(retry, 500);
+})();
+setTimeout(patchPreviewResponsive, 2500);
+setTimeout(patchPreviewResponsive, 5000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — AUTO-FIT PREVIEW (deteksi ukuran + update CSS var)
+   ═══════════════════════════════════════════════════════════ */
+function autoFitPreview(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var frame = document.getElementById("prev-frame");
+    if(!frame) return;
+    
+    var phone = frame.closest(".preview-phone");
+    if(!phone) return;
+    
+    // Tunggu iframe load
+    setTimeout(function(){
+      try{
+        var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        if(!doc) return;
+        
+        var frameRect = frame.getBoundingClientRect();
+        var frameW = frameRect.width;
+        var frameH = frameRect.height;
+        
+        if(frameW < 50 || frameH < 50) return;
+        
+        // Ambil tinggi konten asli
+        var bodyH = doc.body ? doc.body.scrollHeight : 800;
+        var bodyW = doc.body ? doc.body.scrollWidth : 420;
+        
+        // Hitung scale: fit WIDTH & HEIGHT
+        var scaleW = frameW / Math.max(bodyW, 420);
+        var scaleH = frameH / Math.max(bodyH, 900);
+        var scale = Math.min(scaleW, scaleH);
+        
+        // Clamp
+        scale = Math.max(0.4, Math.min(1.2, scale));
+        
+        // Update CSS variable di iframe
+        doc.documentElement.style.setProperty("--vs-scale", scale);
+        
+        console.log("📱 Auto-fit scale:", Math.round(scale * 100) + "%", "(frame:", Math.round(frameW) + "x" + Math.round(frameH) + ")");
+      }catch(e){ console.warn("autoFit:", e); }
+    }, 1200);
   }catch(e){}
 }
 
-// Trigger refresh
-setTimeout(autoHeightPreview, 1500);
-setTimeout(autoHeightPreview, 3000);
-setTimeout(autoHeightPreview, 5000);
-window.addEventListener("hashchange", function(){ setTimeout(autoHeightPreview, 1000); });
+// Trigger
+setTimeout(autoFitPreview, 1500);
+setTimeout(autoFitPreview, 3500);
+setTimeout(autoFitPreview, 5500);
+
+// Resize listener (rotate HP / resize window)
+var resizeTO;
+window.addEventListener("resize", function(){
+  clearTimeout(resizeTO);
+  resizeTO = setTimeout(autoFitPreview, 300);
+});
+
+// Orientation change (rotate HP)
+window.addEventListener("orientationchange", function(){
+  clearTimeout(resizeTO);
+  resizeTO = setTimeout(autoFitPreview, 500);
+});
+
+// Hash change (pindah halaman)
+window.addEventListener("hashchange", function(){
+  setTimeout(autoFitPreview, 1000);
+});
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — OBSERVER (kalau preview re-render)
+   ═══════════════════════════════════════════════════════════ */
+try{
+  var previewObs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType === 1){
+          if(n.id === "prev-frame"){
+            setTimeout(autoFitPreview, 1500);
+          }
+          if(n.querySelector && n.querySelector("#prev-frame")){
+            setTimeout(autoFitPreview, 1500);
+          }
+        }
+      });
+    });
+  });
+  previewObs.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — MANUAL REFRESH (kalau user butuh)
+   ═══════════════════════════════════════════════════════════ */
+window.refitPreview = function(){
+  autoFitPreview();
+  if(window.toast) toast("📱 Preview di-fit ulang","success");
+};
 
 
 /* ═══════════════════════════════════════════════════════════
@@ -24941,17 +25313,18 @@ window.addEventListener("hashchange", function(){ setTimeout(autoHeightPreview, 
 setTimeout(function(){
   console.log("");
   console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
-  console.log("%c║  ✅ PATCH v9.4 PREVIEW FINAL           ║","color:#22c55e;font-weight:bold");
-  console.log("%c║  • Auto height (ngikutin konten)       ║","color:#22c55e");
-  console.log("%c║  • Scale 68% (muat 1 layar)            ║","color:#22c55e");
+  console.log("%c║  ✅ PATCH v9.5 PREVIEW AUTO-FIT        ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Auto-scale sesuai ukuran layar      ║","color:#22c55e");
+  console.log("%c║  • Responsive HP / tablet / desktop    ║","color:#22c55e");
+  console.log("%c║  • Auto-adjust saat rotate/resize      ║","color:#22c55e");
   console.log("%c║  • Fix crop badge (word-break)         ║","color:#22c55e");
-  console.log("%c║  • No blank space bawah                ║","color:#22c55e");
   console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
   console.log("");
+  console.log("💡 refitPreview() — paksa fit ulang");
 }, 1500);
 
 })();
 </script>
-<!-- ═══ END PATCH v9.4 PREVIEW FINAL ═══ -->
+<!-- ═══ END PATCH v9.5 ═══ -->
 </body>
    </html>

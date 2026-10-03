@@ -26237,5 +26237,1152 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END BUBBLE THINKING ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v10.1 — FIX PREVIEW AUTO-REFRESH + FOOTER + DELETE CUSTOM THEME
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv101-css">
+/* ═══════════════════════════════════════════════════════════
+   FIX FOOTER "BY VAROO" (jangan stretch)
+   ═══════════════════════════════════════════════════════════ */
+.bio-footer{
+  display: inline-block !important;
+  align-self: center !important;
+  width: auto !important;
+  max-width: fit-content !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  padding: 6px 14px !important;
+  font-size: 10px !important;
+  border-radius: 20px !important;
+  white-space: nowrap !important;
+}
+
+/* Di preview phone juga */
+.preview-phone .bio-footer{
+  display: inline-block !important;
+  width: auto !important;
+  max-width: fit-content !important;
+  margin: 12px auto 0 !important;
+  padding: 4px 10px !important;
+  font-size: 8.5px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIX PREVIEW PHONE
+   ═══════════════════════════════════════════════════════════ */
+.preview-phone{
+  width: 100% !important;
+  max-width: 320px !important;
+  aspect-ratio: 9 / 19.5 !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  background: #0a0a0a !important;
+  border-radius: 28px !important;
+  border: 4px solid #0a0a0a !important;
+  box-shadow: 6px 6px 0 #0a0a0a !important;
+}
+.preview-phone iframe{
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  display: block !important;
+  overflow: auto !important;
+  background: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOMBOL HAPUS CUSTOM THEME (di theme picker)
+   ═══════════════════════════════════════════════════════════ */
+.warna-tema-delete{
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 12px !important;
+}
+.warna-tema-delete button{
+  padding: 10px 18px;
+  background: #ff2a2a;
+  color: #fff;
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.warna-tema-delete button:hover{
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.warna-tema-delete button:active{
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+/* Badge "Custom Active" di theme picker */
+.custom-theme-active-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #a78bfa;
+  color: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+</style>
+
+<script id="fixv101-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v10.1 — PREVIEW AUTO-REFRESH + DELETE CUSTOM THEME
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🔧 FIX v10.1 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+var PUBLIC_BIO_URL = "https://vlink-bio.vercel.app";
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 1 — PREVIEW AUTO-REFRESH (debounced)
+   ═══════════════════════════════════════════════════════════ */
+var _previewTimer = null;
+var _lastPreviewHash = "";
+
+function schedulePreviewRefresh(){
+  if(_previewTimer) clearTimeout(_previewTimer);
+  _previewTimer = setTimeout(function(){
+    refreshPreviewNow();
+  }, 800); // debounce 800ms
+}
+
+function refreshPreviewNow(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var frame = document.getElementById("prev-frame");
+    if(!frame) return;
+    
+    var draft = window.STATE && STATE.draft;
+    if(!draft) return;
+    
+    // Kalau bio udah punya slug → load URL
+    var slug = draft.slug || draft.id;
+    if(slug && draft.id){
+      var url = PUBLIC_BIO_URL + "/#/u/" + slug + "?preview=1&t=" + Date.now();
+      // Cek kalau URL sama, skip
+      if(frame.src && frame.src.indexOf("preview=1&t=") !== -1){
+        frame.src = url;
+      } else {
+        frame.removeAttribute("srcdoc");
+        frame.src = url;
+      }
+      console.log("🔄 Preview refresh (URL)");
+    } else {
+      // Fallback: srcdoc
+      if(window.PagePublic && window.PagePublic.buildHTML){
+        try{
+          var html = window.PagePublic.buildHTML(draft, { preview: true });
+          frame.removeAttribute("src");
+          frame.srcdoc = html;
+          console.log("🔄 Preview refresh (srcdoc)");
+        }catch(e){}
+      }
+    }
+  }catch(e){ console.warn("refreshPreviewNow:", e); }
+}
+
+/* ═══ Override PageEditor.updatePreview ═══ */
+function hookUpdatePreview(){
+  try{
+    if(!window.PageEditor) return false;
+    if(window.PageEditor._v101) return true;
+    window.PageEditor._v101 = true;
+    
+    window.PageEditor.updatePreview = function(){
+      refreshPreviewNow();
+    };
+    
+    console.log("✅ updatePreview hooked (v10.1)");
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ═══ Hook semua input changes di editor ═══ */
+function hookEditorInputs(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var editorPanel = document.querySelector(".editor-panel");
+    if(!editorPanel) return;
+    if(editorPanel.dataset.v101Hooked === "1") return;
+    editorPanel.dataset.v101Hooked = "1";
+    
+    // Delegate input event
+    editorPanel.addEventListener("input", function(e){
+      var target = e.target;
+      if(!target) return;
+      // Skip search / unrelated
+      if(target.id === "help-search" || target.id === "dev-search") return;
+      // Skip file inputs
+      if(target.type === "file") return;
+      
+      schedulePreviewRefresh();
+    }, true);
+    
+    // Delegate change event (buat select, radio, checkbox)
+    editorPanel.addEventListener("change", function(e){
+      var target = e.target;
+      if(!target) return;
+      if(target.type === "file") return;
+      schedulePreviewRefresh();
+    }, true);
+    
+    // Delegate click (buat button toggle)
+    editorPanel.addEventListener("click", function(e){
+      var target = e.target;
+      if(!target) return;
+      // Skip save/copy/qr buttons
+      var skipIds = ["btn-save","btn-save2","btn-copy-top","btn-qr","btn-scan-qr","btn-template","btn-refresh-preview"];
+      if(target.id && skipIds.indexOf(target.id) !== -1) return;
+      if(target.closest && target.closest("#preview-edit-toggle-btn")) return;
+      if(target.closest && target.closest(".btn-custom-theme-fix")) return;
+      
+      // Cek apakah button terkait editor (tema, warna, dll)
+      if(target.closest && (
+        target.closest(".theme-item") ||
+        target.closest(".opt-item") ||
+        target.closest(".warna-item") ||
+        target.closest(".style-item") ||
+        target.closest(".toggle-switch") ||
+        target.closest("[data-anim]")
+      )){
+        schedulePreviewRefresh();
+      }
+    }, true);
+    
+    console.log("✅ Editor inputs hooked (v10.1)");
+  }catch(e){ console.warn("hookEditorInputs:", e); }
+}
+
+/* ═══ Refresh sekali lagi setelah save ═══ */
+function hookEditorSave(){
+  try{
+    if(!window.PageEditor) return false;
+    if(window.PageEditor._v101Save) return true;
+    window.PageEditor._v101Save = true;
+    
+    var origSave = window.PageEditor.save;
+    if(typeof origSave === "function"){
+      window.PageEditor.save = async function(){
+        var result = await origSave.apply(this, arguments);
+        setTimeout(refreshPreviewNow, 800);
+        return result;
+      };
+    }
+    console.log("✅ Editor save hooked (v10.1)");
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ═══ Retry hook ═══ */
+var tries = 0;
+function tryHooks(){
+  tries++;
+  var ok1 = hookUpdatePreview();
+  var ok2 = hookEditorSave();
+  hookEditorInputs();
+  if((!ok1 || !ok2) && tries < 20) setTimeout(tryHooks, 500);
+}
+setTimeout(tryHooks, 500);
+setTimeout(tryHooks, 2000);
+setTimeout(tryHooks, 4000);
+setInterval(function(){
+  var hp = (location.hash.slice(1) || "/").split("?")[0];
+  if(hp === "/editor"){
+    hookEditorInputs();
+  }
+}, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 2 — HAPUS CUSTOM THEME (balik ke warna tema)
+   ═══════════════════════════════════════════════════════════ */
+function injectCustomThemeDelete(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    // Cari theme grid
+    var themeGrid = document.getElementById("theme-grid");
+    if(!themeGrid) return;
+    
+    // Cek parent section
+    var parent = themeGrid.closest(".editor-section");
+    if(!parent) return;
+    
+    // Kalau udah ada, skip
+    if(parent.querySelector(".warna-tema-delete")) return;
+    
+    var draft = window.STATE && STATE.draft;
+    var isCustomActive = draft && (draft.theme === "custom" || draft.customThemeData || draft.customThemeId);
+    
+    // Inject delete button
+    var wrap = document.createElement("div");
+    wrap.className = "warna-tema-delete";
+    wrap.innerHTML = 
+      (isCustomActive 
+        ? '<div style="text-align:center;margin-bottom:8px"><span class="custom-theme-active-badge">🎨 Custom Theme Aktif</span></div>' 
+        : '') +
+      '<button type="button" id="btn-delete-custom-theme">' +
+        '🗑️ Hapus Custom Theme' +
+      '</button>';
+    
+    themeGrid.parentNode.insertBefore(wrap, themeGrid.nextSibling);
+    
+    // Bind
+    var btn = document.getElementById("btn-delete-custom-theme");
+    if(btn){
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if(!confirm("Hapus custom theme? Bio bakal pakai tema warna biasa.")) return;
+        
+        try{
+          if(window.STATE && STATE.draft){
+            STATE.draft.theme = "neo-cream"; // balik ke default
+            delete STATE.draft.customThemeData;
+            delete STATE.draft.customThemeId;
+          }
+          
+          // Hapus dari applied
+          try{
+            localStorage.removeItem("varlinkbio_custom_theme_active");
+          }catch(e){}
+          
+          if(window.Sound && Sound.success) Sound.success();
+          if(window.toast) toast("✅ Custom theme dihapus. Pakai tema warna biasa.","success");
+          
+          // Refresh preview
+          setTimeout(refreshPreviewNow, 300);
+          
+          // Re-render editor
+          if(window.PageEditor && PageEditor.render){
+            setTimeout(function(){ PageEditor.render(); }, 500);
+          }
+        }catch(err){
+          console.warn("Delete custom theme:", err);
+          if(window.toast) toast("Gagal hapus: " + err.message,"error");
+        }
+      });
+    }
+    
+    console.log("✅ Custom theme delete button injected");
+  }catch(e){ console.warn("injectCustomThemeDelete:", e); }
+}
+
+setInterval(injectCustomThemeDelete, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(injectCustomThemeDelete, 700); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 3 — FORCE REFRESH PREVIEW SAAT HALAMAN EDITOR LOAD
+   ═══════════════════════════════════════════════════════════ */
+function forceRefreshOnLoad(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    setTimeout(refreshPreviewNow, 1500);
+    setTimeout(refreshPreviewNow, 3000);
+  }catch(e){}
+}
+window.addEventListener("hashchange", forceRefreshOnLoad);
+setTimeout(forceRefreshOnLoad, 1000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   EXPOSE
+   ═══════════════════════════════════════════════════════════ */
+window.refreshPreviewNow = refreshPreviewNow;
+window.schedulePreviewRefresh = schedulePreviewRefresh;
+
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ PATCH v10.1 AKTIF                  ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Preview auto-refresh (debounced)    ║","color:#22c55e");
+  console.log("%c║  • Fix footer BY VAROO (compact)       ║","color:#22c55e");
+  console.log("%c║  • Tombol Hapus Custom Theme           ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 refreshPreviewNow() — paksa refresh preview");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v10.1 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v10.2 — AUTO-SAVE + SHARE POPUP
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv102-css">
+/* ═══════════════════════════════════════════════════════════
+   AUTO-SAVE TOAST
+   ═══════════════════════════════════════════════════════════ */
+.autosave-toast{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99999;
+  background: #22c55e;
+  color: #fff;
+  border: 2.5px solid #0a0a0a;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 12.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .3s, transform .3s;
+  pointer-events: none;
+}
+.autosave-toast.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+.autosave-toast.saving{
+  background: #ffd700;
+  color: #0a0a0a;
+}
+.autosave-toast.error{
+  background: #ff2a2a;
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HAPUS TOMBOL SIMPAN
+   ═══════════════════════════════════════════════════════════ */
+#btn-save,
+#btn-save2{
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHARE POPUP (gaya neo-brutalism, lebih clean)
+   ═══════════════════════════════════════════════════════════ */
+.share-popup-modal{
+  text-align: center;
+}
+.share-popup-modal h3{
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -.3px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.share-popup-modal .sub{
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.share-popup-modal .url-box{
+  background: var(--cream);
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  word-break: break-all;
+  text-align: center;
+  margin-bottom: 14px;
+  cursor: pointer;
+  user-select: all;
+}
+.share-popup-modal .url-box:active{
+  background: #ffd700;
+}
+.share-popup-modal .actions-main{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.share-popup-modal .actions-secondary{
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.share-popup-modal button,
+.share-popup-modal a{
+  padding: 12px 16px;
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .1s, box-shadow .1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  color: inherit;
+}
+.share-popup-modal button:hover,
+.share-popup-modal a:hover{
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.share-popup-modal button:active,
+.share-popup-modal a:active{
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+.share-popup-modal .btn-copy{
+  flex: 1;
+  background: var(--ink);
+  color: #fff;
+}
+.share-popup-modal .btn-open{
+  flex: 1;
+  background: #fff;
+  color: var(--ink);
+}
+.share-popup-modal .btn-sm{
+  flex: 1;
+  min-width: 80px;
+  padding: 10px 12px;
+  font-size: 11px;
+}
+.share-popup-modal .btn-qr{
+  background: #fff;
+}
+.share-popup-modal .btn-wa{
+  background: #22c55e;
+  color: #fff;
+}
+.share-popup-modal .btn-share{
+  background: #a78bfa;
+  color: #fff;
+}
+.share-popup-modal button:disabled{
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOMBOL SHARE DI TOOLBAR EDITOR
+   ═══════════════════════════════════════════════════════════ */
+#btn-share-editor{
+  background: #2563eb !important;
+  color: #fff !important;
+  border: 2.5px solid var(--ink) !important;
+  box-shadow: 2px 2px 0 var(--ink) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .3px !important;
+}
+#btn-share-editor:hover{
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+}
+#btn-share-editor svg{
+  width: 14px;
+  height: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STATUS BADGE (bawah preview)
+   ═══════════════════════════════════════════════════════════ */
+.autosave-badge{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  transition: all .3s;
+}
+.autosave-badge.saving{
+  background: #ffd700;
+}
+.autosave-badge.saved{
+  background: #22c55e;
+  color: #fff;
+}
+.autosave-badge.error{
+  background: #ff2a2a;
+  color: #fff;
+}
+.autosave-badge .dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: badgePulse 1.5s ease-in-out infinite;
+}
+@keyframes badgePulse{
+  0%,100%{opacity:1}
+  50%{opacity:.4}
+}
+</style>
+
+<script id="fixv102-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v10.2 — AUTO-SAVE + SHARE POPUP
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c💾 AUTO-SAVE v10.2 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+var PUBLIC_BIO_URL = "https://vlink-bio.vercel.app";
+
+/* ═══════════════════════════════════════════════════════════
+   AUTO-SAVE SYSTEM
+   ═══════════════════════════════════════════════════════════ */
+var AutoSave = {
+  _timer: null,
+  _isSaving: false,
+  _lastSave: 0,
+  _lastHash: "",
+  _dirty: false,
+  DELAY: 1500,         // debounce 1.5s
+  MIN_INTERVAL: 3000,  // min 3 detik antar save
+  
+  init: function(){
+    var self = this;
+    // Watch editor changes
+    this._setupObservers();
+    
+    // Save saat exit editor
+    window.addEventListener("beforeunload", function(){
+      if(self._dirty) self._forceSave();
+    });
+    
+    // Save saat hash change
+    window.addEventListener("hashchange", function(){
+      if(self._dirty && self._isEditor()) self._forceSave();
+    });
+  },
+  
+  _isEditor: function(){
+    return (location.hash.slice(1) || "/").split("?")[0] === "/editor";
+  },
+  
+  _setupObservers: function(){
+    var self = this;
+    setInterval(function(){
+      if(!self._isEditor()) return;
+      var panel = document.querySelector(".editor-panel");
+      if(!panel || panel.dataset.autosaveHooked === "1") return;
+      panel.dataset.autosaveHooked = "1";
+      
+      // Input text change
+      panel.addEventListener("input", function(e){
+        if(e.target && e.target.type === "file") return;
+        self.schedule();
+      }, true);
+      
+      // Change (select, radio, checkbox)
+      panel.addEventListener("change", function(e){
+        if(e.target && e.target.type === "file") return;
+        self.schedule();
+      }, true);
+      
+      // Click (button related)
+      panel.addEventListener("click", function(e){
+        var t = e.target;
+        if(!t) return;
+        // Skip buttons yang gak related save
+        var skip = ["btn-save","btn-save2","btn-copy-top","btn-qr","btn-scan-qr","btn-template","btn-share-editor"];
+        if(t.id && skip.indexOf(t.id) !== -1) return;
+        if(t.closest && t.closest("#preview-edit-toggle-btn")) return;
+        if(t.closest && t.closest(".btn-custom-theme-fix")) return;
+        if(t.closest && t.closest("#btn-delete-custom-theme")) return;
+        
+        if(t.closest && (
+          t.closest(".theme-item") ||
+          t.closest(".opt-item") ||
+          t.closest(".warna-item") ||
+          t.closest(".style-item") ||
+          t.closest(".toggle-switch") ||
+          t.closest("[data-anim]")
+        )){
+          self.schedule();
+        }
+      }, true);
+      
+      console.log("✅ AutoSave observers ready");
+    }, 1000);
+  },
+  
+  schedule: function(){
+    var self = this;
+    this._dirty = true;
+    this._updateBadge("saving");
+    
+    if(this._timer) clearTimeout(this._timer);
+    this._timer = setTimeout(function(){
+      self.save();
+    }, this.DELAY);
+  },
+  
+  save: async function(){
+    if(this._isSaving) return;
+    if(!window.STATE || !STATE.draft) return;
+    if(!window.Auth || !Auth.current) return;
+    
+    // Throttle
+    var now = Date.now();
+    if(now - this._lastSave < this.MIN_INTERVAL){
+      // Reschedule
+      var self = this;
+      setTimeout(function(){ self.save(); }, this.MIN_INTERVAL - (now - this._lastSave));
+      return;
+    }
+    
+    // Cek ada perubahan signifikan
+    var draft = STATE.draft;
+    if(!draft.name || !draft.name.trim()){
+      this._updateBadge("error", "Nama kosong");
+      return;
+    }
+    
+    // Skip kalau hash sama
+    var hash = this._hashDraft(draft);
+    if(hash === this._lastHash){
+      this._updateBadge("saved");
+      this._dirty = false;
+      return;
+    }
+    
+    this._isSaving = true;
+    this._updateBadge("saving");
+    this._showToast("saving");
+    
+    try{
+      if(!window.Store || !Store.save){
+        throw new Error("Store.save gak ready");
+      }
+      
+      var saved = await Store.save({...draft});
+      STATE.draft = saved;
+      STATE.currentEdit = saved.id;
+      this._lastHash = hash;
+      this._lastSave = Date.now();
+      this._dirty = false;
+      
+      this._updateBadge("saved");
+      this._showToast("saved");
+      
+      // Refresh preview
+      setTimeout(function(){
+        if(window.refreshPreviewNow) refreshPreviewNow();
+      }, 300);
+      
+      console.log("💾 Auto-saved ✓");
+    }catch(e){
+      console.warn("Auto-save error:", e);
+      this._updateBadge("error", "Gagal save");
+      this._showToast("error");
+    }finally{
+      this._isSaving = false;
+    }
+  },
+  
+  _forceSave: async function(){
+    if(this._timer) clearTimeout(this._timer);
+    if(this._dirty){
+      try{ await this.save(); }catch(e){}
+    }
+  },
+  
+  _hashDraft: function(draft){
+    try{
+      var clean = {};
+      ["name","bio","theme","animation","slug","profile","banner","bannerType"].forEach(function(k){
+        clean[k] = draft[k];
+      });
+      clean.links = (draft.links || []).map(function(l){
+        return [l.label, l.url, l.type, l.color, l.thumb, l.active,
+                l.featPosX, l.featPosY, l.featZoom, l.featPadding, l.featRatio,
+                l.btnDragX, l.btnDragY];
+      });
+      clean.logos = (draft.logos || []).map(function(l){ return [l.name, l.url, l.img]; });
+      clean.customThemeId = draft.customThemeId;
+      return JSON.stringify(clean).length + "_" + JSON.stringify(clean).slice(0, 200);
+    }catch(e){ return ""; }
+  },
+  
+  _showToast: function(type){
+    var el = document.getElementById("autosave-toast");
+    if(!el){
+      el = document.createElement("div");
+      el.id = "autosave-toast";
+      el.className = "autosave-toast";
+      document.body.appendChild(el);
+    }
+    
+    if(type === "saving"){
+      el.className = "autosave-toast show saving";
+      el.innerHTML = "💾 Menyimpan...";
+    } else if(type === "saved"){
+      el.className = "autosave-toast show";
+      el.innerHTML = "✅ Auto-saved";
+      setTimeout(function(){
+        el.classList.remove("show");
+      }, 1800);
+    } else if(type === "error"){
+      el.className = "autosave-toast show error";
+      el.innerHTML = "❌ Gagal save";
+      setTimeout(function(){
+        el.classList.remove("show");
+      }, 2500);
+    }
+  },
+  
+  _updateBadge: function(status, customText){
+    var badge = document.getElementById("autosave-badge");
+    if(!badge){
+      // Inject kalau belum ada
+      var previewPanel = document.querySelector(".editor-preview");
+      if(previewPanel){
+        badge = document.createElement("div");
+        badge.id = "autosave-badge";
+        badge.className = "autosave-badge";
+        previewPanel.appendChild(badge);
+      }
+    }
+    if(!badge) return;
+    
+    var txt = "";
+    if(status === "saving"){
+      badge.className = "autosave-badge saving";
+      txt = '<span class="dot"></span> 💾 Menyimpan...';
+    } else if(status === "saved"){
+      badge.className = "autosave-badge saved";
+      txt = '✅ ' + (customText || "Tersimpan");
+    } else if(status === "error"){
+      badge.className = "autosave-badge error";
+      txt = '❌ ' + (customText || "Gagal save");
+    } else {
+      badge.className = "autosave-badge";
+      txt = '💾 Auto-save aktif';
+    }
+    badge.innerHTML = txt;
+  }
+};
+
+window.AutoSave = AutoSave;
+
+
+/* ═══════════════════════════════════════════════════════════
+   HAPUS TOMBOL SIMPAN + INJECT SHARE BUTTON
+   ═══════════════════════════════════════════════════════════ */
+function manageToolbarButtons(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    // Hapus tombol Simpan
+    ["btn-save","btn-save2"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.remove();
+    });
+    
+    // Cari toolbar atas (yang ada tombol Template / Scan / Copy / QR)
+    var topBar = document.querySelector(".editor-panel") ? null : null;
+    // Toolbar ada di atas editor-layout
+    var toolbar = document.querySelector('button[id="btn-template"]')?.parentNode;
+    if(!toolbar) return;
+    
+    // Cek udah ada Share button
+    if(document.getElementById("btn-share-editor")) return;
+    
+    // Inject Share button
+    var shareBtn = document.createElement("button");
+    shareBtn.className = "btn btn-sm";
+    shareBtn.id = "btn-share-editor";
+    shareBtn.type = "button";
+    shareBtn.innerHTML = '📤 Share';
+    shareBtn.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(window.Sound && Sound.click) Sound.click();
+      showSharePopup();
+    });
+    
+    toolbar.appendChild(shareBtn);
+    console.log("✅ Share button injected");
+  }catch(e){ console.warn("manageToolbarButtons:", e); }
+}
+
+setInterval(manageToolbarButtons, 1000);
+window.addEventListener("hashchange", function(){ setTimeout(manageToolbarButtons, 500); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   SHARE POPUP (menggantikan popup "BIO TERSIMPAN")
+   ═══════════════════════════════════════════════════════════ */
+function showSharePopup(){
+  try{
+    var draft = window.STATE && STATE.draft;
+    if(!draft){
+      if(window.toast) toast("Bio belum disave","error");
+      return;
+    }
+    
+    if(!draft.slug && !draft.id){
+      if(window.toast) toast("Save dulu biar dapet link","info");
+      return;
+    }
+    
+    var identifier = draft.slug || draft.id;
+    var url = PUBLIC_BIO_URL + "/#/u/" + identifier;
+    var canNativeShare = !!navigator.share;
+    
+    var html = 
+      '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>' +
+      '<div class="share-popup-modal">' +
+        '<h3>🔗 ' + (draft.name || "Bio") + '</h3>' +
+        '<p class="sub">Bagikan link bio kamu</p>' +
+        '<div class="url-box" id="share-url" title="Tap untuk copy">' + url + '</div>' +
+        '<div class="actions-main">' +
+          '<button class="btn-copy" id="share-copy">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+            ' Copy' +
+          '</button>' +
+          '<button class="btn-open" id="share-open">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+            ' Buka' +
+          '</button>' +
+        '</div>' +
+        '<div class="actions-secondary">' +
+          '<button class="btn-sm btn-qr" id="share-qr">📱 QR</button>' +
+          '<button class="btn-sm btn-wa" id="share-wa">💬 WA</button>' +
+          (canNativeShare ? '<button class="btn-sm btn-share" id="share-native">🔗 Share</button>' : '') +
+        '</div>' +
+      '</div>';
+    
+    var m = window.openModal(html);
+    if(!m) return;
+    
+    // Bind URL box click → copy
+    var urlBox = document.getElementById("share-url");
+    if(urlBox){
+      urlBox.addEventListener("click", function(){
+        doCopy();
+      });
+    }
+    
+    // Copy button
+    var copyBtn = document.getElementById("share-copy");
+    if(copyBtn){
+      copyBtn.addEventListener("click", function(){ doCopy(); });
+    }
+    
+    // Open button
+    var openBtn = document.getElementById("share-open");
+    if(openBtn){
+      openBtn.addEventListener("click", function(){
+        window.open(url, "_blank");
+      });
+    }
+    
+    // QR button
+    var qrBtn = document.getElementById("share-qr");
+    if(qrBtn){
+      qrBtn.addEventListener("click", function(){
+        m.remove();
+        if(window.PageDashboard && PageDashboard.qr){
+          PageDashboard.qr(draft.id);
+        }
+      });
+    }
+    
+    // WA button
+    var waBtn = document.getElementById("share-wa");
+    if(waBtn){
+      waBtn.addEventListener("click", function(){
+        var text = encodeURIComponent("Cek link-in-bio aku: " + url);
+        window.open("https://wa.me/?text=" + text, "_blank");
+      });
+    }
+    
+    // Native share
+    var nativeBtn = document.getElementById("share-native");
+    if(nativeBtn){
+      nativeBtn.addEventListener("click", async function(){
+        try{
+          await navigator.share({
+            title: draft.name || "Varlinkbio",
+            text: "Cek link-in-bio aku!",
+            url: url
+          });
+        }catch(e){}
+      });
+    }
+    
+    // Helper copy
+    async function doCopy(){
+      try{
+        await navigator.clipboard.writeText(url);
+        if(window.Sound && Sound.success) Sound.success();
+        if(window.toast) toast("📋 Link disalin!","success");
+        
+        var btn = document.getElementById("share-copy");
+        if(btn){
+          var orig = btn.innerHTML;
+          btn.innerHTML = "✅ Disalin!";
+          setTimeout(function(){ btn.innerHTML = orig; }, 1500);
+        }
+      }catch(e){
+        // Fallback
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try{
+          document.execCommand("copy");
+          if(window.toast) toast("📋 Link disalin!","success");
+        }catch(err){
+          if(window.toast) toast("Gagal copy","error");
+        }
+        ta.remove();
+      }
+    }
+    
+    console.log("📤 Share popup opened");
+  }catch(e){
+    console.warn("showSharePopup:", e);
+  }
+}
+
+window.showSharePopup = showSharePopup;
+
+
+/* ═══════════════════════════════════════════════════════════
+   OVERRIDE showShareModal (yang lama, dari v26)
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  if(window.showShareModal){
+    window.showShareModal = function(bioOrId){
+      // Kalau dipanggil dengan bio object, sync ke draft dulu
+      if(bioOrId && typeof bioOrId === "object"){
+        if(window.STATE){
+          STATE.draft = Object.assign({}, STATE.draft, bioOrId);
+        }
+      }
+      showSharePopup();
+    };
+  }
+}, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+function initAutoSave(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    // Init AutoSave
+    if(window.AutoSave){
+      window.AutoSave.init();
+    }
+    
+    // Update badge awal
+    setTimeout(function(){
+      if(window.AutoSave) AutoSave._updateBadge("idle");
+    }, 1500);
+    
+    // Manage buttons
+    manageToolbarButtons();
+    
+  }catch(e){ console.warn("initAutoSave:", e); }
+}
+
+setTimeout(initAutoSave, 1000);
+setTimeout(initAutoSave, 3000);
+window.addEventListener("hashchange", function(){ setTimeout(initAutoSave, 800); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  💾 PATCH v10.2 AKTIF                  ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Auto-save (debounce 1.5s)           ║","color:#22c55e");
+  console.log("%c║  • Toast kecil notif save              ║","color:#22c55e");
+  console.log("%c║  • Tombol Simpan dihapus               ║","color:#22c55e");
+  console.log("%c║  • Tombol Share baru (popup)           ║","color:#22c55e");
+  console.log("%c║  • Preview auto-refresh                ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 showSharePopup() — buka share popup");
+  console.log("💡 AutoSave.save()  — force save");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v10.2 ═══ -->
 </body>
    </html>

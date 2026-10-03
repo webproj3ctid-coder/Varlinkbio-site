@@ -23583,5 +23583,1054 @@ setTimeout(function(){
   height: 0 !important;
 }
 </style>
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.2 FINAL — ALL-IN-ONE
+     Music Auto-Pause + Fast Emoji + UI Fix + QR Fix
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv92-css">
+/* ═══ HIDE TOMBOL ATUR POSISI PERMANEN ═══ */
+#preview-edit-toggle-btn,
+.preview-edit-toggle,
+.preview-edit-btn{
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* ═══ HIDE TOGGLE VARSMile DI SETTINGS ═══ */
+#set-varsmile,
+label:has(#set-varsmile),
+.settings-section:has(#set-varsmile){
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ═══ FIX TUTORIAL Z-INDEX & POINTER EVENTS ═══ */
+.vtut-overlay,
+#tut-overlay,
+.tut-overlay{
+  pointer-events: none !important;
+  z-index: 99990 !important;
+}
+.vtut-overlay.active,
+#tut-overlay.active,
+.tut-overlay.active{
+  pointer-events: auto !important;
+  z-index: 99999 !important;
+}
+.vtut-overlay *,
+#tut-overlay *,
+.tut-overlay *{
+  pointer-events: auto !important;
+}
+.vtut-dark-bg,
+#tut-overlay .vtut-dark-bg{
+  pointer-events: auto !important;
+}
+.vtut-spotlight,
+#tut-overlay .vtut-spotlight,
+.vtut-varsmile,
+#tut-overlay .vtut-varsmile,
+.vtut-tap-hint{
+  pointer-events: none !important;
+}
+.vtut-bubble,
+#tut-overlay .vtut-bubble,
+.tut-dialog,
+#tut-overlay .tut-dialog{
+  pointer-events: auto !important;
+  z-index: 100000 !important;
+  position: relative !important;
+}
+.vtut-next-btn,
+.vtut-skip-btn,
+.tut-btn,
+#tut-overlay button{
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 100001 !important;
+  position: relative !important;
+}
+
+/* ═══ FIX VARSMile BUBBLE POSISI ═══ */
+#varsmile-popup-bubble{
+  position:fixed !important;
+  z-index: 100001 !important;
+  pointer-events: auto !important;
+}
+
+/* ═══ FIX QR BLANK ═══ */
+.qr-box canvas,
+#qr-canvas{
+  min-width: 200px !important;
+  min-height: 200px !important;
+  background: #fff !important;
+}
+
+/* ═══ FAST EMOJI ═══ */
+.lucide-emoji-fast{
+  display: inline-block !important;
+  width: 1.15em;height: 1.15em;
+  vertical-align: -0.2em;
+  margin: 0 1px;
+  font-size: inherit;
+  line-height: 1;
+  text-align: center;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+}
+.lucide-emoji-fast svg{
+  width: 100% !important;height: 100% !important;
+  display: block !important;
+  stroke: currentColor !important;
+}
+</style>
+
+<script id="fixv92-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.2 FINAL — ALL-IN-ONE
+   1. Preload Lucide (paralel)
+   2. Fast Emoji (inline mini map — INSTAN)
+   3. Fix Music Auto-Pause (keluar browser → pause)
+   4. Hapus tombol Atur Posisi
+   5. Hapus toggle Varsmile Settings
+   6. Fix Tutorial klik
+   7. Fix Bubble Varsmile center
+   8. Fix QR blank
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🔧 FIX v9.2 FINAL loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — PRELOAD LUCIDE (paralel)
+   ═══════════════════════════════════════════════════════════ */
+(function preloadLucide(){
+  try{
+    if(window.lucide && window.lucide.icons){ return; }
+    
+    ["https://unpkg.com","https://cdn.jsdelivr.net","https://cdnjs.cloudflare.com"].forEach(function(d){
+      var l1 = document.createElement("link");
+      l1.rel = "preconnect"; l1.href = d; l1.crossOrigin = "anonymous";
+      document.head.appendChild(l1);
+      var l2 = document.createElement("link");
+      l2.rel = "dns-prefetch"; l2.href = d;
+      document.head.appendChild(l2);
+    });
+    
+    var CDNS = [
+      "https://unpkg.com/lucide@latest/dist/umd/lucide.js",
+      "https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"
+    ];
+    var loaded = false;
+    CDNS.forEach(function(url){
+      var s = document.createElement("script");
+      s.src = url; s.async = true;
+      s.onload = function(){
+        if(!loaded && window.lucide){ loaded = true; console.log("⚡ Lucide: " + url); }
+      };
+      document.head.appendChild(s);
+    });
+  }catch(e){}
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — MINI SVG MAP (INSTAN)
+   ═══════════════════════════════════════════════════════════ */
+var MINI_SVG = {
+  "🤖": '<circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/><path d="M9 17h6"/>',
+  "🔊": '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>',
+  "🔇": '<path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>',
+  "🔈": '<path d="M11 5L6 9H2v6h4l5 4V5z"/>',
+  "🔉": '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
+  "📢": '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  "📣": '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  "🎤": '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>',
+  "🎧": '<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+  "🎵": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  "🎶": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  "🎼": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  "✅": '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+  "❌": '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+  "⚠️": '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  "⭐": '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  "🌟": '<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>',
+  "✨": '<path d="M12 2l2 8 8 2-8 2-2 8-2-8-8-2 8-2z"/>',
+  "🔥": '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  "⚡": '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  "❤️": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+  "💔": '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><line x1="12" y1="8" x2="15" y2="14"/><line x1="12" y1="8" x2="9" y2="14"/>',
+  "💰": '<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>',
+  "💳": '<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>',
+  "📱": '<rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+  "💻": '<rect x="2" y="4" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/>',
+  "🎮": '<line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="2"/>',
+  "🎨": '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>',
+  "📊": '<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>',
+  "📈": '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  "📉": '<polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/>',
+  "🏆": '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>',
+  "🔒": '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  "🔓": '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+  "🔑": '<path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/>',
+  "⚙️": '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  "🔧": '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  "🔔": '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  "🔍": '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+  "🔗": '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  "📌": '<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14l-2-5V3a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v9z"/>',
+  "📍": '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  "📝": '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+  "📁": '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+  "📦": '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/>',
+  "🎁": '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+  "🛒": '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',
+  "👤": '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  "👥": '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  "🚀": '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+  "🎯": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  "💡": '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>',
+  "🎉": '<path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/>',
+  "🙂": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  "😀": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  "😊": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  "😍": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  "😂": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  "🎬": '<rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>',
+  "📸": '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  "🖼️": '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>'
+};
+
+function renderMiniSvg(emoji){
+  var path = MINI_SVG[emoji];
+  if(!path) return null;
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%;display:block">' + path + '</svg>';
+}
+
+var FAST_REGEX = /([\u{1F000}-\u{1FFFF}]|[\u{2600}-\u{27BF}]|[\u{2190}-\u{21FF}]|[\u{2B00}-\u{2BFF}]|[\u{FE0F}]|[\u{200D}])/gu;
+
+function fastEmojiToSvg(text){
+  if(!text) return text;
+  return String(text).replace(FAST_REGEX, function(match){
+    if(match === "\uFE0F" || match === "\uFE0E" || match === "\u200D") return "";
+    var miniSvg = renderMiniSvg(match);
+    if(miniSvg){
+      return '<span class="lucide-emoji-fast" data-emoji-mini="1">' + miniSvg + '</span>';
+    }
+    if(window.lucide && window.lucide.icons && window.emojiToSvg){
+      try{ return window.emojiToSvg(match); }catch(e){}
+    }
+    return match;
+  });
+}
+
+window.emojiToSvgFast = fastEmojiToSvg;
+
+var observer = new MutationObserver(function(muts){
+  muts.forEach(function(m){
+    if(m.target && m.target.closest && m.target.closest(".lucide-emoji, .lucide-emoji-fast")) return;
+    if(m.target && m.target.closest && m.target.closest("iframe")) return;
+    
+    m.addedNodes.forEach(function(n){
+      if(n.nodeType === 3){
+        var txt = n.nodeValue;
+        if(!txt) return;
+        FAST_REGEX.lastIndex = 0;
+        if(!FAST_REGEX.test(txt)) return;
+        var parent = n.parentNode;
+        if(!parent) return;
+        var skip = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH"];
+        if(skip.indexOf(parent.tagName) !== -1) return;
+        try{
+          var html = fastEmojiToSvg(txt);
+          if(html && html !== txt){
+            var span = document.createElement("span");
+            span.style.display = "contents";
+            span.innerHTML = html;
+            n.parentNode.replaceChild(span, n);
+          }
+        }catch(e){}
+      } else if(n.nodeType === 1){
+        var skip = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","IFRAME"];
+        (function walk(root){
+          if(!root || root.nodeType !== 1) return;
+          if(skip.indexOf(root.tagName) !== -1) return;
+          var kids = Array.prototype.slice.call(root.childNodes || []);
+          kids.forEach(function(k){
+            if(k.nodeType === 3){
+              var txt = k.nodeValue;
+              if(!txt) return;
+              FAST_REGEX.lastIndex = 0;
+              if(!FAST_REGEX.test(txt)) return;
+              try{
+                var html = fastEmojiToSvg(txt);
+                if(html && html !== txt){
+                  var span = document.createElement("span");
+                  span.style.display = "contents";
+                  span.innerHTML = html;
+                  k.parentNode.replaceChild(span, k);
+                }
+              }catch(e){}
+            } else if(k.nodeType === 1){
+              walk(k);
+            }
+          });
+        })(n);
+      }
+    });
+  });
+});
+
+try{
+  observer.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+setTimeout(function(){
+  try{
+    var skip = ["SCRIPT","STYLE","TEXTAREA","INPUT","CODE","PRE","SVG","PATH","IFRAME"];
+    (function walk(root){
+      if(!root || root.nodeType !== 1) return;
+      if(skip.indexOf(root.tagName) !== -1) return;
+      var kids = Array.prototype.slice.call(root.childNodes || []);
+      kids.forEach(function(k){
+        if(k.nodeType === 3){
+          var txt = k.nodeValue;
+          if(!txt) return;
+          FAST_REGEX.lastIndex = 0;
+          if(!FAST_REGEX.test(txt)) return;
+          try{
+            var html = fastEmojiToSvg(txt);
+            if(html && html !== txt){
+              var span = document.createElement("span");
+              span.style.display = "contents";
+              span.innerHTML = html;
+              k.parentNode.replaceChild(span, k);
+            }
+          }catch(e){}
+        } else if(k.nodeType === 1){
+          walk(k);
+        }
+      });
+    })(document.body);
+    console.log("⚡ Fast emoji scan done");
+  }catch(e){}
+}, 300);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — FIX MUSIC AUTO-PAUSE
+   ═══════════════════════════════════════════════════════════ */
+var wasPlayingBeforeHide = false;
+
+function getAudioElement(){
+  try{
+    if(window.MusicPlayer && window.MusicPlayer._audio) return window.MusicPlayer._audio;
+    if(window.MusicSystem && window.MusicSystem._audio) return window.MusicSystem._audio;
+    var audios = document.querySelectorAll("audio");
+    for(var i = 0; i < audios.length; i++){
+      if(!audios[i].paused || audios[i].currentTime > 0) return audios[i];
+    }
+    return audios[0] || null;
+  }catch(e){ return null; }
+}
+
+function getUserMusicPref(){
+  try{
+    var raw = localStorage.getItem("varlinkbio_music_pref");
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { enabled: true };
+}
+
+function pauseMusic(){
+  try{
+    var audio = getAudioElement();
+    if(audio && !audio.paused){
+      wasPlayingBeforeHide = true;
+      audio.pause();
+      console.log("⏸️ Music paused");
+    }
+  }catch(e){}
+}
+
+function resumeMusic(){
+  try{
+    var audio = getAudioElement();
+    if(wasPlayingBeforeHide && audio && audio.paused){
+      var pref = getUserMusicPref();
+      if(pref.enabled !== false){
+        audio.play().catch(function(){});
+        console.log("▶️ Music resumed");
+      }
+      wasPlayingBeforeHide = false;
+    }
+  }catch(e){}
+}
+
+document.addEventListener("visibilitychange", function(){
+  if(document.hidden || document.visibilityState === "hidden"){
+    pauseMusic();
+  } else {
+    resumeMusic();
+  }
+}, true);
+
+window.addEventListener("pagehide", function(){ pauseMusic(); }, true);
+window.addEventListener("beforeunload", function(){
+  try{
+    var audio = getAudioElement();
+    if(audio){ audio.pause(); audio.currentTime = 0; }
+  }catch(e){}
+}, true);
+document.addEventListener("freeze", function(){ pauseMusic(); }, true);
+
+window.addEventListener("blur", function(){ pauseMusic(); });
+window.addEventListener("focus", function(){ resumeMusic(); });
+
+// Monitor audio baru
+try{
+  var audioObs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType === 1 && n.tagName === "AUDIO"){
+          n.addEventListener("play", function(){
+            if(document.hidden){ n.pause(); }
+          });
+        }
+      });
+    });
+  });
+  audioObs.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+window.stopAllMusic = function(){
+  try{
+    document.querySelectorAll("audio").forEach(function(a){
+      a.pause(); a.currentTime = 0;
+    });
+    if(window.MusicPlayer && MusicPlayer._audio){
+      MusicPlayer._audio.pause(); MusicPlayer._audio.currentTime = 0;
+    }
+    if(window.MusicSystem && MusicSystem._audio){
+      MusicSystem._audio.pause(); MusicSystem._audio.currentTime = 0;
+    }
+    if(window.toast) toast("🎵 Music dimatiin","info");
+  }catch(e){}
+};
+
+console.log("✅ Music auto-pause installed");
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — HAPUS TOMBOL ATUR POSISI
+   ═══════════════════════════════════════════════════════════ */
+function removeAturPosisiBtn(){
+  try{
+    ["preview-edit-toggle-btn","preview-edit-toggle"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.remove();
+    });
+    document.querySelectorAll(".preview-edit-toggle, .preview-edit-btn").forEach(function(el){ el.remove(); });
+    if(window.PreviewEditMode){
+      window.PreviewEditMode.toggle = function(){};
+      window.PreviewEditMode.attachDrag = function(){};
+    }
+  }catch(e){}
+}
+removeAturPosisiBtn();
+setInterval(removeAturPosisiBtn, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(removeAturPosisiBtn, 500); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — HAPUS TOGGLE VARSMile DI SETTINGS
+   ═══════════════════════════════════════════════════════════ */
+function removeVarsmileSettings(){
+  try{
+    var cb = document.getElementById("set-varsmile");
+    if(cb){
+      var parent = cb.closest(".settings-section") || cb.closest("label") || cb.parentNode;
+      if(parent) parent.remove();
+    }
+  }catch(e){}
+}
+removeVarsmileSettings();
+setInterval(removeVarsmileSettings, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(removeVarsmileSettings, 500); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 6 — FIX TUTORIAL KLIK
+   ═══════════════════════════════════════════════════════════ */
+function fixTutorialClicks(){
+  try{
+    var overlays = document.querySelectorAll(".vtut-overlay, #tut-overlay, .tut-overlay");
+    overlays.forEach(function(ov){
+      ov.style.pointerEvents = "auto";
+      ov.style.zIndex = "99999";
+      ov.querySelectorAll("button").forEach(function(btn){
+        btn.style.pointerEvents = "auto";
+        btn.style.cursor = "pointer";
+        btn.style.zIndex = "100001";
+        btn.style.position = "relative";
+        if(btn.disabled) btn.disabled = false;
+      });
+      ov.querySelectorAll(".vtut-bubble, .tut-dialog, .tut-body").forEach(function(el){
+        el.style.pointerEvents = "auto";
+        el.style.zIndex = "100000";
+      });
+      ov.querySelectorAll(".vtut-dark-bg").forEach(function(el){
+        el.style.pointerEvents = "auto";
+      });
+      ov.querySelectorAll(".vtut-spotlight, .vtut-varsmile, .vtut-tap-hint").forEach(function(el){
+        el.style.pointerEvents = "none";
+      });
+    });
+  }catch(e){}
+}
+setTimeout(fixTutorialClicks, 1000);
+setTimeout(fixTutorialClicks, 2500);
+setInterval(fixTutorialClicks, 800);
+
+window.skipTutorial = function(){
+  try{
+    if(window.VarsmileTutorial){
+      if(window.VarsmileTutorial._finish) window.VarsmileTutorial._finish(true);
+      if(window.VarsmileTutorial._cleanupTap) window.VarsmileTutorial._cleanupTap();
+    }
+    if(window.Tutorial && window.Tutorial.finish) window.Tutorial.finish(true);
+    document.querySelectorAll(".vtut-overlay, .tut-overlay, #tut-overlay").forEach(function(el){ el.remove(); });
+    document.querySelectorAll(".vtut-progress, .vtut-counter").forEach(function(el){ el.remove(); });
+    if(window.toast) toast("Tutorial di-skip ✓","success");
+  }catch(e){}
+};
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 7 — FIX BUBBLE VARSMile POSISI (CENTER)
+   ═══════════════════════════════════════════════════════════ */
+function patchVarsmileBubble(){
+  try{
+    if(!window.Varsmile) return;
+    if(window.Varsmile._bubbleV92Fixed) return;
+    window.Varsmile._bubbleV92Fixed = true;
+    
+    window.Varsmile.showBubble = function(text, duration){
+      duration = duration || 4000;
+      if(!this._el) return;
+      
+      var oldBubble = document.getElementById("varsmile-popup-bubble");
+      if(oldBubble) oldBubble.remove();
+      
+      var r = this._el.getBoundingClientRect();
+      var bubble = document.createElement("div");
+      bubble.id = "varsmile-popup-bubble";
+      bubble.textContent = text;
+      
+      var centerX = r.left + (r.width / 2);
+      var bubbleTop = r.top - 12;
+      
+      bubble.style.cssText = 
+        "position: fixed !important;z-index: 100001 !important;" +
+        "background: #fff !important;color: #0a0a0a !important;" +
+        "border: 3px solid #0a0a0a !important;border-radius: 14px !important;" +
+        "padding: 10px 14px !important;font-family: 'Inter', sans-serif !important;" +
+        "font-size: 13px !important;font-weight: 700 !important;" +
+        "max-width: 240px !important;box-shadow: 4px 4px 0 #0a0a0a !important;" +
+        "line-height: 1.4 !important;" +
+        "left: " + centerX + "px !important;" +
+        "top: " + bubbleTop + "px !important;" +
+        "transform: translate(-50%, -100%) !important;" +
+        "pointer-events: auto !important;";
+      
+      if(!document.getElementById("vs-bubble-arrow-css")){
+        var st = document.createElement("style");
+        st.id = "vs-bubble-arrow-css";
+        st.textContent = 
+          "#varsmile-popup-bubble::after{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:12px solid #0a0a0a;}" +
+          "#varsmile-popup-bubble::before{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:9px solid #fff;z-index:1;}";
+        document.head.appendChild(st);
+      }
+      
+      document.body.appendChild(bubble);
+      this._bubble = bubble;
+      
+      if(window.Sound && Sound.bip) Sound.bip();
+      
+      var self = this;
+      setTimeout(function(){
+        if(self._bubble === bubble){
+          try{ bubble.remove(); }catch(e){}
+          if(self._bubble === bubble) self._bubble = null;
+        }
+      }, duration);
+      
+      bubble.addEventListener("click", function(){
+        if(self._bubble === bubble){
+          try{ bubble.remove(); }catch(e){}
+          if(self._bubble === bubble) self._bubble = null;
+        }
+      });
+    };
+    console.log("✅ Varsmile bubble patched (center)");
+  }catch(e){}
+}
+setTimeout(patchVarsmileBubble, 1500);
+setTimeout(patchVarsmileBubble, 3500);
+setInterval(patchVarsmileBubble, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 8 — FIX QR BLANK
+   ═══════════════════════════════════════════════════════════ */
+function fixQRCode(){
+  try{
+    if(!window.QRCode){
+      var cdns = [
+        "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js",
+        "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"
+      ];
+      cdns.forEach(function(url){
+        if(!window.QRCode){
+          var s = document.createElement("script");
+          s.src = url; s.async = true;
+          s.onload = function(){ console.log("✅ QRCode: " + url); };
+          document.head.appendChild(s);
+        }
+      });
+    }
+  }catch(e){}
+}
+try{
+  var qrObs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType === 1 && n.querySelector && n.querySelector("#qr-canvas")){
+          fixQRCode();
+        }
+      });
+    });
+  });
+  qrObs.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ PATCH v9.2 FINAL AKTIF             ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  1. Music Auto-Pause (keluar browser)  ║","color:#22c55e");
+  console.log("%c║  2. Fast Emoji (instan, no CDN wait)   ║","color:#22c55e");
+  console.log("%c║  3. Tombol Atur Posisi dihapus         ║","color:#22c55e");
+  console.log("%c║  4. Toggle Varsmile Settings dihapus   ║","color:#22c55e");
+  console.log("%c║  5. Tutorial fix (bisa diklik)         ║","color:#22c55e");
+  console.log("%c║  6. Bubble Varsmile center             ║","color:#22c55e");
+  console.log("%c║  7. QR fix + observer                  ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 Command:");
+  console.log("   stopAllMusic()      — matiin music paksa");
+  console.log("   skipTutorial()      — skip tutorial");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v9.2 FINAL ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.3 — FIX PREVIEW EDITOR
+     Preview fit 1 layar + fix crop + hapus tombol Atur Posisi
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv93-css">
+/* ═══════════════════════════════════════════════════════════
+   FIX 1 — PREVIEW PHONE: FIT 1 LAYAR
+   ═══════════════════════════════════════════════════════════ */
+.preview-phone{
+  aspect-ratio: 9 / 19.5 !important;
+  max-width: 340px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  padding: 0 !important;
+  background: #0a0a0a !important;
+}
+.preview-phone iframe{
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  display: block !important;
+  overflow: hidden !important;
+}
+
+.editor-preview{
+  position: sticky !important;
+  top: 70px !important;
+  align-self: flex-start !important;
+}
+
+@media(max-width:1024px){
+  .editor-preview{position: static !important}
+  .preview-phone{max-width: 320px !important}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 2 — HAPUS TOMBOL ATUR POSISI (PAKSA)
+   ═══════════════════════════════════════════════════════════ */
+#preview-edit-toggle-btn,
+.preview-edit-toggle,
+.preview-edit-btn,
+.editor-preview button[id*="preview-edit"],
+.editor-preview button[id*="atur-posisi"]{
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  overflow: hidden !important;
+}
+</style>
+
+<script id="fixv93-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.3 — FIX PREVIEW
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c🔧 FIX v9.3 PREVIEW loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 1 — PATCH PagePublic.buildHTML (preview mode)
+   ═══════════════════════════════════════════════════════════ */
+function patchPreviewBuildHTML(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) {
+      console.warn("PagePublic gak ready, retry...");
+      return false;
+    }
+    if(window.PagePublic._fitFixV93) return true;
+    window.PagePublic._fitFixV93 = true;
+    
+    var origBuild = window.PagePublic.buildHTML;
+    
+    window.PagePublic.buildHTML = function(bio, opts){
+      var html = origBuild.call(this, bio, opts);
+      
+      if(opts && opts.preview){
+        var previewCSS = '<style id="preview-fit-v93">' +
+          /* Root: kunci 1 layar */
+          'html,body{' +
+            'height:100vh !important;' +
+            'max-height:100vh !important;' +
+            'overflow:hidden !important;' +
+            'margin:0 !important;padding:0 !important;' +
+          '}' +
+          
+          /* Scale down: 75% + center */
+          'body{' +
+            'transform:scale(0.75) !important;' +
+            'transform-origin:top center !important;' +
+            'width:133.33% !important;' +
+            'height:133.33% !important;' +
+            'margin-left:-16.66% !important;' +
+          '}' +
+          
+          /* Wrapper bio */
+          '.bio-wrap{' +
+            'min-height:100vh !important;' +
+            'padding:20px 12px 20px !important;' +
+            'justify-content:flex-start !important;' +
+          '}' +
+          '.bio-inner{max-width:100% !important}' +
+          
+          /* Banner */
+          '.bio-banner{' +
+            'height:70px !important;' +
+            'margin-bottom:10px !important;' +
+            'border-width:2.5px !important;' +
+            'border-radius:10px !important;' +
+          '}' +
+          
+          /* Avatar */
+          '.bio-avatar{' +
+            'width:70px !important;height:70px !important;' +
+            'border-width:3px !important;' +
+          '}' +
+          
+          /* Title */
+          '.bio-title-top{' +
+            'font-size:9px !important;' +
+            'padding:3px 8px !important;' +
+            'margin-top:6px !important;' +
+            'letter-spacing:.5px !important;' +
+          '}' +
+          
+          /* Name — fix crop */
+          '.bio-name{' +
+            'font-size:13px !important;' +
+            'padding:4px 10px !important;' +
+            'margin-top:-2px !important;' +
+            'letter-spacing:0 !important;' +
+            'max-width:96% !important;' +
+            'width:auto !important;' +
+            'word-wrap:break-word !important;' +
+            'overflow-wrap:break-word !important;' +
+            'white-space:normal !important;' +
+            'line-height:1.15 !important;' +
+            'text-align:center !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          /* Bio — fix crop */
+          '.bio-bio{' +
+            'font-size:8.5px !important;' +
+            'padding:3px 8px !important;' +
+            'line-height:1.25 !important;' +
+            'max-width:96% !important;' +
+            'width:auto !important;' +
+            'word-wrap:break-word !important;' +
+            'overflow-wrap:break-word !important;' +
+            'white-space:normal !important;' +
+            'text-align:center !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          /* Plan badge */
+          '.bio-plan-badge{' +
+            'font-size:7px !important;' +
+            'padding:2px 6px !important;' +
+            'margin-top:5px !important;' +
+          '}' +
+          
+          /* Logos */
+          '.bio-logos{' +
+            'margin-bottom:6px !important;' +
+            'margin-top:2px !important;' +
+            'gap:4px !important;' +
+          '}' +
+          '.bio-logo-item{' +
+            'width:28px !important;height:28px !important;' +
+            'border-width:2px !important;' +
+          '}' +
+          
+          /* Links */
+          '.bio-links{gap:5px !important}' +
+          '.bio-link{' +
+            'padding:7px 9px !important;' +
+            'font-size:10px !important;' +
+            'min-height:36px !important;' +
+            'border-width:2.5px !important;' +
+            'box-shadow:3px 3px 0 var(--ink) !important;' +
+            'letter-spacing:0 !important;' +
+            'gap:5px !important;' +
+            'word-wrap:break-word !important;' +
+            'white-space:normal !important;' +
+          '}' +
+          '.bio-link .licon{' +
+            'width:14px !important;height:14px !important;' +
+          '}' +
+          '.bio-link .licon svg{' +
+            'width:14px !important;height:14px !important;' +
+          '}' +
+          '.bio-link .ltext{' +
+            'font-size:10px !important;' +
+            'line-height:1.15 !important;' +
+            'word-wrap:break-word !important;' +
+          '}' +
+          
+          /* Featured link */
+          '.bio-link.bio-featured .feat-img-wrap{padding:5px !important}' +
+          '.bio-link.bio-featured .feat-body{' +
+            'padding:4px 8px 5px !important;' +
+          '}' +
+          '.bio-link.bio-featured .feat-body b{' +
+            'font-size:9.5px !important;' +
+          '}' +
+          
+          /* Footer — HIDE kalau kekecilan */
+          '.bio-footer{' +
+            'margin-top:10px !important;' +
+            'font-size:7px !important;' +
+            'padding:3px 8px !important;' +
+            'letter-spacing:.3px !important;' +
+            'max-width:100% !important;' +
+            'word-wrap:break-word !important;' +
+            'white-space:normal !important;' +
+          '}' +
+          
+          /* Deco + CTA */
+          '.bio-deco{display:none !important}' +
+          '.bio-cta-float{display:none !important}' +
+          
+          /* Fix crop umum */
+          '.bio-header{' +
+            'overflow:visible !important;' +
+            'max-width:100% !important;' +
+          '}' +
+          '.bio-header > *{' +
+            'max-width:96% !important;' +
+            'box-sizing:border-box !important;' +
+          '}' +
+          
+          '</style>';
+        html = html.replace(/<\/head>/i, previewCSS + '</head>');
+      }
+      return html;
+    };
+    
+    console.log("✅ Preview buildHTML patched (v93)");
+    return true;
+  }catch(e){
+    console.warn("patchPreviewBuildHTML:", e);
+    return false;
+  }
+}
+
+// Retry sampai PagePublic ready
+var previewRetry = 0;
+function tryPreview(){
+  previewRetry++;
+  if(patchPreviewBuildHTML() || previewRetry > 30) return;
+  setTimeout(tryPreview, 500);
+}
+setTimeout(tryPreview, 500);
+setTimeout(patchPreviewBuildHTML, 2500);
+setTimeout(patchPreviewBuildHTML, 5000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 2 — HAPUS TOMBOL ATUR POSISI (PAKSA DOM)
+   ═══════════════════════════════════════════════════════════ */
+function removeAturPosisiBtn(){
+  try{
+    // By ID
+    ["preview-edit-toggle-btn","preview-edit-toggle"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){ el.remove(); }
+    });
+    
+    // By class
+    document.querySelectorAll(".preview-edit-toggle, .preview-edit-btn").forEach(function(el){
+      el.remove();
+    });
+    
+    // By text content (cari button dengan text "Atur Posisi")
+    document.querySelectorAll("button").forEach(function(btn){
+      var txt = (btn.textContent || "").toUpperCase();
+      if(txt.indexOf("ATUR POSISI") !== -1 || 
+         txt.indexOf("ATUR POSISI TOMBOL") !== -1){
+        btn.remove();
+      }
+    });
+    
+    // By class container
+    document.querySelectorAll(".preview-edit-toggle-wrap").forEach(function(el){
+      el.remove();
+    });
+    
+    // Kill method
+    if(window.PreviewEditMode){
+      window.PreviewEditMode.toggle = function(){};
+      window.PreviewEditMode.attachDrag = function(){};
+      window.PreviewEditMode.enabled = false;
+    }
+  }catch(e){}
+}
+
+removeAturPosisiBtn();
+setInterval(removeAturPosisiBtn, 800);
+window.addEventListener("hashchange", function(){ setTimeout(removeAturPosisiBtn, 500); });
+
+// MutationObserver untuk hapus kalau muncul lagi
+try{
+  var obsAtur = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType === 1){
+          if(n.id === "preview-edit-toggle-btn"){
+            n.remove();
+            return;
+          }
+          if(n.classList && (n.classList.contains("preview-edit-toggle") || n.classList.contains("preview-edit-btn"))){
+            n.remove();
+            return;
+          }
+          if(n.tagName === "BUTTON"){
+            var txt = (n.textContent || "").toUpperCase();
+            if(txt.indexOf("ATUR POSISI") !== -1){
+              n.remove();
+            }
+          }
+        }
+      });
+    });
+  });
+  obsAtur.observe(document.body, { childList: true, subtree: true });
+}catch(e){}
+
+
+/* ═══════════════════════════════════════════════════════════
+   FIX 3 — FORCE REFRESH PREVIEW (kalau di editor)
+   ═══════════════════════════════════════════════════════════ */
+function forceRefreshPreview(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var frame = document.getElementById("prev-frame");
+    if(!frame) return;
+    
+    // Kalau iframe udah ada dan gak ada CSS preview-fit-v93 → refresh
+    try{
+      var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if(doc && !doc.getElementById("preview-fit-v93")){
+        // Refresh via PageEditor
+        if(window.PageEditor && window.PageEditor.updatePreview){
+          window.PageEditor.updatePreview();
+          console.log("🔄 Preview refreshed (force)");
+        }
+      }
+    }catch(e){}
+  }catch(e){}
+}
+
+// Refresh sekali aja pas editor muncul
+setTimeout(forceRefreshPreview, 2000);
+setTimeout(forceRefreshPreview, 4000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ PATCH v9.3 PREVIEW FIX AKTIF       ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Preview fit 1 layar (scale 75%)     ║","color:#22c55e");
+  console.log("%c║  • Fix crop badge (word-break)         ║","color:#22c55e");
+  console.log("%c║  • Tombol Atur Posisi dihapus paksa    ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v9.3 PREVIEW FIX ═══ -->
 </body>
    </html>

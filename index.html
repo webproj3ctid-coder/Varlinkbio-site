@@ -27384,5 +27384,368 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END PATCH v10.2 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH v10.4 — FIX CUSTOM THEME KEBAL
+     Hapus custom theme di SEMUA tempat (draft + localStorage + Firestore)
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script id="fixv104-custom-theme-nuke">
+(function(){
+"use strict";
+console.log("%c🔧 FIX v10.4 — Custom Theme NUKE loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 1 — NUKE CUSTOM THEME (SEMUA TEMPAT)
+   ═══════════════════════════════════════════════════════════ */
+async function nukeCustomTheme(){
+  try{
+    console.log("💣 Nuking custom theme di semua tempat...");
+    
+    // 1. Draft (memory)
+    if(window.STATE && STATE.draft){
+      delete STATE.draft.customThemeData;
+      delete STATE.draft.customThemeId;
+      // Reset theme ke default kalau masih "custom"
+      if(STATE.draft.theme === "custom"){
+        STATE.draft.theme = "neo-cream";
+      }
+    }
+    
+    // 2. State global
+    if(window.STATE){
+      delete STATE.customThemeData;
+      delete STATE.customThemeId;
+    }
+    
+    // 3. LocalStorage
+    try{
+      localStorage.removeItem("varlinkbio_custom_theme_active");
+      localStorage.removeItem("varlinkbio_custom_themes");
+    }catch(e){}
+    
+    // 4. Firestore (bios document) — INI YANG PENTING!
+    if(window.Auth && Auth.current && window.FB && STATE.draft && STATE.draft.id){
+      try{
+        await FB.db.collection("bios").doc(STATE.draft.id).update({
+          customThemeData: firebase.firestore.FieldValue.delete(),
+          customThemeId: firebase.firestore.FieldValue.delete(),
+          theme: STATE.draft.theme || "neo-cream"
+        });
+        console.log("✅ Firestore updated — custom theme removed");
+      }catch(e){
+        console.warn("Firestore update failed:", e);
+        // Fallback: pakai set merge
+        try{
+          await FB.db.collection("bios").doc(STATE.draft.id).set({
+            customThemeData: null,
+            customThemeId: null,
+            theme: STATE.draft.theme || "neo-cream"
+          }, { merge: true });
+          console.log("✅ Firestore set merge — custom theme null");
+        }catch(e2){
+          console.warn("Firestore set fallback failed:", e2);
+        }
+      }
+    }
+    
+    // 5. Cache (STATE.cache)
+    if(window.STATE && STATE.cache && STATE.draft && STATE.draft.id){
+      var cached = STATE.cache.find(function(b){ return b.id === STATE.draft.id; });
+      if(cached){
+        delete cached.customThemeData;
+        delete cached.customThemeId;
+        cached.theme = STATE.draft.theme || "neo-cream";
+      }
+    }
+    
+    console.log("💣 Custom theme NUKED total");
+    return true;
+  }catch(e){
+    console.warn("nukeCustomTheme:", e);
+    return false;
+  }
+}
+
+window.nukeCustomTheme = nukeCustomTheme;
+
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 2 — OVERRIDE renderThemeGrid (PAKSA GANTI TEMA)
+   ═══════════════════════════════════════════════════════════ */
+function patchThemeGrid(){
+  try{
+    if(!window.PageEditor) return false;
+    if(window.PageEditor._v104ThemeFixed) return true;
+    window.PageEditor._v104ThemeFixed = true;
+    
+    // Override method
+    window.PageEditor.renderThemeGrid = function(){
+      var cur = STATE.draft.theme;
+      var grid = document.getElementById("theme-grid");
+      if(!grid) return;
+      
+      // Render tema items
+      grid.innerHTML = window.WARNA_LIST.map(function(t){
+        var allowed = window.themeAllowed ? themeAllowed(t.id) : true;
+        var active = (cur === t.id) && !STATE.draft.customThemeData;
+        return '<div class="theme-item ' + (active ? "active" : "") + ' ' + (allowed ? "" : "locked") + '" ' +
+          'data-t="' + t.id + '" style="background:' + t.color + '">' +
+          '<div class="chk">✓</div>' +
+          '<div class="label">' + t.name + '</div>' +
+        '</div>';
+      }).join("");
+      
+      // Bind dengan handler BARU (paksa nuke custom theme)
+      grid.querySelectorAll(".theme-item").forEach(function(el){
+        el.addEventListener("click", async function(){
+          var tid = el.dataset.t;
+          
+          if(!window.themeAllowed || !themeAllowed(tid)){
+            if(window.toast) toast("Tema belum unlock. Beli di Store!","error");
+            if(window.Router) Router.navigate("/store");
+            return;
+          }
+          
+          // ⭐ NUKE custom theme dulu
+          await nukeCustomTheme();
+          
+          // Set tema baru
+          if(window.STATE && STATE.draft){
+            STATE.draft.theme = tid;
+          }
+          
+          // Update UI
+          grid.querySelectorAll(".theme-item").forEach(function(x){
+            x.classList.remove("active");
+          });
+          el.classList.add("active");
+          
+          // Sound
+          if(window.Sound && Sound.click) Sound.click();
+          
+          // Force save ke Firestore
+          try{
+            if(window.Store && STATE.draft){
+              await Store.save({...STATE.draft});
+              console.log("💾 Saved to Firestore");
+            }
+          }catch(e){ console.warn("Save error:", e); }
+          
+          // Refresh preview
+          if(window.refreshPreviewNow){
+            setTimeout(refreshPreviewNow, 300);
+          }
+          
+          if(window.toast) toast("🎨 Tema: " + tid, "success");
+        });
+      });
+      
+      // Badge custom theme
+      var existingBadge = document.querySelector(".custom-theme-active-badge");
+      if(STATE.draft.customThemeData && !existingBadge){
+        var badge = document.createElement("div");
+        badge.className = "custom-theme-active-badge";
+        badge.style.cssText = "display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#a78bfa;color:#fff;border:2px solid #0a0a0a;border-radius:999px;font-size:10.5px;font-weight:900;text-transform:uppercase;margin-bottom:10px";
+        badge.innerHTML = "🎨 Custom Theme Aktif";
+        grid.parentNode.insertBefore(badge, grid);
+      } else if(!STATE.draft.customThemeData && existingBadge){
+        existingBadge.remove();
+      }
+      
+      console.log("✅ Theme grid rendered (v10.4)");
+    };
+    
+    console.log("✅ renderThemeGrid overridden (v10.4)");
+    return true;
+  }catch(e){
+    console.warn("patchThemeGrid:", e);
+    return false;
+  }
+}
+
+var tries = 0;
+(function retry(){
+  tries++;
+  if(patchThemeGrid() || tries > 30) return;
+  setTimeout(retry, 500);
+})();
+setTimeout(patchThemeGrid, 2500);
+setTimeout(patchThemeGrid, 5000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 3 — OVERRIDE buildHTML (IGNORE custom theme kalau theme != custom)
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) return;
+    if(window.PagePublic._v104BuildFixed) return;
+    window.PagePublic._v104BuildFixed = true;
+    
+    var origBuild = window.PagePublic.buildHTML;
+    
+    window.PagePublic.buildHTML = function(bio, opts){
+      // ⭐ FIX: Kalau theme BUKAN "custom" → hapus customThemeData sementara
+      var cleanBio = bio;
+      if(bio && bio.theme !== "custom" && bio.customThemeData){
+        cleanBio = Object.assign({}, bio);
+        delete cleanBio.customThemeData;
+        delete cleanBio.customThemeId;
+        console.log("🧹 buildHTML: custom theme di-skip (theme = " + bio.theme + ")");
+      }
+      
+      return origBuild.call(this, cleanBio, opts);
+    };
+    
+    console.log("✅ buildHTML patched (v10.4)");
+  }catch(e){
+    console.warn("buildHTML patch:", e);
+  }
+}, 3000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 4 — AUTO NUKE SAAT DELETE CUSTOM THEME
+   ═══════════════════════════════════════════════════════════ */
+function hookDeleteButton(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var themeGrid = document.getElementById("theme-grid");
+    if(!themeGrid) return;
+    
+    var parent = themeGrid.closest(".editor-section");
+    if(!parent) return;
+    
+    // Cek udah ada
+    if(parent.querySelector(".warna-tema-delete")) return;
+    
+    var wrap = document.createElement("div");
+    wrap.className = "warna-tema-delete";
+    wrap.style.cssText = "display:flex;justify-content:center;margin-top:12px";
+    wrap.innerHTML = 
+      '<button type="button" id="btn-delete-custom-theme" ' +
+      'style="padding:10px 18px;background:#ff2a2a;color:#fff;border:2.5px solid var(--ink);' +
+      'border-radius:10px;font-size:12px;font-weight:900;text-transform:uppercase;' +
+      'letter-spacing:.3px;cursor:pointer;font-family:inherit;box-shadow:3px 3px 0 var(--ink);' +
+      'display:inline-flex;align-items:center;gap:6px">' +
+      '🗑️ Hapus Custom Theme</button>';
+    
+    themeGrid.parentNode.insertBefore(wrap, themeGrid.nextSibling);
+    
+    var btn = document.getElementById("btn-delete-custom-theme");
+    if(btn){
+      btn.addEventListener("click", async function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if(!confirm("Hapus custom theme & pakai tema biasa?")) return;
+        
+        btn.disabled = true;
+        btn.textContent = "⏳ Menghapus...";
+        
+        // NUKE!
+        await nukeCustomTheme();
+        
+        // Save ke Firestore
+        try{
+          if(window.Store && STATE.draft){
+            await Store.save({...STATE.draft});
+          }
+        }catch(e){ console.warn("Save error:", e); }
+        
+        if(window.Sound && Sound.success) Sound.success();
+        if(window.toast) toast("✅ Custom theme dihapus! Pakai tema biasa.","success");
+        
+        // Re-render editor
+        setTimeout(function(){
+          if(window.PageEditor && PageEditor.render) PageEditor.render();
+          if(window.refreshPreviewNow) refreshPreviewNow();
+        }, 500);
+      });
+    }
+  }catch(e){ console.warn("hookDeleteButton:", e); }
+}
+
+setInterval(hookDeleteButton, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(hookDeleteButton, 700); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 5 — AUTO CLEANUP DRAFT (kalau theme != custom tapi ada customThemeData)
+   ═══════════════════════════════════════════════════════════ */
+function autoCleanupDraft(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var draft = window.STATE && STATE.draft;
+    if(!draft) return;
+    
+    // Kalau theme BUKAN custom tapi ada customThemeData → cleanup
+    if(draft.theme !== "custom" && draft.customThemeData){
+      console.log("🧹 Auto-cleanup: theme = " + draft.theme + ", hapus customThemeData");
+      delete draft.customThemeData;
+      delete draft.customThemeId;
+    }
+  }catch(e){}
+}
+
+setInterval(autoCleanupDraft, 2000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   STEP 6 — EXPOSE FUNCTION
+   ═══════════════════════════════════════════════════════════ */
+window.resetTheme = async function(){
+  // Force reset semua theme
+  if(window.STATE && STATE.draft){
+    STATE.draft.theme = "neo-cream";
+    delete STATE.draft.customThemeData;
+    delete STATE.draft.customThemeId;
+    
+    try{
+      if(window.Store){
+        await Store.save({...STATE.draft});
+      }
+    }catch(e){}
+    
+    try{
+      localStorage.removeItem("varlinkbio_custom_theme_active");
+      localStorage.removeItem("varlinkbio_custom_themes");
+    }catch(e){}
+    
+    if(window.toast) toast("🎨 Theme direset ke default","success");
+    
+    if(window.PageEditor && PageEditor.render) PageEditor.render();
+    if(window.refreshPreviewNow) refreshPreviewNow();
+  }
+};
+
+window.nukeCustomTheme = nukeCustomTheme;
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  ✅ FIX v10.4 AKTIF                    ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Nuke custom theme di 5 tempat       ║","color:#22c55e");
+  console.log("%c║  • Firestore di-clean juga             ║","color:#22c55e");
+  console.log("%c║  • Force save setelah ganti tema       ║","color:#22c55e");
+  console.log("%c║  • buildHTML skip custom (kalo bukan)  ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 nukeCustomTheme()  — force hapus custom theme");
+  console.log("💡 resetTheme()       — reset ke neo-cream");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH v10.4 ═══ -->
 </body>
    </html>

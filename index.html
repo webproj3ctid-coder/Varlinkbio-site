@@ -25299,12 +25299,226 @@ try{
 
 
 /* ═══════════════════════════════════════════════════════════
-   PART 5 — MANUAL REFRESH (kalau user butuh)
+   PART 5 — MANUAL REFRESH (kalau user butuh)<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v9.6 — PREVIEW IFRAME URL (SIMPLE + AKURAT)
+     Preview = iframe load URL bio publik → identik HP asli
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fixv96-css">
+/* ═══════════════════════════════════════════════════════════
+   PREVIEW PHONE: SIMPLE FRAME
    ═══════════════════════════════════════════════════════════ */
-window.refitPreview = function(){
-  autoFitPreview();
-  if(window.toast) toast("📱 Preview di-fit ulang","success");
-};
+.editor-preview{
+  position: sticky !important;
+  top: 70px !important;
+  align-self: flex-start !important;
+}
+.preview-phone{
+  width: 100% !important;
+  max-width: 320px !important;
+  aspect-ratio: 9 / 19.5 !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  background: #0a0a0a !important;
+  border-radius: 28px !important;
+  border: 4px solid #0a0a0a !important;
+  box-shadow: 6px 6px 0 #0a0a0a !important;
+}
+.preview-phone iframe{
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  display: block !important;
+  overflow: auto !important;
+  background: #fff !important;
+}
+
+/* Responsive */
+@media(max-width:1024px){
+  .editor-preview{position: static !important}
+  .preview-phone{max-width: 100% !important}
+}
+</style>
+
+<script id="fixv96-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH v9.6 — PREVIEW IFRAME URL
+   Update: preview iframe load URL bio publik (bukan srcdoc)
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c📱 FIX v9.6 PREVIEW URL loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   PART 1 — URL PUBLIC BIO
+   ═══════════════════════════════════════════════════════════ */
+var PUBLIC_BIO_URL = "https://vlink-bio.vercel.app";
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 2 — OVERRIDE PageEditor.updatePreview
+   Preview pakai URL iframe, bukan srcdoc
+   ═══════════════════════════════════════════════════════════ */
+function patchUpdatePreview(){
+  try{
+    if(!window.PageEditor) return false;
+    if(window.PageEditor._v96Patched) return true;
+    window.PageEditor._v96Patched = true;
+    
+    window.PageEditor.updatePreview = function(){
+      try{
+        var frame = document.getElementById("prev-frame");
+        if(!frame) return;
+        
+        var draft = window.STATE && STATE.draft;
+        if(!draft){
+          console.warn("No draft");
+          return;
+        }
+        
+        // Cek apakah draft udah punya slug (bio yang udah disimpan)
+        var slug = draft.slug || draft.id;
+        
+        if(slug && draft.id){
+          // Bio udah pernah disimpan → load URL PUBLIK
+          var url = PUBLIC_BIO_URL + "/#/u/" + slug;
+          
+          // Kasih param anti-cache + preview mode
+          url += "?preview=1&t=" + Date.now();
+          
+          // Set iframe src
+          frame.removeAttribute("srcdoc");
+          frame.src = url;
+          
+          console.log("📱 Preview: load URL publik →", url);
+        } else {
+          // Bio BELUM disimpan → fallback ke srcdoc (buildHTML)
+          if(window.PagePublic && window.PagePublic.buildHTML){
+            try{
+              var html = window.PagePublic.buildHTML(draft, { preview: true });
+              frame.removeAttribute("src");
+              frame.srcdoc = html;
+              console.log("📱 Preview: srcdoc (bio belum disimpan)");
+            }catch(e){
+              console.warn("buildHTML error:", e);
+            }
+          }
+        }
+      }catch(e){ console.warn("updatePreview v96:", e); }
+    };
+    
+    console.log("✅ updatePreview patched (URL iframe)");
+    return true;
+  }catch(e){
+    console.warn("patchUpdatePreview:", e);
+    return false;
+  }
+}
+
+// Retry
+var tries = 0;
+(function retry(){
+  tries++;
+  if(patchUpdatePreview() || tries > 20) return;
+  setTimeout(retry, 500);
+})();
+setTimeout(patchUpdatePreview, 2000);
+setTimeout(patchUpdatePreview, 4000);
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 3 — AUTO REFRESH PREVIEW SAAT SAVE
+   Setelah save bio → refresh preview biar URL update
+   ═══════════════════════════════════════════════════════════ */
+function hookEditorSave(){
+  try{
+    if(!window.PageEditor) return false;
+    if(window.PageEditor._v96SaveHooked) return true;
+    window.PageEditor._v96SaveHooked = true;
+    
+    var origSave = window.PageEditor.save;
+    if(typeof origSave === "function"){
+      window.PageEditor.save = async function(){
+        var result = await origSave.apply(this, arguments);
+        
+        // Setelah save sukses, refresh preview
+        setTimeout(function(){
+          if(window.PageEditor.updatePreview){
+            window.PageEditor.updatePreview();
+          }
+        }, 500);
+        
+        return result;
+      };
+    }
+    console.log("✅ Editor save hooked");
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+var tries2 = 0;
+(function retry2(){
+  tries2++;
+  if(hookEditorSave() || tries2 > 20) return;
+  setTimeout(retry2, 500);
+})();
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 4 — TOMBOL REFRESH PREVIEW (opsional)
+   ═══════════════════════════════════════════════════════════ */
+function addRefreshBtn(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    if(document.getElementById("btn-refresh-preview")) return;
+    
+    var previewPanel = document.querySelector(".editor-preview");
+    if(!previewPanel) return;
+    
+    var btn = document.createElement("button");
+    btn.className = "btn btn-sm btn-block";
+    btn.id = "btn-refresh-preview";
+    btn.type = "button";
+    btn.style.cssText = "margin-top:8px;background:#ffd700;color:#0a0a0a;font-weight:900;text-transform:uppercase;letter-spacing:.3px";
+    btn.innerHTML = "🔄 Refresh Preview";
+    btn.addEventListener("click", function(){
+      if(window.Sound && Sound.click) Sound.click();
+      if(window.PageEditor && window.PageEditor.updatePreview){
+        window.PageEditor.updatePreview();
+        if(window.toast) toast("🔄 Preview di-refresh","success");
+      }
+    });
+    
+    previewPanel.appendChild(btn);
+    console.log("✅ Refresh button added");
+  }catch(e){}
+}
+
+setInterval(addRefreshBtn, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(addRefreshBtn, 500); });
+
+
+/* ═══════════════════════════════════════════════════════════
+   PART 5 — CLEANUP PATCH LAMA (v93, v94, v95)
+   ═══════════════════════════════════════════════════════════ */
+try{
+  ["fixv93-css","fixv93-js","fixv94-css","fixv94-js","fixv95-css","fixv95-js"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.remove(); console.log("🗑️ Removed:", id); }
+  });
+  
+  // Disable method lama
+  if(window.PagePublic){
+    window.PagePublic._fitFixV93 = true;
+    window.PagePublic._fitFixV94 = true;
+    window.PagePublic._fitFixV95 = true;
+  }
+}catch(e){}
 
 
 /* ═══════════════════════════════════════════════════════════
@@ -25313,18 +25527,18 @@ window.refitPreview = function(){
 setTimeout(function(){
   console.log("");
   console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
-  console.log("%c║  ✅ PATCH v9.5 PREVIEW AUTO-FIT        ║","color:#22c55e;font-weight:bold");
-  console.log("%c║  • Auto-scale sesuai ukuran layar      ║","color:#22c55e");
-  console.log("%c║  • Responsive HP / tablet / desktop    ║","color:#22c55e");
-  console.log("%c║  • Auto-adjust saat rotate/resize      ║","color:#22c55e");
-  console.log("%c║  • Fix crop badge (word-break)         ║","color:#22c55e");
+  console.log("%c║  ✅ PATCH v9.6 PREVIEW URL             ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Preview = iframe URL publik         ║","color:#22c55e");
+  console.log("%c║  • Identik HP asli (100% akurat)       ║","color:#22c55e");
+  console.log("%c║  • Auto-refresh saat save              ║","color:#22c55e");
+  console.log("%c║  • Tombol Refresh Preview              ║","color:#22c55e");
   console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
   console.log("");
-  console.log("💡 refitPreview() — paksa fit ulang");
+  console.log("💡 Preview pakai: " + PUBLIC_BIO_URL);
 }, 1500);
 
 })();
 </script>
-<!-- ═══ END PATCH v9.5 ═══ -->
+<!-- ═══ END PATCH v9.6 ═══ -->
 </body>
    </html>

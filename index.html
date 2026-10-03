@@ -25966,5 +25966,276 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END PATCH v10.0 HELP ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH BUBBLE THINKING v1 — Bubble gaya pikir 💭
+     Override Varsmile.showBubble jadi thinking bubble
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="bubble-thinking-css">
+/* ═══════════════════════════════════════════════════════════
+   BUBBLE THINKING STYLE
+   ═══════════════════════════════════════════════════════════ */
+#varsmile-popup-bubble{
+  position:fixed !important;
+  z-index:100001 !important;
+  background:#fff !important;
+  color:#0a0a0a !important;
+  border:3px solid #0a0a0a !important;
+  border-radius:18px !important;
+  padding:10px 14px !important;
+  font-family:'Inter',sans-serif !important;
+  font-size:13px !important;
+  font-weight:700 !important;
+  max-width:240px !important;
+  box-shadow:4px 4px 0 #0a0a0a !important;
+  line-height:1.4 !important;
+  pointer-events:auto !important;
+  animation:vsThinkingIn .3s cubic-bezier(.34,1.56,.64,1) !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:6px !important;
+}
+
+/* Hapus arrow lama (::after & ::before) */
+#varsmile-popup-bubble::after,
+#varsmile-popup-bubble::before{
+  display:none !important;
+  content:none !important;
+}
+
+/* ═══ BULAT-BULAT THINKING ═══ */
+#varsmile-popup-bubble .think-dots{
+  position:absolute !important;
+  bottom:-38px !important;
+  right:14px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-end !important;
+  gap:3px !important;
+  pointer-events:none !important;
+}
+
+#varsmile-popup-bubble .think-dot{
+  background:#fff !important;
+  border:3px solid #0a0a0a !important;
+  border-radius:50% !important;
+  box-shadow:2px 2px 0 rgba(0,0,0,.15) !important;
+  display:block !important;
+}
+
+/* Dot 1 — paling gede (deket bubble) */
+#varsmile-popup-bubble .think-dot.d1{
+  width:14px !important;
+  height:14px !important;
+  margin-right:6px !important;
+}
+
+/* Dot 2 — medium */
+#varsmile-popup-bubble .think-dot.d2{
+  width:10px !important;
+  height:10px !important;
+  margin-right:2px !important;
+}
+
+/* Dot 3 — paling kecil (deket Varsmile) */
+#varsmile-popup-bubble .think-dot.d3{
+  width:7px !important;
+  height:7px !important;
+  margin-right:0 !important;
+}
+
+/* ═══ ANIMASI ═══ */
+@keyframes vsThinkingIn{
+  0%{opacity:0;transform:scale(.7) translateY(10px)}
+  100%{opacity:1;transform:scale(1) translateY(0)}
+}
+
+#varsmile-popup-bubble.dismissing{
+  animation:vsThinkingOut .3s ease forwards !important;
+}
+@keyframes vsThinkingOut{
+  0%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.7) translateY(10px)}
+}
+
+/* Emoji di bubble jadi lebih compact */
+#varsmile-popup-bubble .lucide-emoji{
+  width:1.1em !important;
+  height:1.1em !important;
+  vertical-align:-0.2em !important;
+}
+</style>
+
+<script id="bubble-thinking-js">
+/* ═══════════════════════════════════════════════════════════════
+   PATCH BUBBLE THINKING v1
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+console.log("%c💭 BUBBLE THINKING loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   WAIT for Varsmile ready
+   ═══════════════════════════════════════════════════════════ */
+function patchBubbleThinking(){
+  try{
+    if(!window.Varsmile) return false;
+    if(window.Varsmile._thinkingPatched) return true;
+    window.Varsmile._thinkingPatched = true;
+    
+    /* ═══ OVERRIDE showBubble ═══ */
+    window.Varsmile.showBubble = function(text, duration){
+      duration = duration || 4000;
+      if(!this._el) return;
+      
+      // Hapus bubble lama
+      var oldBubble = document.getElementById("varsmile-popup-bubble");
+      if(oldBubble) oldBubble.remove();
+      
+      var r = this._el.getBoundingClientRect();
+      var bubble = document.createElement("div");
+      bubble.id = "varsmile-popup-bubble";
+      
+      // Emoji convert ke Lucide
+      var displayText = text;
+      if(window.emojiToSvg && typeof window.emojiToSvg === "function"){
+        try{
+          displayText = window.emojiToSvg(text);
+        }catch(e){}
+      }
+      
+      // Isi bubble: teks + 3 dot thinking
+      bubble.innerHTML = 
+        '<span style="flex:1">' + displayText + '</span>' +
+        '<div class="think-dots">' +
+          '<span class="think-dot d1"></span>' +
+          '<span class="think-dot d2"></span>' +
+          '<span class="think-dot d3"></span>' +
+        '</div>';
+      
+      /* ═══ POSISI ═══ 
+         Bubble di atas Varsmile, geser ke kanan dikit
+         Varsmile center X → bubble right edge di Varsmile center X + offset
+      */
+      var vsCenterX = r.left + (r.width / 2);
+      var vsTop = r.top;
+      
+      // Bubble: posisi horizontal → kanan Varsmile, kekiri
+      // Bubble bottom: ~42px di atas Varsmile top (buat ruang dot)
+      var bubbleRight = vsCenterX + 20; // sedikit geser ke kanan
+      var bubbleBottom = (window.innerHeight - vsTop) + 42;
+      
+      bubble.style.cssText = 
+        "position: fixed !important;" +
+        "z-index: 100001 !important;" +
+        "background: #fff !important;" +
+        "color: #0a0a0a !important;" +
+        "border: 3px solid #0a0a0a !important;" +
+        "border-radius: 18px !important;" +
+        "padding: 10px 14px !important;" +
+        "font-family: 'Inter', sans-serif !important;" +
+        "font-size: 13px !important;" +
+        "font-weight: 700 !important;" +
+        "max-width: 240px !important;" +
+        "box-shadow: 4px 4px 0 #0a0a0a !important;" +
+        "line-height: 1.4 !important;" +
+        "pointer-events: auto !important;" +
+        "right: auto !important;" +
+        "left: auto !important;" +
+        "top: auto !important;" +
+        "bottom: " + bubbleBottom + "px !important;" +
+        "right: " + (window.innerWidth - bubbleRight) + "px !important;" +
+        "display: flex !important;" +
+        "align-items: center !important;" +
+        "gap: 6px !important;";
+      
+      document.body.appendChild(bubble);
+      this._bubble = bubble;
+      
+      // Sound
+      if(window.Sound && Sound.bip) Sound.bip();
+      
+      // Auto hide
+      var self = this;
+      setTimeout(function(){
+        if(self._bubble === bubble) self._hideBubble();
+      }, duration);
+      
+      // Click to close
+      bubble.addEventListener("click", function(){
+        if(self._bubble === bubble) self._hideBubble();
+      });
+      
+      console.log("💭 Bubble thinking muncul");
+    };
+    
+    /* ═══ OVERRIDE _hideBubble (biar dot ikut hilang) ═══ */
+    window.Varsmile._hideBubble = function(){
+      if(!this._bubble) return;
+      var b = this._bubble;
+      this._bubble = null;
+      try{
+        b.classList.add("dismissing");
+        setTimeout(function(){
+          try{ b.remove(); }catch(e){}
+        }, 300);
+      }catch(e){}
+    };
+    
+    console.log("✅ Varsmile bubble patched (thinking style)");
+    return true;
+  }catch(e){
+    console.warn("patchBubbleThinking:", e);
+    return false;
+  }
+}
+
+/* ═══ RETRY sampai Varsmile ready ═══ */
+var tries = 0;
+(function retry(){
+  tries++;
+  if(patchBubbleThinking() || tries > 30) return;
+  setTimeout(retry, 500);
+})();
+setTimeout(patchBubbleThinking, 2000);
+setTimeout(patchBubbleThinking, 4000);
+setTimeout(patchBubbleThinking, 6000);
+setInterval(function(){
+  if(window.Varsmile && !window.Varsmile._thinkingPatched){
+    patchBubbleThinking();
+  }
+}, 3000);
+
+/* ═══════════════════════════════════════════════════════════
+   TEST FUNCTION
+   ═══════════════════════════════════════════════════════════ */
+window.testBubbleThinking = function(){
+  if(window.Varsmile && Varsmile.showBubble){
+    Varsmile.showBubble("🔥 Hari ini pasti lebih baik! 💪", 5000);
+  } else {
+    console.warn("Varsmile belum ready");
+    if(window.toast) toast("Varsmile belum ready","error");
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  💭 BUBBLE THINKING AKTIF              ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Bubble gaya pikir (💭)              ║","color:#22c55e");
+  console.log("%c║  • 3 dot bertingkat                    ║","color:#22c55e");
+  console.log("%c║  • Posisi di atas Varsmile             ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 testBubbleThinking() — test bubble");
+}, 2000);
+
+})();
+</script>
+<!-- ═══ END BUBBLE THINKING ═══ -->
 </body>
    </html>

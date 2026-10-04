@@ -29301,5 +29301,317 @@ setTimeout(function(){
 })();
 </script>
 <!-- ═══ END FIX LINK COLOR v2 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH SIMPLE v1
+     1. Custom Theme auto-switch
+     2. Watermark center
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="simple-v1-css">
+/* ═══ WATERMARK CENTER ═══ */
+.bio-footer {
+  display: inline-block !important;
+  align-self: center !important;
+  width: auto !important;
+  max-width: fit-content !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 20px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  float: none !important;
+}
+
+.bio-wrap {
+  align-items: center !important;
+}
+
+.bio-inner {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.bio-inner > *:not(.bio-footer) {
+  width: 100% !important;
+}
+
+.bio-inner > .bio-footer {
+  width: auto !important;
+  max-width: fit-content !important;
+  align-self: center !important;
+}
+
+/* ═══ CUSTOM THEME BADGE ═══ */
+.custom-theme-badge {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 8px 14px !important;
+  background: linear-gradient(135deg, #a78bfa, #ff69b4) !important;
+  color: #fff !important;
+  border: 2.5px solid var(--ink) !important;
+  border-radius: 10px !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .3px !important;
+  margin-bottom: 10px !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+  cursor: pointer !important;
+}
+.custom-theme-badge:hover {
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 4px 4px 0 var(--ink) !important;
+}
+.custom-theme-badge .ctb-close {
+  padding: 3px 8px !important;
+  background: rgba(255,255,255,.2) !important;
+  border-radius: 6px !important;
+  font-size: 10px !important;
+}
+</style>
+
+<script id="simple-v1-js">
+(function(){
+"use strict";
+console.log("%c🎨 PATCH SIMPLE v1 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   1. AUTO-SWITCH CUSTOM THEME — PAS PILIH TEMA WARNA
+   ═══════════════════════════════════════════════════════════ */
+function hookThemeClick(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var grid = document.getElementById("theme-grid");
+    if(!grid) return;
+    
+    grid.querySelectorAll(".theme-item").forEach(function(el){
+      if(el.dataset.simpleV1 === "1") return;
+      el.dataset.simpleV1 = "1";
+      
+      el.addEventListener("click", async function(){
+        var tid = el.dataset.t;
+        if(!tid) return;
+        
+        console.log("🎨 Theme clicked:", tid);
+        
+        if(window.STATE && STATE.draft){
+          var wasCustom = !!(STATE.draft.customThemeData || STATE.draft.customThemeId);
+          STATE.draft.theme = tid;
+          delete STATE.draft.customThemeData;
+          delete STATE.draft.customThemeId;
+          
+          try{
+            localStorage.removeItem("varlinkbio_custom_theme_active");
+            localStorage.removeItem("varlinkbio_custom_themes");
+          }catch(e){}
+          
+          if(wasCustom){
+            if(window.toast) toast("🎨 Custom OFF — pakai " + tid, "info");
+          }
+        }
+        
+        // Update UI
+        grid.querySelectorAll(".theme-item").forEach(function(x){
+          x.classList.remove("active");
+        });
+        el.classList.add("active");
+        
+        // Hapus badge
+        var badge = document.querySelector(".custom-theme-badge");
+        if(badge) badge.remove();
+        
+        // Auto-save
+        if(window.AutoSave && AutoSave.schedule) AutoSave.schedule();
+        
+        try{
+          if(window.Store && STATE.draft) await Store.save({...STATE.draft});
+        }catch(e){}
+        
+        // Refresh preview
+        setTimeout(function(){
+          if(window.refreshPreviewNow) refreshPreviewNow();
+          else if(window.PageEditor && PageEditor.updatePreview) PageEditor.updatePreview();
+        }, 300);
+      });
+    });
+  }catch(e){}
+}
+
+setInterval(hookThemeClick, 1000);
+window.addEventListener("hashchange", function(){ setTimeout(hookThemeClick, 700); });
+
+/* ═══════════════════════════════════════════════════════════
+   2. BADGE CUSTOM THEME (kalau ada yang aktif)
+   ═══════════════════════════════════════════════════════════ */
+function injectBadge(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var grid = document.getElementById("theme-grid");
+    if(!grid) return;
+    
+    var draft = window.STATE && STATE.draft;
+    var hasCustom = draft && (draft.customThemeData || draft.customThemeId);
+    var existing = document.querySelector(".custom-theme-badge");
+    
+    if(hasCustom && !existing){
+      var badge = document.createElement("div");
+      badge.className = "custom-theme-badge";
+      badge.innerHTML = 
+        '<span>🎨 Custom Theme Aktif</span>' +
+        '<span class="ctb-close" id="ctb-x">✕</span>';
+      grid.parentNode.insertBefore(badge, grid);
+      
+      var x = document.getElementById("ctb-x");
+      if(x){
+        x.onclick = function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          if(!confirm("Hapus custom theme?")) return;
+          if(window.STATE && STATE.draft){
+            delete STATE.draft.customThemeData;
+            delete STATE.draft.customThemeId;
+            if(STATE.draft.theme === "custom") STATE.draft.theme = "neo-cream";
+          }
+          try{
+            localStorage.removeItem("varlinkbio_custom_theme_active");
+            localStorage.removeItem("varlinkbio_custom_themes");
+          }catch(e2){}
+          if(window.toast) toast("✅ Custom dihapus", "success");
+          badge.remove();
+          setTimeout(function(){
+            if(window.refreshPreviewNow) refreshPreviewNow();
+          }, 300);
+        };
+      }
+    } else if(!hasCustom && existing){
+      existing.remove();
+    }
+  }catch(e){}
+}
+
+setInterval(injectBadge, 1000);
+
+/* ═══════════════════════════════════════════════════════════
+   3. FIX WATERMARK CENTER (PREVIEW IFRAME)
+   ═══════════════════════════════════════════════════════════ */
+function fixPreviewWm(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    var frame = document.getElementById("prev-frame");
+    if(!frame) return;
+    
+    var doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+    if(!doc) return;
+    if(doc.getElementById("simple-v1-wm")) return;
+    
+    var style = doc.createElement("style");
+    style.id = "simple-v1-wm";
+    style.textContent = 
+      ".bio-footer{" +
+        "display:inline-block !important;" +
+        "align-self:center !important;" +
+        "width:auto !important;" +
+        "max-width:fit-content !important;" +
+        "margin-left:auto !important;" +
+        "margin-right:auto !important;" +
+        "text-align:center !important;" +
+        "white-space:nowrap !important;" +
+        "float:none !important;" +
+      "}" +
+      ".bio-wrap{align-items:center !important}" +
+      ".bio-inner{" +
+        "display:flex !important;" +
+        "flex-direction:column !important;" +
+        "align-items:center !important;" +
+      "}" +
+      ".bio-inner > *:not(.bio-footer){width:100% !important}" +
+      ".bio-inner > .bio-footer{width:auto !important;max-width:fit-content !important}";
+    
+    doc.head.appendChild(style);
+    console.log("✅ Watermark fix injected");
+  }catch(e){}
+}
+
+setInterval(fixPreviewWm, 1000);
+window.addEventListener("hashchange", function(){ setTimeout(fixPreviewWm, 800); });
+
+/* ═══════════════════════════════════════════════════════════
+   4. PATCH buildHTML — watermark center di preview
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) return;
+    if(window.PagePublic._simpleV1Wm) return;
+    window.PagePublic._simpleV1Wm = true;
+    
+    var origBuild = window.PagePublic.buildHTML;
+    
+    window.PagePublic.buildHTML = function(bio, opts){
+      var html = origBuild.call(this, bio, opts);
+      
+      if(opts && opts.preview){
+        var css = '<style id="simple-v1-wm-preview">' +
+          '.bio-footer{' +
+            'display:inline-block !important;' +
+            'align-self:center !important;' +
+            'width:auto !important;' +
+            'max-width:fit-content !important;' +
+            'margin-left:auto !important;' +
+            'margin-right:auto !important;' +
+            'text-align:center !important;' +
+            'white-space:nowrap !important;' +
+            'float:none !important;' +
+          '}' +
+          '.bio-wrap{align-items:center !important}' +
+          '.bio-inner{' +
+            'display:flex !important;' +
+            'flex-direction:column !important;' +
+            'align-items:center !important;' +
+          '}' +
+          '.bio-inner > *:not(.bio-footer){width:100% !important}' +
+          '.bio-inner > .bio-footer{width:auto !important;max-width:fit-content !important}' +
+        '</style>';
+        
+        html = html.replace(/<\/head>/i, css + '</head>');
+      }
+      
+      return html;
+    };
+    
+    console.log("✅ buildHTML patched");
+  }catch(e){}
+}, 3000);
+
+/* ═══════════════════════════════════════════════════════════
+   DEBUG
+   ═══════════════════════════════════════════════════════════ */
+window.debugSimpleV1 = function(){
+  var draft = window.STATE && STATE.draft;
+  var hasCustom = draft && (draft.customThemeData || draft.customThemeId);
+  var badge = document.querySelector(".custom-theme-badge");
+  
+  alert(
+    "Theme: " + (draft ? draft.theme : "-") + "\n" +
+    "Custom: " + (hasCustom ? "AKTIF" : "OFF") + "\n" +
+    "Badge: " + (badge ? "ADA" : "GAK")
+  );
+};
+
+console.log("✅ PATCH SIMPLE v1 siap");
+console.log("💡 debugSimpleV1() — cek status");
+
+})();
+</script>
+<!-- ═══ END PATCH SIMPLE v1 ═══ -->
 </body>
    </html>

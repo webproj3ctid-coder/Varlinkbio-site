@@ -29613,5 +29613,231 @@ console.log("💡 debugSimpleV1() — cek status");
 })();
 </script>
 <!-- ═══ END PATCH SIMPLE v1 ═══ -->
+   <!-- ═══════════════════════════════════════════════════════════════
+     PATCH INJECT CUSTOM THEME BUTTON
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script id="inject-ct-btn-js">
+(function(){
+"use strict";
+console.log("%c🎨 INJECT CUSTOM THEME BTN loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   INJECT TOMBOL "🎨 CUSTOM THEME" KE EDITOR TOOLBAR
+   ═══════════════════════════════════════════════════════════ */
+function injectBtn(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    
+    // Cek udah ada
+    if(document.getElementById("btn-custom-theme")) return;
+    
+    // Cari toolbar atas editor
+    // Toolbar biasanya ada tombol Template, Scan QR, Copy, QR
+    var templateBtn = document.getElementById("btn-template");
+    var scanBtn = document.getElementById("btn-scan-qr");
+    var saveBtn = document.getElementById("btn-save");
+    
+    if(!saveBtn) return; // Editor gak ready
+    
+    // Parent toolbar
+    var toolbar = saveBtn.parentNode;
+    
+    // Bikin tombol
+    var btn = document.createElement("button");
+    btn.id = "btn-custom-theme";
+    btn.className = "btn btn-sm";
+    btn.type = "button";
+    btn.innerHTML = "🎨 Custom Theme";
+    btn.style.cssText = 
+      "background:#a78bfa !important;" +
+      "color:#fff !important;" +
+      "border:2.5px solid #0a0a0a !important;" +
+      "box-shadow:2px 2px 0 #0a0a0a !important;" +
+      "font-weight:900 !important;" +
+      "text-transform:uppercase !important;" +
+      "letter-spacing:.3px !important;";
+    
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      
+      console.log("🎨 Custom Theme clicked");
+      
+      // Coba buka builder
+      if(typeof window.openCustomThemeBuilder === "function"){
+        window.openCustomThemeBuilder(null);
+        return;
+      }
+      
+      // Coba dari CustomTheme object
+      if(window.CustomTheme && typeof window.CustomTheme.openBuilder === "function"){
+        window.CustomTheme.openBuilder();
+        return;
+      }
+      
+      // Fallback: bikin modal minimal
+      showMinimalCustomThemeModal();
+    });
+    
+    // Insert sebelum Save (atau di akhir toolbar)
+    if(saveBtn && saveBtn.parentNode){
+      saveBtn.parentNode.insertBefore(btn, saveBtn);
+    } else {
+      toolbar.appendChild(btn);
+    }
+    
+    console.log("✅ Tombol Custom Theme di-inject");
+  }catch(e){}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL MINIMAL CUSTOM THEME (kalau builder asli gak ada)
+   ═══════════════════════════════════════════════════════════ */
+function showMinimalCustomThemeModal(){
+  try{
+    if(!window.openModal){
+      if(window.toast) toast("openModal gak ready","error");
+      return;
+    }
+    
+    var draft = window.STATE && STATE.draft;
+    var colors = (draft && draft.customThemeData && draft.customThemeData.colors) || {
+      bg: "#f0ebe0",
+      text: "#0a0a0a",
+      btnBg: "#ffffff",
+      btnText: "#0a0a0a",
+      border: "#0a0a0a",
+      accent: "#ffd700",
+      shadow: "#0a0a0a"
+    };
+    
+    var html = 
+      '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>' +
+      '<h3 style="font-size:16px;font-weight:900;text-transform:uppercase;margin-bottom:14px">🎨 Custom Theme</h3>' +
+      '<p style="font-size:12.5px;font-weight:600;color:#555;margin-bottom:16px">Atur warna tema bio kamu sendiri:</p>' +
+      
+      '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">' +
+        colorInput("bg", "Background", colors.bg) +
+        colorInput("text", "Text", colors.text) +
+        colorInput("btnBg", "Tombol BG", colors.btnBg) +
+        colorInput("btnText", "Tombol Text", colors.btnText) +
+        colorInput("border", "Border", colors.border) +
+        colorInput("accent", "Aksen", colors.accent) +
+      '</div>' +
+      
+      '<div style="display:flex;gap:8px;margin-top:14px">' +
+        '<button class="btn btn-block" id="ct-cancel" style="flex:1">Batal</button>' +
+        '<button class="btn btn-primary btn-block" id="ct-apply" style="flex:1">Pakai</button>' +
+      '</div>';
+    
+    var m = window.openModal(html);
+    if(!m) return;
+    
+    // Bind apply
+    var applyBtn = document.getElementById("ct-apply");
+    if(applyBtn){
+      applyBtn.onclick = function(){
+        var newColors = {};
+        ["bg","text","btnBg","btnText","border","accent"].forEach(function(k){
+          var inp = document.getElementById("ct-color-" + k);
+          if(inp) newColors[k] = inp.value;
+        });
+        newColors.shadow = "#0a0a0a";
+        
+        if(window.STATE && STATE.draft){
+          STATE.draft.customThemeData = {
+            name: "My Theme",
+            colors: newColors,
+            font: "Inter",
+            borderRadius: 12,
+            shadowStyle: "hard",
+            bgPattern: "dots",
+            createdAt: Date.now()
+          };
+          STATE.draft.customThemeId = "custom_" + Date.now();
+          STATE.draft.theme = "custom";
+        }
+        
+        try{
+          localStorage.setItem("varlinkbio_custom_theme_active", STATE.draft.customThemeId);
+        }catch(e){}
+        
+        if(window.toast) toast("✅ Custom theme diterapkan!", "success");
+        if(window.Sound && Sound.tada) Sound.tada();
+        m.remove();
+        
+        // Refresh preview
+        setTimeout(function(){
+          if(window.refreshPreviewNow) refreshPreviewNow();
+          else if(window.PageEditor && PageEditor.updatePreview) PageEditor.updatePreview();
+        }, 300);
+      };
+    }
+    
+    // Bind cancel
+    var cancelBtn = document.getElementById("ct-cancel");
+    if(cancelBtn) cancelBtn.onclick = function(){ m.remove(); };
+  }catch(e){ console.warn("showMinimalCustomThemeModal:", e); }
+}
+
+function colorInput(key, label, val){
+  return '<div>' +
+    '<label style="display:block;font-size:10.5px;font-weight:900;text-transform:uppercase;margin-bottom:4px;color:#555">' + label + '</label>' +
+    '<div style="display:flex;align-items:center;gap:6px;border:2px solid #0a0a0a;border-radius:8px;padding:4px;background:#fff">' +
+      '<input type="color" id="ct-color-' + key + '" value="' + val + '" ' +
+        'style="width:32px;height:32px;border:none;border-radius:6px;cursor:pointer;padding:0;background:transparent"/>' +
+      '<span style="font-family:monospace;font-size:10px;font-weight:700">' + val + '</span>' +
+    '</div>' +
+  '</div>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(injectBtn, 800);
+setTimeout(injectBtn, 1500);
+setTimeout(injectBtn, 3000);
+setInterval(injectBtn, 1500);
+
+window.addEventListener("hashchange", function(){
+  setTimeout(injectBtn, 700);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   DEBUG
+   ═══════════════════════════════════════════════════════════ */
+window.debugCTBtn = function(){
+  var btn = document.getElementById("btn-custom-theme");
+  var hp = (location.hash.slice(1) || "/").split("?")[0];
+  
+  alert(
+    "Hash: " + hp + "\n" +
+    "Tombol: " + (btn ? "ADA ✓" : "GAK ADA ✗") + "\n" +
+    "btn-save: " + (document.getElementById("btn-save") ? "ADA" : "GAK") + "\n" +
+    "btn-template: " + (document.getElementById("btn-template") ? "ADA" : "GAK") + "\n" +
+    "openCustomThemeBuilder: " + typeof window.openCustomThemeBuilder
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  🎨 INJECT CUSTOM THEME BTN AKTIF       ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Tombol di-inject ke editor           ║","color:#22c55e");
+  console.log("%c║  • Auto-modal kalau builder gak ada     ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 debugCTBtn() — cek status tombol");
+}, 2000);
+
+})();
+</script>
+<!-- ═══ END INJECT CUSTOM THEME BTN ═══ -->
 </body>
    </html>

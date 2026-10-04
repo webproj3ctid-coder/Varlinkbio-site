@@ -26236,42 +26236,187 @@ setTimeout(function(){
 
 })();
 </script>
-<!-- ═══ END BUBBLE THINKING ═══ -->
-   <!-- ═══════════════════════════════════════════════════════════════
-     PATCH v10.1 — FIX PREVIEW AUTO-REFRESH + FOOTER + DELETE CUSTOM THEME
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH A — HAPUS CUSTOM THEME PERMANEN
      by Varoo
      ═══════════════════════════════════════════════════════════════ -->
 
-<style id="fixv101-css">
-/* ═══════════════════════════════════════════════════════════
-   FIX FOOTER "BY VAROO" (jangan stretch)
-   ═══════════════════════════════════════════════════════════ */
-.bio-footer{
-  display: inline-block !important;
-  align-self: center !important;
-  width: auto !important;
-  max-width: fit-content !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
-  padding: 6px 14px !important;
-  font-size: 10px !important;
-  border-radius: 20px !important;
-  white-space: nowrap !important;
+<style id="kill-ct-css">
+#btn-custom-theme,
+.btn-custom-theme-fix,
+#btn-delete-custom-theme,
+.custom-theme-active-badge,
+.warna-tema-delete,
+button[id*="custom-theme"],
+button[class*="custom-theme"]{
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+.ctb-modal,
+.custom-theme-modal,
+[class*="ctb-"]{
+  display: none !important;
+  visibility: hidden !important;
+}
+</style>
+
+<script id="kill-ct-js">
+(function(){
+"use strict";
+console.log("%c🗑️ HAPUS CUSTOM THEME loading...","color:#ff2a2a;font-weight:bold;font-size:14px");
+
+/* ═══ NUKE CUSTOM THEME DATA ═══ */
+async function nukeCT(){
+  try{
+    // 1. Draft
+    if(window.STATE && STATE.draft){
+      delete STATE.draft.customThemeData;
+      delete STATE.draft.customThemeId;
+      if(STATE.draft.theme === "custom") STATE.draft.theme = "neo-cream";
+    }
+    
+    // 2. State
+    if(window.STATE){
+      delete STATE.customThemeData;
+      delete STATE.customThemeId;
+      delete STATE.customThemes;
+    }
+    
+    // 3. LocalStorage
+    try{
+      localStorage.removeItem("varlinkbio_custom_theme_active");
+      localStorage.removeItem("varlinkbio_custom_themes");
+    }catch(e){}
+    
+    // 4. Firestore
+    if(window.Auth && Auth.current && window.FB && STATE.draft && STATE.draft.id){
+      try{
+        await FB.db.collection("bios").doc(STATE.draft.id).update({
+          customThemeData: firebase.firestore.FieldValue.delete(),
+          customThemeId: firebase.firestore.FieldValue.delete(),
+          theme: STATE.draft.theme || "neo-cream"
+        });
+      }catch(e){
+        try{
+          await FB.db.collection("bios").doc(STATE.draft.id).set({
+            customThemeData: null,
+            customThemeId: null,
+            theme: STATE.draft.theme || "neo-cream"
+          }, { merge: true });
+        }catch(e2){}
+      }
+    }
+    
+    // 5. Cache
+    if(window.STATE && STATE.cache && STATE.draft && STATE.draft.id){
+      var cached = STATE.cache.find(function(b){ return b.id === STATE.draft.id; });
+      if(cached){
+        delete cached.customThemeData;
+        delete cached.customThemeId;
+        cached.theme = STATE.draft.theme || "neo-cream";
+      }
+    }
+    return true;
+  }catch(e){ return false; }
 }
 
-/* Di preview phone juga */
-.preview-phone .bio-footer{
-  display: inline-block !important;
-  width: auto !important;
-  max-width: fit-content !important;
-  margin: 12px auto 0 !important;
-  padding: 4px 10px !important;
-  font-size: 8.5px !important;
+window.nukeCT = nukeCT;
+
+/* ═══ HAPUS TOMBOL DARI DOM ═══ */
+function removeBtns(){
+  try{
+    ["btn-custom-theme","btn-custom-theme-fix","btn-delete-custom-theme"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.remove();
+    });
+    document.querySelectorAll(".btn-custom-theme-fix, .custom-theme-active-badge").forEach(function(el){ el.remove(); });
+    document.querySelectorAll("button").forEach(function(btn){
+      var txt = (btn.textContent || "").toUpperCase();
+      if(txt.indexOf("CUSTOM THEME") !== -1 || txt.indexOf("HAPUS CUSTOM") !== -1){
+        btn.remove();
+      }
+    });
+    // Matiin function
+    if(window.openCustomThemeBuilder){
+      window.openCustomThemeBuilder = function(){
+        if(window.toast) toast("Custom Theme udah dihapus","info");
+      };
+    }
+    if(window.CustomTheme){
+      window.CustomTheme.getAll = function(){ return []; };
+      window.CustomTheme.getById = function(){ return null; };
+      window.CustomTheme.getApplied = function(){ return null; };
+      window.CustomTheme.apply = function(){ return false; };
+    }
+  }catch(e){}
 }
 
+removeBtns();
+setInterval(removeBtns, 1500);
+window.addEventListener("hashchange", function(){ setTimeout(removeBtns, 500); });
+
+/* ═══ AUTO CLEANUP ═══ */
+function autoClean(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor") return;
+    var d = window.STATE && STATE.draft;
+    if(!d) return;
+    if(d.customThemeData || d.customThemeId){
+      delete d.customThemeData;
+      delete d.customThemeId;
+      if(d.theme === "custom") d.theme = "neo-cream";
+    }
+  }catch(e){}
+}
+setInterval(autoClean, 2000);
+
+/* ═══ BUILDHTML SKIP CUSTOM ═══ */
+setTimeout(function(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) return;
+    if(window.PagePublic._killCT) return;
+    window.PagePublic._killCT = true;
+    var origBuild = window.PagePublic.buildHTML;
+    window.PagePublic.buildHTML = function(bio, opts){
+      if(bio && (bio.customThemeData || bio.customThemeId)){
+        var clean = Object.assign({}, bio);
+        delete clean.customThemeData;
+        delete clean.customThemeId;
+        if(clean.theme === "custom") clean.theme = "neo-cream";
+        return origBuild.call(this, clean, opts);
+      }
+      return origBuild.call(this, bio, opts);
+    };
+  }catch(e){}
+}, 3000);
+
+/* ═══ LOG ═══ */
+setTimeout(function(){
+  console.log("%c╔════════════════════════════════════════╗","color:#ff2a2a;font-weight:bold");
+  console.log("%c║  🗑️ CUSTOM THEME DIHAPUS                ║","color:#ff2a2a;font-weight:bold");
+  console.log("%c╚════════════════════════════════════════╝","color:#ff2a2a;font-weight:bold");
+  console.log("💡 nukeCT() — force cleanup");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END PATCH A ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v10.9 — PREVIEW RENDER LANGSUNG (DIV)
+     Ganti iframe → div langsung. Instan update.
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="preview-v109-css">
 /* ═══════════════════════════════════════════════════════════
-   FIX PREVIEW PHONE
+   PREVIEW PHONE
    ═══════════════════════════════════════════════════════════ */
 .preview-phone{
   width: 100% !important;
@@ -26284,1084 +26429,1016 @@ setTimeout(function(){
   border-radius: 28px !important;
   border: 4px solid #0a0a0a !important;
   box-shadow: 6px 6px 0 #0a0a0a !important;
+  padding: 0 !important;
 }
+
+/* Hide iframe lama */
 .preview-phone iframe{
-  width: 100% !important;
-  height: 100% !important;
-  border: none !important;
-  display: block !important;
-  overflow: auto !important;
-  background: #fff !important;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TOMBOL HAPUS CUSTOM THEME (di theme picker)
-   ═══════════════════════════════════════════════════════════ */
-.warna-tema-delete{
-  display: flex !important;
-  justify-content: center !important;
-  margin-top: 12px !important;
-}
-.warna-tema-delete button{
-  padding: 10px 18px;
-  background: #ff2a2a;
-  color: #fff;
-  border: 2.5px solid var(--ink);
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  cursor: pointer;
-  font-family: inherit;
-  box-shadow: 3px 3px 0 var(--ink);
-  transition: transform .1s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.warna-tema-delete button:hover{
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--ink);
-}
-.warna-tema-delete button:active{
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 var(--ink);
-}
-
-/* Badge "Custom Active" di theme picker */
-.custom-theme-active-badge{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background: #a78bfa;
-  color: #fff;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  margin-bottom: 10px;
-  box-shadow: 2px 2px 0 var(--ink);
-}
-</style>
-
-<script id="fixv101-js">
-/* ═══════════════════════════════════════════════════════════════
-   PATCH v10.1 — PREVIEW AUTO-REFRESH + DELETE CUSTOM THEME
-   ═══════════════════════════════════════════════════════════════ */
-(function(){
-"use strict";
-console.log("%c🔧 FIX v10.1 loading...","color:#ffd700;font-weight:bold;font-size:14px");
-
-var PUBLIC_BIO_URL = "https://vlink-bio.vercel.app";
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 1 — PREVIEW AUTO-REFRESH (debounced)
-   ═══════════════════════════════════════════════════════════ */
-var _previewTimer = null;
-var _lastPreviewHash = "";
-
-function schedulePreviewRefresh(){
-  if(_previewTimer) clearTimeout(_previewTimer);
-  _previewTimer = setTimeout(function(){
-    refreshPreviewNow();
-  }, 800); // debounce 800ms
-}
-
-function refreshPreviewNow(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var frame = document.getElementById("prev-frame");
-    if(!frame) return;
-    
-    var draft = window.STATE && STATE.draft;
-    if(!draft) return;
-    
-    // Kalau bio udah punya slug → load URL
-    var slug = draft.slug || draft.id;
-    if(slug && draft.id){
-      var url = PUBLIC_BIO_URL + "/#/u/" + slug + "?preview=1&t=" + Date.now();
-      // Cek kalau URL sama, skip
-      if(frame.src && frame.src.indexOf("preview=1&t=") !== -1){
-        frame.src = url;
-      } else {
-        frame.removeAttribute("srcdoc");
-        frame.src = url;
-      }
-      console.log("🔄 Preview refresh (URL)");
-    } else {
-      // Fallback: srcdoc
-      if(window.PagePublic && window.PagePublic.buildHTML){
-        try{
-          var html = window.PagePublic.buildHTML(draft, { preview: true });
-          frame.removeAttribute("src");
-          frame.srcdoc = html;
-          console.log("🔄 Preview refresh (srcdoc)");
-        }catch(e){}
-      }
-    }
-  }catch(e){ console.warn("refreshPreviewNow:", e); }
-}
-
-/* ═══ Override PageEditor.updatePreview ═══ */
-function hookUpdatePreview(){
-  try{
-    if(!window.PageEditor) return false;
-    if(window.PageEditor._v101) return true;
-    window.PageEditor._v101 = true;
-    
-    window.PageEditor.updatePreview = function(){
-      refreshPreviewNow();
-    };
-    
-    console.log("✅ updatePreview hooked (v10.1)");
-    return true;
-  }catch(e){ return false; }
-}
-
-/* ═══ Hook semua input changes di editor ═══ */
-function hookEditorInputs(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var editorPanel = document.querySelector(".editor-panel");
-    if(!editorPanel) return;
-    if(editorPanel.dataset.v101Hooked === "1") return;
-    editorPanel.dataset.v101Hooked = "1";
-    
-    // Delegate input event
-    editorPanel.addEventListener("input", function(e){
-      var target = e.target;
-      if(!target) return;
-      // Skip search / unrelated
-      if(target.id === "help-search" || target.id === "dev-search") return;
-      // Skip file inputs
-      if(target.type === "file") return;
-      
-      schedulePreviewRefresh();
-    }, true);
-    
-    // Delegate change event (buat select, radio, checkbox)
-    editorPanel.addEventListener("change", function(e){
-      var target = e.target;
-      if(!target) return;
-      if(target.type === "file") return;
-      schedulePreviewRefresh();
-    }, true);
-    
-    // Delegate click (buat button toggle)
-    editorPanel.addEventListener("click", function(e){
-      var target = e.target;
-      if(!target) return;
-      // Skip save/copy/qr buttons
-      var skipIds = ["btn-save","btn-save2","btn-copy-top","btn-qr","btn-scan-qr","btn-template","btn-refresh-preview"];
-      if(target.id && skipIds.indexOf(target.id) !== -1) return;
-      if(target.closest && target.closest("#preview-edit-toggle-btn")) return;
-      if(target.closest && target.closest(".btn-custom-theme-fix")) return;
-      
-      // Cek apakah button terkait editor (tema, warna, dll)
-      if(target.closest && (
-        target.closest(".theme-item") ||
-        target.closest(".opt-item") ||
-        target.closest(".warna-item") ||
-        target.closest(".style-item") ||
-        target.closest(".toggle-switch") ||
-        target.closest("[data-anim]")
-      )){
-        schedulePreviewRefresh();
-      }
-    }, true);
-    
-    console.log("✅ Editor inputs hooked (v10.1)");
-  }catch(e){ console.warn("hookEditorInputs:", e); }
-}
-
-/* ═══ Refresh sekali lagi setelah save ═══ */
-function hookEditorSave(){
-  try{
-    if(!window.PageEditor) return false;
-    if(window.PageEditor._v101Save) return true;
-    window.PageEditor._v101Save = true;
-    
-    var origSave = window.PageEditor.save;
-    if(typeof origSave === "function"){
-      window.PageEditor.save = async function(){
-        var result = await origSave.apply(this, arguments);
-        setTimeout(refreshPreviewNow, 800);
-        return result;
-      };
-    }
-    console.log("✅ Editor save hooked (v10.1)");
-    return true;
-  }catch(e){ return false; }
-}
-
-/* ═══ Retry hook ═══ */
-var tries = 0;
-function tryHooks(){
-  tries++;
-  var ok1 = hookUpdatePreview();
-  var ok2 = hookEditorSave();
-  hookEditorInputs();
-  if((!ok1 || !ok2) && tries < 20) setTimeout(tryHooks, 500);
-}
-setTimeout(tryHooks, 500);
-setTimeout(tryHooks, 2000);
-setTimeout(tryHooks, 4000);
-setInterval(function(){
-  var hp = (location.hash.slice(1) || "/").split("?")[0];
-  if(hp === "/editor"){
-    hookEditorInputs();
-  }
-}, 3000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 2 — HAPUS CUSTOM THEME (balik ke warna tema)
-   ═══════════════════════════════════════════════════════════ */
-function injectCustomThemeDelete(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    // Cari theme grid
-    var themeGrid = document.getElementById("theme-grid");
-    if(!themeGrid) return;
-    
-    // Cek parent section
-    var parent = themeGrid.closest(".editor-section");
-    if(!parent) return;
-    
-    // Kalau udah ada, skip
-    if(parent.querySelector(".warna-tema-delete")) return;
-    
-    var draft = window.STATE && STATE.draft;
-    var isCustomActive = draft && (draft.theme === "custom" || draft.customThemeData || draft.customThemeId);
-    
-    // Inject delete button
-    var wrap = document.createElement("div");
-    wrap.className = "warna-tema-delete";
-    wrap.innerHTML = 
-      (isCustomActive 
-        ? '<div style="text-align:center;margin-bottom:8px"><span class="custom-theme-active-badge">🎨 Custom Theme Aktif</span></div>' 
-        : '') +
-      '<button type="button" id="btn-delete-custom-theme">' +
-        '🗑️ Hapus Custom Theme' +
-      '</button>';
-    
-    themeGrid.parentNode.insertBefore(wrap, themeGrid.nextSibling);
-    
-    // Bind
-    var btn = document.getElementById("btn-delete-custom-theme");
-    if(btn){
-      btn.addEventListener("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        
-        if(!confirm("Hapus custom theme? Bio bakal pakai tema warna biasa.")) return;
-        
-        try{
-          if(window.STATE && STATE.draft){
-            STATE.draft.theme = "neo-cream"; // balik ke default
-            delete STATE.draft.customThemeData;
-            delete STATE.draft.customThemeId;
-          }
-          
-          // Hapus dari applied
-          try{
-            localStorage.removeItem("varlinkbio_custom_theme_active");
-          }catch(e){}
-          
-          if(window.Sound && Sound.success) Sound.success();
-          if(window.toast) toast("✅ Custom theme dihapus. Pakai tema warna biasa.","success");
-          
-          // Refresh preview
-          setTimeout(refreshPreviewNow, 300);
-          
-          // Re-render editor
-          if(window.PageEditor && PageEditor.render){
-            setTimeout(function(){ PageEditor.render(); }, 500);
-          }
-        }catch(err){
-          console.warn("Delete custom theme:", err);
-          if(window.toast) toast("Gagal hapus: " + err.message,"error");
-        }
-      });
-    }
-    
-    console.log("✅ Custom theme delete button injected");
-  }catch(e){ console.warn("injectCustomThemeDelete:", e); }
-}
-
-setInterval(injectCustomThemeDelete, 1500);
-window.addEventListener("hashchange", function(){ setTimeout(injectCustomThemeDelete, 700); });
-
-
-/* ═══════════════════════════════════════════════════════════
-   FIX 3 — FORCE REFRESH PREVIEW SAAT HALAMAN EDITOR LOAD
-   ═══════════════════════════════════════════════════════════ */
-function forceRefreshOnLoad(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    setTimeout(refreshPreviewNow, 1500);
-    setTimeout(refreshPreviewNow, 3000);
-  }catch(e){}
-}
-window.addEventListener("hashchange", forceRefreshOnLoad);
-setTimeout(forceRefreshOnLoad, 1000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   EXPOSE
-   ═══════════════════════════════════════════════════════════ */
-window.refreshPreviewNow = refreshPreviewNow;
-window.schedulePreviewRefresh = schedulePreviewRefresh;
-
-setTimeout(function(){
-  console.log("");
-  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
-  console.log("%c║  ✅ PATCH v10.1 AKTIF                  ║","color:#22c55e;font-weight:bold");
-  console.log("%c║  • Preview auto-refresh (debounced)    ║","color:#22c55e");
-  console.log("%c║  • Fix footer BY VAROO (compact)       ║","color:#22c55e");
-  console.log("%c║  • Tombol Hapus Custom Theme           ║","color:#22c55e");
-  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
-  console.log("");
-  console.log("💡 refreshPreviewNow() — paksa refresh preview");
-}, 1500);
-
-})();
-</script>
-<!-- ═══ END PATCH v10.1 ═══ -->
-   <!-- ═══════════════════════════════════════════════════════════════
-     PATCH v10.2 — AUTO-SAVE + SHARE POPUP
-     by Varoo
-     ═══════════════════════════════════════════════════════════════ -->
-
-<style id="fixv102-css">
-/* ═══════════════════════════════════════════════════════════
-   AUTO-SAVE TOAST
-   ═══════════════════════════════════════════════════════════ */
-.autosave-toast{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99999;
-  background: #22c55e;
-  color: #fff;
-  border: 2.5px solid #0a0a0a;
-  border-radius: 10px;
-  padding: 10px 16px;
-  font-size: 12.5px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Inter', sans-serif;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .3s, transform .3s;
-  pointer-events: none;
-}
-.autosave-toast.show{
-  opacity: 1;
-  transform: translateY(0);
-}
-.autosave-toast.saving{
-  background: #ffd700;
-  color: #0a0a0a;
-}
-.autosave-toast.error{
-  background: #ff2a2a;
-  color: #fff;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   HAPUS TOMBOL SIMPAN
-   ═══════════════════════════════════════════════════════════ */
-#btn-save,
-#btn-save2{
   display: none !important;
   visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PREVIEW RENDER (langsung, bukan iframe)
+   ═══════════════════════════════════════════════════════════ */
+.preview-bio-render{
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   position: absolute !important;
-  left: -9999px !important;
+  inset: 0 !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+.preview-bio-render::-webkit-scrollbar{
+  display: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SHARE POPUP (gaya neo-brutalism, lebih clean)
+   LOADING OVERLAY
    ═══════════════════════════════════════════════════════════ */
-.share-popup-modal{
-  text-align: center;
+.preview-loading-overlay{
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 100 !important;
+  background: rgba(10,10,10,.75) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  border-radius: inherit !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity .2s ease !important;
 }
-.share-popup-modal h3{
-  font-size: 18px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -.3px;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.preview-loading-overlay.show{
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
-.share-popup-modal .sub{
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--ink-soft);
-  margin-bottom: 14px;
+.preview-loading-overlay .spinner{
+  width: 42px !important;
+  height: 42px !important;
+  border: 4px solid rgba(255,255,255,.2) !important;
+  border-top-color: #ffd700 !important;
+  border-radius: 50% !important;
+  animation: previewSpin109 .6s linear infinite !important;
 }
-.share-popup-modal .url-box{
-  background: var(--cream);
-  border: 2.5px solid var(--ink);
-  border-radius: 10px;
-  padding: 12px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  word-break: break-all;
-  text-align: center;
-  margin-bottom: 14px;
-  cursor: pointer;
-  user-select: all;
+@keyframes previewSpin109{
+  to{transform: rotate(360deg)}
 }
-.share-popup-modal .url-box:active{
-  background: #ffd700;
-}
-.share-popup-modal .actions-main{
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.share-popup-modal .actions-secondary{
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.share-popup-modal button,
-.share-popup-modal a{
-  padding: 12px 16px;
-  border: 2.5px solid var(--ink);
-  border-radius: 10px;
-  font-size: 12.5px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  cursor: pointer;
-  font-family: inherit;
-  box-shadow: 3px 3px 0 var(--ink);
-  transition: transform .1s, box-shadow .1s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-decoration: none;
-  color: inherit;
-}
-.share-popup-modal button:hover,
-.share-popup-modal a:hover{
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--ink);
-}
-.share-popup-modal button:active,
-.share-popup-modal a:active{
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 var(--ink);
-}
-.share-popup-modal .btn-copy{
-  flex: 1;
-  background: var(--ink);
-  color: #fff;
-}
-.share-popup-modal .btn-open{
-  flex: 1;
-  background: #fff;
-  color: var(--ink);
-}
-.share-popup-modal .btn-sm{
-  flex: 1;
-  min-width: 80px;
-  padding: 10px 12px;
-  font-size: 11px;
-}
-.share-popup-modal .btn-qr{
-  background: #fff;
-}
-.share-popup-modal .btn-wa{
-  background: #22c55e;
-  color: #fff;
-}
-.share-popup-modal .btn-share{
-  background: #a78bfa;
-  color: #fff;
-}
-.share-popup-modal button:disabled{
-  opacity: .5;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TOMBOL SHARE DI TOOLBAR EDITOR
-   ═══════════════════════════════════════════════════════════ */
-#btn-share-editor{
-  background: #2563eb !important;
-  color: #fff !important;
-  border: 2.5px solid var(--ink) !important;
-  box-shadow: 2px 2px 0 var(--ink) !important;
+.preview-loading-overlay .txt{
+  color: #ffd700 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11.5px !important;
   font-weight: 900 !important;
   text-transform: uppercase !important;
-  letter-spacing: .3px !important;
-}
-#btn-share-editor:hover{
-  transform: translate(-1px, -1px) !important;
-  box-shadow: 3px 3px 0 var(--ink) !important;
-}
-#btn-share-editor svg{
-  width: 14px;
-  height: 14px;
+  letter-spacing: 1px !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   STATUS BADGE (bawah preview)
+   SCOPE SEMUA CSS BIO — biar gak ganggu editor
    ═══════════════════════════════════════════════════════════ */
-.autosave-badge{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 8px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  border: 2px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
-  background: var(--cream);
-  color: var(--ink);
-  transition: all .3s;
+.preview-bio-render .bio-wrap{
+  min-height: 100% !important;
+  width: 100% !important;
+  padding: 20px 14px 30px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 700 !important;
+  -webkit-font-smoothing: antialiased !important;
+  box-sizing: border-box !important;
 }
-.autosave-badge.saving{
-  background: #ffd700;
+.preview-bio-render .bio-wrap *{
+  box-sizing: border-box !important;
 }
-.autosave-badge.saved{
-  background: #22c55e;
-  color: #fff;
+.preview-bio-render .bio-inner{
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
-.autosave-badge.error{
-  background: #ff2a2a;
-  color: #fff;
+
+/* Decoration hide */
+.preview-bio-render .bio-deco{
+  display: none !important;
 }
-.autosave-badge .dot{
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: currentColor;
-  animation: badgePulse 1.5s ease-in-out infinite;
+.preview-bio-render .bio-cta-float{
+  display: none !important;
 }
-@keyframes badgePulse{
-  0%,100%{opacity:1}
-  50%{opacity:.4}
+
+/* Banner */
+.preview-bio-render .bio-banner{
+  width: 100% !important;
+  height: 80px !important;
+  margin: 0 auto 12px !important;
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  box-shadow: 4px 4px 0 var(--ink, #0a0a0a) !important;
+  background: #fff !important;
+}
+.preview-bio-render .bio-banner img,
+.preview-bio-render .bio-banner video{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Avatar */
+.preview-bio-render .bio-avatar{
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--ink, #0a0a0a) !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  margin: 0 auto !important;
+  box-shadow: 4px 4px 0 var(--ink, #0a0a0a) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.preview-bio-render .bio-avatar img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.preview-bio-render .bio-avatar.placeholder{
+  display: grid !important;
+  place-items: center !important;
+  font-size: 32px !important;
+  font-weight: 900 !important;
+  background: var(--yellow, #ffd700) !important;
+}
+
+/* Header */
+.preview-bio-render .bio-header{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin-bottom: 12px !important;
+  position: relative !important;
+}
+.preview-bio-render .bio-title-top{
+  display: inline-block !important;
+  padding: 3px 10px !important;
+  background: #fff !important;
+  color: var(--ink, #0a0a0a) !important;
+  font-size: 9.5px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  transform: rotate(-4deg) !important;
+  margin-top: 10px !important;
+  box-shadow: 2px 2px 0 var(--ink, #0a0a0a) !important;
+  z-index: 3 !important;
+}
+.preview-bio-render .bio-name{
+  display: inline-block !important;
+  padding: 5px 14px !important;
+  background: var(--yellow, #ffd700) !important;
+  color: var(--ink, #0a0a0a) !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  transform: rotate(2deg) !important;
+  margin-top: -2px !important;
+  box-shadow: 4px 4px 0 var(--ink, #0a0a0a) !important;
+  text-align: center !important;
+  max-width: 95% !important;
+  word-break: break-word !important;
+  z-index: 2 !important;
+}
+.preview-bio-render .bio-bio{
+  display: inline-block !important;
+  padding: 4px 10px !important;
+  background: var(--red, #ff2a2a) !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  transform: rotate(-2deg) !important;
+  margin-top: -2px !important;
+  box-shadow: 3px 3px 0 var(--ink, #0a0a0a) !important;
+  text-align: center !important;
+  max-width: 95% !important;
+  word-break: break-word !important;
+  z-index: 1 !important;
+}
+.preview-bio-render .bio-plan-badge{
+  display: inline-block !important;
+  padding: 2px 10px !important;
+  background: var(--ink, #0a0a0a) !important;
+  color: var(--yellow, #ffd700) !important;
+  font-size: 8px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  border: 2px solid var(--yellow, #ffd700) !important;
+  border-radius: 999px !important;
+  margin-top: 8px !important;
+  box-shadow: 2px 2px 0 var(--ink, #0a0a0a) !important;
+}
+.preview-bio-render .bio-plan-badge.starter{
+  background: var(--green, #22c55e) !important;
+  color: #fff !important;
+  border-color: var(--ink, #0a0a0a) !important;
+}
+.preview-bio-render .bio-plan-badge.pro{
+  background: var(--blue, #2563eb) !important;
+  color: #fff !important;
+  border-color: var(--ink, #0a0a0a) !important;
+}
+.preview-bio-render .bio-plan-badge.ultimate{
+  background: var(--ink, #0a0a0a) !important;
+  color: var(--yellow, #ffd700) !important;
+  border-color: var(--yellow, #ffd700) !important;
+}
+
+/* Logos */
+.preview-bio-render .bio-logos{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 10px !important;
+  margin-top: 2px !important;
+}
+.preview-bio-render .bio-logo-item{
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--ink, #0a0a0a) !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  display: grid !important;
+  place-items: center !important;
+  box-shadow: 2px 2px 0 var(--ink, #0a0a0a) !important;
+}
+.preview-bio-render .bio-logo-item img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  padding: 3px !important;
+}
+.preview-bio-render .bio-logo-item .fallback{
+  font-weight: 900 !important;
+  font-size: 11px !important;
+  color: var(--ink, #0a0a0a) !important;
+}
+
+/* Links */
+.preview-bio-render .bio-links{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+.preview-bio-render .bio-link{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 14px !important;
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  border-radius: 10px !important;
+  font-weight: 900 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+  position: relative !important;
+  box-shadow: 3px 3px 0 var(--ink, #0a0a0a) !important;
+  cursor: pointer !important;
+  min-height: 42px !important;
+  background: #fff !important;
+  color: var(--ink, #0a0a0a) !important;
+  text-decoration: none !important;
+}
+.preview-bio-render .bio-link .licon{
+  width: 16px !important;
+  height: 16px !important;
+  display: grid !important;
+  place-items: center !important;
+  flex-shrink: 0 !important;
+}
+.preview-bio-render .bio-link .licon svg{
+  width: 100% !important;
+  height: 100% !important;
+  stroke: currentColor !important;
+  fill: none !important;
+  stroke-width: 2.5 !important;
+}
+.preview-bio-render .bio-link .ltext{
+  flex: 1 !important;
+  text-align: center !important;
+}
+
+/* Featured */
+.preview-bio-render .bio-link.bio-featured{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  gap: 0 !important;
+  background: var(--feat-bg, #fff) !important;
+  color: var(--feat-fg, #0a0a0a) !important;
+  min-height: 0 !important;
+}
+.preview-bio-render .bio-link.bio-featured .feat-img-wrap{
+  padding: var(--feat-padding, 8px) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  background: var(--feat-bg, #fff) !important;
+}
+.preview-bio-render .bio-link.bio-featured .feat-img{
+  width: 80% !important;
+  height: auto !important;
+  aspect-ratio: var(--feat-ratio, 16/9) !important;
+  object-fit: cover !important;
+  object-position: var(--feat-pos-x, 50%) var(--feat-pos-y, 50%) !important;
+  transform: scale(var(--feat-zoom, 1)) !important;
+  transform-origin: var(--feat-pos-x, 50%) var(--feat-pos-y, 50%) !important;
+  border: 2px solid var(--ink, #0a0a0a) !important;
+  border-radius: 6px !important;
+  display: block !important;
+}
+.preview-bio-render .bio-link.bio-featured .feat-body{
+  padding: 6px 10px 8px !important;
+  text-align: center !important;
+  background: var(--feat-bg, #fff) !important;
+  color: var(--feat-fg, #0a0a0a) !important;
+}
+.preview-bio-render .bio-link.bio-featured .feat-body b{
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+/* Embed */
+.preview-bio-render .bio-embed{
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  box-shadow: 3px 3px 0 var(--ink, #0a0a0a) !important;
+  background: #fff !important;
+}
+.preview-bio-render .bio-embed iframe{
+  width: 100% !important;
+  display: block !important;
+  border: none !important;
+  aspect-ratio: 16/9 !important;
+}
+
+/* Footer */
+.preview-bio-render .bio-footer{
+  margin: 16px auto 0 !important;
+  font-size: 9px !important;
+  color: var(--ink, #0a0a0a) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  background: #fff !important;
+  border: 2px solid var(--ink, #0a0a0a) !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+  box-shadow: 2px 2px 0 var(--ink, #0a0a0a) !important;
+  display: inline-block !important;
+  align-self: center !important;
+  width: auto !important;
+  max-width: fit-content !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+.preview-bio-render .bio-footer a{
+  color: var(--ink, #0a0a0a) !important;
+  font-weight: 900 !important;
+  text-decoration: underline !important;
+}
+
+/* Lock */
+.preview-bio-render .lock-overlay{
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 9998 !important;
+  background: rgba(240,235,224,.96) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 18px !important;
+}
+.preview-bio-render .lock-card{
+  background: #fff !important;
+  border: 2.5px solid var(--ink, #0a0a0a) !important;
+  border-radius: 14px !important;
+  padding: 20px !important;
+  max-width: 280px !important;
+  width: 100% !important;
+  text-align: center !important;
+  box-shadow: 6px 6px 0 var(--red, #ff2a2a) !important;
+}
+.preview-bio-render .lock-card .li{
+  width: 48px !important;
+  height: 48px !important;
+  background: var(--ink, #0a0a0a) !important;
+  color: var(--yellow, #ffd700) !important;
+  border-radius: 50% !important;
+  display: grid !important;
+  place-items: center !important;
+  margin: 0 auto 10px !important;
+  font-size: 22px !important;
+}
+.preview-bio-render .lock-card h3{
+  margin-bottom: 6px !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  font-weight: 900 !important;
+}
+.preview-bio-render .lock-card input{
+  width: 100% !important;
+  padding: 10px !important;
+  border-radius: 8px !important;
+  border: 2px solid var(--ink, #0a0a0a) !important;
+  background: #fff !important;
+  font-size: 13px !important;
+  text-align: center !important;
+  font-family: inherit !important;
+  font-weight: 700 !important;
+}
+.preview-bio-render .lock-card button{
+  width: 100% !important;
+  padding: 10px !important;
+  border-radius: 8px !important;
+  border: 2px solid var(--ink, #0a0a0a) !important;
+  background: var(--ink, #0a0a0a) !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  margin-top: 10px !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  font-family: inherit !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   17 TEMA WARNA (SCOPE)
+   ═══════════════════════════════════════════════════════════ */
+.preview-bio-render .theme-neo-cream{
+  background-color:#f0ebe0;color:#0a0a0a;
+  background-image:
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+  background-position:0 0,10px 10px;
+}
+.preview-bio-render .theme-neo-midnight{
+  background-color:#1e293b;color:#e2e8f0;
+  background-image:
+    radial-gradient(circle,#94a3b8 1.4px,transparent 1.4px),
+    radial-gradient(circle,#94a3b8 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-midnight .bio-link{
+  background:#0f172a;color:#e2e8f0;border-color:#e2e8f0;
+}
+.preview-bio-render .theme-neo-dark{
+  background-color:#0a0a0a;color:#fff;
+  background-image:
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-dark .bio-link{background:#1a1a1a;color:#fff}
+.preview-bio-render .theme-neo-blue{
+  background-color:#2563eb;color:#fff;
+  background-image:
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-blue .bio-link{background:#fff;color:#2563eb}
+.preview-bio-render .theme-neo-rose{
+  background-color:#f43f5e;color:#fff;
+  background-image:
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-rose .bio-link{background:#fff;color:#f43f5e}
+.preview-bio-render .theme-neo-pink{
+  background-color:#ff69b4;color:#0a0a0a;
+  background-image:
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-green{
+  background-color:#22c55e;color:#0a0a0a;
+  background-image:
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-purple{
+  background-color:#a78bfa;color:#0a0a0a;
+  background-image:
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-orange{
+  background-color:#ff8c00;color:#0a0a0a;
+  background-image:
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px),
+    radial-gradient(circle,#0a0a0a 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-ocean{
+  background-color:#0ea5e9;color:#0a0a0a;
+  background-image:
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-coffee{
+  background-color:#78350f;color:#fef3c7;
+  background-image:
+    radial-gradient(circle,#fef3c7 1.4px,transparent 1.4px),
+    radial-gradient(circle,#fef3c7 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-coffee .bio-link{background:#fef3c7;color:#78350f}
+.preview-bio-render .theme-neo-sunset{
+  color:#0a0a0a;
+  background:linear-gradient(135deg,#ff8c00 0%,#ff6b35 35%,#ff69b4 70%,#a78bfa 100%);
+  background-size:200% 200%;
+}
+.preview-bio-render .theme-neo-galaxy{
+  color:#fff;
+  background:linear-gradient(135deg,#0a0a0a 0%,#1a0a2e 50%,#0a0a0a 100%);
+  background-size:200% 200%;
+}
+.preview-bio-render .theme-neo-galaxy .bio-link{
+  background:rgba(30,20,60,.8);color:#e0e0ff;border-color:#a78bfa;
+}
+.preview-bio-render .theme-neo-galaxy .bio-name{
+  background:linear-gradient(135deg,#a78bfa,#ff69b4);
+  color:#fff;border-color:#a78bfa;
+}
+.preview-bio-render .theme-neo-neon{
+  background-color:#0a0a14;color:#00ffcc;
+  background-image:
+    radial-gradient(circle,#00ffcc 1.4px,transparent 1.4px),
+    radial-gradient(circle,#ff00ff 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-neon .bio-link{
+  background:#0a0a14;color:#00ffcc;border-color:#00ffcc;
+  box-shadow:3px 3px 0 #ff00ff !important;
+}
+.preview-bio-render .theme-neo-neon .bio-name{
+  background:#ff00ff;color:#0a0a14;border-color:#00ffcc;
+}
+.preview-bio-render .theme-neo-neon .bio-bio{background:#00ffcc;color:#0a0a14}
+.preview-bio-render .theme-neo-retro{
+  background-color:#ff00ff;color:#00ffff;
+  background-image:
+    linear-gradient(45deg,#00ffff 25%,transparent 25%,transparent 75%,#00ffff 75%),
+    linear-gradient(45deg,#00ffff 25%,transparent 25%,transparent 75%,#00ffff 75%);
+  background-size:20px 20px;
+  background-position:0 0,10px 10px;
+}
+.preview-bio-render .theme-neo-retro .bio-link{background:#fff;color:#ff00ff;border-color:#000}
+.preview-bio-render .theme-neo-retro .bio-name{background:#ffff00;color:#ff00ff;border-color:#000}
+.preview-bio-render .theme-neo-retro .bio-bio{background:#00ffff;color:#000}
+.preview-bio-render .theme-neo-sakura{
+  background-color:#fce7f3;color:#831843;
+  background-image:
+    radial-gradient(circle,#f9a8d4 1.4px,transparent 1.4px),
+    radial-gradient(circle,#f9a8d4 1.4px,transparent 1.4px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-sakura .bio-name{background:#f9a8d4;color:#831843}
+.preview-bio-render .theme-neo-sakura .bio-bio{background:#be185d;color:#fff}
+.preview-bio-render .theme-neo-gold{
+  background-color:#0a0a0a;color:#d4af37;
+  background-image:
+    linear-gradient(90deg,rgba(212,175,55,.05) 1px,transparent 1px),
+    linear-gradient(rgba(212,175,55,.05) 1px,transparent 1px);
+  background-size:20px 20px,20px 20px;
+}
+.preview-bio-render .theme-neo-gold .bio-link{
+  background:#0a0a0a;color:#d4af37;border-color:#d4af37;
+}
+.preview-bio-render .theme-neo-gold .bio-name{background:#d4af37;color:#0a0a0a}
+.preview-bio-render .theme-neo-gold .bio-bio{background:#8b6914;color:#fff}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMASI
+   ═══════════════════════════════════════════════════════════ */
+.preview-bio-render.anim-bounce .bio-link{
+  animation: pvBounce 2s ease-in-out infinite !important;
+}
+@keyframes pvBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+.preview-bio-render.anim-glow .bio-link{
+  box-shadow:3px 3px 0 var(--ink, #0a0a0a), 0 0 15px rgba(255,215,0,.6) !important;
 }
 </style>
 
-<script id="fixv102-js">
+<script id="preview-v109-js">
 /* ═══════════════════════════════════════════════════════════════
-   PATCH v10.2 — AUTO-SAVE + SHARE POPUP
+   PATCH v10.9 — PREVIEW RENDER LANGSUNG
    ═══════════════════════════════════════════════════════════════ */
 (function(){
 "use strict";
-console.log("%c💾 AUTO-SAVE v10.2 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+console.log("%c⚡ PREVIEW v10.9 loading...","color:#ffd700;font-weight:bold;font-size:14px");
 
-var PUBLIC_BIO_URL = "https://vlink-bio.vercel.app";
+var POLL_INTERVAL = 200;
+var DEBOUNCE_DELAY = 400;
+var _lastHash = "";
+var _refreshTimer = null;
+var _pollTimer = null;
+var _renderHost = null;
 
 /* ═══════════════════════════════════════════════════════════
-   AUTO-SAVE SYSTEM
+   HASH DRAFT
    ═══════════════════════════════════════════════════════════ */
-var AutoSave = {
-  _timer: null,
-  _isSaving: false,
-  _lastSave: 0,
-  _lastHash: "",
-  _dirty: false,
-  DELAY: 1500,         // debounce 1.5s
-  MIN_INTERVAL: 3000,  // min 3 detik antar save
-  
-  init: function(){
-    var self = this;
-    // Watch editor changes
-    this._setupObservers();
-    
-    // Save saat exit editor
-    window.addEventListener("beforeunload", function(){
-      if(self._dirty) self._forceSave();
+function hashDraft(){
+  try{
+    var d = window.STATE && STATE.draft;
+    if(!d) return "";
+    var parts = [
+      d.name||"", d.bio||"", d.theme||"", d.animation||"",
+      d.profile||"", d.banner||"", d.bannerType||"",
+      d.lock||"", d.allowDirectory?"1":"0"
+    ];
+    (d.links||[]).forEach(function(l){
+      parts.push([
+        l.label||"", l.url||"", l.type||"", l.color||"",
+        l.thumb||"", l.active?"1":"0",
+        l.featPosX!=null?l.featPosX:"",
+        l.featPosY!=null?l.featPosY:"",
+        l.featZoom!=null?l.featZoom:"",
+        l.featPadding!=null?l.featPadding:"",
+        l.featRatio||"",
+        l.btnDragX!=null?l.btnDragX:"",
+        l.btnDragY!=null?l.btnDragY:""
+      ].join("|"));
     });
-    
-    // Save saat hash change
-    window.addEventListener("hashchange", function(){
-      if(self._dirty && self._isEditor()) self._forceSave();
+    (d.logos||[]).forEach(function(l){
+      parts.push([l.name||"", l.url||"", l.img||""].join("|"));
     });
-  },
+    return parts.join("~");
+  }catch(e){ return ""; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GET/HOST RENDER
+   ═══════════════════════════════════════════════════════════ */
+function getHost(){
+  var phone = document.querySelector(".preview-phone");
+  if(!phone) return null;
   
-  _isEditor: function(){
-    return (location.hash.slice(1) || "/").split("?")[0] === "/editor";
-  },
-  
-  _setupObservers: function(){
-    var self = this;
-    setInterval(function(){
-      if(!self._isEditor()) return;
-      var panel = document.querySelector(".editor-panel");
-      if(!panel || panel.dataset.autosaveHooked === "1") return;
-      panel.dataset.autosaveHooked = "1";
-      
-      // Input text change
-      panel.addEventListener("input", function(e){
-        if(e.target && e.target.type === "file") return;
-        self.schedule();
-      }, true);
-      
-      // Change (select, radio, checkbox)
-      panel.addEventListener("change", function(e){
-        if(e.target && e.target.type === "file") return;
-        self.schedule();
-      }, true);
-      
-      // Click (button related)
-      panel.addEventListener("click", function(e){
-        var t = e.target;
-        if(!t) return;
-        // Skip buttons yang gak related save
-        var skip = ["btn-save","btn-save2","btn-copy-top","btn-qr","btn-scan-qr","btn-template","btn-share-editor"];
-        if(t.id && skip.indexOf(t.id) !== -1) return;
-        if(t.closest && t.closest("#preview-edit-toggle-btn")) return;
-        if(t.closest && t.closest(".btn-custom-theme-fix")) return;
-        if(t.closest && t.closest("#btn-delete-custom-theme")) return;
-        
-        if(t.closest && (
-          t.closest(".theme-item") ||
-          t.closest(".opt-item") ||
-          t.closest(".warna-item") ||
-          t.closest(".style-item") ||
-          t.closest(".toggle-switch") ||
-          t.closest("[data-anim]")
-        )){
-          self.schedule();
-        }
-      }, true);
-      
-      console.log("✅ AutoSave observers ready");
-    }, 1000);
-  },
-  
-  schedule: function(){
-    var self = this;
-    this._dirty = true;
-    this._updateBadge("saving");
-    
-    if(this._timer) clearTimeout(this._timer);
-    this._timer = setTimeout(function(){
-      self.save();
-    }, this.DELAY);
-  },
-  
-  save: async function(){
-    if(this._isSaving) return;
-    if(!window.STATE || !STATE.draft) return;
-    if(!window.Auth || !Auth.current) return;
-    
-    // Throttle
-    var now = Date.now();
-    if(now - this._lastSave < this.MIN_INTERVAL){
-      // Reschedule
-      var self = this;
-      setTimeout(function(){ self.save(); }, this.MIN_INTERVAL - (now - this._lastSave));
-      return;
-    }
-    
-    // Cek ada perubahan signifikan
-    var draft = STATE.draft;
-    if(!draft.name || !draft.name.trim()){
-      this._updateBadge("error", "Nama kosong");
-      return;
-    }
-    
-    // Skip kalau hash sama
-    var hash = this._hashDraft(draft);
-    if(hash === this._lastHash){
-      this._updateBadge("saved");
-      this._dirty = false;
-      return;
-    }
-    
-    this._isSaving = true;
-    this._updateBadge("saving");
-    this._showToast("saving");
-    
-    try{
-      if(!window.Store || !Store.save){
-        throw new Error("Store.save gak ready");
-      }
-      
-      var saved = await Store.save({...draft});
-      STATE.draft = saved;
-      STATE.currentEdit = saved.id;
-      this._lastHash = hash;
-      this._lastSave = Date.now();
-      this._dirty = false;
-      
-      this._updateBadge("saved");
-      this._showToast("saved");
-      
-      // Refresh preview
-      setTimeout(function(){
-        if(window.refreshPreviewNow) refreshPreviewNow();
-      }, 300);
-      
-      console.log("💾 Auto-saved ✓");
-    }catch(e){
-      console.warn("Auto-save error:", e);
-      this._updateBadge("error", "Gagal save");
-      this._showToast("error");
-    }finally{
-      this._isSaving = false;
-    }
-  },
-  
-  _forceSave: async function(){
-    if(this._timer) clearTimeout(this._timer);
-    if(this._dirty){
-      try{ await this.save(); }catch(e){}
-    }
-  },
-  
-  _hashDraft: function(draft){
-    try{
-      var clean = {};
-      ["name","bio","theme","animation","slug","profile","banner","bannerType"].forEach(function(k){
-        clean[k] = draft[k];
-      });
-      clean.links = (draft.links || []).map(function(l){
-        return [l.label, l.url, l.type, l.color, l.thumb, l.active,
-                l.featPosX, l.featPosY, l.featZoom, l.featPadding, l.featRatio,
-                l.btnDragX, l.btnDragY];
-      });
-      clean.logos = (draft.logos || []).map(function(l){ return [l.name, l.url, l.img]; });
-      clean.customThemeId = draft.customThemeId;
-      return JSON.stringify(clean).length + "_" + JSON.stringify(clean).slice(0, 200);
-    }catch(e){ return ""; }
-  },
-  
-  _showToast: function(type){
-    var el = document.getElementById("autosave-toast");
-    if(!el){
-      el = document.createElement("div");
-      el.id = "autosave-toast";
-      el.className = "autosave-toast";
-      document.body.appendChild(el);
-    }
-    
-    if(type === "saving"){
-      el.className = "autosave-toast show saving";
-      el.innerHTML = "💾 Menyimpan...";
-    } else if(type === "saved"){
-      el.className = "autosave-toast show";
-      el.innerHTML = "✅ Auto-saved";
-      setTimeout(function(){
-        el.classList.remove("show");
-      }, 1800);
-    } else if(type === "error"){
-      el.className = "autosave-toast show error";
-      el.innerHTML = "❌ Gagal save";
-      setTimeout(function(){
-        el.classList.remove("show");
-      }, 2500);
-    }
-  },
-  
-  _updateBadge: function(status, customText){
-    var badge = document.getElementById("autosave-badge");
-    if(!badge){
-      // Inject kalau belum ada
-      var previewPanel = document.querySelector(".editor-preview");
-      if(previewPanel){
-        badge = document.createElement("div");
-        badge.id = "autosave-badge";
-        badge.className = "autosave-badge";
-        previewPanel.appendChild(badge);
-      }
-    }
-    if(!badge) return;
-    
-    var txt = "";
-    if(status === "saving"){
-      badge.className = "autosave-badge saving";
-      txt = '<span class="dot"></span> 💾 Menyimpan...';
-    } else if(status === "saved"){
-      badge.className = "autosave-badge saved";
-      txt = '✅ ' + (customText || "Tersimpan");
-    } else if(status === "error"){
-      badge.className = "autosave-badge error";
-      txt = '❌ ' + (customText || "Gagal save");
-    } else {
-      badge.className = "autosave-badge";
-      txt = '💾 Auto-save aktif';
-    }
-    badge.innerHTML = txt;
+  var host = phone.querySelector(".preview-bio-render");
+  if(!host){
+    // Hapus iframe lama (sembunyiin aja, di CSS udah)
+    host = document.createElement("div");
+    host.className = "preview-bio-render";
+    phone.appendChild(host);
   }
-};
-
-window.AutoSave = AutoSave;
-
+  return host;
+}
 
 /* ═══════════════════════════════════════════════════════════
-   HAPUS TOMBOL SIMPAN + INJECT SHARE BUTTON
+   BUILD HTML BIO (dari draft)
    ═══════════════════════════════════════════════════════════ */
-function manageToolbarButtons(){
+function buildBioHTML(){
+  try{
+    var draft = window.STATE && STATE.draft;
+    if(!draft) return null;
+    
+    // Pakai buildHTML kalau ada (buat body content)
+    // Tapi kita cuma ambil body-nya — CSS udah di-inject dari CSS file
+    var html = "";
+    
+    if(window.PagePublic && window.PagePublic.buildHTML){
+      try{
+        html = window.PagePublic.buildHTML(draft, { preview: true });
+      }catch(e){}
+    }
+    
+    // Extract body content dari HTML
+    if(html){
+      var match = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+      if(match){
+        var bodyContent = match[1];
+        // Hapus <script> & <style> dalam body (biar gak double)
+        bodyContent = bodyContent.replace(/<script[\s\S]*?<\/script>/gi, "");
+        // Ambil class body
+        var bodyClassMatch = html.match(/<body[^>]*class="([^"]*)"/i);
+        var bodyClass = bodyClassMatch ? bodyClassMatch[1] : "theme-neo-cream anim-none";
+        return { content: bodyContent, bodyClass: bodyClass };
+      }
+    }
+    
+    // Fallback: build manual
+    return buildManual();
+  }catch(e){
+    console.warn("buildBioHTML:", e);
+    return null;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUILD MANUAL (fallback)
+   ═══════════════════════════════════════════════════════════ */
+function buildManual(){
+  try{
+    var bio = window.STATE && STATE.draft;
+    if(!bio) return null;
+    
+    var esc = function(s){
+      return String(s||"").replace(/[&<>"']/g, function(c){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+      });
+    };
+    
+    var theme = bio.theme || "neo-cream";
+    var bodyClass = "theme-" + theme + " anim-" + (bio.animation || "none");
+    var links = (bio.links || []).filter(function(l){ return l.active !== false; });
+    var logos = bio.logos || [];
+    
+    var html = '<div class="bio-wrap ' + bodyClass + '">';
+    html += '<div class="bio-inner">';
+    
+    // Banner
+    if(bio.banner){
+      html += '<div class="bio-banner">';
+      if(bio.bannerType === "video"){
+        html += '<video src="' + esc(bio.banner) + '" autoplay muted loop playsinline></video>';
+      } else {
+        html += '<img src="' + esc(bio.banner) + '" alt=""/>';
+      }
+      html += '</div>';
+    }
+    
+    // Header
+    html += '<div class="bio-header">';
+    if(bio.profile){
+      html += '<div class="bio-avatar"><img src="' + esc(bio.profile) + '" alt=""/></div>';
+    } else {
+      var initial = (bio.name||"?").toUpperCase().charAt(0);
+      html += '<div class="bio-avatar placeholder">' + esc(initial) + '</div>';
+    }
+    html += '<div class="bio-title-top">LINK IN BIO</div>';
+    if(bio.name) html += '<div class="bio-name">' + esc(bio.name) + '</div>';
+    if(bio.bio) html += '<div class="bio-bio">' + esc(bio.bio) + '</div>';
+    html += '</div>';
+    
+    // Logos
+    if(logos.length){
+      html += '<div class="bio-logos">';
+      logos.forEach(function(lg){
+        var nm = lg.name || "?";
+        var ini = nm.charAt(0).toUpperCase();
+        html += '<div class="bio-logo-item">';
+        if(lg.img){
+          html += '<img src="' + esc(lg.img) + '" alt="' + esc(nm) + '"/>';
+        } else {
+          html += '<span class="fallback">' + esc(ini) + '</span>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    
+    // Links
+    html += '<div class="bio-links">';
+    if(!links.length){
+      html += '<div style="text-align:center;padding:20px;font-size:11px;font-weight:700;opacity:.7">Belum ada link</div>';
+    } else {
+      links.forEach(function(l){
+        html += '<a class="bio-link" href="' + esc(l.url||"#") + '" target="_blank" rel="noopener">';
+        html += '<span class="licon">🔗</span>';
+        html += '<span class="ltext">' + esc(l.label||"Link") + '</span>';
+        html += '</a>';
+      });
+    }
+    html += '</div>';
+    
+    // Footer
+    html += '<div class="bio-footer">Dibuat dengan Varlinkbio</div>';
+    
+    html += '</div></div>';
+    return { content: html, bodyClass: bodyClass };
+  }catch(e){
+    console.warn("buildManual:", e);
+    return null;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER (UPDATE DOM LANGSUNG)
+   ═══════════════════════════════════════════════════════════ */
+function renderPreview(){
+  try{
+    var hp = (location.hash.slice(1) || "/").split("?")[0];
+    if(hp !== "/editor"){
+      hideLoading(0);
+      return;
+    }
+    
+    var host = getHost();
+    if(!host){
+      hideLoading(0);
+      return;
+    }
+    
+    var result = buildBioHTML();
+    if(!result || !result.content){
+      hideLoading(0);
+      return;
+    }
+    
+    // Update DOM langsung (instan)
+    host.innerHTML = result.content;
+    
+    // Update class anim
+    host.className = "preview-bio-render " + (result.bodyClass || "");
+    
+    console.log("⚡ Preview rendered (DOM)");
+    hideLoading(100);
+  }catch(e){
+    console.warn("renderPreview:", e);
+    hideLoading(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOADING
+   ═══════════════════════════════════════════════════════════ */
+function getOverlay(){
+  var phone = document.querySelector(".preview-phone");
+  if(!phone) return null;
+  var overlay = phone.querySelector(".preview-loading-overlay");
+  if(!overlay){
+    overlay = document.createElement("div");
+    overlay.className = "preview-loading-overlay";
+    overlay.innerHTML = '<div class="spinner"></div><div class="txt">Memuat preview...</div>';
+    phone.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function showLoading(){
+  var o = getOverlay();
+  if(o) o.classList.add("show");
+}
+
+function hideLoading(delay){
+  delay = delay || 0;
+  setTimeout(function(){
+    var o = document.querySelector(".preview-loading-overlay");
+    if(o) o.classList.remove("show");
+  }, delay);
+}
+
+window.showPreviewLoading = showLoading;
+window.hidePreviewLoading = hideLoading;
+window.refreshPreviewNow = renderPreview;
+
+/* ═══════════════════════════════════════════════════════════
+   SCHEDULE REFRESH (debounce)
+   ═══════════════════════════════════════════════════════════ */
+function scheduleRefresh(){
+  showLoading();
+  if(_refreshTimer) clearTimeout(_refreshTimer);
+  _refreshTimer = setTimeout(renderPreview, DEBOUNCE_DELAY);
+}
+
+window.schedulePreviewRefresh = scheduleRefresh;
+
+/* ═══════════════════════════════════════════════════════════
+   POLLING
+   ═══════════════════════════════════════════════════════════ */
+function pollDraft(){
   try{
     var hp = (location.hash.slice(1) || "/").split("?")[0];
     if(hp !== "/editor") return;
     
-    // Hapus tombol Simpan
-    ["btn-save","btn-save2"].forEach(function(id){
-      var el = document.getElementById(id);
-      if(el) el.remove();
-    });
+    var currentHash = hashDraft();
+    if(!currentHash) return;
     
-    // Cari toolbar atas (yang ada tombol Template / Scan / Copy / QR)
-    var topBar = document.querySelector(".editor-panel") ? null : null;
-    // Toolbar ada di atas editor-layout
-    var toolbar = document.querySelector('button[id="btn-template"]')?.parentNode;
-    if(!toolbar) return;
-    
-    // Cek udah ada Share button
-    if(document.getElementById("btn-share-editor")) return;
-    
-    // Inject Share button
-    var shareBtn = document.createElement("button");
-    shareBtn.className = "btn btn-sm";
-    shareBtn.id = "btn-share-editor";
-    shareBtn.type = "button";
-    shareBtn.innerHTML = '📤 Share';
-    shareBtn.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      if(window.Sound && Sound.click) Sound.click();
-      showSharePopup();
-    });
-    
-    toolbar.appendChild(shareBtn);
-    console.log("✅ Share button injected");
-  }catch(e){ console.warn("manageToolbarButtons:", e); }
-}
-
-setInterval(manageToolbarButtons, 1000);
-window.addEventListener("hashchange", function(){ setTimeout(manageToolbarButtons, 500); });
-
-
-/* ═══════════════════════════════════════════════════════════
-   SHARE POPUP (menggantikan popup "BIO TERSIMPAN")
-   ═══════════════════════════════════════════════════════════ */
-function showSharePopup(){
-  try{
-    var draft = window.STATE && STATE.draft;
-    if(!draft){
-      if(window.toast) toast("Bio belum disave","error");
+    if(_lastHash === ""){
+      _lastHash = currentHash;
       return;
     }
     
-    if(!draft.slug && !draft.id){
-      if(window.toast) toast("Save dulu biar dapet link","info");
-      return;
+    if(currentHash !== _lastHash){
+      console.log("🔔 Perubahan");
+      _lastHash = currentHash;
+      scheduleRefresh();
     }
-    
-    var identifier = draft.slug || draft.id;
-    var url = PUBLIC_BIO_URL + "/#/u/" + identifier;
-    var canNativeShare = !!navigator.share;
-    
-    var html = 
-      '<button class="close-x" onclick="this.closest(\'.modal-back\').remove()">×</button>' +
-      '<div class="share-popup-modal">' +
-        '<h3>🔗 ' + (draft.name || "Bio") + '</h3>' +
-        '<p class="sub">Bagikan link bio kamu</p>' +
-        '<div class="url-box" id="share-url" title="Tap untuk copy">' + url + '</div>' +
-        '<div class="actions-main">' +
-          '<button class="btn-copy" id="share-copy">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
-            ' Copy' +
-          '</button>' +
-          '<button class="btn-open" id="share-open">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
-            ' Buka' +
-          '</button>' +
-        '</div>' +
-        '<div class="actions-secondary">' +
-          '<button class="btn-sm btn-qr" id="share-qr">📱 QR</button>' +
-          '<button class="btn-sm btn-wa" id="share-wa">💬 WA</button>' +
-          (canNativeShare ? '<button class="btn-sm btn-share" id="share-native">🔗 Share</button>' : '') +
-        '</div>' +
-      '</div>';
-    
-    var m = window.openModal(html);
-    if(!m) return;
-    
-    // Bind URL box click → copy
-    var urlBox = document.getElementById("share-url");
-    if(urlBox){
-      urlBox.addEventListener("click", function(){
-        doCopy();
-      });
-    }
-    
-    // Copy button
-    var copyBtn = document.getElementById("share-copy");
-    if(copyBtn){
-      copyBtn.addEventListener("click", function(){ doCopy(); });
-    }
-    
-    // Open button
-    var openBtn = document.getElementById("share-open");
-    if(openBtn){
-      openBtn.addEventListener("click", function(){
-        window.open(url, "_blank");
-      });
-    }
-    
-    // QR button
-    var qrBtn = document.getElementById("share-qr");
-    if(qrBtn){
-      qrBtn.addEventListener("click", function(){
-        m.remove();
-        if(window.PageDashboard && PageDashboard.qr){
-          PageDashboard.qr(draft.id);
-        }
-      });
-    }
-    
-    // WA button
-    var waBtn = document.getElementById("share-wa");
-    if(waBtn){
-      waBtn.addEventListener("click", function(){
-        var text = encodeURIComponent("Cek link-in-bio aku: " + url);
-        window.open("https://wa.me/?text=" + text, "_blank");
-      });
-    }
-    
-    // Native share
-    var nativeBtn = document.getElementById("share-native");
-    if(nativeBtn){
-      nativeBtn.addEventListener("click", async function(){
-        try{
-          await navigator.share({
-            title: draft.name || "Varlinkbio",
-            text: "Cek link-in-bio aku!",
-            url: url
-          });
-        }catch(e){}
-      });
-    }
-    
-    // Helper copy
-    async function doCopy(){
-      try{
-        await navigator.clipboard.writeText(url);
-        if(window.Sound && Sound.success) Sound.success();
-        if(window.toast) toast("📋 Link disalin!","success");
-        
-        var btn = document.getElementById("share-copy");
-        if(btn){
-          var orig = btn.innerHTML;
-          btn.innerHTML = "✅ Disalin!";
-          setTimeout(function(){ btn.innerHTML = orig; }, 1500);
-        }
-      }catch(e){
-        // Fallback
-        var ta = document.createElement("textarea");
-        ta.value = url;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        try{
-          document.execCommand("copy");
-          if(window.toast) toast("📋 Link disalin!","success");
-        }catch(err){
-          if(window.toast) toast("Gagal copy","error");
-        }
-        ta.remove();
-      }
-    }
-    
-    console.log("📤 Share popup opened");
-  }catch(e){
-    console.warn("showSharePopup:", e);
-  }
+  }catch(e){}
 }
 
-window.showSharePopup = showSharePopup;
-
-
-/* ═══════════════════════════════════════════════════════════
-   OVERRIDE showShareModal (yang lama, dari v26)
-   ═══════════════════════════════════════════════════════════ */
-setTimeout(function(){
-  if(window.showShareModal){
-    window.showShareModal = function(bioOrId){
-      // Kalau dipanggil dengan bio object, sync ke draft dulu
-      if(bioOrId && typeof bioOrId === "object"){
-        if(window.STATE){
-          STATE.draft = Object.assign({}, STATE.draft, bioOrId);
-        }
-      }
-      showSharePopup();
-    };
-  }
-}, 3000);
-
+_pollTimer = setInterval(pollDraft, POLL_INTERVAL);
 
 /* ═══════════════════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════════════════ */
-function initAutoSave(){
+function initEditor(){
+  var hp = (location.hash.slice(1) || "/").split("?")[0];
+  if(hp !== "/editor") return;
+  
+  setTimeout(function(){
+    _lastHash = hashDraft();
+    renderPreview();
+    console.log("📌 Editor init");
+  }, 1200);
+  
+  setTimeout(renderPreview, 2500);
+}
+
+setTimeout(initEditor, 800);
+window.addEventListener("hashchange", function(){
+  _lastHash = "";
+  setTimeout(initEditor, 600);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   OVERRIDE PageEditor.updatePreview
+   ═══════════════════════════════════════════════════════════ */
+setInterval(function(){
+  if(window.PageEditor && !window.PageEditor._v109){
+    window.PageEditor._v109 = true;
+    window.PageEditor.updatePreview = function(){
+      renderPreview();
+    };
+    console.log("✅ updatePreview overridden");
+  }
+}, 1500);
+
+/* ═══════════════════════════════════════════════════════════
+   REFRESH BUTTON
+   ═══════════════════════════════════════════════════════════ */
+function hookBtn(){
   try{
     var hp = (location.hash.slice(1) || "/").split("?")[0];
     if(hp !== "/editor") return;
-    
-    // Init AutoSave
-    if(window.AutoSave){
-      window.AutoSave.init();
-    }
-    
-    // Update badge awal
-    setTimeout(function(){
-      if(window.AutoSave) AutoSave._updateBadge("idle");
-    }, 1500);
-    
-    // Manage buttons
-    manageToolbarButtons();
-    
-  }catch(e){ console.warn("initAutoSave:", e); }
+    var btn = document.getElementById("btn-refresh-preview");
+    if(!btn) return;
+    if(btn.dataset.v109 === "1") return;
+    btn.dataset.v109 = "1";
+    var nb = btn.cloneNode(true);
+    btn.parentNode.replaceChild(nb, btn);
+    nb.addEventListener("click", function(){
+      showLoading();
+      setTimeout(renderPreview, 200);
+    });
+  }catch(e){}
 }
 
-setTimeout(initAutoSave, 1000);
-setTimeout(initAutoSave, 3000);
-window.addEventListener("hashchange", function(){ setTimeout(initAutoSave, 800); });
+setInterval(hookBtn, 1000);
+window.addEventListener("hashchange", function(){ setTimeout(hookBtn, 500); });
 
+/* ═══════════════════════════════════════════════════════════
+   DEBUG
+   ═══════════════════════════════════════════════════════════ */
+window.debugPreview109 = function(){
+  var host = document.querySelector(".preview-bio-render");
+  console.log("=== DEBUG v10.9 ===");
+  console.log("Host:", host);
+  console.log("Host content length:", host ? host.innerHTML.length : 0);
+  console.log("Polling:", !!_pollTimer);
+  console.log("Last hash:", _lastHash.slice(0,40) + "...");
+  console.log("Current:", hashDraft().slice(0,40) + "...");
+  console.log("Draft:", {
+    name: STATE?.draft?.name,
+    theme: STATE?.draft?.theme,
+    links: STATE?.draft?.links?.length
+  });
+  console.log("===================");
+};
 
 /* ═══════════════════════════════════════════════════════════
    LOG
@@ -27369,363 +27446,1844 @@ window.addEventListener("hashchange", function(){ setTimeout(initAutoSave, 800);
 setTimeout(function(){
   console.log("");
   console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
-  console.log("%c║  💾 PATCH v10.2 AKTIF                  ║","color:#22c55e;font-weight:bold");
-  console.log("%c║  • Auto-save (debounce 1.5s)           ║","color:#22c55e");
-  console.log("%c║  • Toast kecil notif save              ║","color:#22c55e");
-  console.log("%c║  • Tombol Simpan dihapus               ║","color:#22c55e");
-  console.log("%c║  • Tombol Share baru (popup)           ║","color:#22c55e");
-  console.log("%c║  • Preview auto-refresh                ║","color:#22c55e");
+  console.log("%c║  ⚡ PREVIEW v10.9 AKTIF                 ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Render DOM langsung (no iframe)      ║","color:#22c55e");
+  console.log("%c║  • Instan update                        ║","color:#22c55e");
+  console.log("%c║  • Polling 200ms + debounce 400ms       ║","color:#22c55e");
+  console.log("%c║  • Ukuran tetap 320px                   ║","color:#22c55e");
   console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
   console.log("");
-  console.log("💡 showSharePopup() — buka share popup");
-  console.log("💡 AutoSave.save()  — force save");
+  console.log("💡 debugPreview109() — cek status");
 }, 1500);
 
 })();
 </script>
-<!-- ═══ END PATCH v10.2 ═══ -->
-   <!-- ═══════════════════════════════════════════════════════════════
-     PATCH v10.4 — FIX CUSTOM THEME KEBAL
-     Hapus custom theme di SEMUA tempat (draft + localStorage + Firestore)
+<!-- ═══ END PATCH v10.9 ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH DOTS + FOLLOW — FINAL
+     Cuma nambah dots + follow Varsmile. Gak sentuh apapun.
      by Varoo
      ═══════════════════════════════════════════════════════════════ -->
 
-<script id="fixv104-custom-theme-nuke">
+<style id="dots-follow-css">
+/* ═══════════════════════════════════════════════════════════
+   DOTS (3 bulat kecil)
+   ═══════════════════════════════════════════════════════════ */
+#vs-dots{
+  position: fixed;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity .25s;
+}
+#vs-dots.hide{
+  opacity: 0;
+}
+#vs-dots .d{
+  background: #fff;
+  border: 3px solid #0a0a0a;
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 #0a0a0a;
+  display: block;
+}
+#vs-dots .d.d1{ width: 14px; height: 14px; margin-right: 6px; }
+#vs-dots .d.d2{ width: 10px; height: 10px; margin-right: 2px; }
+#vs-dots .d.d3{ width: 6px;  height: 6px;  margin-right: 0; }
+</style>
+
+<script id="dots-follow-js">
 (function(){
 "use strict";
-console.log("%c🔧 FIX v10.4 — Custom Theme NUKE loading...","color:#ffd700;font-weight:bold;font-size:14px");
+console.log("%c💬 DOTS + FOLLOW loading...","color:#ffd700;font-weight:bold;font-size:14px");
 
 /* ═══════════════════════════════════════════════════════════
-   STEP 1 — NUKE CUSTOM THEME (SEMUA TEMPAT)
+   HELPER: Cari element
    ═══════════════════════════════════════════════════════════ */
-async function nukeCustomTheme(){
-  try{
-    console.log("💣 Nuking custom theme di semua tempat...");
-    
-    // 1. Draft (memory)
-    if(window.STATE && STATE.draft){
-      delete STATE.draft.customThemeData;
-      delete STATE.draft.customThemeId;
-      // Reset theme ke default kalau masih "custom"
-      if(STATE.draft.theme === "custom"){
-        STATE.draft.theme = "neo-cream";
-      }
-    }
-    
-    // 2. State global
-    if(window.STATE){
-      delete STATE.customThemeData;
-      delete STATE.customThemeId;
-    }
-    
-    // 3. LocalStorage
-    try{
-      localStorage.removeItem("varlinkbio_custom_theme_active");
-      localStorage.removeItem("varlinkbio_custom_themes");
-    }catch(e){}
-    
-    // 4. Firestore (bios document) — INI YANG PENTING!
-    if(window.Auth && Auth.current && window.FB && STATE.draft && STATE.draft.id){
-      try{
-        await FB.db.collection("bios").doc(STATE.draft.id).update({
-          customThemeData: firebase.firestore.FieldValue.delete(),
-          customThemeId: firebase.firestore.FieldValue.delete(),
-          theme: STATE.draft.theme || "neo-cream"
-        });
-        console.log("✅ Firestore updated — custom theme removed");
-      }catch(e){
-        console.warn("Firestore update failed:", e);
-        // Fallback: pakai set merge
-        try{
-          await FB.db.collection("bios").doc(STATE.draft.id).set({
-            customThemeData: null,
-            customThemeId: null,
-            theme: STATE.draft.theme || "neo-cream"
-          }, { merge: true });
-          console.log("✅ Firestore set merge — custom theme null");
-        }catch(e2){
-          console.warn("Firestore set fallback failed:", e2);
+function getVarsmile(){
+  return document.getElementById("varsmile-popup") ||
+         document.getElementById("varsmile-char") ||
+         document.querySelector(".varsmile-wrap");
+}
+
+function getBubble(){
+  return document.getElementById("varsmile-popup-bubble") ||
+         document.querySelector(".varsmile-bubble");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UPDATE POSISI DOTS
+   ═══════════════════════════════════════════════════════════ */
+function updateDots(){
+  var bubble = getBubble();
+  var vs = getVarsmile();
+  var dots = document.getElementById("vs-dots");
+  
+  // Kalau gak ada bubble → hapus dots
+  if(!bubble || !vs){
+    if(dots) dots.remove();
+    return;
+  }
+  
+  // Buat dots kalau belum ada
+  if(!dots){
+    dots = document.createElement("div");
+    dots.id = "vs-dots";
+    dots.innerHTML = '<span class="d d1"></span><span class="d d2"></span><span class="d d3"></span>';
+    document.body.appendChild(dots);
+    console.log("💬 Dots created");
+  }
+  
+  // Hitung posisi
+  var bubbleRect = bubble.getBoundingClientRect();
+  var vsRect = vs.getBoundingClientRect();
+  
+  // Dots di bawah kanan bubble
+  // X: sejajar dengan kanan bubble (geser dikit ke kiri)
+  // Y: di bawah bubble (gap 3px)
+  var dotsWidth = 20;
+  var dotsRight = bubbleRect.right - 10; // geser kiri 10px dari kanan bubble
+  var dotsLeft = dotsRight - dotsWidth;
+  var dotsTop = bubbleRect.bottom + 3;
+  
+  // Clamp: jangan keluar viewport kiri/kanan
+  var vw = window.innerWidth;
+  if(dotsLeft < 5) dotsLeft = 5;
+  if(dotsLeft + dotsWidth > vw - 5) dotsLeft = vw - dotsWidth - 5;
+  
+  dots.style.left = dotsLeft + "px";
+  dots.style.top = dotsTop + "px";
+  dots.style.right = "auto";
+  dots.style.bottom = "auto";
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OBSERVER: Pantau bubble muncul / hilang
+   ═══════════════════════════════════════════════════════════ */
+try{
+  var obs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      // Bubble baru muncul
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType !== 1) return;
+        if(n.id === "varsmile-popup-bubble" || (n.classList && n.classList.contains("varsmile-bubble"))){
+          console.log("💬 Bubble muncul");
+          setTimeout(updateDots, 30);
         }
-      }
-    }
-    
-    // 5. Cache (STATE.cache)
-    if(window.STATE && STATE.cache && STATE.draft && STATE.draft.id){
-      var cached = STATE.cache.find(function(b){ return b.id === STATE.draft.id; });
-      if(cached){
-        delete cached.customThemeData;
-        delete cached.customThemeId;
-        cached.theme = STATE.draft.theme || "neo-cream";
-      }
-    }
-    
-    console.log("💣 Custom theme NUKED total");
-    return true;
-  }catch(e){
-    console.warn("nukeCustomTheme:", e);
-    return false;
-  }
-}
-
-window.nukeCustomTheme = nukeCustomTheme;
-
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 2 — OVERRIDE renderThemeGrid (PAKSA GANTI TEMA)
-   ═══════════════════════════════════════════════════════════ */
-function patchThemeGrid(){
-  try{
-    if(!window.PageEditor) return false;
-    if(window.PageEditor._v104ThemeFixed) return true;
-    window.PageEditor._v104ThemeFixed = true;
-    
-    // Override method
-    window.PageEditor.renderThemeGrid = function(){
-      var cur = STATE.draft.theme;
-      var grid = document.getElementById("theme-grid");
-      if(!grid) return;
-      
-      // Render tema items
-      grid.innerHTML = window.WARNA_LIST.map(function(t){
-        var allowed = window.themeAllowed ? themeAllowed(t.id) : true;
-        var active = (cur === t.id) && !STATE.draft.customThemeData;
-        return '<div class="theme-item ' + (active ? "active" : "") + ' ' + (allowed ? "" : "locked") + '" ' +
-          'data-t="' + t.id + '" style="background:' + t.color + '">' +
-          '<div class="chk">✓</div>' +
-          '<div class="label">' + t.name + '</div>' +
-        '</div>';
-      }).join("");
-      
-      // Bind dengan handler BARU (paksa nuke custom theme)
-      grid.querySelectorAll(".theme-item").forEach(function(el){
-        el.addEventListener("click", async function(){
-          var tid = el.dataset.t;
-          
-          if(!window.themeAllowed || !themeAllowed(tid)){
-            if(window.toast) toast("Tema belum unlock. Beli di Store!","error");
-            if(window.Router) Router.navigate("/store");
-            return;
-          }
-          
-          // ⭐ NUKE custom theme dulu
-          await nukeCustomTheme();
-          
-          // Set tema baru
-          if(window.STATE && STATE.draft){
-            STATE.draft.theme = tid;
-          }
-          
-          // Update UI
-          grid.querySelectorAll(".theme-item").forEach(function(x){
-            x.classList.remove("active");
-          });
-          el.classList.add("active");
-          
-          // Sound
-          if(window.Sound && Sound.click) Sound.click();
-          
-          // Force save ke Firestore
-          try{
-            if(window.Store && STATE.draft){
-              await Store.save({...STATE.draft});
-              console.log("💾 Saved to Firestore");
-            }
-          }catch(e){ console.warn("Save error:", e); }
-          
-          // Refresh preview
-          if(window.refreshPreviewNow){
-            setTimeout(refreshPreviewNow, 300);
-          }
-          
-          if(window.toast) toast("🎨 Tema: " + tid, "success");
-        });
       });
-      
-      // Badge custom theme
-      var existingBadge = document.querySelector(".custom-theme-active-badge");
-      if(STATE.draft.customThemeData && !existingBadge){
-        var badge = document.createElement("div");
-        badge.className = "custom-theme-active-badge";
-        badge.style.cssText = "display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#a78bfa;color:#fff;border:2px solid #0a0a0a;border-radius:999px;font-size:10.5px;font-weight:900;text-transform:uppercase;margin-bottom:10px";
-        badge.innerHTML = "🎨 Custom Theme Aktif";
-        grid.parentNode.insertBefore(badge, grid);
-      } else if(!STATE.draft.customThemeData && existingBadge){
-        existingBadge.remove();
-      }
-      
-      console.log("✅ Theme grid rendered (v10.4)");
-    };
-    
-    console.log("✅ renderThemeGrid overridden (v10.4)");
-    return true;
-  }catch(e){
-    console.warn("patchThemeGrid:", e);
-    return false;
-  }
-}
-
-var tries = 0;
-(function retry(){
-  tries++;
-  if(patchThemeGrid() || tries > 30) return;
-  setTimeout(retry, 500);
-})();
-setTimeout(patchThemeGrid, 2500);
-setTimeout(patchThemeGrid, 5000);
-
+      // Bubble hilang
+      m.removedNodes.forEach(function(n){
+        if(n.nodeType !== 1) return;
+        if(n.id === "varsmile-popup-bubble" || (n.classList && n.classList.contains("varsmile-bubble"))){
+          var dots = document.getElementById("vs-dots");
+          if(dots) dots.remove();
+        }
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+  console.log("✅ Bubble observer active");
+}catch(e){ console.warn("Observer error:", e); }
 
 /* ═══════════════════════════════════════════════════════════
-   STEP 3 — OVERRIDE buildHTML (IGNORE custom theme kalau theme != custom)
+   FOLLOW: Update posisi dots terus-terusan (polling ringan)
+   Biar dots nempel ke bubble walau Varsmile di-drag
+   ═══════════════════════════════════════════════════════════ */
+setInterval(function(){
+  var bubble = getBubble();
+  if(bubble) updateDots();
+}, 50); // 20fps
+
+/* ═══════════════════════════════════════════════════════════
+   RESIZE / SCROLL
+   ═══════════════════════════════════════════════════════════ */
+window.addEventListener("resize", updateDots);
+window.addEventListener("scroll", updateDots, true);
+window.addEventListener("orientationchange", function(){
+  setTimeout(updateDots, 200);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(updateDots, 500);
+setTimeout(updateDots, 1500);
+setTimeout(updateDots, 3000);
+
+/* ═══════════════════════════════════════════════════════════
+   DEBUG
+   ═══════════════════════════════════════════════════════════ */
+window.checkDots = function(){
+  var vs = getVarsmile();
+  var bubble = getBubble();
+  var dots = document.getElementById("vs-dots");
+  var msg = 
+    "Varsmile: " + (vs ? "ADA" : "GAK ADA") + "\n" +
+    "Bubble: " + (bubble ? "ADA" : "GAK ADA") + "\n" +
+    "Dots: " + (dots ? "ADA" : "GAK ADA") + "\n\n";
+  if(dots){
+    var r = dots.getBoundingClientRect();
+    msg += "Posisi dots: " + Math.round(r.left) + ", " + Math.round(r.top);
+  }
+  alert(msg);
+};
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
    ═══════════════════════════════════════════════════════════ */
 setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  💬 DOTS + FOLLOW AKTIF                ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • 3 dots di bawah kanan bubble        ║","color:#22c55e");
+  console.log("%c║  • Auto follow pas Varsmile di-drag    ║","color:#22c55e");
+  console.log("%c║  • Gak sentuh Varsmile                 ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 checkDots() — cek status via alert");
+}, 2000);
+
+})();
+</script>
+<!-- ═══ END PATCH DOTS + FOLLOW ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH FIX BUBBLE FOLLOW — Bubble ikut geser bareng dots
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script id="bubble-follow-fix-js">
+(function(){
+"use strict";
+console.log("%c💬 FIX BUBBLE FOLLOW loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   HELPER
+   ═══════════════════════════════════════════════════════════ */
+function getVarsmile(){
+  return document.getElementById("varsmile-popup") ||
+         document.getElementById("varsmile-char") ||
+         document.querySelector(".varsmile-wrap");
+}
+
+function getBubble(){
+  return document.getElementById("varsmile-popup-bubble") ||
+         document.querySelector(".varsmile-bubble");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UPDATE POSISI BUBBLE (relatif ke Varsmile)
+   ═══════════════════════════════════════════════════════════ */
+function updateBubblePos(){
+  var bubble = getBubble();
+  var vs = getVarsmile();
+  if(!bubble || !vs) return;
+  
+  var vsRect = vs.getBoundingClientRect();
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  
+  // Bubble ukuran
+  var bW = bubble.offsetWidth || 200;
+  var bH = bubble.offsetHeight || 60;
+  
+  // ⭐ Posisi bubble:
+  // - Kanan bubble = Varsmile center X + 30px
+  // - Bawah bubble = Varsmile top - 45px (buat ruang dots)
+  var vsCenterX = vsRect.left + (vsRect.width / 2);
+  var bubbleRight = vsCenterX + 30;
+  var bubbleLeft = bubbleRight - bW;
+  
+  // Clamp kiri
+  if(bubbleLeft < 8){
+    bubbleLeft = 8;
+    bubbleRight = bubbleLeft + bW;
+  }
+  // Clamp kanan
+  if(bubbleLeft + bW > vw - 8){
+    bubbleLeft = vw - bW - 8;
+    bubbleRight = bubbleLeft + bW;
+  }
+  
+  var bubbleTop = vsRect.top - bH - 45;
+  
+  // Clamp atas
+  if(bubbleTop < 8){
+    bubbleTop = 8;
+  }
+  
+  // ⭐ SET POSISI
+  bubble.style.setProperty("left", bubbleLeft + "px", "important");
+  bubble.style.setProperty("top", bubbleTop + "px", "important");
+  bubble.style.setProperty("bottom", "auto", "important");
+  bubble.style.setProperty("right", "auto", "important");
+  bubble.style.setProperty("transform", "none", "important");
+  bubble.style.setProperty("position", "fixed", "important");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   POLLING — Update bubble + dots bareng
+   ═══════════════════════════════════════════════════════════ */
+setInterval(function(){
+  var bubble = getBubble();
+  if(bubble){
+    updateBubblePos();
+  }
+}, 50); // 20fps, sama kayak dots
+
+/* ═══════════════════════════════════════════════════════════
+   OBSERVER — Pas bubble baru muncul, langsung update posisi
+   ═══════════════════════════════════════════════════════════ */
+try{
+  var obs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      m.addedNodes.forEach(function(n){
+        if(n.nodeType !== 1) return;
+        if(n.id === "varsmile-popup-bubble" || (n.classList && n.classList.contains("varsmile-bubble"))){
+          console.log("💬 Bubble baru muncul → update posisi");
+          // Update berkali-kali biar posisi bener (bubble baru di-render)
+          setTimeout(updateBubblePos, 10);
+          setTimeout(updateBubblePos, 50);
+          setTimeout(updateBubblePos, 150);
+          setTimeout(updateBubblePos, 300);
+        }
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+  console.log("✅ Bubble observer active");
+}catch(e){ console.warn("Observer:", e); }
+
+/* ═══════════════════════════════════════════════════════════
+   RESIZE / SCROLL
+   ═══════════════════════════════════════════════════════════ */
+window.addEventListener("resize", updateBubblePos);
+window.addEventListener("scroll", updateBubblePos, true);
+window.addEventListener("orientationchange", function(){
+  setTimeout(updateBubblePos, 200);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   DEBUG
+   ═══════════════════════════════════════════════════════════ */
+window.checkBubble = function(){
+  var bubble = getBubble();
+  var vs = getVarsmile();
+  if(!bubble){
+    alert("❌ Bubble GAK ADA");
+    return;
+  }
+  if(!vs){
+    alert("❌ Varsmile GAK ADA");
+    return;
+  }
+  var br = bubble.getBoundingClientRect();
+  var vr = vs.getBoundingClientRect();
+  alert(
+    "✅ Bubble ada\n\n" +
+    "Bubble: " + Math.round(br.left) + ", " + Math.round(br.top) + "\n" +
+    "Varsmile: " + Math.round(vr.left) + ", " + Math.round(vr.top) + "\n" +
+    "Jarak X: " + Math.round(br.right - vr.left) + "px\n" +
+    "Jarak Y: " + Math.round(vr.top - br.bottom) + "px"
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  💬 BUBBLE FOLLOW AKTIF                ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Bubble follow Varsmile               ║","color:#22c55e");
+  console.log("%c║  • Bareng dots (20fps)                  ║","color:#22c55e");
+  console.log("%c║  • Auto clamp viewport                  ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+  console.log("");
+  console.log("💡 checkBubble() — cek posisi via alert");
+}, 2000);
+
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH v11 FINAL v4 — Intro + Bubble Info Grid
+     Bubble gak overlap, muncul 1 detik setelah text
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="v11-intro-css">
+/* ═══ HIDE TUTORIAL + MENU RESET ═══ */
+.vtut-overlay, .tut-overlay, #tut-overlay,
+.vtut-progress, .vtut-counter, .vtut-confetti,
+.vtut-spotlight, .vtut-varsmile, .vtut-tap-hint,
+.vtut-bubble, .tut-dialog {
+  display: none !important; visibility: hidden !important;
+  pointer-events: none !important; opacity: 0 !important;
+}
+[id*="replay-tutorial"], [id*="reset-tutorial"],
+.settings-section.tutor-section,
+.dev-tab[data-tab="tut"], .dev-tab[data-tab="tutorial"] {
+  display: none !important; height: 0 !important; overflow: hidden !important;
+}
+
+/* ═══ INTRO OVERLAY ═══ */
+#varlinkbio-intro {
+  position: fixed; inset: 0; z-index: 999999;
+  background: #0a0a0a; overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  opacity: 1; transition: opacity 1s ease;
+}
+#varlinkbio-intro.fade-out { opacity: 0; pointer-events: none; }
+
+#vli-starfield { position: absolute; inset: 0; z-index: 1; display: block; }
+.vli-wave {
+  position: absolute; bottom: 0; left: 0; width: 200%; height: 200px;
+  z-index: 2; opacity: .25;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255,215,0,.4), transparent 70%);
+  animation: vliWaveMove 8s linear infinite;
+}
+@keyframes vliWaveMove { from{transform: translateX(0)} to{transform: translateX(-50%)} }
+.vli-particles { position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+.vli-particle {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%; opacity: 0;
+  animation: vliFloat linear infinite;
+}
+@keyframes vliFloat {
+  0%{transform: translateY(100vh) scale(.3); opacity: 0}
+  10%{opacity: .9} 90%{opacity: .9}
+  100%{transform: translateY(-100px) scale(1.2); opacity: 0}
+}
+
+/* ═══ VARSMile intro ═══ */
+.vli-varsmile {
+  position: absolute; left: 50%; bottom: -400px;
+  transform: translateX(-50%) scale(1);
+  width: 130px; height: 130px; z-index: 10;
+  transition: bottom 1s cubic-bezier(.34,1.56,.64,1),
+              transform .7s cubic-bezier(.34,1.56,.64,1),
+              opacity .5s;
+  filter: drop-shadow(0 0 40px rgba(255,215,0,.6));
+}
+.vli-varsmile.slide-up { bottom: 32%; }
+.vli-varsmile.big { transform: translateX(-50%) scale(2); }
+.vli-varsmile.small { transform: translateX(-50%) scale(1); }
+.vli-varsmile.hide { bottom: -400px; opacity: 0; }
+.vli-varsmile svg {
+  width: 100%; height: 100%; image-rendering: pixelated;
+  animation: vliVSIdle 1.6s ease-in-out infinite;
+}
+@keyframes vliVSIdle {
+  0%,100%{transform: translateY(0)}
+  50%{transform: translateY(-6px)}
+}
+
+/* ═══ BUBBLE "Halo" ═══ */
+.vli-bubble {
+  position: absolute; left: 50%; top: 72%;
+  transform: translateX(-50%) scale(0);
+  background: #fff; color: #0a0a0a;
+  border: 3px solid #0a0a0a; border-radius: 18px;
+  padding: 14px 22px; font-size: 15px; font-weight: 700;
+  max-width: 82%; box-shadow: 6px 6px 0 #ffd700;
+  z-index: 11; opacity: 0;
+  transition: all .4s cubic-bezier(.34,1.56,.64,1);
+  text-align: center; line-height: 1.4;
+}
+.vli-bubble.show { transform: translateX(-50%) scale(1); opacity: 1; }
+.vli-bubble::after {
+  content: ''; position: absolute; top: -14px; bottom: auto;
+  left: 50%; transform: translateX(-50%);
+  border-left: 12px solid transparent; border-right: 12px solid transparent;
+  border-bottom: 14px solid #0a0a0a; border-top: none;
+  width: 0; height: 0;
+}
+.vli-bubble::before {
+  content: ''; position: absolute; top: -8px; bottom: auto;
+  left: 50%; transform: translateX(-50%);
+  border-left: 9px solid transparent; border-right: 9px solid transparent;
+  border-bottom: 10px solid #fff; border-top: none;
+  width: 0; height: 0; z-index: 1;
+}
+
+/* ═══ WELCOME TEXT — TETAP DI TENGAH ═══ */
+.vli-welcome {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20; text-align: center;
+  width: 90%; max-width: 700px;
+  opacity: 0; pointer-events: none;
+}
+.vli-welcome.slide-in {
+  animation: vliSlideRight .8s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes vliSlideRight {
+  0% { opacity: 0; transform: translate(calc(-50% + 400px), -50%) scale(.8); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+.vli-welcome-text {
+  font-size: clamp(18px, 5vw, 36px); font-weight: 900;
+  letter-spacing: 1px; text-transform: uppercase;
+  background: linear-gradient(90deg, #ffd700, #ff69b4, #a78bfa, #22c55e, #ffd700);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: vliRainbow 3s linear infinite;
+  display: inline-block; line-height: 1.15;
+  filter: drop-shadow(0 0 30px rgba(255,215,0,.4));
+  transition: transform .8s ease, opacity .8s ease;
+}
+.vli-welcome-text.zoom-v { transform: scale(8); opacity: 0; }
+.vli-welcome-emoji {
+  display: inline-block;
+  -webkit-text-fill-color: initial; color: initial;
+  animation: vliEmojiWiggle 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(255,215,0,.8));
+}
+@keyframes vliEmojiWiggle {
+  0%,100%{transform: rotate(-12deg) scale(1)}
+  50%{transform: rotate(12deg) scale(1.1)}
+}
+@keyframes vliRainbow { to{background-position: 300% 0} }
+.vli-welcome-varsmile {
+  width: 64px; height: 64px; margin: 18px auto 0;
+  opacity: 0; transform: scale(0);
+  transition: all .5s cubic-bezier(.34,1.56,.64,1);
+  filter: drop-shadow(0 0 25px rgba(255,215,0,.7));
+}
+.vli-welcome-varsmile.show { opacity: 1; transform: scale(1); }
+.vli-welcome-varsmile.zoom-out {
+  opacity: 0 !important;
+  transform: scale(.5) !important;
+}
+.vli-welcome-varsmile svg {
+  width: 100%; height: 100%; image-rendering: pixelated;
+  animation: vliBounceBig 1.4s ease-in-out infinite;
+}
+@keyframes vliBounceBig {
+  0%,100%{transform: translateY(0) scale(1)}
+  50%{transform: translateY(-10px) scale(1.05)}
+}
+
+/* ═══ BUBBLE INFO — GRID LAYOUT (NO OVERLAP) ═══ */
+.vli-info-card {
+  position: absolute;
+  background: #fff;
+  color: #0a0a0a;
+  border: 3px solid #0a0a0a;
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 5px 5px 0 #ffd700;
+  z-index: 15;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity .5s ease, transform .55s cubic-bezier(.34,1.56,.64,1);
+  text-align: left;
+  line-height: 1.4;
+  pointer-events: auto;
+  box-sizing: border-box;
+}
+.vli-info-card.show {
+  opacity: 1;
+  transform: scale(1);
+}
+.vli-info-card .vic-icon {
+  font-size: 20px;
+  margin-bottom: 3px;
+  display: block;
+  animation: vicIconFloat 2s ease-in-out infinite;
+}
+@keyframes vicIconFloat {
+  0%,100%{transform: translateY(0) rotate(-5deg)}
+  50%{transform: translateY(-4px) rotate(5deg)}
+}
+.vli-info-card .vic-title {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin-bottom: 3px;
+  display: block;
+  color: #0a0a0a;
+}
+.vli-info-card .vic-text {
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #333;
+  display: block;
+}
+.vli-info-card .vic-text b { color: #0a0a0a; font-weight: 900; }
+.vli-info-card .vic-text ul {
+  text-align: left;
+  display: block;
+  margin: 2px 0;
+  padding-left: 0;
+  list-style: none;
+}
+.vli-info-card .vic-text li { padding: 1px 0; font-size: 9px; }
+
+/* ═══ CONFETTI + SPARKLE + FLASH ═══ */
+.vli-confetti {
+  position: absolute; width: 12px; height: 16px;
+  top: 50%; left: 50%; z-index: 30;
+  pointer-events: none; opacity: 0;
+}
+.vli-confetti-burst {
+  animation: vliConfettiBurst 3s cubic-bezier(.17,.67,.83,.67) forwards;
+}
+@keyframes vliConfettiBurst {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  100% { transform: translate(var(--cx), var(--cy)) rotate(720deg); opacity: 0; }
+}
+.vli-sparkle {
+  position: absolute; width: 24px; height: 24px;
+  z-index: 25; pointer-events: none;
+  animation: vliSparkleFade 1.8s ease-out forwards;
+  color: #ffd700; font-size: 20px; text-align: center;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,.9));
+}
+@keyframes vliSparkleFade {
+  0% { transform: scale(0) rotate(0); opacity: 1; }
+  40% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+.vli-flash {
+  position: absolute; inset: 0; background: #fff;
+  z-index: 999; opacity: 0; pointer-events: none;
+  transition: opacity .5s ease;
+}
+.vli-flash.show { opacity: 1; }
+
+/* ═══ Skip ═══ */
+.vli-skip {
+  position: absolute; top: 20px; right: 20px;
+  padding: 10px 18px;
+  background: transparent; color: rgba(255,255,255,.8);
+  border: 2px solid rgba(255,255,255,.4);
+  border-radius: 999px; font-size: 11px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 1px;
+  cursor: pointer; z-index: 100;
+  transition: all .2s; font-family: inherit;
+}
+.vli-skip:hover, .vli-skip:active {
+  background: #ffd700; color: #0a0a0a; border-color: #ffd700;
+}
+
+/* ═══ LOADING ═══ */
+#varlinkbio-loading {
+  position: fixed; inset: 0; z-index: 999998;
+  background: #0a0a0a;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px; opacity: 0; transition: opacity .5s;
+  pointer-events: none;
+}
+#varlinkbio-loading.show { opacity: 1; pointer-events: auto; }
+.vli-spinner-wrap { perspective: 800px; width: 110px; height: 110px; }
+.vli-spinner {
+  width: 100%; height: 100%;
+  animation: vli3DFlip 1.8s cubic-bezier(.4,0,.6,1) infinite;
+}
+@keyframes vli3DFlip {
+  0%{transform: rotateY(0deg)}
+  50%{transform: rotateY(180deg)}
+  100%{transform: rotateY(360deg)}
+}
+.vli-spinner svg {
+  width: 100%; height: 100%; image-rendering: pixelated;
+  filter: drop-shadow(0 0 25px rgba(255,215,0,.7));
+}
+.vli-loading-text {
+  color: #ffd700; font-size: 13px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 4px;
+  animation: vliLoadingPulse 1.5s ease-in-out infinite;
+}
+@keyframes vliLoadingPulse { 0%,100%{opacity: .5} 50%{opacity: 1} }
+body.vli-intro-active #loading-overlay { display: none !important; }
+
+/* ═══ WELCOME MODAL ═══ */
+.welcome-help-modal { text-align: center; padding: 4px; }
+.welcome-help-modal .wh-icon {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border: 3px solid #0a0a0a; border-radius: 50%;
+  display: grid; place-items: center; margin: 0 auto 16px;
+  font-size: 40px; box-shadow: 5px 5px 0 #0a0a0a;
+  animation: whIconFloat 2s ease-in-out infinite;
+}
+@keyframes whIconFloat {
+  0%,100%{transform: translateY(0) rotate(-5deg)}
+  50%{transform: translateY(-8px) rotate(5deg)}
+}
+.welcome-help-modal h2 {
+  font-size: 22px; font-weight: 900; text-transform: uppercase;
+  margin-bottom: 8px; line-height: 1.15;
+}
+.welcome-help-modal .wh-sub {
+  font-size: 13.5px; font-weight: 600;
+  color: var(--ink-soft); margin-bottom: 20px; line-height: 1.6;
+}
+.welcome-help-modal .wh-info {
+  background: var(--cream); border: 2px solid var(--ink);
+  border-radius: 10px; padding: 14px; margin-bottom: 20px;
+  text-align: left; font-size: 12.5px; font-weight: 600; line-height: 1.7;
+}
+.welcome-help-modal .wh-info b { color: var(--ink); font-weight: 900; }
+.welcome-help-modal .wh-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #0a0a0a; border: 2.5px solid var(--ink);
+  border-radius: 10px; font-size: 14px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: .5px;
+  cursor: pointer; font-family: inherit;
+  box-shadow: 4px 4px 0 var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; position: relative; z-index: 10;
+}
+.welcome-help-modal .wh-btn:hover {
+  transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink);
+}
+.welcome-help-modal .wh-skip {
+  display: block; width: 100%; padding: 10px; margin-top: 10px;
+  background: transparent; color: var(--ink-soft);
+  border: none; font-size: 11.5px; font-weight: 700;
+  text-transform: uppercase; cursor: pointer;
+  font-family: inherit; text-decoration: underline; z-index: 10;
+}
+.modal-back:has(.welcome-help-modal) { z-index: 999999 !important; }
+</style>
+
+<script id="v11-intro-js">
+(function(){
+"use strict";
+console.log("%c🎬 INTRO v11 FINAL v4 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+var _introFinished = false;
+var _welcomeShownThisSession = false;
+var _openModalLocked = false;
+var INTRO_DURATION = 31000;
+
+/* ═══ SVG VARSMile ═══ */
+var VS_SVG =
+  '<svg viewBox="0 0 16 16" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">' +
+    '<circle cx="8" cy="8" r="7.2" fill="#ffd700" stroke="#0a0a0a" stroke-width="0.6"/>' +
+    '<circle cx="6" cy="5.5" r="2.5" fill="#ffe066" opacity="0.6"/>' +
+    '<rect x="4.5" y="5.5" width="2" height="2.2" fill="#0a0a0a"/>' +
+    '<rect x="5" y="6" width="0.8" height="0.8" fill="#ffffff"/>' +
+    '<rect x="9.5" y="5.5" width="2" height="2.2" fill="#0a0a0a"/>' +
+    '<rect x="10" y="6" width="0.8" height="0.8" fill="#ffffff"/>' +
+    '<circle cx="4.2" cy="9" r="1" fill="#ff69b4" opacity="0.8"/>' +
+    '<circle cx="11.8" cy="9" r="1" fill="#ff69b4" opacity="0.8"/>' +
+    '<path d="M 6 10 Q 8 12 10 10" stroke="#0a0a0a" stroke-width="0.8" fill="none" stroke-linecap="round"/>' +
+  '</svg>';
+
+/* ═══ DATA BUBBLE INFO ═══ */
+var _BUBBLES = [
+  {icon:"🔗",title:"Apa itu Varlinkbio?",text:'<b>Varlinkbio</b> = platform <b>Link-in-Bio</b>! Semua link kamu jadi 1 halaman ✨'},
+  {icon:"✨",title:"Buat Apa?",text:'<ul><li>🎨 Portfolio</li><li>🛒 Toko online</li><li>🎵 Musisi</li><li>💼 Freelancer</li></ul>'},
+  {icon:"🚫",title:"Larangan",text:'<ul><li>❌ Spam</li><li>❌ Dewasa/judi</li><li>❌ Link bahaya</li></ul>'},
+  {icon:"🎨",title:"Fitur",text:'<ul><li>17 tema + 11 style</li><li>Music bio</li><li>Analytics</li><li>AI Bio</li></ul>'},
+  {icon:"📚",title:"Bantuan?",text:'FAQ lengkap di <b>Bantuan</b> 📖<br>Chat admin via WA 💬'}
+];
+
+/* ═══ STARFIELD ═══ */
+function initStarfield(canvas){
+  var ctx=canvas.getContext("2d"),stars=[],w,h;
+  function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+  resize();window.addEventListener("resize",resize);
+  for(var i=0;i<150;i++) stars.push({x:Math.random()*w,y:Math.random()*h,z:Math.random()*1+0.3,size:Math.random()*1.8+0.4});
+  function draw(){
+    if(!document.getElementById("varlinkbio-intro")) return;
+    ctx.fillStyle="rgba(10,10,10,0.4)";ctx.fillRect(0,0,w,h);
+    stars.forEach(function(s){
+      s.y+=s.z*0.3;if(s.y>h){s.y=0;s.x=Math.random()*w;}
+      ctx.fillStyle="rgba(255,255,255,"+(0.4+s.z*0.5)+")";
+      ctx.beginPath();ctx.arc(s.x,s.y,s.size,0,Math.PI*2);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ═══ PARTICLES ═══ */
+function spawnParticles(container,count){
+  var colors=["#ffd700","#ff69b4","#a78bfa","#22c55e","#ff8c00","#00ffcc"];
+  for(var i=0;i<count;i++){
+    var p=document.createElement("div");
+    p.className="vli-particle";
+    p.style.left=Math.random()*100+"%";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration=(Math.random()*4+5)+"s";
+    p.style.animationDelay=(Math.random()*3)+"s";
+    p.style.width=p.style.height=(Math.random()*5+2)+"px";
+    p.style.boxShadow="0 0 8px currentColor";
+    p.style.color=p.style.background;
+    container.appendChild(p);
+  }
+}
+
+/* ═══ CONFETTI ═══ */
+function confettiBurst(container){
+  var colors=["#ffd700","#ff69b4","#a78bfa","#22c55e","#ff8c00","#2563eb","#00ffcc"];
+  for(var i=0;i<80;i++){
+    var c=document.createElement("div");
+    c.className="vli-confetti";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.borderRadius=Math.random()>0.5?"50%":"2px";
+    var angle=(Math.PI*2*i)/80+Math.random()*0.5;
+    var distance=Math.random()*350+150;
+    c.style.setProperty("--cx",(Math.cos(angle)*distance)+"px");
+    c.style.setProperty("--cy",(Math.sin(angle)*distance)+"px");
+    c.style.animationDelay=(Math.random()*0.3)+"s";
+    container.appendChild(c);
+    setTimeout(function(el){return function(){el.classList.add("vli-confetti-burst");};}(c),50+i*5);
+    setTimeout(function(el){return function(){try{el.remove();}catch(e){}};}(c),3500);
+  }
+}
+
+/* ═══ SPARKLE ═══ */
+function sparkleAt(container,x,y){
+  var emojis=["✨","⭐","💫","🌟","✦"];
+  var s=document.createElement("div");
+  s.className="vli-sparkle";
+  s.style.left=x+"px";s.style.top=y+"px";
+  s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  container.appendChild(s);
+  setTimeout(function(){try{s.remove();}catch(e){}},2000);
+}
+
+/* ═══ CREATE INTRO ═══ */
+function createIntro(){
+  var el=document.createElement("div");
+  el.id="varlinkbio-intro";
+  el.innerHTML=
+    '<canvas id="vli-starfield"></canvas>' +
+    '<div class="vli-wave"></div>' +
+    '<div class="vli-particles" id="vli-particles"></div>' +
+    '<div class="vli-varsmile" id="vli-varsmile">'+VS_SVG+'</div>' +
+    '<div class="vli-bubble" id="vli-bubble"></div>' +
+    '<div class="vli-welcome" id="vli-welcome">' +
+      '<div class="vli-welcome-text" id="vli-welcome-text">' +
+        'WELCOME TO WEB <span style="color:#ffd700;-webkit-text-fill-color:#ffd700">VARLINKBIO</span> TOOLS <span class="vli-welcome-emoji">👌</span>' +
+      '</div>' +
+      '<div class="vli-welcome-varsmile" id="vli-welcome-varsmile">'+VS_SVG+'</div>' +
+    '</div>' +
+    '<div class="vli-flash" id="vli-flash"></div>' +
+    '<button class="vli-skip" id="vli-skip" type="button">Skip Intro →</button>';
+  document.body.appendChild(el);
+  document.body.classList.add("vli-intro-active");
+  initStarfield(document.getElementById("vli-starfield"));
+  spawnParticles(document.getElementById("vli-particles"),25);
+  return el;
+}
+
+/* ═══ SHOW BUBBLE "Halo" ═══ */
+function showBubble(text,duration){
+  var b=document.getElementById("vli-bubble");
+  if(!b) return;
+  b.textContent=text;b.classList.add("show");
+  if(duration) setTimeout(function(){b.classList.remove("show");},duration);
+}
+
+/* ═══ LOCK openModal ═══ */
+function lockOpenModal(){
+  if(_openModalLocked) return;
+  _openModalLocked=true;
+  var orig=window.openModal;
+  window._origOpenModal=orig;
+  window.openModal=function(html){
+    var isWelcome=html&&typeof html==="string"&&html.indexOf("welcome-help-modal")!==-1;
+    if(isWelcome&&!_introFinished){
+      console.log("🚫 Welcome blocked");
+      return null;
+    }
+    return orig.apply(this,arguments);
+  };
+}
+lockOpenModal();
+
+/* ═══ TRIGGER WELCOME ═══ */
+function triggerWelcome(){
   try{
-    if(!window.PagePublic || !window.PagePublic.buildHTML) return;
-    if(window.PagePublic._v104BuildFixed) return;
-    window.PagePublic._v104BuildFixed = true;
+    var hp=(location.hash.slice(1)||"/").split("?")[0];
+    if(hp!=="/dashboard") return;
+    if(_welcomeShownThisSession) return;
+    if(document.querySelector(".welcome-help-modal")) return;
+    
+    var flagKey="varlinkbio_welcome_shown_"+(window.Auth&&Auth.current?Auth.current.uid:"");
+    if(localStorage.getItem(flagKey)==="1") return;
+    
+    _welcomeShownThisSession=true;
+    setTimeout(showWelcomeModal,500);
+  }catch(e){}
+}
+
+function showWelcomeModal(){
+  try{
+    if(!window.openModal) return;
+    var m=window.openModal(
+      '<div class="welcome-help-modal">'+
+        '<div class="wh-icon">👋</div>'+
+        '<h2>Selamat Datang di<br>Varlinkbio!</h2>'+
+        '<p class="wh-sub">Sebelum mulai, baca <b>Bantuan</b> dulu yuk biar kamu langsung tau cara pakainya!</p>'+
+        '<div class="wh-info">'+
+          '<b>📚 Di Bantuan kamu bakal tau:</b><br>'+
+          '• ✨ Cara bikin bio pertama<br>'+
+          '• 🎨 Kustom tema & warna<br>'+
+          '• 🔗 Tambah link & share<br>'+
+          '• 💰 Kredit & cara upgrade<br>'+
+          '• 🎵 Music bio & fitur lain'+
+        '</div>'+
+        '<button class="wh-btn" id="wh-go" type="button">📖 Buka Bantuan Sekarang</button>'+
+        '<button class="wh-skip" id="wh-skip" type="button">Lewati, saya sudah tau</button>'+
+      '</div>'
+    );
+    if(!m){_welcomeShownThisSession=false;return;}
+    
+    try{
+      var flagKey="varlinkbio_welcome_shown_"+(window.Auth&&Auth.current?Auth.current.uid:"");
+      localStorage.setItem(flagKey,"1");
+      if(window.Auth&&Auth.current&&window.FB){
+        FB.db.collection("users").doc(Auth.current.uid).set({
+          welcomeShown:true,welcomeShownAt:Date.now()
+        },{merge:true}).catch(function(){});
+      }
+    }catch(e){}
+    
+    setTimeout(function(){
+      var go=document.getElementById("wh-go");
+      var sk=document.getElementById("wh-skip");
+      if(go) go.onclick=function(e){
+        if(e){e.preventDefault();e.stopPropagation();}
+        try{m.remove();}catch(err){}
+        if(window.Sound&&Sound.success) Sound.success();
+        setTimeout(function(){if(window.Router) Router.navigate("/help");},100);
+      };
+      if(sk) sk.onclick=function(e){
+        if(e){e.preventDefault();e.stopPropagation();}
+        try{m.remove();}catch(err){}
+        if(window.Sound&&Sound.click) Sound.click();
+        if(window.toast) toast("👍 Selamat berkarya!","success");
+      };
+      var cx=m.querySelector(".close-x");
+      if(cx) cx.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}try{m.remove();}catch(e2){}};
+    },150);
+  }catch(e){console.warn("showWelcomeModal:",e);}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHOW ALL BUBBLES — GRID LAYOUT (NO OVERLAP)
+   ═══════════════════════════════════════════════════════════ */
+function showAllBubbles(intro){
+  console.log("🎯 Showing all bubbles (grid layout)");
+  
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  
+  var cardW = Math.min(150, vw * 0.42);
+  var cardH = 120;
+  var padX = 12;
+  var padY = 16;
+  
+  // Grid positions — 2 kolom × 3 baris
+  // Row 1 (atas):      2 card
+  // Row 2 (tengah):    KOSONG (text + varsmile)
+  // Row 3 (bawah):     2 card
+  // Row 4 (paling bawah): 1 card (center)
+  
+  var positions = [
+    { x: padX,                          y: padY },
+    { x: vw - cardW - padX,             y: padY },
+    { x: padX,                          y: vh * 0.58 },
+    { x: vw - cardW - padX,             y: vh * 0.58 },
+    { x: (vw - cardW) / 2,              y: vh - cardH - padY }
+  ];
+  
+  // Shuffle positions biar gak selalu sama (tapi gak overlap)
+  positions.sort(function(){ return Math.random() - 0.5; });
+  
+  var rotations = [-5, 4, -3, 5, -4];
+  
+  // Buat semua card dulu, gak keliatan
+  _BUBBLES.forEach(function(b, i){
+    var card = document.createElement("div");
+    card.className = "vli-info-card";
+    card.style.setProperty("--rot", rotations[i % rotations.length] + "deg");
+    card.style.width = cardW + "px";
+    card.style.left = positions[i].x + "px";
+    card.style.top = positions[i].y + "px";
+    
+    card.innerHTML = 
+      '<span class="vic-icon">' + b.icon + '</span>' +
+      '<span class="vic-title">' + b.title + '</span>' +
+      '<span class="vic-text">' + b.text + '</span>';
+    
+    intro.appendChild(card);
+    
+    console.log("💬 Bubble " + (i+1) + " @ (" + Math.round(positions[i].x) + ", " + Math.round(positions[i].y) + ")");
+  });
+  
+  // Show semua dengan stagger smooth
+  requestAnimationFrame(function(){
+    var cards = intro.querySelectorAll(".vli-info-card");
+    cards.forEach(function(card, idx){
+      setTimeout(function(){
+        card.classList.add("show");
+      }, idx * 80);
+    });
+  });
+}
+
+/* ═══ START INTRO ═══ */
+function startIntro(onDone){
+  var intro=createIntro();
+  var onComplete=onDone||function(){};
+  var skipped=false;
+  
+  document.getElementById("vli-skip").addEventListener("click",function(){
+    if(skipped) return;
+    skipped=true;
+    finishIntro(true);
+  });
+  
+  var vs=document.getElementById("vli-varsmile");
+  var welcome=document.getElementById("vli-welcome");
+  var welcomeText=document.getElementById("vli-welcome-text");
+  var vsSmall=document.getElementById("vli-welcome-varsmile");
+  var flash=document.getElementById("vli-flash");
+  
+  /* ═══ PHASE 1 — VARSMile + HALO (0-5.5s) ═══ */
+  setTimeout(function(){if(!skipped&&vs) vs.classList.add("slide-up","big");},300);
+  setTimeout(function(){if(!skipped&&vs){vs.classList.remove("big");vs.classList.add("small");}},1300);
+  setTimeout(function(){if(!skipped) showBubble("Halo! Mari kita jalan-jalan ke intro terlebih dahulu! 🚀",2800);},2500);
+  setTimeout(function(){
+    if(skipped) return;
+    var b=document.getElementById("vli-bubble");
+    if(b) b.classList.remove("show");
+    if(vs){vs.classList.remove("slide-up","small");vs.classList.add("hide");}
+  },5500);
+  
+  /* ═══ PHASE 2 — WELCOME TEXT (6.5s) ═══ */
+  setTimeout(function(){if(!skipped&&welcome) welcome.classList.add("slide-in");},6500);
+  setTimeout(function(){if(!skipped&&vsSmall) vsSmall.classList.add("show");},6800);
+  
+  /* ═══ PHASE 3 — CONFETTI (7s) ═══ */
+  setTimeout(function(){if(!skipped) confettiBurst(intro);},7000);
+  setTimeout(function(){
+    if(skipped) return;
+    confettiBurst(intro);
+    var rect=welcomeText?welcomeText.getBoundingClientRect():null;
+    if(rect){
+      for(var i=0;i<10;i++){
+        (function(idx){
+          setTimeout(function(){
+            if(skipped) return;
+            sparkleAt(intro,rect.left+Math.random()*rect.width,rect.top+Math.random()*rect.height);
+          },idx*200);
+        })(i);
+      }
+    }
+  },7200);
+  
+  /* ═══ PHASE 4 — BUBBLE INFO (1 DETIK setelah text = 7.5s) ═══ */
+  setTimeout(function(){
+    if(skipped) return;
+    console.log("🎯 Start bubble info (1s after text)");
+    showAllBubbles(intro);
+  }, 7500);
+  
+  /* ═══ PHASE 5 — AUTO FINISH at 31s ═══ */
+  setTimeout(function(){
+    if(skipped) return;
+    console.log("✅ Auto finish at 31s");
+    endBubbleInfo();
+  }, INTRO_DURATION);
+  
+  function endBubbleInfo(){
+    console.log("🎬 Finishing intro");
+    
+    // Fade out bubbles
+    intro.querySelectorAll(".vli-info-card").forEach(function(card){
+      card.classList.remove("show");
+      card.style.transition = "opacity .5s, transform .5s";
+      card.style.opacity = "0";
+      card.style.transform = "scale(0.5)";
+    });
+    
+    // Zoom V
+    setTimeout(function(){
+      if(welcomeText) welcomeText.classList.add("zoom-v");
+      if(vsSmall) vsSmall.classList.add("zoom-out");
+    }, 500);
+    
+    // Flash
+    setTimeout(function(){
+      if(flash) flash.classList.add("show");
+    }, 1700);
+    
+    // Finish
+    setTimeout(function(){
+      if(!skipped) finishIntro(false);
+    }, 2500);
+  }
+  
+  function finishIntro(wasSkipped){
+    try{
+      intro.classList.add("fade-out");
+      setTimeout(function(){
+        try{intro.remove();}catch(e){}
+        document.body.classList.remove("vli-intro-active");
+        showLoadingScreen(onComplete);
+      },1000);
+    }catch(e){
+      console.warn("finishIntro:",e);
+      if(onComplete) onComplete();
+    }
+  }
+}
+
+/* ═══ LOADING SCREEN ═══ */
+function showLoadingScreen(callback){
+  var el=document.createElement("div");
+  el.id="varlinkbio-loading";
+  el.innerHTML=
+    '<div class="vli-spinner-wrap">'+
+      '<div class="vli-spinner">'+VS_SVG+'</div>'+
+    '</div>'+
+    '<div class="vli-loading-text">Loading Varlinkbio...</div>';
+  document.body.appendChild(el);
+  setTimeout(function(){el.classList.add("show");},50);
+  setTimeout(function(){
+    el.classList.remove("show");
+    setTimeout(function(){
+      try{el.remove();}catch(e){}
+      
+      _introFinished=true;
+      console.log("✅ Intro + Loading selesai — unlock welcome");
+      
+      var app=document.getElementById("app");
+      if(app){app.style.transition="opacity .5s";app.style.opacity="1";}
+      
+      setTimeout(triggerWelcome,500);
+      
+      if(callback) callback();
+    },500);
+  },2000);
+}
+
+/* ═══ BOOT ═══ */
+function boot(){
+  var hp=(location.hash.slice(1)||"/").split("?")[0];
+  if(hp.startsWith("/u/")) return;
+  
+  var app=document.getElementById("app");
+  if(app) app.style.opacity="0";
+  
+  startIntro(function(){
+    console.log("✅ Intro selesai, APP muncul");
+  });
+}
+
+/* ═══ EXPOSE ═══ */
+window.playIntro=function(){boot();};
+window.resetWelcome=function(){
+  try{
+    var flagKey="varlinkbio_welcome_shown_"+(window.Auth&&Auth.current?Auth.current.uid:"");
+    localStorage.removeItem(flagKey);
+    _welcomeShownThisSession=false;
+    if(window.toast) toast("Reset ✓","success");
+  }catch(e){}
+};
+window.skipTutorial=function(){
+  try{
+    if(window.VarsmileTutorial){
+      if(window.VarsmileTutorial._cleanupTap) window.VarsmileTutorial._cleanupTap();
+      if(window.VarsmileTutorial._finish) window.VarsmileTutorial._finish(true);
+    }
+    document.querySelectorAll(".vtut-overlay,.tut-overlay").forEach(function(el){el.remove();});
+    if(window.toast) toast("Skip ✓","success");
+  }catch(e){}
+};
+
+console.log("✅ INTRO v11 FINAL v4 ready");
+
+/* ═══ AUTO RUN ═══ */
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,300);});
+} else {
+  setTimeout(boot,300);
+}
+
+})();
+</script>
+<!-- ═══ END PATCH v11 FINAL v4 ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH HAPUS SOUND INTRO
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script id="no-intro-sound-js">
+(function(){
+"use strict";
+console.log("%c🔇 HAPUS SOUND INTRO loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   OVERRIDE Audio.play → jadi no-op
+   ═══════════════════════════════════════════════════════════ */
+function killIntroSound(){
+  try{
+    // Override global Audio.play (kalau ada dari patch intro)
+    if(window.Audio && typeof window.Audio.play === "function"){
+      window.Audio.play = function(){
+        console.log("🔇 Intro sound DISABLED");
+      };
+      window.Audio.init = function(){};
+    }
+    
+    // Cari object Audio yang ada di closure patch intro
+    // Ganti via prototype hack
+    if(window.AudioContext){
+      // Monkey-patch AudioContext.createOscillator
+      var _origCreate = AudioContext.prototype.createOscillator;
+      // Cegah intro bikin oscillator
+      // (biar sound gak keluar sama sekali)
+    }
+    
+    // Matiin semua osc yang bunyi dari intro
+    // Override AudioContext.resume
+    var _origAC = window.AudioContext || window.webkitAudioContext;
+    if(_origAC && !window._acPatched){
+      window._acPatched = true;
+      var _origCreate = _origAC.prototype.createOscillator;
+      // Kita cek durasi — kalau kurang dari 100ms, mungkin intro
+      // Skip untuk sekarang
+    }
+    
+    console.log("✅ Intro sound di-disable");
+  }catch(e){
+    console.warn("killIntroSound:", e);
+  }
+}
+
+killIntroSound();
+setInterval(killIntroSound, 1000);
+
+/* ═══════════════════════════════════════════════════════════
+   BLOCK: Cegah AudioContext bikin sound selama intro
+   ═══════════════════════════════════════════════════════════ */
+(function blockIntroAudio(){
+  try{
+    var _origAC = window.AudioContext;
+    var _origWebkitAC = window.webkitAudioContext;
+    
+    function DummyAC(){
+      var ctx = new (_origAC || _origWebkitAC)();
+      var _origCreate = ctx.createOscillator.bind(ctx);
+      var _origCreateGain = ctx.createGain.bind(ctx);
+      
+      // Cek apakah intro masih aktif
+      var isIntroActive = function(){
+        return !!document.getElementById("varlinkbio-intro");
+      };
+      
+      ctx.createOscillator = function(){
+        var osc = _origCreate();
+        if(isIntroActive()){
+          // Blok osc selama intro
+          var _origStart = osc.start.bind(osc);
+          osc.start = function(){
+            console.log("🔇 Blocked osc during intro");
+            // Gak di-start → gak bunyi
+          };
+        }
+        return osc;
+      };
+      
+      return ctx;
+    }
+    
+    // Ganti AudioContext
+    if(_origAC){
+      window.AudioContext = function(){
+        return new DummyAC();
+      };
+    }
+    if(_origWebkitAC){
+      window.webkitAudioContext = function(){
+        return new DummyAC();
+      };
+    }
+    
+    console.log("✅ AudioContext blocked during intro");
+  }catch(e){
+    console.warn("blockIntroAudio:", e);
+  }
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  🔇 INTRO SOUND DIHAPUS                ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Intro audio disabled                 ║","color:#22c55e");
+  console.log("%c║  • Sound lain tetap jalan               ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+}, 1500);
+
+})();
+</script>
+<!-- ═══ END HAPUS SOUND INTRO ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH — TAMBAH FAQ BARU (bukan replace)
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script id="add-faq-v11-js">
+(function(){
+"use strict";
+console.log("%c📚 ADD FAQ v11 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   FAQ BARU — cuma yang belum ada
+   ═══════════════════════════════════════════════════════════ */
+var NEW_FAQ = [
+  /* ═══════ INTRO (baru) ═══════ */
+  { cat:"intro", q:"Apa itu intro 20 detik?", a:'<p><b>Intro</b> = cinematic opening Varlinkbio yang muncul <b>sekali</b> saat pertama buka APP.</p><p><b>Yang kamu lihat:</b></p><ul><li>✨ Varsmile muncul dari bawah</li><li>🎨 Text "WELCOME TO WEB VARLINKBIO TOOLS"</li><li>🎉 Confetti & sparkle</li><li>🔍 Zoom ke huruf V</li><li>⚡ Flash putih → Loading</li></ul>' },
+  { cat:"intro", q:"Bisa skip intro?", a:'<p><b>Bisa!</b> Klik tombol <b>"SKIP INTRO →"</b> di kanan atas.</p><p>Atau di Console ketik: <code>skipIntroNow()</code></p>' },
+  { cat:"intro", q:"Welcome modal gak muncul?", a:'<p>Welcome modal muncul <b>sekali</b> per user (setelah intro selesai).</p><p>Kalau gak muncul:</p><ul><li>Cek apakah kamu udah pernah lihat</li><li>Reset via Console: <code>resetWelcome()</code></li><li>Refresh halaman</li></ul>' },
+  { cat:"intro", q:"Loading Varsmile 3D flip?", a:'<p>Setelah intro, muncul <b>Loading Varsmile yang berputar 3D</b> (kayak flip card).</p><p>Ini cuma visual, durasi ~2 detik sebelum APP muncul.</p>' },
+
+  /* ═══════ IKLAN (kalau belum ada) ═══════ */
+  { cat:"iklan", q:"Apa itu iklan reward?", a:'<p><b>Iklan reward</b> = nonton iklan → dapat kredit gratis.</p><p><b>Cara:</b></p><ol><li>Dashboard → tombol <b>📺 Iklan</b></li><li>Video iklan muncul</li><li>Nonton 30 detik</li><li>Klik <b>🎁 Klaim Kredit</b></li><li>+25 kredit masuk</li></ol>' },
+
+  /* ═══════ MUSIC (kalau belum ada) ═══════ */
+  { cat:"music", q:"Music bio auto-pause?", a:'<p><b>Iya!</b> Music bio otomatis pause kalau:</p><ul><li>Minimize app</li><li>Pindah tab browser</li><li>Switch ke app lain</li></ul><p>Balik ke tab → auto-resume.</p>' },
+
+  /* ═══════ VARSMile (kalau belum ada) ═══════ */
+  { cat:"varsmile", q:"Varsmile bisa di-drag?", a:'<p><b>Bisa!</b></p><ol><li>Tap + tahan Varsmile</li><li>Geser ke posisi baru</li><li>Lepas → posisi tersimpan</li></ol><p>Posisi otomatis tersimpan, balik lagi di tempat yang sama.</p>' },
+  { cat:"varsmile", q:"Bubble Varsmile muncul di mana?", a:'<p>Bubble muncul <b>di bawah Varsmile</b>, dengan <b>arrow (▲) nunjuk ke atas</b>.</p><p><b>Auto hilang</b> setelah 4-5 detik.</p>' },
+
+  /* ═══════ TEKNIS (kalau belum ada) ═══════ */
+  { cat:"tech", q:"Halaman blank / error?", a:'<ul><li>Refresh halaman (F5 / swipe down)</li><li>Clear cache browser</li><li>Buka di incognito</li><li>Kalau masih blank → chat WA admin</li></ul>' }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   TAMBAH KE FAQ_DATA (MERGE, bukan replace)
+   ═══════════════════════════════════════════════════════════ */
+function addFaq(){
+  try{
+    // Cari FAQ_DATA (dari patch lain atau dari APP)
+    var target = window.FAQ_DATA || (window.PageHelp && window.PageHelp.FAQ_DATA);
+    
+    // Kalau gak ketemu, coba cari dari variabel di patch help lama
+    if(!target){
+      // Buat array baru
+      target = [];
+      window.FAQ_DATA = target;
+    }
+    
+    if(!Array.isArray(target)) return false;
+    
+    // Cek udah ke-add
+    if(window._faqAddedV11) return true;
+    window._faqAddedV11 = true;
+    
+    // Merge — tambahin yang belum ada (cek by q)
+    var existingQs = target.map(function(f){ return f.q; });
+    var added = 0;
+    
+    NEW_FAQ.forEach(function(newItem){
+      if(existingQs.indexOf(newItem.q) === -1){
+        target.push(newItem);
+        added++;
+      }
+    });
+    
+    // Update ke global
+    window.FAQ_DATA = target;
+    if(window.PageHelp) window.PageHelp.FAQ_DATA = target;
+    
+    console.log("✅ Added " + added + " new FAQ (total: " + target.length + ")");
+    return true;
+  }catch(e){
+    console.warn("addFaq:", e);
+    return false;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TAMBAH KATEGORI BARU (kalau belum ada)
+   ═══════════════════════════════════════════════════════════ */
+function addCategories(){
+  try{
+    var cats = window.FAQ_CATS || (window.PageHelp && window.PageHelp.FAQ_CATS);
+    if(!Array.isArray(cats)){
+      cats = [];
+      window.FAQ_CATS = cats;
+    }
+    
+    if(window._catsAddedV11) return;
+    window._catsAddedV11 = true;
+    
+    // Kategori baru yang mungkin belum ada
+    var newCats = [
+      { id:"intro", label:"Intro", icon:"🎬" }
+    ];
+    
+    var existingIds = cats.map(function(c){ return c.id; });
+    
+    newCats.forEach(function(nc){
+      if(existingIds.indexOf(nc.id) === -1){
+        // Insert sebelum kategori "lain"
+        var lainIdx = cats.findIndex(function(c){ return c.id === "lain"; });
+        if(lainIdx !== -1){
+          cats.splice(lainIdx, 0, nc);
+        } else {
+          cats.push(nc);
+        }
+      }
+    });
+    
+    window.FAQ_CATS = cats;
+    if(window.PageHelp) window.PageHelp.FAQ_CATS = cats;
+    
+    console.log("✅ Categories updated");
+  }catch(e){}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PATCH PageHelp.renderList (biar pake FAQ_DATA terbaru)
+   ═══════════════════════════════════════════════════════════ */
+function patchRenderList(){
+  try{
+    if(!window.PageHelp) return false;
+    if(window.PageHelp._addFaqV11) return true;
+    window.PageHelp._addFaqV11 = true;
+    
+    var origRenderList = window.PageHelp.renderList;
+    
+    window.PageHelp.renderList = function(){
+      var el = document.getElementById("help-list");
+      if(!el) return;
+      
+      var list = window.FAQ_DATA || FAQ_DATA || [];
+      var cat = (this.state && this.state.cat) || "all";
+      var search = (this.state && this.state.search) || "";
+      
+      if(cat !== "all") list = list.filter(function(f){ return f.cat === cat; });
+      if(search){
+        var q = search.toLowerCase();
+        list = list.filter(function(f){
+          return f.q.toLowerCase().indexOf(q) !== -1 || f.a.toLowerCase().indexOf(q) !== -1;
+        });
+      }
+      
+      if(!list.length){
+        el.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#888;font-weight:600">🔍 Gak ada hasil</div>';
+        return;
+      }
+      
+      var html = "";
+      list.forEach(function(f){
+        html += '<div class="help-item">' +
+          '<div class="help-q"><span class="q-icon">?</span><span style="flex:1">' + esc(f.q) + '</span><span class="q-arrow">▼</span></div>' +
+          '<div class="help-a">' + f.a + '</div>' +
+        '</div>';
+      });
+      el.innerHTML = html;
+      
+      el.querySelectorAll(".help-item").forEach(function(item){
+        var q = item.querySelector(".help-q");
+        if(q) q.addEventListener("click", function(){ item.classList.toggle("open"); });
+      });
+    };
+    
+    // Patch render (biar kategori terbaru dipakai)
+    var origRender = window.PageHelp.render;
+    window.PageHelp.render = function(){
+      if(!window.Auth || !Auth.current){
+        if(window.Router) Router.navigate("/login");
+        return;
+      }
+      
+      var app = document.getElementById("app");
+      if(!app) return;
+      
+      var html = (window.renderTopbar ? renderTopbar() : "");
+      html += '<div class="help-page">';
+      html += '<div class="help-hero">';
+      html += '<div class="hero-icon">' + (window.ico ? ico('help') : '?') + '</div>';
+      html += '<h1>Bantuan & FAQ</h1>';
+      html += '<p style="font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-top:8px">Semua yang perlu kamu tau tentang Varlinkbio</p>';
+      html += '</div>';
+      html += '<div class="help-search-wrap">';
+      html += '<span class="search-icon">🔍</span>';
+      html += '<input type="text" id="help-search" placeholder="Cari..." autocomplete="off"/>';
+      html += '</div>';
+      html += '<div class="help-cats" id="help-cats"></div>';
+      html += '<div class="help-list" id="help-list"></div>';
+      html += '<div class="help-cta">';
+      html += '<h3>Masih bingung?</h3>';
+      html += '<p style="font-size:13px;font-weight:600;margin-bottom:10px">Chat admin via WA</p>';
+      html += '<a href="https://wa.me/6285823058292" target="_blank" class="btn">💬 Chat Admin</a>';
+      html += '</div>';
+      html += '</div>';
+      
+      app.innerHTML = html;
+      if(window.bindTopbar) bindTopbar();
+      
+      var self = this;
+      
+      // Render categories
+      var cats = document.getElementById("help-cats");
+      if(cats){
+        var catList = window.FAQ_CATS || [];
+        cats.innerHTML = catList.map(function(c){
+          var active = (self.state && self.state.cat === c.id) ? "active" : "";
+          return '<div class="help-cat ' + active + '" data-cat="' + c.id + '">' + c.icon + ' ' + c.label + '</div>';
+        }).join("");
+        cats.querySelectorAll(".help-cat").forEach(function(el){
+          el.addEventListener("click", function(){
+            cats.querySelectorAll(".help-cat").forEach(function(x){ x.classList.remove("active"); });
+            el.classList.add("active");
+            if(!self.state) self.state = {};
+            self.state.cat = el.dataset.cat;
+            self.renderList();
+          });
+        });
+      }
+      
+      // Search
+      var se = document.getElementById("help-search");
+      if(se){
+        se.addEventListener("input", function(){
+          if(!self.state) self.state = {};
+          self.state.search = this.value.toLowerCase().trim();
+          self.renderList();
+        });
+      }
+      
+      this.renderList();
+    };
+    
+    console.log("✅ PageHelp.renderList patched");
+    return true;
+  }catch(e){
+    console.warn("patchRenderList:", e);
+    return false;
+  }
+}
+
+function esc(s){
+  return String(s || "").replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  addFaq();
+  addCategories();
+  patchRenderList();
+}, 1000);
+
+setTimeout(function(){
+  addFaq();
+  addCategories();
+  patchRenderList();
+}, 3000);
+
+setTimeout(function(){
+  addFaq();
+  addCategories();
+  patchRenderList();
+}, 6000);
+
+/* ═══════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════ */
+setTimeout(function(){
+  var total = (window.FAQ_DATA || []).length;
+  console.log("");
+  console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
+  console.log("%c║  📚 ADD FAQ v11 AKTIF                  ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • " + NEW_FAQ.length + " FAQ baru ditambah                   ║","color:#22c55e");
+  console.log("%c║  • Total: " + total + " FAQ di database                 ║","color:#22c55e");
+  console.log("%c║  • FAQ lama TETAP ada                  ║","color:#22c55e");
+  console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
+}, 2000);
+
+})();
+</script>
+<!-- ═══ END ADD FAQ v11 ═══ -->
+<!-- ═══════════════════════════════════════════════════════════════
+     PATCH FIX — WARNA TOMBOL LINK (APP + VLINK-BIO)
+     Fix: Warna custom link gak ke-apply karena theme override
+     by Varoo
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style id="fix-link-color-v2-css">
+/* ═══════════════════════════════════════════════════════════
+   FORCE WARNA LINK — pakai CSS variable
+   ═══════════════════════════════════════════════════════════ */
+
+/* Warna default (kalau gak ada custom) */
+.bio-link{
+  --link-bg: inherit;
+  --link-fg: inherit;
+  --link-border: inherit;
+}
+
+/* Kalau ada custom color via data attribute atau style langsung */
+.bio-link[data-has-color="1"]{
+  background: var(--link-bg) !important;
+  color: var(--link-fg) !important;
+  border-color: var(--link-border, inherit) !important;
+}
+
+/* Override dari theme — biar gak nge-block */
+.bio-link[data-has-color="1"]{
+  background-color: var(--link-bg) !important;
+}
+</style>
+
+<script id="fix-link-color-v2-js">
+(function(){
+"use strict";
+console.log("%c🎨 FIX LINK COLOR v2 loading...","color:#ffd700;font-weight:bold;font-size:14px");
+
+/* ═══════════════════════════════════════════════════════════
+   HELPER: contrastText
+   ═══════════════════════════════════════════════════════════ */
+function contrastText(hex){
+  try{
+    if(!hex) return "#0a0a0a";
+    var c = String(hex).trim();
+    if(c.startsWith("linear-gradient")) return "#ffffff";
+    if(!c.startsWith("#")) c = "#" + c;
+    if(c.length === 4) c = "#" + c[1]+c[1]+c[2]+c[2]+c[3]+c[3];
+    if(c.length !== 7) return "#0a0a0a";
+    var r = parseInt(c.slice(1,3),16);
+    var g = parseInt(c.slice(3,5),16);
+    var b = parseInt(c.slice(5,7),16);
+    var lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+    return lum > 0.6 ? "#0a0a0a" : "#ffffff";
+  }catch(e){ return "#0a0a0a"; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PATCH renderLink (buat public bio)
+   ═══════════════════════════════════════════════════════════ */
+function patchRenderLink(){
+  try{
+    if(!window.PagePublic) return false;
+    if(window.PagePublic._colorV2) return true;
+    window.PagePublic._colorV2 = true;
+    
+    var origRenderLinks = window.PagePublic.renderLinks;
+    
+    window.PagePublic.renderLinks = function(bio, preview){
+      try{
+        var links = Array.isArray(bio.links) ? bio.links.filter(function(l){ return l.active !== false; }) : [];
+        if(!links.length){
+          return '<div style="text-align:center;padding:20px;font-size:12.5px;font-weight:700;opacity:.7">Belum ada link.</div>';
+        }
+        
+        return links.map(function(l, i){
+          var url = l.url || "#";
+          var label = l.label || "Link";
+          var bgColor = l.color || "";
+          var delay = (i * 0.05).toFixed(2);
+          var iconName = getLinkIconV2(url);
+          
+          // ⭐ FEATURED
+          if(l.type === "featured" && l.thumb){
+            var bg = bgColor || "#ffffff";
+            var fg = contrastText(bg);
+            var ratio = l.featRatio === "1:1" ? "1/1" :
+                        l.featRatio === "4:3" ? "4/3" :
+                        l.featRatio === "auto" ? "auto" : "16/9";
+            var posX = l.featPosX != null ? l.featPosX : 50;
+            var posY = l.featPosY != null ? l.featPosY : 50;
+            var zoom = l.featZoom != null ? l.featZoom : 1;
+            var pad = l.featPadding != null ? l.featPadding : 10;
+            
+            return '<a class="bio-link bio-featured" href="' + escV2(url) + '" target="_blank" rel="noopener" data-idx="' + i + '" ' +
+              'style="animation-delay:' + delay + 's;--feat-bg:' + bg + ';--feat-fg:' + fg + ';' +
+              '--feat-ratio:' + ratio + ';--feat-pos-x:' + posX + '%;--feat-pos-y:' + posY + '%;' +
+              '--feat-zoom:' + zoom + ';--feat-padding:' + pad + 'px">' +
+              '<div class="feat-img-wrap"><img class="feat-img" src="' + escV2(l.thumb) + '" alt="' + escV2(label) + '"/></div>' +
+              '<div class="feat-body"><b>' + escV2(label) + '</b></div>' +
+            '</a>';
+          }
+          
+          // ⭐ EMBED
+          if(["youtube","spotify","vimeo","tiktok"].indexOf(l.type) !== -1){
+            var embedUrl = getEmbedUrlV2(url);
+            if(embedUrl){
+              return '<div class="bio-embed" style="animation-delay:' + delay + 's">' +
+                '<iframe src="' + escV2(embedUrl) + '" allowfullscreen loading="lazy"></iframe>' +
+              '</div>';
+            }
+          }
+          
+          // ⭐ CLASSIC — pakai CSS variable
+          var styleStr = 'animation-delay:' + delay + 's;';
+          var dataAttr = '';
+          
+          if(bgColor){
+            // Pakai CSS variable biar menang dari theme
+            styleStr += '--link-bg:' + bgColor + ';';
+            styleStr += '--link-fg:' + contrastText(bgColor) + ';';
+            styleStr += '--link-border:' + bgColor + ';';
+            dataAttr = ' data-has-color="1"';
+          }
+          
+          return '<a class="bio-link" href="' + escV2(url) + '" target="_blank" rel="noopener" ' +
+            'data-idx="' + i + '"' + dataAttr + ' style="' + styleStr + '">' +
+            '<span class="licon">' + iconSvgV2(iconName) + '</span>' +
+            '<span class="ltext">' + escV2(label) + '</span>' +
+          '</a>';
+        }).join("");
+      }catch(e){
+        console.warn("renderLinks error:", e);
+        if(typeof origRenderLinks === "function"){
+          return origRenderLinks.call(this, bio, preview);
+        }
+        return "";
+      }
+    };
+    
+    console.log("✅ renderLinks patched (color v2)");
+    return true;
+  }catch(e){
+    console.warn("patchRenderLink:", e);
+    return false;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HELPER: Icon + Esc
+   ═══════════════════════════════════════════════════════════ */
+function getLinkIconV2(url){
+  if(!url) return "link";
+  var u = url.toLowerCase();
+  if(u.indexOf("youtube.com") !== -1 || u.indexOf("youtu.be") !== -1) return "youtube";
+  if(u.indexOf("spotify.com") !== -1) return "music";
+  if(u.indexOf("tiktok.com") !== -1) return "video";
+  if(u.indexOf("instagram.com") !== -1) return "instagram";
+  if(u.indexOf("twitter.com") !== -1 || u.indexOf("x.com") !== -1) return "twitter";
+  if(u.indexOf("wa.me") !== -1 || u.indexOf("whatsapp") !== -1) return "whatsapp";
+  return "link";
+}
+
+function getEmbedUrlV2(url){
+  if(!url) return null;
+  var yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if(yt) return "https://www.youtube.com/embed/" + yt[1];
+  var sp = url.match(/spotify\.com\/(track|album|playlist|episode)\/([A-Za-z0-9]+)/);
+  if(sp) return "https://open.spotify.com/embed/" + sp[1] + "/" + sp[2];
+  var vm = url.match(/vimeo\.com\/(\d+)/);
+  if(vm) return "https://player.vimeo.com/video/" + vm[1];
+  var tt = url.match(/tiktok\.com\/.*\/video\/(\d+)/);
+  if(tt) return "https://www.tiktok.com/embed/v2/" + tt[1];
+  return null;
+}
+
+function escV2(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+function iconSvgV2(name){
+  var ICONS = {
+    link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    instagram:'<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>',
+    tiktok:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>',
+    youtube:'<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>',
+    whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+    music:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+    twitter:'<path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>',
+    video:'<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>'
+  };
+  var d = ICONS[name] || ICONS.link;
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PATCH BUILDHTML — biar renderLinks baru kepake
+   ═══════════════════════════════════════════════════════════ */
+function patchBuildHTML(){
+  try{
+    if(!window.PagePublic || !window.PagePublic.buildHTML) return false;
+    if(window.PagePublic._colorV2Build) return true;
+    window.PagePublic._colorV2Build = true;
     
     var origBuild = window.PagePublic.buildHTML;
     
     window.PagePublic.buildHTML = function(bio, opts){
-      // ⭐ FIX: Kalau theme BUKAN "custom" → hapus customThemeData sementara
-      var cleanBio = bio;
-      if(bio && bio.theme !== "custom" && bio.customThemeData){
-        cleanBio = Object.assign({}, bio);
-        delete cleanBio.customThemeData;
-        delete cleanBio.customThemeId;
-        console.log("🧹 buildHTML: custom theme di-skip (theme = " + bio.theme + ")");
+      var html = origBuild.call(this, bio, opts);
+      
+      // Cek apakah ada link dengan custom color
+      if(bio && Array.isArray(bio.links)){
+        var hasCustomColor = bio.links.some(function(l){ return l.color; });
+        if(hasCustomColor){
+          // Inject CSS tambahan biar color lebih kuat
+          var cssFix = '<style>' +
+            '.bio-link[data-has-color="1"]{' +
+              'background:var(--link-bg) !important;' +
+              'background-color:var(--link-bg) !important;' +
+              'color:var(--link-fg) !important;' +
+              'border-color:var(--link-border,var(--link-bg)) !important;' +
+            '}' +
+            '.bio-link[data-has-color="1"] .licon svg{' +
+              'stroke:var(--link-fg) !important;' +
+            '}' +
+          '</style>';
+          html = html.replace(/<\/head>/i, cssFix + '</head>');
+        }
       }
       
-      return origBuild.call(this, cleanBio, opts);
+      return html;
     };
     
-    console.log("✅ buildHTML patched (v10.4)");
+    console.log("✅ buildHTML patched (color v2)");
+    return true;
   }catch(e){
-    console.warn("buildHTML patch:", e);
+    return false;
   }
-}, 3000);
-
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 4 — AUTO NUKE SAAT DELETE CUSTOM THEME
-   ═══════════════════════════════════════════════════════════ */
-function hookDeleteButton(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var themeGrid = document.getElementById("theme-grid");
-    if(!themeGrid) return;
-    
-    var parent = themeGrid.closest(".editor-section");
-    if(!parent) return;
-    
-    // Cek udah ada
-    if(parent.querySelector(".warna-tema-delete")) return;
-    
-    var wrap = document.createElement("div");
-    wrap.className = "warna-tema-delete";
-    wrap.style.cssText = "display:flex;justify-content:center;margin-top:12px";
-    wrap.innerHTML = 
-      '<button type="button" id="btn-delete-custom-theme" ' +
-      'style="padding:10px 18px;background:#ff2a2a;color:#fff;border:2.5px solid var(--ink);' +
-      'border-radius:10px;font-size:12px;font-weight:900;text-transform:uppercase;' +
-      'letter-spacing:.3px;cursor:pointer;font-family:inherit;box-shadow:3px 3px 0 var(--ink);' +
-      'display:inline-flex;align-items:center;gap:6px">' +
-      '🗑️ Hapus Custom Theme</button>';
-    
-    themeGrid.parentNode.insertBefore(wrap, themeGrid.nextSibling);
-    
-    var btn = document.getElementById("btn-delete-custom-theme");
-    if(btn){
-      btn.addEventListener("click", async function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        
-        if(!confirm("Hapus custom theme & pakai tema biasa?")) return;
-        
-        btn.disabled = true;
-        btn.textContent = "⏳ Menghapus...";
-        
-        // NUKE!
-        await nukeCustomTheme();
-        
-        // Save ke Firestore
-        try{
-          if(window.Store && STATE.draft){
-            await Store.save({...STATE.draft});
-          }
-        }catch(e){ console.warn("Save error:", e); }
-        
-        if(window.Sound && Sound.success) Sound.success();
-        if(window.toast) toast("✅ Custom theme dihapus! Pakai tema biasa.","success");
-        
-        // Re-render editor
-        setTimeout(function(){
-          if(window.PageEditor && PageEditor.render) PageEditor.render();
-          if(window.refreshPreviewNow) refreshPreviewNow();
-        }, 500);
-      });
-    }
-  }catch(e){ console.warn("hookDeleteButton:", e); }
 }
 
-setInterval(hookDeleteButton, 1500);
-window.addEventListener("hashchange", function(){ setTimeout(hookDeleteButton, 700); });
-
-
 /* ═══════════════════════════════════════════════════════════
-   STEP 5 — AUTO CLEANUP DRAFT (kalau theme != custom tapi ada customThemeData)
+   INIT
    ═══════════════════════════════════════════════════════════ */
-function autoCleanupDraft(){
-  try{
-    var hp = (location.hash.slice(1) || "/").split("?")[0];
-    if(hp !== "/editor") return;
-    
-    var draft = window.STATE && STATE.draft;
-    if(!draft) return;
-    
-    // Kalau theme BUKAN custom tapi ada customThemeData → cleanup
-    if(draft.theme !== "custom" && draft.customThemeData){
-      console.log("🧹 Auto-cleanup: theme = " + draft.theme + ", hapus customThemeData");
-      delete draft.customThemeData;
-      delete draft.customThemeId;
-    }
-  }catch(e){}
+function tryInit(){
+  var ok1 = patchRenderLink();
+  var ok2 = patchBuildHTML();
+  return ok1 && ok2;
 }
 
-setInterval(autoCleanupDraft, 2000);
+setTimeout(tryInit, 500);
+setTimeout(tryInit, 2000);
+setTimeout(tryInit, 4000);
 
-
-/* ═══════════════════════════════════════════════════════════
-   STEP 6 — EXPOSE FUNCTION
-   ═══════════════════════════════════════════════════════════ */
-window.resetTheme = async function(){
-  // Force reset semua theme
-  if(window.STATE && STATE.draft){
-    STATE.draft.theme = "neo-cream";
-    delete STATE.draft.customThemeData;
-    delete STATE.draft.customThemeId;
-    
-    try{
-      if(window.Store){
-        await Store.save({...STATE.draft});
-      }
-    }catch(e){}
-    
-    try{
-      localStorage.removeItem("varlinkbio_custom_theme_active");
-      localStorage.removeItem("varlinkbio_custom_themes");
-    }catch(e){}
-    
-    if(window.toast) toast("🎨 Theme direset ke default","success");
-    
-    if(window.PageEditor && PageEditor.render) PageEditor.render();
-    if(window.refreshPreviewNow) refreshPreviewNow();
+var tries = 0;
+var interval = setInterval(function(){
+  tries++;
+  if(tryInit() || tries > 20){
+    clearInterval(interval);
   }
-};
-
-window.nukeCustomTheme = nukeCustomTheme;
-
+}, 500);
 
 /* ═══════════════════════════════════════════════════════════
    LOG
@@ -27733,19 +29291,15 @@ window.nukeCustomTheme = nukeCustomTheme;
 setTimeout(function(){
   console.log("");
   console.log("%c╔════════════════════════════════════════╗","color:#22c55e;font-weight:bold");
-  console.log("%c║  ✅ FIX v10.4 AKTIF                    ║","color:#22c55e;font-weight:bold");
-  console.log("%c║  • Nuke custom theme di 5 tempat       ║","color:#22c55e");
-  console.log("%c║  • Firestore di-clean juga             ║","color:#22c55e");
-  console.log("%c║  • Force save setelah ganti tema       ║","color:#22c55e");
-  console.log("%c║  • buildHTML skip custom (kalo bukan)  ║","color:#22c55e");
+  console.log("%c║  🎨 FIX LINK COLOR v2 AKTIF            ║","color:#22c55e;font-weight:bold");
+  console.log("%c║  • Pakai CSS variable                   ║","color:#22c55e");
+  console.log("%c║  • Menang dari theme override           ║","color:#22c55e");
+  console.log("%c║  • Apply di preview + public bio        ║","color:#22c55e");
   console.log("%c╚════════════════════════════════════════╝","color:#22c55e;font-weight:bold");
-  console.log("");
-  console.log("💡 nukeCustomTheme()  — force hapus custom theme");
-  console.log("💡 resetTheme()       — reset ke neo-cream");
-}, 1500);
+}, 2000);
 
 })();
 </script>
-<!-- ═══ END PATCH v10.4 ═══ -->
+<!-- ═══ END FIX LINK COLOR v2 ═══ -->
 </body>
    </html>
